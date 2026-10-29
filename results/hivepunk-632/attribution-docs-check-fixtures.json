@@ -3,8 +3,8 @@
   "tool": "attribution-docs-check-fixtures",
   "result": "success",
   "file": "self_test.py",
-  "sha": "ee63823444aeebcfabe29ba1ff548419ede4842d",
-  "at": "2026-10-29T15:05:59Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/40898054504",
+  "sha": "920ebce837c66d95fb6d4763982322974a1c7d76",
+  "at": "2026-10-29T16:04:20Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/40907876026",
   "tail": "PASS fixture-001 verdict=OK expected=OK\nPASS fixture-002 verdict=OUTSIDE_SETUP expected=OUTSIDE_SETUP\nPASS fixture-003 verdict=NO_HEADER expected=NO_HEADER\nselftest: 3 fixture(s), 0 failure(s)"
 }
