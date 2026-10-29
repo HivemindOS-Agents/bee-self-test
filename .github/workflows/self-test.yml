@@ -1,0 +1,104 @@
+# Runs one HivemindOS agent tool's self-test and records the result (Based Elnen, 2026-10-29: "A tool cannot be marked
+# Finished until its self-test has been run and passed"). The agents service sends a repository_dispatch
+# {"repo": "<agent repository>", "tool": "<tool folder>"} after a build step commits; this checks out
+# tools/<tool>/ from that repository's main branch, runs its self_test.py, self_test.mjs or self_test.sh with no
+# token, and commits results/<repo>/<tool>.json, which the agents service reads back.
+#
+# The tool's code is untrusted: the job that runs it has no permissions and no token, and the result comes from the
+# runner's own job result, not from anything the tool prints. Only the record job can write, and it runs no tool code.
+name: self-test
+on:
+  repository_dispatch:
+    types: [self-test]
+permissions: {}
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    permissions: {}
+    env:
+      REPO: ${{ github.event.client_payload.repo }}
+      TOOL: ${{ github.event.client_payload.tool }}
+    outputs:
+      kind: ${{ steps.find.outputs.kind }}
+      sha: ${{ steps.find.outputs.sha }}
+      tail: ${{ steps.tail.outputs.tail }}
+    steps:
+      - id: find
+        name: Fetch the tool
+        run: |
+          set -eu
+          [[ "$REPO" =~ ^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$ ]] || { echo "Not a repository name."; exit 2; }
+          [[ "$TOOL" =~ ^[a-z0-9][a-z0-9-]{1,47}$ ]] || { echo "Not a tool name."; exit 2; }
+          git clone --quiet --depth 1 --filter=blob:none --sparse "https://github.com/${GITHUB_REPOSITORY_OWNER}/${REPO}.git" work
+          git -C work sparse-checkout set "tools/${TOOL}"
+          echo "sha=$(git -C work rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          for name in self_test.py self_test.mjs self_test.sh; do
+            if [ -f "work/tools/${TOOL}/${name}" ]; then echo "kind=${name}" >> "$GITHUB_OUTPUT"; exit 0; fi
+          done
+          echo "kind=none" >> "$GITHUB_OUTPUT"
+      - name: Run its self-test
+        if: steps.find.outputs.kind != 'none'
+        timeout-minutes: 4
+        env:
+          KIND: ${{ steps.find.outputs.kind }}
+        run: |
+          set -o pipefail
+          cd "work/tools/${TOOL}"
+          case "$KIND" in
+            self_test.py) python3 self_test.py ;;
+            self_test.mjs) node self_test.mjs ;;
+            self_test.sh) bash self_test.sh ;;
+            *) exit 2 ;;
+          esac 2>&1 | tee "$RUNNER_TEMP/out.txt"
+      - id: tail
+        name: Keep the last lines it printed
+        if: always()
+        run: |
+          {
+            echo 'tail<<HIVE_SELF_TEST_END'
+            tail -n 8 "$RUNNER_TEMP/out.txt" 2>/dev/null | cut -c1-200 | grep -v '^HIVE_SELF_TEST_END$' || true
+            echo 'HIVE_SELF_TEST_END'
+          } >> "$GITHUB_OUTPUT"
+  record:
+    needs: test
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Record the result
+        env:
+          REPO: ${{ github.event.client_payload.repo }}
+          TOOL: ${{ github.event.client_payload.tool }}
+          RESULT: ${{ needs.test.result }}
+          KIND: ${{ needs.test.outputs.kind }}
+          SHA: ${{ needs.test.outputs.sha }}
+          TAIL: ${{ needs.test.outputs.tail }}
+          RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -eu
+          [[ "$REPO" =~ ^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$ && "$TOOL" =~ ^[a-z0-9][a-z0-9-]{1,47}$ ]] || exit 0
+          mkdir -p "results/${REPO}"
+          python3 - <<'PY'
+          import json, os, datetime
+          result = "none" if os.environ["KIND"] == "none" else os.environ["RESULT"]
+          record = {"repo": os.environ["REPO"], "tool": os.environ["TOOL"], "result": result, "file": os.environ["KIND"] or None,
+                    "sha": os.environ["SHA"] or None, "at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "run": os.environ["RUN"], "tail": os.environ["TAIL"][:1600]}
+          with open(f"results/{record['repo']}/{record['tool']}.json", "w") as out:
+              json.dump(record, out, indent=2)
+              out.write("\n")
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results
+          git commit --quiet -m "${REPO} ${TOOL}: ${RESULT}" || exit 0
+          for try in 1 2 3 4 5 6; do
+            git push --quiet && exit 0
+            sleep $((try * 2))
+            git pull --quiet --rebase
+          done
+          exit 1
