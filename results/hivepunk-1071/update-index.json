@@ -3,8 +3,8 @@
   "tool": "update-index",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "5f8ab9f4af18450bad181f686db9b61d09d448bf",
-  "at": "2026-10-29T18:29:17Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/40931222153",
-  "tail": ""
+  "sha": "53f4c79ef5a609900c65abf4b554976ae3d10e41",
+  "at": "2026-10-30T05:58:27Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41011357215",
+  "tail": "ok: fixture recheck_rows.csv exists\nok: fixture snapshots/ exists\nFAIL: run on the fixture pair exits 0"
 }
