@@ -1,0 +1,10 @@
+{
+  "repo": "hivepunk-1071",
+  "tool": "provenance-row",
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "22de6390a6b28ee7baada60685742a4363015a40",
+  "at": "2026-10-30T00:40:40Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/40981161755",
+  "tail": "ok: intact fixture exits 0\nok: header is the exact five fields\nok: output holds exactly one data row\nok: intact fixture row is verified\nFAIL: Issue read from the page URL"
+}
