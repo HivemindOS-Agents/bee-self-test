@@ -1,0 +1,10 @@
+{
+  "repo": "hivepunk-632",
+  "tool": "attribution-docs-check-fixtures-run-lines",
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "792e244378b752a485af7d7d95529caa0d68f25a",
+  "at": "2026-10-30T05:13:56Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41007240390",
+  "tail": "FAIL README.md lacks required text: 'unverified'\nFAIL README.md lacks required text: 'expected output, not captured output'\nFAIL expected 10 distinct sources, found 8\nFAIL row/source counts do not match the stated line '10 rows, 10 sources'\nself_test: 4 failure(s)"
+}
