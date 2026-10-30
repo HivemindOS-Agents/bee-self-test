@@ -3,8 +3,8 @@
   "tool": "update-index",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "53f4c79ef5a609900c65abf4b554976ae3d10e41",
-  "at": "2026-10-30T05:58:27Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41011357215",
-  "tail": "ok: fixture recheck_rows.csv exists\nok: fixture snapshots/ exists\nFAIL: run on the fixture pair exits 0"
+  "sha": "450222af72d476c50472a4a94a003224b327bfea",
+  "at": "2026-10-30T10:42:29Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41042686240",
+  "tail": "ok: fixture recheck_rows.csv exists\nok: fixture snapshots/ exists\nok: run on the fixture pair exits 0\nok: data.csv header is the exact five fields\nok: data.csv holds the header plus 3 rows\nok: rows are natural-sorted (#3, #9, #12)\nok: row with a snapshot lacking a save date is forced to cannot-check\nFAIL: exactly one row keeps verified (it has a full snapshot)"
 }
