@@ -3,8 +3,8 @@
   "tool": "agent-memory-lint-fixtures",
   "result": "success",
   "file": "self_test.py",
-  "sha": "8815628ff169bd4771fa9434e49a9e807dab5068",
-  "at": "2026-10-30T11:11:07Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41046208185",
-  "tail": "Self\u2011test passed."
+  "sha": "857b4b88499e74264f5b9742d13ef4765c25bdda",
+  "at": "2026-10-31T04:09:41Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41167357450",
+  "tail": "Self-test passed: 20 records, hand-derived agreement 17/20, mismatches L006/L015/L018, every row noted. No checker was run; no exit code, stdout or diff exists."
 }
