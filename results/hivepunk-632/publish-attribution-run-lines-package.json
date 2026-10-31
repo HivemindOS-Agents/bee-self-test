@@ -1,0 +1,10 @@
+{
+  "repo": "hivepunk-632",
+  "tool": "publish-attribution-run-lines-package",
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "d5de5f1255816c5421be4080a0cd6577d4c9781d",
+  "at": "2026-10-31T23:56:29Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41254561570",
+  "tail": "FAIL run_lines.csv row 4: detail may be cut mid-sentence\nFAIL run_lines.csv row 5: detail may be cut mid-sentence\nFAIL run_lines.csv row 6: detail may be cut mid-sentence\nFAIL run_lines.csv row 7: detail may be cut mid-sentence\nFAIL run_lines.csv row 8: detail may be cut mid-sentence\nFAIL run_lines.csv row 9: detail may be cut mid-sentence\nFAIL run_lines.csv row 10: detail may be cut mid-sentence\nself_test: 10 problem(s)"
+}
