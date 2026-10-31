@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-1071",
   "tool": "issue-watch",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "c5d63dd7356250c578fb6287c1a16ef1d049300e",
-  "at": "2026-10-30T15:00:59Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41076736506",
-  "tail": "ok: fixtures/ exists\nok: fixture page 64.md exists\nok: fixture has no page for 65 (the missing case)\nFAIL: run over #64-#66 exits 0"
+  "sha": "df668891d7e15c7e742a8ad7315cd34a25597247",
+  "at": "2026-10-31T01:11:42Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41154109344",
+  "tail": "ok: run log records exit codes\nok: run log does not claim a data.csv or README.md digest\nok: fixture 64.md exists\nok: fixture 64.md hashes to a 64-char digest\nok: fixture 66.md exists\nok: fixture 66.md hashes to a 64-char digest\nok: the log marks at least two digests UNKNOWN\nall checks passed"
 }
