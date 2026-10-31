@@ -3,8 +3,8 @@
   "tool": "card-lint",
   "result": "success",
   "file": "self_test.py",
-  "sha": "a3af3e4fc70a3083aaf4f96c77e21ed8c126f5e4",
-  "at": "2026-10-31T16:23:41Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41219455761",
+  "sha": "6a81a9b74022237f2edc09cfae0a961e48c88a0b",
+  "at": "2026-10-31T20:41:31Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41240066106",
   "tail": "PASS complete card exits 0 with six PASS lines\nPASS card missing licence and unverified exits 1 with two FAIL lines\nPASS bare heading with empty body fails its section\nPASS unreadable file exits 2\nPASS --selftest-note prints the fixed sentence and exits 0, with and without a card path\nself_test: 5/5, 0 problems"
 }
