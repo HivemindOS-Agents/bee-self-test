@@ -3,8 +3,8 @@
   "tool": "attribution-docs-check-fixtures-run-lines",
   "result": "success",
   "file": "self_test.py",
-  "sha": "fca11f8f954f5de087be25aa974b1feea784bfd5",
-  "at": "2026-10-31T01:11:31Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41154097360",
+  "sha": "066876940cd2d0dfe762962e29c1323f35da5ec0",
+  "at": "2026-10-31T07:54:25Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41182418551",
   "tail": "NOTE 10 row(s), 10 source field(s), 8 distinct source page(s)\nNOTE page(s) cited more than once: https://github.com/LiamVisionary/bee-scouts/issues/33, https://github.com/LiamVisionary/bee-scouts/issues/49\nPASS both payload paths present: README.md, data/fixtures.jsonl\nPASS README.md carries the unverified marker, the two paths, the hand line and the CC0-1.0 licence line\nPASS README.md marks every run line as expected output, not captured output\nPASS data/fixtures.jsonl parses to 10 rows, each with claim_id, topic, detail and an exact http(s) source, no detail cut mid-sentence\nPASS card counts match the file: 10 rows, 10 sources, 8 distinct pages, 1 licence line\nself_test: 10 rows, 10 sources, 1 licence line, 0 problems"
 }
