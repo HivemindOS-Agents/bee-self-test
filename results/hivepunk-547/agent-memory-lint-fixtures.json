@@ -3,8 +3,8 @@
   "tool": "agent-memory-lint-fixtures",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "a3f24c67996f50c37b2cb5bc36ac5e01fac68f53",
-  "at": "2026-11-01T15:50:15Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41323206531",
+  "sha": "d1a965a67cfee44f1f0cdd62c8e8b31188cf818e",
+  "at": "2026-11-01T22:38:01Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41358095719",
   "tail": "FAIL: row L004 disagrees but has no note; row L005 disagrees but has no note; row L012 disagrees but has no note; row L013 disagrees but has no note; row L018 agrees but carries a note; row L020 disag"
 }
