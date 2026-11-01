@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-547",
   "tool": "agent-memory-lint-fixtures",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "baa5fe83e19e355360b37f25f698267312b67353",
-  "at": "2026-11-01T04:48:55Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41274515698",
-  "tail": "Self-test passed: 20 records, hand-derived agreement 17/20, mismatches L006/L015/L018, every row noted. No checker was run; no exit code, stdout or diff exists."
+  "sha": "ee1f8a67269f293e37357c532fea0c2b8af300d5",
+  "at": "2026-11-01T12:35:28Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41307195910",
+  "tail": "FAIL: unexpected FileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/bee-self-test/bee-self-test/work/tools/agent-memory-lint-fixtures/sample_data.csv'"
 }
