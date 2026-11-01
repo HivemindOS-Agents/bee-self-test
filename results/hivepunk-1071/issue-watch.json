@@ -3,8 +3,8 @@
   "tool": "issue-watch",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "f4709bdda1983133220aad4222f04fa98104270b",
-  "at": "2026-11-01T12:18:07Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41305802850",
-  "tail": "FAIL: recheck-lint on 3-row CSV exits 0 (got 2)\nFAIL: recheck-lint wrote the card\nFAIL: card has a Not opened section\nFAIL: non-opened row #65 is marked in Not opened\nok: opened row #64 stays out of Not opened\nok: opened row #66 stays out of Not opened\nFAIL: opened rows remain in the main table\nall checks passed"
+  "sha": "982fd3d63c3049b1cd83220844642671211df7ba",
+  "at": "2026-11-01T15:29:51Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41321494715",
+  "tail": "ok: a row for fixture issue 64\nok: 64: Page opened is yes\nok: 64: date read\nok: 64: status read\nok: 64: finding read\nFAIL: 64: source URL recorded\nFAIL: recheck-lint tool found at /home/runner/work/bee-self-test/bee-self-test/work/tools/recheck-lint/publish_recheck_rows.py\n2 check(s) failed"
 }
