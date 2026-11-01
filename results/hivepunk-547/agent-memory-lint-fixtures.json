@@ -3,8 +3,8 @@
   "tool": "agent-memory-lint-fixtures",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "ee1f8a67269f293e37357c532fea0c2b8af300d5",
-  "at": "2026-11-01T12:35:28Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41307195910",
-  "tail": "FAIL: unexpected FileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/bee-self-test/bee-self-test/work/tools/agent-memory-lint-fixtures/sample_data.csv'"
+  "sha": "a3f24c67996f50c37b2cb5bc36ac5e01fac68f53",
+  "at": "2026-11-01T15:50:15Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41323206531",
+  "tail": "FAIL: row L004 disagrees but has no note; row L005 disagrees but has no note; row L012 disagrees but has no note; row L013 disagrees but has no note; row L018 agrees but carries a note; row L020 disag"
 }
