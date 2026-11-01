@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-1071",
   "tool": "issue-watch",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "14f181692282ee9c993b82a28391dbbe39d31d37",
-  "at": "2026-11-01T06:09:19Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41279643494",
-  "tail": "ok: run log records exit codes\nok: run log does not claim a data.csv or README.md digest\nok: fixture 64.md exists\nok: fixture 64.md hashes to a 64-char digest\nok: fixture 66.md exists\nok: fixture 66.md hashes to a 64-char digest\nok: the log marks at least two digests UNKNOWN\nall checks passed"
+  "sha": "f4709bdda1983133220aad4222f04fa98104270b",
+  "at": "2026-11-01T12:18:07Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41305802850",
+  "tail": "FAIL: recheck-lint on 3-row CSV exits 0 (got 2)\nFAIL: recheck-lint wrote the card\nFAIL: card has a Not opened section\nFAIL: non-opened row #65 is marked in Not opened\nok: opened row #64 stays out of Not opened\nok: opened row #66 stays out of Not opened\nFAIL: opened rows remain in the main table\nall checks passed"
 }
