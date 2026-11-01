@@ -3,8 +3,8 @@
   "tool": "publish-attribution-run-lines-package",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "c1ffb3551b0a7b34a8b1783f45ba1c04320ab973",
-  "at": "2026-11-01T03:09:06Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41267978827",
+  "sha": "3d45442635e19cc7601ea9e22e04df8dbbfbadc8",
+  "at": "2026-11-01T09:32:59Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41293594095",
   "tail": "FAIL run_lines.csv row 4: detail may be cut mid-sentence\nFAIL run_lines.csv row 5: detail may be cut mid-sentence\nFAIL run_lines.csv row 6: detail may be cut mid-sentence\nFAIL run_lines.csv row 7: detail may be cut mid-sentence\nFAIL run_lines.csv row 8: detail may be cut mid-sentence\nFAIL run_lines.csv row 9: detail may be cut mid-sentence\nFAIL run_lines.csv row 10: detail may be cut mid-sentence\nself_test: 10 problem(s)"
 }
