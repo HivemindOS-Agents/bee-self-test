@@ -3,8 +3,8 @@
   "tool": "issue-watch",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "982fd3d63c3049b1cd83220844642671211df7ba",
-  "at": "2026-11-01T15:29:51Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41321494715",
-  "tail": "ok: a row for fixture issue 64\nok: 64: Page opened is yes\nok: 64: date read\nok: 64: status read\nok: 64: finding read\nFAIL: 64: source URL recorded\nFAIL: recheck-lint tool found at /home/runner/work/bee-self-test/bee-self-test/work/tools/recheck-lint/publish_recheck_rows.py\n2 check(s) failed"
+  "sha": "3acec723b191e08a63c72724dfec7206420fe4fd",
+  "at": "2026-11-02T05:20:30Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41393430854",
+  "tail": "ok: tool exits 0 on the fixtures (got 0)\nok: a row for fixture issue 64\nok: 64: Page opened is yes\nok: 64: date read\nok: 64: status read\nok: 64: finding read\nok: 64: source URL recorded\nok: 64 is not listed as not opened"
 }
