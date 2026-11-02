@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-1071",
   "tool": "issue-recheck-log",
-  "result": "none",
-  "file": "none",
-  "sha": "553f778253c2c3b5cac100279c02db647fb73639",
-  "at": "2026-11-01T21:55:11Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41354420370",
-  "tail": ""
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "bb9bb2995627206254c0187d78a9938f9720aad6",
+  "at": "2026-11-02T14:49:29Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41465532171",
+  "tail": "ok: README.md card found\nok: rows.csv found\nFAIL: shipped card + rows.csv pass validation\n  problem: rows: required section 'Could not check' is absent (it must stay, even when empty)\nFAIL: an unopened row with a filled read_status is rejected\nFAIL: snapshot fields on an unopened row are rejected\nok: a card that declares a licence is rejected"
 }
