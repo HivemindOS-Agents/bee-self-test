@@ -3,8 +3,8 @@
   "tool": "update-index",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "27a918b9c70f6d518f60bc9a0f2ca6c2d79a3b90",
-  "at": "2026-11-01T03:27:35Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41269245974",
-  "tail": "ok: fixture recheck_rows.csv exists\nok: fixture snapshots/ exists\nFAIL: run on the fixture pair exits 0"
+  "sha": "e2dd6cb8e4b2c82b793d0ff031b32bd99e564370",
+  "at": "2026-11-02T01:07:11Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41370734717",
+  "tail": "ok: update_index.py compiles\nrun: update_index.py fixtures/rows.jsonl\nFAIL: generator exits 0 (got 2)\nstderr: error: rows file not found: /home/runner/work/bee-self-test/bee-self-test/work/tools/update-index/fixtures/rows.jsonl\nFAIL: INDEX.md written"
 }
