@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-632",
   "tool": "publish-attribution-run-lines-package",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "6c2b417f91b0685d96ec26e089e14bd7267cfb26",
-  "at": "2026-11-02T06:11:57Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41398393372",
-  "tail": "PASS card carries all six honesty sections\nPASS card carries the unverified marker, a CC0-1.0 line and the verbatim self-test block\nPASS run_lines.csv has 10 rows, 10 http(s) sources, 8 distinct pages, every detail ends in a letter or a comma\nPASS fixture_pairs.csv names 4 pairs, 2 with a quoted expected line and 2 left empty\nself_test: 4/4, 0 problems"
+  "sha": "e4a4f635d05c4995f1360106bb77ab471bc8d5ad",
+  "at": "2026-11-02T09:27:49Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41420751442",
+  "tail": "PASS card has a verbatim self-test quotation block\nPASS run_lines.csv has 10 rows\nPASS run_lines.csv has 8 distinct source pages\nPASS fixture_pairs.csv names 4 pairs\nPASS fixture_pairs.csv has exactly 2 quoted expected lines\nFAIL expected_line for missing_two does not match produced output\nFAIL expected_line for passing_card does not match produced output\nself_test: 2 problem(s)"
 }
