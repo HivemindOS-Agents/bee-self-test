@@ -3,8 +3,8 @@
   "tool": "agent-memory-lint-self-test-capture",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "2a5a5954f5f196b9916228f45ed8f07eeca23254",
-  "at": "2026-11-03T01:00:12Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41556749854",
+  "sha": "3822dc6efcb1f9ab13a89485717cd186274f98bf",
+  "at": "2026-11-03T03:37:46Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41573322546",
   "tail": "FAIL: passing fixture should capture exit 0, got 1"
 }
