@@ -3,8 +3,8 @@
   "tool": "csv-sample",
   "result": "success",
   "file": "self_test.py",
-  "sha": "34163211fc02b52d5875669c69e243e5d3c546dc",
-  "at": "2026-11-03T00:10:40Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41550920073",
+  "sha": "44f8e8dd62e76d21edf66922b4bd518ea7dabe05",
+  "at": "2026-11-03T00:27:32Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41552963850",
   "tail": "PASS reconcile_notes: dry run planned ADD=L001,L004 DROP=L018\nPASS reconcile_notes: --write applied, re-run plan empty, OK=3\nPASS column readback: notes present on L001/L004, dropped on L018\nAll self-tests passed."
 }
