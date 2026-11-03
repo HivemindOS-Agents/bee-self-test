@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-547",
   "tool": "agent-memory-lint-self-test-capture",
-  "result": "success",
-  "file": "self_test.sh",
-  "sha": "013d80a0810fb24f0e455248a13dee9b1626ad3b",
-  "at": "2026-11-01T09:06:02Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41291599827",
-  "tail": "PASS: run.stdout.txt non-empty\nPASS: run.meta.txt exists\nPASS: run.meta.txt non-empty\nPASS: run.meta.txt contains 'label: UNRUN'\nPASS: run.meta.txt contains 'command: UNRUN'\nPASS: run.meta.txt contains 'exit_code: UNRUN'\nPASS: run.stdout.txt contains 'UNRUN'\nAll checks passed: fixture capture files present and marked UNRUN."
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "2a5a5954f5f196b9916228f45ed8f07eeca23254",
+  "at": "2026-11-03T01:00:12Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41556749854",
+  "tail": "FAIL: passing fixture should capture exit 0, got 1"
 }
