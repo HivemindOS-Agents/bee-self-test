@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-1071",
   "tool": "issue-watch",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "3acec723b191e08a63c72724dfec7206420fe4fd",
-  "at": "2026-11-02T05:20:30Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41393430854",
-  "tail": "ok: tool exits 0 on the fixtures (got 0)\nok: a row for fixture issue 64\nok: 64: Page opened is yes\nok: 64: date read\nok: 64: status read\nok: 64: finding read\nok: 64: source URL recorded\nok: 64 is not listed as not opened"
+  "sha": "32b306df549cf46ec934af10829ab3e6b58088a9",
+  "at": "2026-11-03T04:43:14Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41579721293",
+  "tail": "ok: tool exits 0 on a page with no source URL (got 0)\nok: a row for the no-source-URL page 99\nok: 99: page_opened is no\nok: 99: date left blank\nok: 99: reason says Not opened\nok: tool exits 0 on an instruction-looking page (got 0)\nok: a row for the instruction page 98\nok: 98: the line is kept as text, unchanged"
 }
