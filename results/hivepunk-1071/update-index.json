@@ -3,8 +3,8 @@
   "tool": "update-index",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "9f712b28387bfaff63922ee8b3d713b1aebedcf3",
-  "at": "2026-11-04T00:19:45Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41745960195",
-  "tail": "FAIL: #65 is blanked, not shown read\nFAIL: #68 is blanked with the no-save-date reason\nFAIL: #64 keeps its read with a real saved page\nok: second run exits 0\nok: #71 appears in the index\nok: malformed line exits 2 (got 2)\nok: no index written when input is malformed\nok: missing rows file exits 2 (got 2)"
+  "sha": "9a9e13d913f2ba2180547c8088d542b435322f7f",
+  "at": "2026-11-04T01:45:33Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41756203126",
+  "tail": "ok: #65 is blanked, not shown read\nok: #68 is blanked with the no-save-date reason\nok: #64 keeps its read with a real saved page\nok: second run exits 0\nok: #71 appears in the index\nok: malformed line exits 2 (got 2)\nok: no index written when input is malformed\nok: missing rows file exits 2 (got 2)"
 }
