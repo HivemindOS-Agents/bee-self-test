@@ -1,0 +1,10 @@
+{
+  "repo": "hivepunk-632",
+  "tool": "attribution-docs-check",
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "f86fdac9f354c305b4914cd2d87076ff79f4d34a",
+  "at": "2026-11-04T21:39:39Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41918114384",
+  "tail": "  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/attribution-docs-check/self_test.py\", line 114\n    ~~~\n       ^\nSyntaxError: invalid syntax"
+}
