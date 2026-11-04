@@ -3,8 +3,8 @@
   "tool": "publish-preflight",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "e164e4c36bc070d2ca533c4e59754de7bdc8a048",
-  "at": "2026-11-04T08:38:25Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41801035435",
-  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/publish-preflight/self_test.py\", line 79, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/publish-preflight/self_test.py\", line 64, in main\n    for case, _, _ in EXPECTED:\n        ^^^^^^^^^^\nValueError: too many values to unpack (expected 3)"
+  "sha": "8f52c6603a3347494daeee65b2a0a594ef19520d",
+  "at": "2026-11-04T15:08:55Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41854647953",
+  "tail": "case passing_card: FAIL (fixture folder missing)\ncase failing_card: FAIL (fixture folder missing)\nself_test: 2 case(s), 0 as expected"
 }
