@@ -1,0 +1,10 @@
+{
+  "repo": "hivepunk-547",
+  "tool": "agent-memory-dataset-publisher",
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "b971c2c27926bd16ae87c1cf47622faa188ce996",
+  "at": "2026-11-04T15:26:30Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41857707647",
+  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/agent-memory-dataset-publisher/self_test.py\", line 13, in <module>\n    from upload import DatasetPublisher\nModuleNotFoundError: No module named 'upload'"
+}
