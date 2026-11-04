@@ -52,12 +52,19 @@ jobs:
             *) exit 2 ;;
           esac 2>&1 | tee "$RUNNER_TEMP/out.txt"
       - id: tail
-        name: Keep the last lines it printed
+        name: Keep what failed and the last lines it printed
         if: always()
+        # Up to four lines saying what failed, then the last eight: a FAIL printed before the last eight was lost
+        # (hivepunk-1071's update-index, run 41756203126: three FAIL lines, eight "ok" lines kept). The agents service
+        # reads failed lines first (core/bee-build-files.ts readBeeSelfTestRecord).
         run: |
           {
             echo 'tail<<HIVE_SELF_TEST_END'
-            tail -n 8 "$RUNNER_TEMP/out.txt" 2>/dev/null | cut -c1-200 | grep -v '^HIVE_SELF_TEST_END$' || true
+            {
+              lines=$(wc -l 2>/dev/null < "$RUNNER_TEMP/out.txt" || echo 0)
+              head -n "$(( lines > 8 ? lines - 8 : 0 ))" "$RUNNER_TEMP/out.txt" 2>/dev/null | grep -E '\bFAIL(ED|URE)?\b|[A-Za-z]*(Error|Exception)\b|^Traceback\b' | head -n 4 || true
+              tail -n 8 "$RUNNER_TEMP/out.txt" 2>/dev/null || true
+            } | cut -c1-200 | grep -v '^HIVE_SELF_TEST_END$' || true
             echo 'HIVE_SELF_TEST_END'
           } >> "$GITHUB_OUTPUT"
   record:
@@ -87,7 +94,7 @@ jobs:
           result = "none" if os.environ["KIND"] == "none" else os.environ["RESULT"]
           record = {"repo": os.environ["REPO"], "tool": os.environ["TOOL"], "result": result, "file": os.environ["KIND"] or None,
                     "sha": os.environ["SHA"] or None, "at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-                    "run": os.environ["RUN"], "tail": os.environ["TAIL"][:1600]}
+                    "run": os.environ["RUN"], "tail": os.environ["TAIL"][:2600]}
           with open(f"results/{record['repo']}/{record['tool']}.json", "w") as out:
               json.dump(record, out, indent=2)
               out.write("\n")
