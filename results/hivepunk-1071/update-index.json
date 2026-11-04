@@ -3,8 +3,8 @@
   "tool": "update-index",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "990a362d35fd8f254b713cb108f2dd04cb662d32",
-  "at": "2026-11-03T08:39:49Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41604898980",
-  "tail": "ok: update_index.py compiles\nrun: update_index.py fixtures/rows.jsonl\nFAIL: generator exits 0 (got 2)\nstderr: error: rows file not found: /home/runner/work/bee-self-test/bee-self-test/work/tools/update-index/fixtures/rows.jsonl\nFAIL: INDEX.md written"
+  "sha": "9f712b28387bfaff63922ee8b3d713b1aebedcf3",
+  "at": "2026-11-04T00:19:45Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41745960195",
+  "tail": "FAIL: #65 is blanked, not shown read\nFAIL: #68 is blanked with the no-save-date reason\nFAIL: #64 keeps its read with a real saved page\nok: second run exits 0\nok: #71 appears in the index\nok: malformed line exits 2 (got 2)\nok: no index written when input is malformed\nok: missing rows file exits 2 (got 2)"
 }
