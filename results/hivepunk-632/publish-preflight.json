@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-632",
   "tool": "publish-preflight",
-  "result": "none",
-  "file": "none",
-  "sha": "724a4e9faeef53d10609aede27aa111c3e904264",
-  "at": "2026-11-03T05:16:27Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41582928826",
-  "tail": ""
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "e164e4c36bc070d2ca533c4e59754de7bdc8a048",
+  "at": "2026-11-04T08:38:25Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41801035435",
+  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/publish-preflight/self_test.py\", line 79, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/publish-preflight/self_test.py\", line 64, in main\n    for case, _, _ in EXPECTED:\n        ^^^^^^^^^^\nValueError: too many values to unpack (expected 3)"
 }
