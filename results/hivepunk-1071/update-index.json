@@ -3,8 +3,8 @@
   "tool": "update-index",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "0bbb28d23a204262e46b5421df805e9c26c894b9",
-  "at": "2026-11-04T13:44:06Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41840767383",
-  "tail": "FAIL: the unbacked read is counted as one correction\nFAIL: #64 keeps the last copy's finding\nFAIL: #67 keeps its failure cause\nok: #65 is blanked, not shown read\nok: #68 is blanked with the no-save-date reason\nok: #64 keeps its read with a real saved page\nok: second run exits 0\nok: #71 appears in the index\nok: malformed line exits 2 (got 2)\nok: no index written when input is malformed\nok: missing rows file exits 2 (got 2)"
+  "sha": "61073de971e782a0022ef5a3d68107312a4ccd5a",
+  "at": "2026-11-05T01:32:05Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41949145003",
+  "tail": "ok: second run exits 0\nok: a second run over the same folder is byte-identical\nok: a missing folder exits non-zero (got 1)\nok: example/index.md found\nFAIL: builder runs on example/notes/\nFAIL: builder produced the example index\n\n2 check(s) failed"
 }
