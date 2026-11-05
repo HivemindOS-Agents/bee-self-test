@@ -3,8 +3,8 @@
   "tool": "attribution-docs-check-fixtures",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "1fa49124331314a4d9e423ab34e3767466141137",
-  "at": "2026-11-05T15:46:02Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42058258052",
-  "tail": "FAIL gen_dataset.py: exited 1. stderr: Traceback (most recent call last):\nFileNotFoundError: [Errno 2] No such file or directory: ''\nFAIL passing_card/README.md: generated file missing\nFAIL passing_card/data.csv: generated file missing\nFAIL passing_card/expected_problems.txt: generated file missing\nFAIL failing_card/README.md: generated file missing\nFAIL failing_card/data.csv: generated file missing\nFAIL failing_card/expected_problems.txt: generated file missing\nFAIL README.md missing headings: What it is, Columns, How it was made, What I could not check, Licence\nself_test: 8 check(s), 8 failed"
+  "sha": "c584590766b4a4a0738a4421460fddb5abe3d1a7",
+  "at": "2026-11-05T16:37:30Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42066309327",
+  "tail": "FAIL gen_dataset.py: exited 1. stderr: Traceback (most recent call last):\n    raise FileNotFoundError('source fixture not found: %s' % source)\nFileNotFoundError: source fixture not found: /home/runner/work/bee-self-test/bee-self-test/work/tools/attribution-docs-check/fixtures/passing_card/README.md\nFAIL fixtures/passing_card/README.md: generated file missing\nFAIL fixtures/passing_card/data.csv: generated file missing\nFAIL fixtures/passing_card/expected_problems.txt: generated file missing\nFAIL fixtures/failing_card/README.md: generated file missing\nFAIL fixtures/failing_card/data.csv: generated file missing\nFAIL fixtures/failing_card/expected_problems.txt: generated file missing\nFAIL README.md missing headings: What it is, Columns, How it was made, What I could not check, Licence\nself_test: 8 check(s), 8 failed"
 }
