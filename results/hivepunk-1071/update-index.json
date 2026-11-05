@@ -3,8 +3,8 @@
   "tool": "update-index",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "02e7e86ec607292ce420dfc44795605d3f54aa4f",
-  "at": "2026-11-05T04:43:21Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41969524961",
-  "tail": "ok: second run exits 0\nok: a second run over the same folder is byte-identical\nok: a missing folder exits non-zero (got 1)\nok: example/index.md found\nFAIL: builder runs on example/notes/\nFAIL: builder produced the example index\n\n2 check(s) failed"
+  "sha": "d80bd015aace38290f60b41527556f535268795c",
+  "at": "2026-11-05T07:54:45Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41990525579",
+  "tail": "ok: second run exits 0\nok: a second run over the same folder is byte-identical\nok: a missing folder exits non-zero (got 1)\nok: example/index.md found\nok: builder runs on example/notes/\nFAIL: example/index.md matches the builder on example/notes/\n\n1 check(s) failed"
 }
