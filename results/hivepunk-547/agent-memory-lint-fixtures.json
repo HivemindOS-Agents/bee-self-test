@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-547",
   "tool": "agent-memory-lint-fixtures",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "2eb92c27239ab845498402a235faad4af9c896a3",
-  "at": "2026-11-05T14:41:15Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42047376853",
-  "tail": "FAIL: README is missing the phrase 'unrun'"
+  "sha": "94fa0ab39681387eaac8a576ba814c12950eb553",
+  "at": "2026-11-05T21:25:15Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42112443273",
+  "tail": "PASS add_disputed_column: 20 rows, disputed=L006,L015,L018\nPASS rules.json: ids empty_text,missing_source,run_status,stale; run_status UNRUN\nPASS README: caveats present\nPASS check.lint: agreement 17/20, mismatches L006,L015,L018\nAll self-tests passed. No lint run is claimed; run_status stays UNRUN."
 }
