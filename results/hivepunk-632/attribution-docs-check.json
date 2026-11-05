@@ -3,8 +3,8 @@
   "tool": "attribution-docs-check",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "f86fdac9f354c305b4914cd2d87076ff79f4d34a",
-  "at": "2026-11-04T21:39:39Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41918114384",
-  "tail": "  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/attribution-docs-check/self_test.py\", line 114\n    ~~~\n       ^\nSyntaxError: invalid syntax"
+  "sha": "f39558f6481c4d04a8bb238a69095b86e1c4c06a",
+  "at": "2026-11-05T00:21:35Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41940709569",
+  "tail": "Traceback (most recent call last):\n                ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.14/pathlib/__init__.py\", line 788, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:\n         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.14/pathlib/__init__.py\", line 772, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/bee-self-test/bee-self-test/work/tools/attribution-docs-check/fixtures/passing_card/expected_problems.txt'"
 }
