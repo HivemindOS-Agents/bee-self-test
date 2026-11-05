@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-632",
   "tool": "attribution-docs-check",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "ca3e95e44df3c48dc1a1aaad827c4db4bf9fba32",
-  "at": "2026-11-05T00:55:06Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41944826564",
-  "tail": "case passing_card: FAIL\n  exit: got 1, expected 0\n  ids: got [], expected ['data_missing']\ncase failing_card: FAIL\n  exit: got 1, expected 1\n  ids: got [], expected ['bad_source_row', 'missing_section']\nself_test: 2 case(s), 0 as expected"
+  "sha": "012ffc481d0414b7877e9cee9e68ce7730f0253a",
+  "at": "2026-11-05T01:42:53Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41950350181",
+  "tail": "PASS all checks satisfied\ncase passing_card: PASS (exit 0, expected 0; ids: none)\nFAIL missing_section: README.md missing section: What I could not check\nFAIL missing_section: README.md missing section: Licence\nFAIL bad_source_row: data.csv line 2: source is empty\nchecked 3 checks, 3 failed\ncase failing_card: PASS (exit 1, expected 1; ids: bad_source_row,missing_section)\nself_test: 2 case(s), 2 as expected"
 }
