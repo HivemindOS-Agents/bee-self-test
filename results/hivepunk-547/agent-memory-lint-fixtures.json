@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-547",
   "tool": "agent-memory-lint-fixtures",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "fa5fc054f40f8d90b1f1e94bd59e4870a5e124ec",
-  "at": "2026-11-02T09:10:11Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41418422027",
-  "tail": "FAIL: row L004 disagrees but has no note; row L005 disagrees but has no note; row L012 disagrees but has no note; row L013 disagrees but has no note; row L018 agrees but carries a note; row L020 disag"
+  "sha": "892c1d6187979f6f01d1b54f1e91b9c5802df058",
+  "at": "2026-11-05T10:39:46Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42012537235",
+  "tail": "PASS add_disputed_column: 20 rows, disputed=L006,L015,L018, first=L001, last=L020\nPASS check.lint: agreement 17/20, mismatches L006,L015,L018\nPASS rules.json: ids empty_text,missing_source,run_status,stale; disputes covered L006,L015,L018; run_status UNRUN\nPASS README: caveats present\nAll self-tests passed. No lint run is claimed; the captured run files remain UNRUN and the Viewer readback lines remain 'not yet read'."
 }
