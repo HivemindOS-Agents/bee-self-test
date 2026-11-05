@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-547",
   "tool": "agent-memory-dataset-publisher",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "b971c2c27926bd16ae87c1cf47622faa188ce996",
-  "at": "2026-11-04T15:26:30Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41857707647",
-  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/agent-memory-dataset-publisher/self_test.py\", line 13, in <module>\n    from upload import DatasetPublisher\nModuleNotFoundError: No module named 'upload'"
+  "sha": "2b3b9432db139774d919bad3650a593d4dd12ee7",
+  "at": "2026-11-05T01:31:55Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41949120513",
+  "tail": "  \"network_calls\": 0,\n  \"status\": \"DRY_RUN\",\n  \"uploaded\": false,\n  \"url\": \"https://huggingface.co/datasets/hivepunk-547-db38b7a4/agent-memory-viewer-readback-log\"\n}\nPASS 8/9 CLI dry run from another cwd\nPASS 9/9 upload.py names no networking or credential symbol\nPASS: agent-memory-dataset-publisher self-test (9/9 checks)"
 }
