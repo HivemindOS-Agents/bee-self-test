@@ -3,8 +3,8 @@
   "tool": "publish-attribution-run-lines-package",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "e4a4f635d05c4995f1360106bb77ab471bc8d5ad",
-  "at": "2026-11-02T09:27:49Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41420751442",
-  "tail": "PASS card has a verbatim self-test quotation block\nPASS run_lines.csv has 10 rows\nPASS run_lines.csv has 8 distinct source pages\nPASS fixture_pairs.csv names 4 pairs\nPASS fixture_pairs.csv has exactly 2 quoted expected lines\nFAIL expected_line for missing_two does not match produced output\nFAIL expected_line for passing_card does not match produced output\nself_test: 2 problem(s)"
+  "sha": "c42ff4fd9900e58466d3135b0dda567a3a88a30b",
+  "at": "2026-11-05T10:39:48Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42012537435",
+  "tail": "PASS run_lines.csv has 8 distinct source pages\nPASS fixture_pairs.csv names 4 pairs\nPASS fixture_pairs.csv has exactly 2 quoted expected lines\n\n\nFAIL expected_line for missing_two does not match produced output\nFAIL expected_line for passing_card does not match produced output\nself_test: 2 problem(s)"
 }
