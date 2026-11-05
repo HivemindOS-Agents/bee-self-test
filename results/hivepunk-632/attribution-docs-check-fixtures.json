@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-632",
   "tool": "attribution-docs-check-fixtures",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "c9f6b3a1a082ffd88216536f0d5934d242b96025",
-  "at": "2026-11-05T12:30:39Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42027680484",
-  "tail": "PASS fixture-001 verdict=OK expected=OK\nPASS fixture-002 verdict=OUTSIDE_SETUP expected=OUTSIDE_SETUP\nPASS fixture-003 verdict=NO_HEADER expected=NO_HEADER\nselftest: 3 fixture(s), 0 failure(s)"
+  "sha": "1fa49124331314a4d9e423ab34e3767466141137",
+  "at": "2026-11-05T15:46:02Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42058258052",
+  "tail": "FAIL gen_dataset.py: exited 1. stderr: Traceback (most recent call last):\nFileNotFoundError: [Errno 2] No such file or directory: ''\nFAIL passing_card/README.md: generated file missing\nFAIL passing_card/data.csv: generated file missing\nFAIL passing_card/expected_problems.txt: generated file missing\nFAIL failing_card/README.md: generated file missing\nFAIL failing_card/data.csv: generated file missing\nFAIL failing_card/expected_problems.txt: generated file missing\nFAIL README.md missing headings: What it is, Columns, How it was made, What I could not check, Licence\nself_test: 8 check(s), 8 failed"
 }
