@@ -3,8 +3,8 @@
   "tool": "open-weight-model-card-claims",
   "result": "success",
   "file": "self_test.py",
-  "sha": "385769d2ff732661770090801cd45849c1c98c86",
-  "at": "2026-11-05T17:29:27Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42075076088",
+  "sha": "e87d7ce8df44257fd3af191bb70386d71f7efb0a",
+  "at": "2026-11-05T20:47:04Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42106547142",
   "tail": "ok: all dataset checks pass"
 }
