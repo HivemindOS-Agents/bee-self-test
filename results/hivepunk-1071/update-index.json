@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-1071",
   "tool": "update-index",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "d80bd015aace38290f60b41527556f535268795c",
-  "at": "2026-11-05T07:54:45Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41990525579",
-  "tail": "ok: second run exits 0\nok: a second run over the same folder is byte-identical\nok: a missing folder exits non-zero (got 1)\nok: example/index.md found\nok: builder runs on example/notes/\nFAIL: example/index.md matches the builder on example/notes/\n\n1 check(s) failed"
+  "sha": "73153cfd689f1cf0fd78bed2531c3fef43fbea24",
+  "at": "2026-11-05T10:39:49Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42012540858",
+  "tail": "ok: second run exits 0\nok: a second run over the same folder is byte-identical\nok: a missing folder exits non-zero (got 1)\nok: example/index.md found\nok: builder runs on example/notes/\nok: example/index.md matches the builder on example/notes/\n\nok: all index_build checks pass"
 }
