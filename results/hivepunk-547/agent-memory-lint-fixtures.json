@@ -3,8 +3,8 @@
   "tool": "agent-memory-lint-fixtures",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "e2c733b0d3c89fe663787d8919d9f8306fe26029",
-  "at": "2026-11-06T07:14:48Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42179581009",
-  "tail": "  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/agent-memory-lint-fixtures/self_test.py\", line 169\n    print(\"PASS README: %s\" % card[\"readme\"]))\n                                             ^\nSyntaxError: unmatched ')'"
+  "sha": "13ebb2042df37fbb51932bd0969d9f83f8a3a98c",
+  "at": "2026-11-06T07:33:02Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42181576404",
+  "tail": "FAIL: agreement 10/20, expected 17"
 }
