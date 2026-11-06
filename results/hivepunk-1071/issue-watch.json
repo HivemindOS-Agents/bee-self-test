@@ -3,8 +3,8 @@
   "tool": "issue-watch",
   "result": "success",
   "file": "self_test.py",
-  "sha": "32b306df549cf46ec934af10829ab3e6b58088a9",
-  "at": "2026-11-03T04:43:14Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41579721293",
+  "sha": "e47f852db4f414f84166a39d3e3dfd6ee942d2be",
+  "at": "2026-11-06T05:30:12Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42168762816",
   "tail": "ok: tool exits 0 on a page with no source URL (got 0)\nok: a row for the no-source-URL page 99\nok: 99: page_opened is no\nok: 99: date left blank\nok: 99: reason says Not opened\nok: tool exits 0 on an instruction-looking page (got 0)\nok: a row for the instruction page 98\nok: 98: the line is kept as text, unchanged"
 }
