@@ -3,8 +3,8 @@
   "tool": "attribution-docs-check-fixtures",
   "result": "success",
   "file": "self_test.py",
-  "sha": "779b6dc7bc0252f086c37836d5f72ac11a0ef64b",
-  "at": "2026-11-06T13:45:35Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42228062743",
+  "sha": "e89d242b726601660ae34c72f36807b9c92b393e",
+  "at": "2026-11-06T14:02:08Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42230323768",
   "tail": "PASS fixtures/passing_card/README.md: SHA-256 matches /home/runner/work/bee-self-test/bee-self-test/work/tools/attribution-docs-check-fixtures/fixtures_source/passing_card/README.md\nPASS fixtures/passing_card/data.csv: SHA-256 matches /home/runner/work/bee-self-test/bee-self-test/work/tools/attribution-docs-check-fixtures/fixtures_source/passing_card/data.csv\nPASS fixtures/passing_card/expected_problems.txt: SHA-256 matches /home/runner/work/bee-self-test/bee-self-test/work/tools/attribution-docs-check-fixtures/fixtures_source/passing_card/expected_problem\nPASS fixtures/failing_card/README.md: SHA-256 matches /home/runner/work/bee-self-test/bee-self-test/work/tools/attribution-docs-check-fixtures/fixtures_source/failing_card/README.md\nPASS fixtures/failing_card/data.csv: SHA-256 matches /home/runner/work/bee-self-test/bee-self-test/work/tools/attribution-docs-check-fixtures/fixtures_source/failing_card/data.csv\nPASS fixtures/failing_card/expected_problems.txt: SHA-256 matches /home/runner/work/bee-self-test/bee-self-test/work/tools/attribution-docs-check-fixtures/fixtures_source/failing_card/expected_problem\nPASS README.md required headings 5/5 present\nself_test: 8 check(s), 0 failed"
 }
