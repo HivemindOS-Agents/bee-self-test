@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-1071",
   "tool": "card-claims-fetch",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "a35783dc06a5ce1d453f283f8cf96bfef9b41269",
-  "at": "2026-11-06T04:55:20Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42165304449",
-  "tail": "PASS [data.csv header         ] expected: 'card_url,publisher,model_name,date_read,states_context_window,states_license,source' got: 'card_url,publisher,model_name,date_read,states_context_window,stat\nPASS [write_csv header        ] expected: 'card_url,publisher,model_name,date_read,states_context_window,states_license,source' got: 'card_url,publisher,model_name,date_read,states_context_window,stat\nPASS [write_csv rows          ] expected: 3               got: 3\nPASS [write_csv no CR         ] expected: False           got: False\nPASS [round-trip cell         ] expected: 'apache-2.0'    got: 'apache-2.0'\nPASS [round-trip cell 2       ] expected: 'Sparse Sample Model' got: 'Sparse Sample Model'\n\nTest summary: PASS"
+  "sha": "3171ab326290c82eb245f424a6f990c087362083",
+  "at": "2026-11-06T08:42:30Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42189582990",
+  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/card-claims-fetch/self_test.py\", line 22, in <module>\n    import fetch_cards  # noqa: E402\n    ^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/card-claims-fetch/fetch_cards.py\", line 51\n    _KEYVAL_RE = re.compile(r\"^([^:]+)\\s*:\\s*(['\"]?)(.*?)\\2\\s*$\")\n                                                 ^\nSyntaxError: closing parenthesis ']' does not match opening parenthesis '('"
 }
