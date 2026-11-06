@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-632",
   "tool": "doc-attribution-check",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "bf2d511d23bf4780de98540ee7782d8240c5726e",
-  "at": "2026-11-06T19:05:02Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42276448208",
-  "tail": "  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/doc-attribution-check/self_test.py\", line 39\n    print(f\"{status} {fname}: {msg if msg else \\\"\\\"}\")\n                                                ^\nSyntaxError: unexpected character after line continuation character"
+  "sha": "56b2733e80457bd7708fb8b79b0572d5c2f33267",
+  "at": "2026-11-06T19:39:30Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42281522404",
+  "tail": "PASS bad.md\nPASS good.md\nself_test: 2 check(s), 0 failed"
 }
