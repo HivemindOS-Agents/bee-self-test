@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-547",
   "tool": "agent-memory-lint-fixtures",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "06be6aed124eb538611e7e10258d902e3ffd60d7",
-  "at": "2026-11-06T05:46:47Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42170402612",
-  "tail": "PASS add_disputed_column: 20 rows, disputed=L006,L015,L018\nPASS rules.json: ids empty_text,missing_source,run_status,stale; run_status UNRUN\nPASS README: caveats present\nPASS check.lint: agreement 17/20, mismatches L006,L015,L018\nAll self-tests passed. No lint run is claimed; run_status stays UNRUN."
+  "sha": "aa52d383078b0bb5e9f4a78edc64e1260631a9de",
+  "at": "2026-11-06T06:39:50Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42175837966",
+  "tail": "FAIL: agreement 15/20, expected 17"
 }
