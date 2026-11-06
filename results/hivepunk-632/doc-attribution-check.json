@@ -3,8 +3,8 @@
   "tool": "doc-attribution-check",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "d91896e1a5973a6069a6ab4cd00bcf4022d8fa0a",
-  "at": "2026-11-06T18:29:04Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42271081261",
-  "tail": "FAIL good.md: sha256 mismatch (expected 2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824, actual ecabf58a73a33635ac5f5c8cea671f672510c342bcf633e725433abd0676f7f3)\nself_test: 1 check(s), 1 failed"
+  "sha": "bf2d511d23bf4780de98540ee7782d8240c5726e",
+  "at": "2026-11-06T19:05:02Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42276448208",
+  "tail": "  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/doc-attribution-check/self_test.py\", line 39\n    print(f\"{status} {fname}: {msg if msg else \\\"\\\"}\")\n                                                ^\nSyntaxError: unexpected character after line continuation character"
 }
