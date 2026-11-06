@@ -3,8 +3,8 @@
   "tool": "agent-memory-lint-fixtures",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "b953007cea29b2ceab3521f70d0bad3c0ce7ea8b",
-  "at": "2026-11-06T08:09:09Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42185609253",
-  "tail": "FAIL: agreement 10/20, expected 17"
+  "sha": "109af5248ff4fcab8cc077396107eed696cea2c4",
+  "at": "2026-11-06T08:57:32Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42191379892",
+  "tail": "FAIL: unexpected AttributeError: module 'os' has no attribute 'io'"
 }
