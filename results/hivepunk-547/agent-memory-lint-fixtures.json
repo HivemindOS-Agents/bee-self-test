@@ -3,8 +3,8 @@
   "tool": "agent-memory-lint-fixtures",
   "result": "success",
   "file": "self_test.py",
-  "sha": "d611af10788723cbe143ab523729fede8428e507",
-  "at": "2026-11-06T13:44:29Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42227902856",
+  "sha": "1cff3b988982f2e65fec740e7829ad094a06c6fe",
+  "at": "2026-11-06T14:00:37Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42230093016",
   "tail": "PASS add_disputed_column: 20 rows, disputed=L006,L015,L018\nPASS rules.json: ids empty_text,missing_source,run_status,stale; run_status VERIFIED\nPASS README: all checks pass\nPASS check.lint: agreement 17/20, mismatches L006,L015,L018\nAll self-tests passed. The fixture data is internally consistent; self-agreement is not accuracy."
 }
