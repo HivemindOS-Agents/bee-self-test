@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-547",
   "tool": "agent-memory-lint-self-test-capture",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "3822dc6efcb1f9ab13a89485717cd186274f98bf",
-  "at": "2026-11-03T03:37:46Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41573322546",
-  "tail": "FAIL: passing fixture should capture exit 0, got 1"
+  "sha": "baa17a08b1ff2528c8f62e2fa418122e255bc11f",
+  "at": "2026-11-06T17:21:17Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42260821797",
+  "tail": "CAPTURED stdout -> fixtures/expected_stdout.txt (0 bytes): b''\nCAPTURED exit -> fixtures/expected_exit.txt (2 bytes): b'2\\n'\nPASS exit code matches fixtures/expected_exit.txt (2 bytes): b'2\\n'\nPASS stdout byte-identical to fixtures/expected_stdout.txt (0 bytes): b''\nNOTE capture stderr (138 bytes): b'usage: capture.py [-h] --fixtures FIXTURES --out OUT [--check]\\ncapture.py: error: the following arguments are required: --fixtures, --out\\n'\nPASS fixture read from ./fixtures/tiny_memory.md only\nOK self-test passed"
 }
