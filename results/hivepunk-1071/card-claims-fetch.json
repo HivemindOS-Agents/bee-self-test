@@ -3,8 +3,8 @@
   "tool": "card-claims-fetch",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "78973e27145d9a75d42484c25271d2f9a0b342c7",
-  "at": "2026-11-06T01:44:39Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42145815850",
-  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/card-claims-fetch/self_test.py\", line 84, in <module>\n    rows.append(row)\n    ^^^^\nNameError: name 'rows' is not defined. Did you mean: 'nrows'?"
+  "sha": "54703d5e0e2c7624ba4844d452ab3b44eb7e14e2",
+  "at": "2026-11-06T02:19:12Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42149532037",
+  "tail": "FAIL  [states_license          ] expected: 'apache-2.0'    got: ''\nPASS  [publisher               ] expected: 'example-org'   got: 'example-org'\nPASS  [model_name              ] expected: 'Sparse Sample Model' got: 'Sparse Sample Model'\nPASS  [date_read               ] expected: '2026-11-06'    got: '2026-11-06'\nPASS  [states_context_window   ] expected: ''              got: ''\nPASS  [states_license          ] expected: ''              got: ''\nPASS  [source                  ] expected: 'https://huggingface.co/example-org/sparse-sample-model' got: 'https://huggingface.co/example-org/sparse-sample-model'\n\nTest summary: FAIL"
 }
