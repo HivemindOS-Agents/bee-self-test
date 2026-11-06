@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-1071",
   "tool": "card-claims-fetch",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "111dfef119eaed704732d70bf92db7cfa6654182",
-  "at": "2026-11-06T09:49:42Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42197934908",
-  "tail": "FAIL [publisher               ] expected: 'example-org'   got: 'huggingface.co'\nFAIL [states_context_window   ] expected: '32768'         got: ''\nFAIL [publisher               ] expected: 'example-org'   got: 'huggingface.co'\nFAIL [publisher               ] expected: 'example-org'   got: 'huggingface.co'\nPASS [data.csv header         ] expected: 'card_url,publisher,model_name,date_read,states_context_window,states_license,source' got: 'card_url,publisher,model_name,date_read,states_context_window,stat\nPASS [write_csv header        ] expected: 'card_url,publisher,model_name,date_read,states_context_window,states_license,source' got: 'card_url,publisher,model_name,date_read,states_context_window,stat\nPASS [write_csv rows          ] expected: 3               got: 3\nFAIL [write_csv no CR         ] expected: False           got: True\nPASS [round-trip cell         ] expected: 'apache-2.0'    got: 'apache-2.0'\nPASS [round-trip cell 2       ] expected: 'Sparse Sample Model' got: 'Sparse Sample Model'\n\nTest summary: FAIL"
+  "sha": "257c19f3711e664476ae010c6009c20d2eb77046",
+  "at": "2026-11-06T12:35:12Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42218746215",
+  "tail": "PASS [data.csv header         ] expected: 'card_url,publisher,model_name,date_read,states_context_window,states_license,source' got: 'card_url,publisher,model_name,date_read,states_context_window,stat\nPASS [write_csv header        ] expected: 'card_url,publisher,model_name,date_read,states_context_window,states_license,source' got: 'card_url,publisher,model_name,date_read,states_context_window,stat\nPASS [write_csv rows          ] expected: 3               got: 3\nPASS [write_csv no CR         ] expected: False           got: False\nPASS [round-trip cell         ] expected: 'apache-2.0'    got: 'apache-2.0'\nPASS [round-trip cell 2       ] expected: 'Sparse Sample Model' got: 'Sparse Sample Model'\n\nTest summary: PASS"
 }
