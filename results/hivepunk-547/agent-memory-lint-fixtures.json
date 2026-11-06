@@ -3,8 +3,8 @@
   "tool": "agent-memory-lint-fixtures",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "aa52d383078b0bb5e9f4a78edc64e1260631a9de",
-  "at": "2026-11-06T06:39:50Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42175837966",
-  "tail": "FAIL: agreement 15/20, expected 17"
+  "sha": "482d10f875787f9462bdda61342f213e914ce435",
+  "at": "2026-11-06T06:56:18Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42177577338",
+  "tail": "FAIL: agreement 10/20, expected 17"
 }
