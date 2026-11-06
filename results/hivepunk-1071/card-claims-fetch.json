@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-1071",
   "tool": "card-claims-fetch",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "54703d5e0e2c7624ba4844d452ab3b44eb7e14e2",
-  "at": "2026-11-06T02:19:12Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42149532037",
-  "tail": "FAIL  [states_license          ] expected: 'apache-2.0'    got: ''\nPASS  [publisher               ] expected: 'example-org'   got: 'example-org'\nPASS  [model_name              ] expected: 'Sparse Sample Model' got: 'Sparse Sample Model'\nPASS  [date_read               ] expected: '2026-11-06'    got: '2026-11-06'\nPASS  [states_context_window   ] expected: ''              got: ''\nPASS  [states_license          ] expected: ''              got: ''\nPASS  [source                  ] expected: 'https://huggingface.co/example-org/sparse-sample-model' got: 'https://huggingface.co/example-org/sparse-sample-model'\n\nTest summary: FAIL"
+  "sha": "a35783dc06a5ce1d453f283f8cf96bfef9b41269",
+  "at": "2026-11-06T04:55:20Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42165304449",
+  "tail": "PASS [data.csv header         ] expected: 'card_url,publisher,model_name,date_read,states_context_window,states_license,source' got: 'card_url,publisher,model_name,date_read,states_context_window,stat\nPASS [write_csv header        ] expected: 'card_url,publisher,model_name,date_read,states_context_window,states_license,source' got: 'card_url,publisher,model_name,date_read,states_context_window,stat\nPASS [write_csv rows          ] expected: 3               got: 3\nPASS [write_csv no CR         ] expected: False           got: False\nPASS [round-trip cell         ] expected: 'apache-2.0'    got: 'apache-2.0'\nPASS [round-trip cell 2       ] expected: 'Sparse Sample Model' got: 'Sparse Sample Model'\n\nTest summary: PASS"
 }
