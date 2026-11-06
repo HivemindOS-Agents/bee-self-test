@@ -3,8 +3,8 @@
   "tool": "card-claims-fetch",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "f234913b23750c9c152a0064333ab28e9a2f2b21",
-  "at": "2026-11-06T09:14:34Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42193511036",
-  "tail": "FAIL [publisher               ] expected: 'example-org'   got: 'huggingface.co'\nFAIL [states_context_window   ] expected: '32768'         got: ''\nFAIL [publisher               ] expected: 'example-org'   got: 'huggingface.co'\nFAIL [publisher               ] expected: 'example-org'   got: 'huggingface.co'\nTraceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/card-claims-fetch/self_test.py\", line 133, in <module>\n    check(\"empty body\", \"\", fetch_cards.stated_context_window(\"\"))\n                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/card-claims-fetch/fetch_cards.py\", line 122, in stated_context_window\n    val = meta.get(\"context_length\") or meta.get(\"context_window\")\n          ^^^^^^^^\nAttributeError: 'str' object has no attribute 'get'"
+  "sha": "111dfef119eaed704732d70bf92db7cfa6654182",
+  "at": "2026-11-06T09:49:42Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42197934908",
+  "tail": "FAIL [publisher               ] expected: 'example-org'   got: 'huggingface.co'\nFAIL [states_context_window   ] expected: '32768'         got: ''\nFAIL [publisher               ] expected: 'example-org'   got: 'huggingface.co'\nFAIL [publisher               ] expected: 'example-org'   got: 'huggingface.co'\nPASS [data.csv header         ] expected: 'card_url,publisher,model_name,date_read,states_context_window,states_license,source' got: 'card_url,publisher,model_name,date_read,states_context_window,stat\nPASS [write_csv header        ] expected: 'card_url,publisher,model_name,date_read,states_context_window,states_license,source' got: 'card_url,publisher,model_name,date_read,states_context_window,stat\nPASS [write_csv rows          ] expected: 3               got: 3\nFAIL [write_csv no CR         ] expected: False           got: True\nPASS [round-trip cell         ] expected: 'apache-2.0'    got: 'apache-2.0'\nPASS [round-trip cell 2       ] expected: 'Sparse Sample Model' got: 'Sparse Sample Model'\n\nTest summary: FAIL"
 }
