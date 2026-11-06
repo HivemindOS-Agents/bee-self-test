@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-547",
   "tool": "agent-memory-lint-fixtures",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "1cf52f4584a98f3c0682eba1de6090ff2c6bdbda",
-  "at": "2026-11-06T09:49:32Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42197913339",
-  "tail": "FAIL: agreement 10/20, expected 17"
+  "sha": "d611af10788723cbe143ab523729fede8428e507",
+  "at": "2026-11-06T13:44:29Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42227902856",
+  "tail": "PASS add_disputed_column: 20 rows, disputed=L006,L015,L018\nPASS rules.json: ids empty_text,missing_source,run_status,stale; run_status VERIFIED\nPASS README: all checks pass\nPASS check.lint: agreement 17/20, mismatches L006,L015,L018\nAll self-tests passed. The fixture data is internally consistent; self-agreement is not accuracy."
 }
