@@ -3,8 +3,8 @@
   "tool": "agent-memory-lint-fixtures",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "78364bff7409a5a0183ab1aadcc485fbb97ee147",
-  "at": "2026-11-06T09:14:17Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42193477872",
-  "tail": "FAIL: README does not name L006 as disputed"
+  "sha": "3e36626a8befeed772fe66dbe1754613b216c594",
+  "at": "2026-11-06T09:31:32Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42195680076",
+  "tail": "FAIL: agreement 10/20, expected 17"
 }
