@@ -3,8 +3,8 @@
   "tool": "card-claims-fetch",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "3171ab326290c82eb245f424a6f990c087362083",
-  "at": "2026-11-06T08:42:30Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42189582990",
-  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/card-claims-fetch/self_test.py\", line 22, in <module>\n    import fetch_cards  # noqa: E402\n    ^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/card-claims-fetch/fetch_cards.py\", line 51\n    _KEYVAL_RE = re.compile(r\"^([^:]+)\\s*:\\s*(['\"]?)(.*?)\\2\\s*$\")\n                                                 ^\nSyntaxError: closing parenthesis ']' does not match opening parenthesis '('"
+  "sha": "f234913b23750c9c152a0064333ab28e9a2f2b21",
+  "at": "2026-11-06T09:14:34Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42193511036",
+  "tail": "FAIL [publisher               ] expected: 'example-org'   got: 'huggingface.co'\nFAIL [states_context_window   ] expected: '32768'         got: ''\nFAIL [publisher               ] expected: 'example-org'   got: 'huggingface.co'\nFAIL [publisher               ] expected: 'example-org'   got: 'huggingface.co'\nTraceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/card-claims-fetch/self_test.py\", line 133, in <module>\n    check(\"empty body\", \"\", fetch_cards.stated_context_window(\"\"))\n                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/card-claims-fetch/fetch_cards.py\", line 122, in stated_context_window\n    val = meta.get(\"context_length\") or meta.get(\"context_window\")\n          ^^^^^^^^\nAttributeError: 'str' object has no attribute 'get'"
 }
