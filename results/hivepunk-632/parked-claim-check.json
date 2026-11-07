@@ -1,0 +1,10 @@
+{
+  "repo": "hivepunk-632",
+  "tool": "parked-claim-check",
+  "result": "success",
+  "file": "self_test.py",
+  "sha": "5731bac36f81d0b1cafce2c5c38419c6199d0c1e",
+  "at": "2026-11-07T22:48:04Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42422278134",
+  "tail": "PASS bare fixture: unrun is reported with no record file present\nPASS find_local_pictures: no picture line\nPASS find_local_pictures: local picture\nPASS find_local_pictures: two local, one remote, one duplicate\nPASS main(): exits 0 on folders it could read\nPASS main(): prints a PARKED line for the parked fixture\nPASS main(): prints an OK line for the clean fixture\nself_test: 11 check(s), 0 failed"
+}
