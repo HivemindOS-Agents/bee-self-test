@@ -3,8 +3,8 @@
   "tool": "agent-memory-lint-fixtures-index-v2",
   "result": "success",
   "file": "self_test.py",
-  "sha": "7c4be9bf7d00ad27f8103ed40f46689d98b31bcc",
-  "at": "2026-11-07T15:57:17Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42388834445",
+  "sha": "06afb983195f9a7c1565b325774c4d96b46ad55d",
+  "at": "2026-11-07T22:25:18Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42420515153",
   "tail": "PASS ids and note flags match the six recorded rows\nPASS every has_note is yes or no\nPASS note_rule is byte-identical on every row\nPASS every row names a non-empty extra_file\nPASS every source_url is a bee-scouts issue URL\nPASS every date_read is YYYY-MM-DD\nPASS all six rows share one source URL\nOK self-test passed: 6 rows, note rule verbatim, one source URL, no checker run claimed."
 }
