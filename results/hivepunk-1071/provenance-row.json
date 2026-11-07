@@ -3,8 +3,8 @@
   "tool": "provenance-row",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "e792f188a327faadb63bd85bead5801e5767a67f",
-  "at": "2026-11-07T05:45:22Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42344045354",
+  "sha": "455c163c8eb57fc140ad2efc1ab137c4a5ca1b6e",
+  "at": "2026-11-07T09:47:07Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42361167246",
   "tail": "ok: intact fixture exits 0\nok: header is the exact five fields\nok: output holds exactly one data row\nok: intact fixture row is verified\nFAIL: Issue read from the page URL"
 }
