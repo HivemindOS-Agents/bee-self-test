@@ -3,8 +3,8 @@
   "tool": "agent-memory-lint-self-test-capture",
   "result": "success",
   "file": "self_test.py",
-  "sha": "baa17a08b1ff2528c8f62e2fa418122e255bc11f",
-  "at": "2026-11-06T17:21:17Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42260821797",
-  "tail": "CAPTURED stdout -> fixtures/expected_stdout.txt (0 bytes): b''\nCAPTURED exit -> fixtures/expected_exit.txt (2 bytes): b'2\\n'\nPASS exit code matches fixtures/expected_exit.txt (2 bytes): b'2\\n'\nPASS stdout byte-identical to fixtures/expected_stdout.txt (0 bytes): b''\nNOTE capture stderr (138 bytes): b'usage: capture.py [-h] --fixtures FIXTURES --out OUT [--check]\\ncapture.py: error: the following arguments are required: --fixtures, --out\\n'\nPASS fixture read from ./fixtures/tiny_memory.md only\nOK self-test passed"
+  "sha": "ea1bf0d871daad3f0e8f41b51e2d1c6cb1dbccb3",
+  "at": "2026-11-07T19:12:38Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42405078336",
+  "tail": "CAPTURED stdout -> fixtures/expected_out.txt (41 bytes): b'L006: missing as_of\\nL018: missing source\\n'\nCAPTURED exit -> fixtures/expected_exit.txt (2 bytes): b'1\\n'\nPASS exit code matches fixtures/expected_exit.txt (2 bytes): b'1\\n'\n  raw command: python3 lint.py fixtures/tiny_memory.jsonl\nPASS stdout byte-identical to fixtures/expected_out.txt (41 bytes): b'L006: missing as_of\\nL018: missing source\\n'\n  raw command: python3 lint.py fixtures/tiny_memory.jsonl\nPASS fixture read from ./fixtures/tiny_memory.jsonl only\nOK self-test passed"
 }
