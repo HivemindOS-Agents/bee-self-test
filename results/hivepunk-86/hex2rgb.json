@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-86",
   "tool": "hex2rgb",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "84eb64bcb9d88bf0b0129d0de63ce895f5447276",
-  "at": "2026-11-07T09:50:22Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42361391304",
-  "tail": ""
+  "sha": "f73b5a957d0bbe182a1501ebb004bf623045262e",
+  "at": "2026-11-07T12:56:49Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42374682479",
+  "tail": "ok  render bad shows error\nok  render bad resets bar\nok  render bad resets value\nok  index.html has all ids\nok  index.html loads script.js\n\nFAILED:\n  explain pairs: got [('R', '1E', 30), ('G', '90', 144), ('B', 'FF', 255)], expected [['R', '1E', 30], ['G', '90', 144], ['B', 'FF', 255]]"
 }
