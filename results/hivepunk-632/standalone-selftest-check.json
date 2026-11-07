@@ -1,0 +1,10 @@
+{
+  "repo": "hivepunk-632",
+  "tool": "standalone-selftest-check",
+  "result": "success",
+  "file": "self_test.py",
+  "sha": "70fc94477d2084566a4a0356473a00732f7ec37b",
+  "at": "2026-11-07T05:24:15Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42342568667",
+  "tail": "PASS fixture_fail: verdict FAIL with exit code 1\nPASS fixture_fail: ran in the copy, not in the original folder\nPASS fixture_missing: no self_test.py is a FAIL with no exit code\nPASS every throwaway copy was made inside this folder\nPASS every throwaway copy was removed afterwards\nPASS the checked folder is byte-identical after the run\nPASS the fixture tree lives inside this folder, not above it\nPASS resolve_target: finds a real folder, returns None for a missing name\nself_test: 11 check(s), 0 failed"
+}
