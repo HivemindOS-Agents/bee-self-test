@@ -1,0 +1,10 @@
+{
+  "repo": "hivepunk-547",
+  "tool": "agent-memory-lint-fixtures-run",
+  "result": "success",
+  "file": "self_test.py",
+  "sha": "b322ae10e05a099b08029e03aa926b7330d630ae",
+  "at": "2026-11-07T00:05:04Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42315985167",
+  "tail": "CAPTURED stdout -> fixtures/expected_out.txt (41 bytes): b'L006: missing as_of\\nL018: missing source\\n'\nCAPTURED exit -> fixtures/expected_exit.txt (2 bytes): b'1\\n'\nPASS exit code matches fixtures/expected_exit.txt (2 bytes): b'1\\n'\n  raw command: python3 lint.py fixtures/tiny_memory.jsonl\nPASS stdout byte-identical to fixtures/expected_out.txt (41 bytes): b'L006: missing as_of\\nL018: missing source\\n'\n  raw command: python3 lint.py fixtures/tiny_memory.jsonl\nPASS fixture read from ./fixtures/tiny_memory.jsonl only\nOK self-test passed"
+}
