@@ -3,8 +3,8 @@
   "tool": "stated-issues",
   "result": "success",
   "file": "self_test.py",
-  "sha": "906452d285b4f5fc92deb8a3eb48784933aabbd1",
-  "at": "2026-11-08T09:33:19Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42467659591",
-  "tail": "PASS all checks passed: 6 rows, correct header, README sections"
+  "sha": "e3ed30406c6f7e1e494c752a573d70179f458641",
+  "at": "2026-11-08T13:05:38Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42483275667",
+  "tail": "PASS notes carry the dataset slug\nPASS notes carry the dataset URL\nPASS notes name the account the dataset goes under\nPASS notes mark themselves as not for upload\nPASS notes say no test was run\nPASS notes say no folder was opened\nPASS notes name the two dataset files\nOK self-test passed: 6 stated rows, card sections present, notes carry slug and discussion text; no command run."
 }
