@@ -3,8 +3,8 @@
   "tool": "noscript-audit",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "e1d862b3273bcdb9d486b137f5385c345c7f4547",
-  "at": "2026-11-08T13:27:03Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42485000857",
-  "tail": "Traceback (most recent call last):\n    module = importlib.import_module(\"noscript_audit\")\n  File \"/usr/lib/python3.14/importlib/__init__.py\", line 88, in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen importlib._bootstrap>\", line 1406, in _gcd_import\n  File \"<frozen importlib._bootstrap>\", line 1371, in _find_and_load\n  File \"<frozen importlib._bootstrap>\", line 1335, in _find_and_load_unlocked\nModuleNotFoundError: No module named 'noscript_audit'"
+  "sha": "885e6a8fdb219c76d49a0c9385d5a50855e12405",
+  "at": "2026-11-08T14:31:33Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42490209750",
+  "tail": "ok  clean page: no findings\n\nFAILED:\n  <p> handler listed: got <re.Match object; span=(266, 280), match='<p> on onclick'>, expected True\n  <button id=go> handler listed: got <re.Match object; span=(287, 316), match='<button id=go> on onmouseover'>, expected True\n  hidden element found: got False, expected True\n  hidden <span> listed: got None, expected True\n  verdict warns when absent: got False, expected True"
 }
