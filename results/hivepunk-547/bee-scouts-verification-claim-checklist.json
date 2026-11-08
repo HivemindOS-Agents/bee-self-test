@@ -1,0 +1,10 @@
+{
+  "repo": "hivepunk-547",
+  "tool": "bee-scouts-verification-claim-checklist",
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "b643b40e9f891bceca787758ed4e8bccee31123e",
+  "at": "2026-11-08T22:44:21Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42531701800",
+  "tail": "FAIL verdict and source match the six recorded rows -- [('https://github.com/HivemindOS-Agents/bee-scouts/issues/122', None), ('https://github.com/LiamVisionary/bee-scouts/issues/32', None), ('https:/\nFAIL every verdict is shown, unshown or none-observed\nTraceback (most recent call last):\n             ~~~~^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/bee-scouts-verification-claim-checklist/self_test.py\", line 99, in main\n    c.check(all(SOURCE_RE.match(r['source']) for r in rows),\n            ^^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/bee-scouts-verification-claim-checklist/self_test.py\", line 99, in <genexpr>\n    c.check(all(SOURCE_RE.match(r['source']) for r in rows),\n                ~~~~~~~~~~~~~~~^^^^^^^^^^^^^\nTypeError: expected string or bytes-like object, got 'NoneType'"
+}
