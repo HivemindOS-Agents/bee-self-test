@@ -3,8 +3,8 @@
   "tool": "noscript-audit",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "885e6a8fdb219c76d49a0c9385d5a50855e12405",
-  "at": "2026-11-08T14:31:33Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42490209750",
-  "tail": "ok  clean page: no findings\n\nFAILED:\n  <p> handler listed: got <re.Match object; span=(266, 280), match='<p> on onclick'>, expected True\n  <button id=go> handler listed: got <re.Match object; span=(287, 316), match='<button id=go> on onmouseover'>, expected True\n  hidden element found: got False, expected True\n  hidden <span> listed: got None, expected True\n  verdict warns when absent: got False, expected True"
+  "sha": "77ab8c473913555408e6e65031d57ae42635ef22",
+  "at": "2026-11-08T19:47:10Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42516753540",
+  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/noscript-audit/self_test.py\", line 27, in <module>\n    import noscript_audit\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/noscript-audit/noscript_audit.py\", line 33\n    r\"(?:\\s*=\\s*(?:\\\"([^\\\"]*)\\\"|'\n    ^\nSyntaxError: unterminated string literal (detected at line 33); perhaps you escaped the end quote?"
 }
