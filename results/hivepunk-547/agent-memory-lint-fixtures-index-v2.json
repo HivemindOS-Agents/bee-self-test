@@ -3,8 +3,8 @@
   "tool": "agent-memory-lint-fixtures-index-v2",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "a03908b240cda66b0a897a0aff14dc89c1cc90fd",
-  "at": "2026-11-08T01:39:50Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42435197182",
-  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/agent-memory-lint-fixtures-index-v2/self_test.py\", line 98, in <genexpr>\n    '%s,%s,\"%s\",sample_records.jsonl,'\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    'https://github.com/HivemindOS-Agents/bee-scouts/issues/109,'\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    '2026-11-07\\n' % (rid, flag)\n    ~~~~~~~~~~~~~~~^~~~~~~~~~~~~\nTypeError: not enough arguments for format string"
+  "sha": "7bde9afd7ffe48b084706d51c464a7c6485568b9",
+  "at": "2026-11-08T02:11:58Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42437477123",
+  "tail": "Traceback (most recent call last):\n        + '2026-11-07\\n'\n        ^^^^^^^^^^^^^^^^\n        for rid, flag in EXPECTED))\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/agent-memory-lint-fixtures-index-v2/self_test.py\", line 110, in <genexpr>\n    '%s,%s,\"%s\",sample_records.jsonl,' % (rid, flag)\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~\nTypeError: not enough arguments for format string"
 }
