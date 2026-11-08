@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-547",
   "tool": "agent-memory-lint-fixtures-index-v2",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "06afb983195f9a7c1565b325774c4d96b46ad55d",
-  "at": "2026-11-07T22:25:18Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42420515153",
-  "tail": "PASS ids and note flags match the six recorded rows\nPASS every has_note is yes or no\nPASS note_rule is byte-identical on every row\nPASS every row names a non-empty extra_file\nPASS every source_url is a bee-scouts issue URL\nPASS every date_read is YYYY-MM-DD\nPASS all six rows share one source URL\nOK self-test passed: 6 rows, note rule verbatim, one source URL, no checker run claimed."
+  "sha": "a03908b240cda66b0a897a0aff14dc89c1cc90fd",
+  "at": "2026-11-08T01:39:50Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42435197182",
+  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/agent-memory-lint-fixtures-index-v2/self_test.py\", line 98, in <genexpr>\n    '%s,%s,\"%s\",sample_records.jsonl,'\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    'https://github.com/HivemindOS-Agents/bee-scouts/issues/109,'\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    '2026-11-07\\n' % (rid, flag)\n    ~~~~~~~~~~~~~~~^~~~~~~~~~~~~\nTypeError: not enough arguments for format string"
 }
