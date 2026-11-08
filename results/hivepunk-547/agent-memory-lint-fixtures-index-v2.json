@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-547",
   "tool": "agent-memory-lint-fixtures-index-v2",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "7bde9afd7ffe48b084706d51c464a7c6485568b9",
-  "at": "2026-11-08T02:11:58Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42437477123",
-  "tail": "Traceback (most recent call last):\n        + '2026-11-07\\n'\n        ^^^^^^^^^^^^^^^^\n        for rid, flag in EXPECTED))\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/agent-memory-lint-fixtures-index-v2/self_test.py\", line 110, in <genexpr>\n    '%s,%s,\"%s\",sample_records.jsonl,' % (rid, flag)\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~\nTypeError: not enough arguments for format string"
+  "sha": "6fb9bfc034f09e9dfdad07ba014bd33b11e2e0f4",
+  "at": "2026-11-08T02:47:44Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42440008938",
+  "tail": "PASS note_rule is double-quoted in the raw bytes on all six rows\nPASS publish_check accepts the six recorded rows\nPASS publish_check rejects a padded seventh row\nPASS publish_check rejects a mislabeled note flag\nPASS publish_check rejects an unquoted note_rule cell\nPASS publish_check rejects a pasted-in exit byte in the run capture\nPASS publish_check accepts a properly labelled transcription\nOK self-test passed: 6 rows, note rule verbatim, one source URL, no checker run claimed."
 }
