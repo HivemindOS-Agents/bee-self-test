@@ -3,8 +3,8 @@
   "tool": "attribution-docs-check-fixtures",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "d3234a33de813da467650534bf9a9321132ea3ec",
-  "at": "2026-11-09T11:21:34Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42608376871",
+  "sha": "20ea2888773b3316fca8b3400a574039e9d84699",
+  "at": "2026-11-09T11:39:43Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42610776922",
   "tail": "FAIL explainer_gen.py not found\nFAIL explainer.png missing or empty\nFAIL File not found: /home/runner/work/bee-self-test/bee-self-test/work/tools/attribution-docs-check-fixtures/explainer.png\nFAIL --check mode exit 2: /usr/bin/python3: can't open file '/home/runner/work/bee-self-test/bee-self-test/work/tools/attribution-docs-check-fixtures/explainer_gen.py': [Errno 2] No such file or direc\nself_test: 4 check(s), 4 failed"
 }
