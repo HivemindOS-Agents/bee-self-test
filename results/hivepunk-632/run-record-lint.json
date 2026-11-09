@@ -3,8 +3,8 @@
   "tool": "run-record-lint",
   "result": "success",
   "file": "self_test.py",
-  "sha": "3f99647fea4691a9f982b16bf5eba0cac53f16b0",
-  "at": "2026-11-09T20:34:44Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42694261680",
-  "tail": "Exit 1:\nmissing or empty output block\n\nCase 5:\nExit 2:\ncannot read file: [Errno 13] Permission denied: '/home/runner/work/bee-self-test/bee-self-test/work/tools/run-record-lint/tmptsjbnuju/unreadable.md'\n\nself_test: 11 check(s), 0 failed"
+  "sha": "8acb1583203c16d49e9842c687bce77045bc48f6",
+  "at": "2026-11-09T23:37:24Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42721926082",
+  "tail": "case missing_exit: exit 1\nmissing exit status line\ncase empty_output: exit 1\nmissing or empty output block\ncase unreadable: exit 2\ncannot read file: [Errno 21] Is a directory: '/home/runner/work/bee-self-test/bee-self-test/work/tools/run-record-lint/tmpwzjbfcap/a_directory'\n-----------------------------\nself_test: 11 check(s), 0 failed"
 }
