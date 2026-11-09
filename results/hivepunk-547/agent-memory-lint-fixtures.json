@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-547",
   "tool": "agent-memory-lint-fixtures",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "818294613eef6b973389aaca7a7a6f56f7f2a493",
-  "at": "2026-11-09T10:07:09Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42598484282",
-  "tail": "PASS check.lint: agreement 17/20, mismatches L006,L015,L018"
+  "sha": "7d59ac8de52ea0bf3ef8c2b642d08b1c90764402",
+  "at": "2026-11-09T13:23:26Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42625009303",
+  "tail": "FAIL: clean/ should have 0 errors, got: [\"README missing closing 'What could not be checked' section\", 'data.csv line 2 has 3 cells (header 1)', 'data.csv line 3 has 3 cells (header 1)', 'data.csv lin"
 }
