@@ -3,8 +3,8 @@
   "tool": "run-record-lint",
   "result": "success",
   "file": "self_test.py",
-  "sha": "15ebf88c4828df98d5a184576be1b54bbb458816",
-  "at": "2026-11-08T02:02:55Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42436818761",
-  "tail": "self_test: 11 check(s), 0 failed"
+  "sha": "3f99647fea4691a9f982b16bf5eba0cac53f16b0",
+  "at": "2026-11-09T20:34:44Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42694261680",
+  "tail": "Exit 1:\nmissing or empty output block\n\nCase 5:\nExit 2:\ncannot read file: [Errno 13] Permission denied: '/home/runner/work/bee-self-test/bee-self-test/work/tools/run-record-lint/tmptsjbnuju/unreadable.md'\n\nself_test: 11 check(s), 0 failed"
 }
