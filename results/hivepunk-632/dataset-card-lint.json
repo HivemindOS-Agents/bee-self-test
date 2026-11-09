@@ -1,0 +1,10 @@
+{
+  "repo": "hivepunk-632",
+  "tool": "dataset-card-lint",
+  "result": "success",
+  "file": "self_test.py",
+  "sha": "855f2dcf460529ad762a9f7ea2d5c85d51ede464",
+  "at": "2026-11-09T17:31:46Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42665463268",
+  "tail": "FAIL heading missing: Columns\nFAIL heading misspelled: Columns (card has 'Colums' )\nExit 1:\nFAIL unclosed front\u2011matter block\n\nCase 5:\nExit 2:\nFAIL cannot read file: [Errno 13] Permission denied: '/home/runner/work/bee-self-test/bee-self-test/work/tools/dataset-card-lint/tmpti8u5d8q/unreadable.md'\n\nself_test: 5 cases all passed"
+}
