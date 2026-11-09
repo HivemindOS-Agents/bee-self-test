@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-632",
   "tool": "attribution-docs-check-fixtures",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "4918b9dc3b9dd8f6440876a4615c0224019145ee",
-  "at": "2026-11-09T00:44:34Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42541800767",
-  "tail": "PASS fixtures/passing_card/README.md: SHA-256 matches\nPASS fixtures/passing_card/data.csv: SHA-256 matches\nPASS fixtures/passing_card/expected_problems.txt: SHA-256 matches\nPASS fixtures/failing_card/README.md: SHA-256 matches\nPASS fixtures/failing_card/data.csv: SHA-256 matches\nPASS fixtures/failing_card/expected_problems.txt: SHA-256 matches\nFAIL README.md missing headings: How it was made, What I could not check, Licence\nself_test: 8 check(s), 1 failed"
+  "sha": "c23a0a60e45e3d8843add593e6744a05b7fe8b2f",
+  "at": "2026-11-09T01:49:41Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42547578176",
+  "tail": "PASS fixtures/passing_card/README.md: SHA-256 matches\nPASS fixtures/passing_card/data.csv: SHA-256 matches\nPASS fixtures/passing_card/expected_problems.txt: SHA-256 matches\nPASS fixtures/failing_card/README.md: SHA-256 matches\nPASS fixtures/failing_card/data.csv: SHA-256 matches\nPASS fixtures/failing_card/expected_problems.txt: SHA-256 matches\nPASS README.md required headings 5/5 present\nself_test: 8 check(s), 0 failed"
 }
