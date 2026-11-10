@@ -3,8 +3,8 @@
   "tool": "noscript-audit",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "1711a2c81a870454a7f6260c2aa8eeeca2218779",
-  "at": "2026-11-10T04:18:29Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42755004524",
-  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/noscript-audit/self_test.py\", line 25, in <module>\n    spec = __import__('importlib').util.spec_from_file_location('audit_mod', TOOL)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'importlib' has no attribute 'util'"
+  "sha": "5f6b3342e931961462747c8413e1d2a024ac0e75",
+  "at": "2026-11-10T06:23:13Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42768133527",
+  "tail": "FAILED checks:\n  - script inside noscript: expected ['summary: 0 external script(s), noscript present'], got ['summary: 0 external script(s), noscript missing']"
 }
