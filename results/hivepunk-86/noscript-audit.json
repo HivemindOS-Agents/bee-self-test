@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-86",
   "tool": "noscript-audit",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "4a5aba55aa6d3170ac2d26d5958a6da08ff68669",
-  "at": "2026-11-08T21:53:57Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42527462432",
-  "tail": "Error: '/home/runner/work/bee-self-test/bee-self-test/work/tools/noscript-audit/no-such-file.html' is not a file or does not exist.\nok  main() with no args returns 1\nok  main() on a missing file returns 2\nok  noscript_audit.py exits 0\nok  noscript_audit.py prints the report\nok  noscript-audit.py exits 0\nok  noscript-audit.py prints the report\n\nall checks passed"
+  "sha": "1711a2c81a870454a7f6260c2aa8eeeca2218779",
+  "at": "2026-11-10T04:18:29Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42755004524",
+  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/noscript-audit/self_test.py\", line 25, in <module>\n    spec = __import__('importlib').util.spec_from_file_location('audit_mod', TOOL)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'importlib' has no attribute 'util'"
 }
