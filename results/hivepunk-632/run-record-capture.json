@@ -1,0 +1,10 @@
+{
+  "repo": "hivepunk-632",
+  "tool": "run-record-capture",
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "565b358d5f55fed25827c819312b2a69923a0282",
+  "at": "2026-11-10T12:47:04Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42818659328",
+  "tail": "FAIL case3_exit_minus1: got exit 255\n  **Command:** `nonexistent_binary_xyz`\n  \n  **Exit status:** 127\n  ...\n  command not found: nonexistent_binary_xyz\n  ```\n-----------------------------\nself_test: 17 check(s), 1 failed"
+}
