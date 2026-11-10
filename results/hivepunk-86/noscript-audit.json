@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-86",
   "tool": "noscript-audit",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "5f6b3342e931961462747c8413e1d2a024ac0e75",
-  "at": "2026-11-10T06:23:13Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42768133527",
-  "tail": "FAILED checks:\n  - script inside noscript: expected ['summary: 0 external script(s), noscript present'], got ['summary: 0 external script(s), noscript missing']"
+  "sha": "6273c3b1dfc72df750019a93b7e93fea89e8251e",
+  "at": "2026-11-10T09:34:23Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42791803395",
+  "tail": "all checks passed"
 }
