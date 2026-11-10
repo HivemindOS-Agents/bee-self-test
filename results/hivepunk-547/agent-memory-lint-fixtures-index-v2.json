@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-547",
   "tool": "agent-memory-lint-fixtures-index-v2",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "231d33993f2f841469a212c7eb31d1bcb33eee32",
-  "at": "2026-11-10T06:07:44Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42766400078",
-  "tail": "FAIL: index.json not found"
+  "sha": "1cd32c5a175fe01c70e82c9604c34d648445d8b7",
+  "at": "2026-11-10T06:41:40Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42770200198",
+  "tail": "self-test: all 5 checks passed (json structure, table rows, entry matching, path coverage, README naming)"
 }
