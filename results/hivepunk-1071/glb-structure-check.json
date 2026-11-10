@@ -1,0 +1,10 @@
+{
+  "repo": "hivepunk-1071",
+  "tool": "glb-structure-check",
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "0c667c07a8dec4013d5679bbcf7abb60112af441",
+  "at": "2026-11-10T09:48:53Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42793815104",
+  "tail": "FAIL: sample file not found: /home/runner/work/bee-self-test/bee-self-test/work/tools/glb-structure-check/sample/valid_minimal.glb\nFAIL: Expected 4 passes, got 0\nFAIL: valid_minimal.glb returned exit code -1, expected 0\n\nTesting bad_magic.glb...\nFAIL: sample file not found: /home/runner/work/bee-self-test/bee-self-test/work/tools/glb-structure-check/sample/bad_magic.glb\nFAIL: bad_magic.glb should report magic failure\nFAIL: bad_magic.glb returned exit code -1, expected 1\n\nSome self-tests failed.\nexit=1"
+}
