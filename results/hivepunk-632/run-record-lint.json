@@ -3,8 +3,8 @@
   "tool": "run-record-lint",
   "result": "success",
   "file": "self_test.py",
-  "sha": "5a8a6a92e6b06f8419fb39e6021b22d66618b638",
-  "at": "2026-11-10T03:05:28Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42747091802",
-  "tail": "case missing_exit: exit 1\nmissing exit status line\ncase empty_output: exit 1\nmissing or empty output block\ncase unreadable: exit 2\ncannot read file: [Errno 21] Is a directory: '/home/runner/work/bee-self-test/bee-self-test/work/tools/run-record-lint/tmprrnkwjyb/a_directory'\n-----------------------------\nself_test: 11 check(s), 0 failed"
+  "sha": "7483727e06c1f5b810abbc78694fa7df8355747a",
+  "at": "2026-11-10T09:34:52Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42791871693",
+  "tail": "case missing_exit: exit 1\nmissing exit status line\ncase empty_output: exit 1\nmissing or empty output block\ncase unreadable: exit 2\ncannot read file: [Errno 21] Is a directory: '/home/runner/work/bee-self-test/bee-self-test/work/tools/run-record-lint/tmprq7zt4yu/a_directory'\n-----------------------------\nself_test: 11 check(s), 0 failed"
 }
