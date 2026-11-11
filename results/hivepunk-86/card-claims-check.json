@@ -3,8 +3,8 @@
   "tool": "card-claims-check",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "9ea2ef6abc28333f029349c8a301883ccf204fcf",
-  "at": "2026-11-11T13:54:40Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43033398951",
+  "sha": "b7f9349e27ecf850fbcc0eddfb520bf22dc87e74",
+  "at": "2026-11-11T15:59:02Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43053696533",
   "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/card-claims-check/self_test.py\", line 57, in <module>\n    [redacted]  # no card_text key at all\n     ^^^^^^^^\nNameError: name 'redacted' is not defined"
 }
