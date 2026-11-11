@@ -3,8 +3,8 @@
   "tool": "agent-memory-lint-fixtures-index-v2",
   "result": "success",
   "file": "self_test.py",
-  "sha": "8801bc39ff777b49780cc291bd346d330aa3a4eb",
-  "at": "2026-11-10T14:31:32Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42834913290",
+  "sha": "af521365d42325bed5a49b3d03847937705324b0",
+  "at": "2026-11-11T22:03:58Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43090776560",
   "tail": "clean sample: 2 row(s), 0 issue(s)\nbad sample: 2 row(s), 1 issue(s)\n    - row 'bad-rows/': expected_exit_code differs: index=1 markdown=7\nthis folder: 3 row(s), 0 issue(s)\nself-test: all checks passed"
 }
