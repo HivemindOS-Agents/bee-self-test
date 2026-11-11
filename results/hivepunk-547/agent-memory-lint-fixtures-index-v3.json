@@ -1,0 +1,10 @@
+{
+  "repo": "hivepunk-547",
+  "tool": "agent-memory-lint-fixtures-index-v3",
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "d8023bf4530f26627ff4ef2eb1dc811b0268a317",
+  "at": "2026-11-11T23:25:07Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43119637318",
+  "tail": "Traceback (most recent call last):\n        \"clean sample\", \"sample_index.json\", \"sample_index.md\", True)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/agent-memory-lint-fixtures-index-v3/self_test.py\", line 31, in run_case\n    md = read_text(os.path.join(HERE, md_path))\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/agent-memory-lint-fixtures-index-v3/self_test.py\", line 25, in read_text\n    with open(path, \"r\", encoding=\"utf-8\") as fh:\n         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/bee-self-test/bee-self-test/work/tools/agent-memory-lint-fixtures-index-v3/sample_index.md'"
+}
