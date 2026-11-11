@@ -1,0 +1,10 @@
+{
+  "repo": "hivepunk-632",
+  "tool": "run-log-diff",
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "06dec2a140cfaa88766f1fdcc9062f00162969ea",
+  "at": "2026-11-11T14:29:32Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43038934341",
+  "tail": "FAIL test_added_removed_added: \nFAIL test_added_removed_removed: \nFAIL test_added_removed_kept: \nTraceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/run-log-diff/self_test.py\", line 73, in <module>\n    t.check(\"test_no_changes_delta\", \"Change\u2011count delta: 0\" in out2[-1])\n                                                                ~~~~^^^^\nIndexError: list index out of range"
+}
