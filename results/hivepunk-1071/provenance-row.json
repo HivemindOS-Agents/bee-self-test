@@ -3,8 +3,8 @@
   "tool": "provenance-row",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "5806c04382d3c448bd5339c4649a858d5092e96a",
-  "at": "2026-11-09T00:19:51Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42539576952",
-  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/provenance-row/self_test.py\", line 37, in <module>\n    main()\n    ~~~~^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/provenance-row/self_test.py\", line 27, in main\n    row = pr.build_row(snapshot_text, URL, DATE_CHECKED)\nTypeError: build_row() takes 2 positional arguments but 3 were given"
+  "sha": "a72b0524bd72a07ea3a44cb4685bedef0d34bf78",
+  "at": "2026-11-11T04:12:17Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42957666686",
+  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/provenance-row/self_test.py\", line 26, in main\n    row = pr.build_row(snapshot_text, DATE_CHECKED)\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/provenance-row/provenance_row.py\", line 160, in build_row\n    text = read_snapshot(path)\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/provenance-row/provenance_row.py\", line 84, in read_snapshot\n    with open(path, \"r\", encoding=\"utf-8-sig\", errors=\"replace\") as handle:\n         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: \"# SYNTHETIC FIXTURE -- invented text, not a real page or a real read\\n\\nUrl: https://github.com/example-org/example-repo/issues/58\\nSaved: 2026"
 }
