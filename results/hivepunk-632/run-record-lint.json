@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-632",
   "tool": "run-record-lint",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "dab68673286c7f3a4a42340d3012b6fd004272c8",
-  "at": "2026-11-11T04:24:28Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42959006418",
-  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/run-record-lint/self_test.py\", line 29, in <module>\n    f\"{TB}\\n\"\n       ^^\nNameError: name 'TB' is not defined"
+  "sha": "cfee327bc7210ff8aff71a296fed437de04d7f66",
+  "at": "2026-11-11T04:57:50Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42962571970",
+  "tail": "PASS valid_stdout_OK\nPASS missing_command_exit_1\nPASS missing_command_message\nPASS missing_exit_exit_1\nPASS missing_exit_message\nPASS empty_output_exit_1\nPASS empty_output_message\nself_test: 8 check(s), 0 failed"
 }
