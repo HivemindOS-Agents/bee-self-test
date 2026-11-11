@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-632",
   "tool": "run-record-lint",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "7483727e06c1f5b810abbc78694fa7df8355747a",
-  "at": "2026-11-10T09:34:52Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42791871693",
-  "tail": "case missing_exit: exit 1\nmissing exit status line\ncase empty_output: exit 1\nmissing or empty output block\ncase unreadable: exit 2\ncannot read file: [Errno 21] Is a directory: '/home/runner/work/bee-self-test/bee-self-test/work/tools/run-record-lint/tmprq7zt4yu/a_directory'\n-----------------------------\nself_test: 11 check(s), 0 failed"
+  "sha": "3d04d5553ff269ea07d557a36ed240311620b4b0",
+  "at": "2026-11-11T03:48:29Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42955124859",
+  "tail": "  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/run-record-lint/self_test.py\", line 50\n    \"```\n    ^\nSyntaxError: unterminated string literal (detected at line 50)"
 }
