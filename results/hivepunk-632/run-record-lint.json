@@ -3,8 +3,8 @@
   "tool": "run-record-lint",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "3d04d5553ff269ea07d557a36ed240311620b4b0",
-  "at": "2026-11-11T03:48:29Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42955124859",
-  "tail": "  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/run-record-lint/self_test.py\", line 50\n    \"```\n    ^\nSyntaxError: unterminated string literal (detected at line 50)"
+  "sha": "dab68673286c7f3a4a42340d3012b6fd004272c8",
+  "at": "2026-11-11T04:24:28Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42959006418",
+  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/run-record-lint/self_test.py\", line 29, in <module>\n    f\"{TB}\\n\"\n       ^^\nNameError: name 'TB' is not defined"
 }
