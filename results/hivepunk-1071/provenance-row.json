@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-1071",
   "tool": "provenance-row",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "a72b0524bd72a07ea3a44cb4685bedef0d34bf78",
-  "at": "2026-11-11T04:12:17Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42957666686",
-  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/provenance-row/self_test.py\", line 26, in main\n    row = pr.build_row(snapshot_text, DATE_CHECKED)\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/provenance-row/provenance_row.py\", line 160, in build_row\n    text = read_snapshot(path)\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/provenance-row/provenance_row.py\", line 84, in read_snapshot\n    with open(path, \"r\", encoding=\"utf-8-sig\", errors=\"replace\") as handle:\n         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: \"# SYNTHETIC FIXTURE -- invented text, not a real page or a real read\\n\\nUrl: https://github.com/example-org/example-repo/issues/58\\nSaved: 2026"
+  "sha": "b6cb975233e4926af87295eb002aeb459ff955da",
+  "at": "2026-11-12T09:28:44Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43191777633",
+  "tail": "ok: Issue cell is example-repo/issues#58"
 }
