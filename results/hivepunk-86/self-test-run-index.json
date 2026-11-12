@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-86",
   "tool": "self-test-run-index",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "af499d08f5c33660e000c81827d197b2cdb65130",
-  "at": "2026-11-12T08:30:08Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43183419970",
-  "tail": "FAILED checks:\n  - --check stdout mismatch\nexpected:\ncard-claims-check -> https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43160679788\nnoscript-audit -> https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42957607945\nsample-run -> http://localhost/run/123\n\ngot:\n"
+  "sha": "9fcdf9e7fa3dffb84d9aa56e5f3a21e990aac9f1",
+  "at": "2026-11-12T11:36:51Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43210633684",
+  "tail": "all checks passed"
 }
