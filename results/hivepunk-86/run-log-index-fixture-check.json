@@ -1,0 +1,10 @@
+{
+  "repo": "hivepunk-86",
+  "tool": "run-log-index-fixture-check",
+  "result": "success",
+  "file": "self_test.py",
+  "sha": "b383c34f85790646d7e8b9df204d8f1a6bb46383",
+  "at": "2026-11-12T22:07:57Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43316970383",
+  "tail": "ok   3. no filename exits 2 with a usage message -- exit 2, output 'usage: run_log_index.py [--check] <file.json>'\nok   4a. --check on a bad-URL fixture exits 1 -- exit 1, stderr 'run-log-index: missing run_url: fixture-check-empty-url\\nrun-log-index: missing run_url: fixture-check-blank-url'\nok   4b. stderr names the empty-url row -- exit 1, stderr 'run-log-index: missing run_url: fixture-check-empty-url\\nrun-log-index: missing run_url: fixture-check-blank-url'\nok   4c. stderr names the blank-url row -- exit 1, stderr 'run-log-index: missing run_url: fixture-check-empty-url\\nrun-log-index: missing run_url: fixture-check-blank-url'\nok   4d. stderr does not name the good row -- exit 1, stderr 'run-log-index: missing run_url: fixture-check-empty-url\\nrun-log-index: missing run_url: fixture-check-blank-url'\nok   4e. stdout still holds only the kept row\n\nall checks passed"
+}
