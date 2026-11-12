@@ -3,8 +3,8 @@
   "tool": "fixture-card-web",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "340c2adc18bada14bc61914bb115ed64004c8be3",
-  "at": "2026-11-12T12:51:50Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43221778879",
+  "sha": "3189bb295ed35b69cb497c889e65c5d561fa42c3",
+  "at": "2026-11-12T13:32:12Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43228200342",
   "tail": "FAIL sample data/ directory not found at /home/runner/work/bee-self-test/bee-self-test/work/tools/fixture-card-web/fixture_card_test_fixtures/out/data\nself_test: 1 check(s), 1 failed"
 }
