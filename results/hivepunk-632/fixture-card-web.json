@@ -3,8 +3,8 @@
   "tool": "fixture-card-web",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "3189bb295ed35b69cb497c889e65c5d561fa42c3",
-  "at": "2026-11-12T13:32:12Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43228200342",
-  "tail": "FAIL sample data/ directory not found at /home/runner/work/bee-self-test/bee-self-test/work/tools/fixture-card-web/fixture_card_test_fixtures/out/data\nself_test: 1 check(s), 1 failed"
+  "sha": "1280f5b9b415062c0d753ee7b3d02b669629d6ac",
+  "at": "2026-11-12T14:07:48Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43233960617",
+  "tail": "FAIL fixture_card.py exited 1\nstderr:   File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/fixture-card-web/fixture_card.py\", line 27\n    \"\"\"Return a printable representation: printable ASCII unchanged, others as ``\\xHH``.\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nSyntaxError: (unicode error) 'unicodeescape' codec can't decode bytes in position 74-75: truncated \\xXX escape\n"
 }
