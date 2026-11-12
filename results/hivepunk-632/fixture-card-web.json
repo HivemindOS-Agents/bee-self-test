@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-632",
   "tool": "fixture-card-web",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "1280f5b9b415062c0d753ee7b3d02b669629d6ac",
-  "at": "2026-11-12T14:07:48Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43233960617",
-  "tail": "FAIL fixture_card.py exited 1\nstderr:   File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/fixture-card-web/fixture_card.py\", line 27\n    \"\"\"Return a printable representation: printable ASCII unchanged, others as ``\\xHH``.\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nSyntaxError: (unicode error) 'unicodeescape' codec can't decode bytes in position 74-75: truncated \\xXX escape\n"
+  "sha": "93f2305eec0cf881c13ab8f55af28822414805f0",
+  "at": "2026-11-12T18:06:14Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43276291798",
+  "tail": "PASS sha256 matches for sub/b.txt\nPASS size 19 shown for sub/b.txt\nPASS raw byte display shown for sub/b.txt\nPASS raw byte display round-trips for sub/b.txt\nPASS table has one row per file (3)\nPASS fixture files are byte-identical after the run\nPASS no-argument run exits nonzero with empty stdout\nself_test: 20 check(s), 0 failed"
 }
