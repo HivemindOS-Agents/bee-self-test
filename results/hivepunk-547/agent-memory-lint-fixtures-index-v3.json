@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-547",
   "tool": "agent-memory-lint-fixtures-index-v3",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "e9651b23d76517b45716741b0a494e08d1dac1de",
-  "at": "2026-11-12T01:09:05Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43132441747",
-  "tail": "    - entry 'totally-unknown/': extra (matches no known fixture)\n    - missing known fixture 'bad-rows/'\n    - count mismatch: index has 4 entries, markdown has 3 rows\n    - row 'bad-rows/' in markdown but not in index\n    - entry 'fixtures/bad-rows/' in index but not in markdown\n    - entry 'totally-unknown/' in index but not in markdown\ncase this folder: 3 entr(y/ies), 0 issue(s), verdict=OK\nself-test: all checks passed"
+  "sha": "afae78674c490d6b345a43a08c0d5736c903ecbc",
+  "at": "2026-11-12T07:42:05Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43177163647",
+  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/agent-memory-lint-fixtures-index-v3/self_test.py\", line 116, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/agent-memory-lint-fixtures-index-v3/self_test.py\", line 80, in main\n    issues = index_check.compare(CLEAN_INDEX, rows)\n             ^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'index_check' has no attribute 'compare'"
 }
