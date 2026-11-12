@@ -1,0 +1,10 @@
+{
+  "repo": "hivepunk-632",
+  "tool": "fixture-card-web",
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "3915139549f847310ea1ce7e421d34c4f3ec6abb",
+  "at": "2026-11-12T12:18:00Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43216592478",
+  "tail": "FAIL verify command not found\nPASS EXIT= line found verbatim\nPASS sha256 9513f332045e25cb65dbb0e80ec46e9a42773eeaff768d7a760f90920d754ea8 matches passing_card/README.md\nPASS sha256 b8e3cd492fb0c2cf6e475b750464ea644f15e440164b19f24a33e95773b877ef matches passing_card/data.csv\nPASS sha256 5df02f2b56d9035149304b05185402bf0bd3e03cfd0e948dd9f32c10ec2409c1 matches failing_card/expected_problems.txt\nPASS raw bytes display matches for passing_card/README.md\nPASS raw bytes display matches for passing_card/data.csv\nPASS raw bytes display matches for failing_card/expected_problems.txt\nself_test: 9 check(s), 1 failed"
+}
