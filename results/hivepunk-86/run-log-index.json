@@ -1,0 +1,10 @@
+{
+  "repo": "hivepunk-86",
+  "tool": "run-log-index",
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "22ad0f370b3f1280c6710b9c010d7caf0a80541d",
+  "at": "2026-11-12T17:52:07Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43273862394",
+  "tail": "FAILED checks:\n  - --check stdout mismatch"
+}
