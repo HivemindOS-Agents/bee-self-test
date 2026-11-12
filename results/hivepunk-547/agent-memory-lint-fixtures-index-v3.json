@@ -3,8 +3,8 @@
   "tool": "agent-memory-lint-fixtures-index-v3",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "afae78674c490d6b345a43a08c0d5736c903ecbc",
-  "at": "2026-11-12T07:42:05Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43177163647",
-  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/agent-memory-lint-fixtures-index-v3/self_test.py\", line 116, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/agent-memory-lint-fixtures-index-v3/self_test.py\", line 80, in main\n    issues = index_check.compare(CLEAN_INDEX, rows)\n             ^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'index_check' has no attribute 'compare'"
+  "sha": "991f429d3439abde47d3fceab92e3fe4b669988c",
+  "at": "2026-11-12T08:16:03Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43181504712",
+  "tail": "FAIL: clean sample: expected 0 issues, got 1\nclean sample: 2 row(s), 1 issue(s)\n    - missing known fixture 'bad-card/'\nbad sample: 2 row(s), 3 issue(s)\n    - missing known fixture 'bad-card/'\n    - row 'fixtures/bad-rows/' in markdown but not in index\n    - entry 'bad-rows/' in index but not in markdown\nthis folder: 3 row(s), 0 issue(s)"
 }
