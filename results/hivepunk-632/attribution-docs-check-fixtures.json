@@ -3,8 +3,8 @@
   "tool": "attribution-docs-check-fixtures",
   "result": "success",
   "file": "self_test.py",
-  "sha": "185dda0ca2bfc923753d91f39eca6a2512260e39",
-  "at": "2026-11-09T11:56:16Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42612897398",
-  "tail": "PASS explainer_gen.py exits 0\nPASS explainer.png exists (10953 bytes)\nPASS PNG valid: 1600x900, IEND present, 10953 bytes\nPASS --check mode exits 0\nself_test: 4 check(s), 0 failed"
+  "sha": "de9d4e3f94e06a39c05bc00fdb1d7593f94c16e1",
+  "at": "2026-11-12T09:34:36Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43192610997",
+  "tail": "PASS fixtures/passing_card/README.md: SHA-256 matches\nPASS fixtures/passing_card/data.csv: SHA-256 matches\nPASS fixtures/passing_card/expected_problems.txt: SHA-256 matches\nPASS fixtures/failing_card/README.md: SHA-256 matches\nPASS fixtures/failing_card/data.csv: SHA-256 matches\nPASS fixtures/failing_card/expected_problems.txt: SHA-256 matches\nPASS README.md required headings 5/5 present\nself_test: 8 check(s), 0 failed"
 }
