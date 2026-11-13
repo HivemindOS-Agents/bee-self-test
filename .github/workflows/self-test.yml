@@ -37,6 +37,15 @@ jobs:
             if [ -f "work/tools/${TOOL}/${name}" ]; then echo "kind=${name}" >> "$GITHUB_OUTPUT"; exit 0; fi
           done
           echo "kind=none" >> "$GITHUB_OUTPUT"
+      - name: Compile its Python
+        # Every .py in the folder is byte-compiled before the self-test runs (Based Elnen, 2026-11-12/13, living spec
+        # L52): a SyntaxError fails the run at once, and its line is kept in the record, never a "finished" tool.
+        if: steps.find.outputs.kind != 'none'
+        timeout-minutes: 1
+        run: |
+          set -o pipefail
+          cd "work/tools/${TOOL}"
+          find . -name '*.py' -not -path '*/.*' -print0 | xargs -0 -r -n1 python3 -m py_compile 2>&1 | tee "$RUNNER_TEMP/out.txt"
       - name: Run its self-test
         if: steps.find.outputs.kind != 'none'
         timeout-minutes: 4
@@ -50,7 +59,7 @@ jobs:
             self_test.mjs) node self_test.mjs ;;
             self_test.sh) bash self_test.sh ;;
             *) exit 2 ;;
-          esac 2>&1 | tee "$RUNNER_TEMP/out.txt"
+          esac 2>&1 | tee -a "$RUNNER_TEMP/out.txt"
       - id: tail
         name: Keep what failed and the last lines it printed
         if: always()
