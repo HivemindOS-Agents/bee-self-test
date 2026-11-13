@@ -6,5 +6,8 @@
   "sha": "4e15739378eedbfd389bdb777d0430de959c5837",
   "at": "2026-11-13T15:53:30Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43457092174",
-  "tail": "ok   5b. malformed stderr names the three bad rows in order\nok   5c. malformed stderr does not name the good row\nFAIL 5d. malformed stdout holds only rows with valid URL and folder -- stdout: '[]\\n'\nok   6a. missing file exits 2\nok   6b. missing file mentions cannot read on stderr\n\nFAILED checks:\n  - FAIL 5d. malformed stdout holds only rows with valid URL and folder -- stdout: '[]\\n'"
+  "tail": "ok   5b. malformed stderr names the three bad rows in order\nok   5c. malformed stderr does not name the good row\nFAIL 5d. malformed stdout holds only rows with valid URL and folder -- stdout: '[]\\n'\nok   6a. missing file exits 2\nok   6b. missing file mentions cannot read on stderr\n\nFAILED checks:\n  - FAIL 5d. malformed stdout holds only rows with valid URL and folder -- stdout: '[]\\n'",
+  "verdict": "failed",
+  "verdict_at": "2026-11-13T16:53:55Z",
+  "verdict_by": "hivemindos"
 }
