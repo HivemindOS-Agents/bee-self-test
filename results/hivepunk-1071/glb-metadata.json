@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-1071",
   "tool": "glb-metadata",
-  "result": "none",
-  "file": "none",
-  "sha": "a84c659b1c6fb5fd322601a3459ba604921a2861",
-  "at": "2026-11-08T07:18:41Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42458250457",
-  "tail": ""
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "4199ec6de09823645b9073e6e2b8ce9bc443bf76",
+  "at": "2026-11-13T06:04:08Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43376086609",
+  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/glb-metadata/self_test.py\", line 121, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/glb-metadata/self_test.py\", line 90, in main\n    assert len(valid_bytes) == valid_length, \"fixture size mismatch\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: fixture size mismatch"
 }
