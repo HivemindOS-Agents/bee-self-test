@@ -1,0 +1,85 @@
+# Reads the frontmatter of every skills/<slug>/SKILL.md in every agent repository of this organisation as YAML, as
+# GitHub and an agent's skill loader read it, and records the result in results/skill-files.json (Based Elnen,
+# 2026-11-12, living spec L46: 17 pinned-copy files failed with "mapping values are not allowed in this context").
+# The regression case runs first: fixtures/skill-files/broken/SKILL.md, the shape that failed, must be caught, and the
+# quoted form the agents service writes since 2026-11-13 must pass; if the check stops catching it, this fails.
+#
+# Nothing in an agent repository is run: its SKILL.md files are only read and parsed (yaml.safe_load). The scan job
+# has read access only; the record job writes results/ and runs no repository content.
+name: skill-files
+on:
+  schedule:
+    - cron: "20 5 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["scripts/check_skill_files.py", "fixtures/skill-files/**", ".github/workflows/skill-files.yml"]
+permissions: {}
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: read
+    outputs:
+      report: ${{ steps.scan.outputs.report }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 -m pip install --quiet pyyaml==6.0.2
+      - name: The regression case
+        run: python3 scripts/check_skill_files.py --fixtures fixtures/skill-files
+      - name: Fetch every agent repository's skills/
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          mkdir -p "$RUNNER_TEMP/repos"
+          gh api --paginate "orgs/${GITHUB_REPOSITORY_OWNER}/repos?per_page=100" --jq '.[] | select(.archived | not) | .name' \
+            | grep -E '^(hivepunk|agent)-[A-Za-z0-9._-]{1,90}$' | while read -r repo; do
+            git clone --quiet --depth 1 --filter=blob:none --sparse "https://github.com/${GITHUB_REPOSITORY_OWNER}/${repo}.git" "$RUNNER_TEMP/repos/${repo}" \
+              && git -C "$RUNNER_TEMP/repos/${repo}" sparse-checkout set skills || echo "could not read ${repo}"
+          done
+      - id: scan
+        name: Read every SKILL.md
+        run: |
+          set +e
+          python3 scripts/check_skill_files.py "$RUNNER_TEMP/repos" > "$RUNNER_TEMP/report.json"
+          status=$?
+          cat "$RUNNER_TEMP/report.json"
+          { echo 'report<<HIVE_SKILL_FILES_END'; head -c 60000 "$RUNNER_TEMP/report.json"; echo; echo 'HIVE_SKILL_FILES_END'; } >> "$GITHUB_OUTPUT"
+          exit $status
+  record:
+    needs: scan
+    if: always() && needs.scan.outputs.report != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Record the result
+        env:
+          REPORT: ${{ needs.scan.outputs.report }}
+          RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -eu
+          mkdir -p results
+          python3 - <<'PY'
+          import json, os, datetime
+          report = json.loads(os.environ["REPORT"])
+          record = {"at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "run": os.environ["RUN"],
+                    "files": report["files"], "bad": report["bad"]}
+          with open("results/skill-files.json", "w") as out:
+              json.dump(record, out, indent=2)
+              out.write("\n")
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/skill-files.json
+          git commit --quiet -m "skill files: $(python3 -c 'import json; d=json.load(open("results/skill-files.json")); print("%d read, %d bad" % (d["files"], len(d["bad"])))')" || exit 0
+          for try in 1 2 3 4 5 6; do
+            git push --quiet && exit 0
+            sleep $((try * 2))
+            git pull --quiet --rebase
+          done
+          exit 1
