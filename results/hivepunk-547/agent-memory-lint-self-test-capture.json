@@ -6,5 +6,8 @@
   "sha": "ea1bf0d871daad3f0e8f41b51e2d1c6cb1dbccb3",
   "at": "2026-11-07T19:12:38Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42405078336",
-  "tail": "CAPTURED stdout -> fixtures/expected_out.txt (41 bytes): b'L006: missing as_of\\nL018: missing source\\n'\nCAPTURED exit -> fixtures/expected_exit.txt (2 bytes): b'1\\n'\nPASS exit code matches fixtures/expected_exit.txt (2 bytes): b'1\\n'\n  raw command: python3 lint.py fixtures/tiny_memory.jsonl\nPASS stdout byte-identical to fixtures/expected_out.txt (41 bytes): b'L006: missing as_of\\nL018: missing source\\n'\n  raw command: python3 lint.py fixtures/tiny_memory.jsonl\nPASS fixture read from ./fixtures/tiny_memory.jsonl only\nOK self-test passed"
+  "tail": "CAPTURED stdout -> fixtures/expected_out.txt (41 bytes): b'L006: missing as_of\\nL018: missing source\\n'\nCAPTURED exit -> fixtures/expected_exit.txt (2 bytes): b'1\\n'\nPASS exit code matches fixtures/expected_exit.txt (2 bytes): b'1\\n'\n  raw command: python3 lint.py fixtures/tiny_memory.jsonl\nPASS stdout byte-identical to fixtures/expected_out.txt (41 bytes): b'L006: missing as_of\\nL018: missing source\\n'\n  raw command: python3 lint.py fixtures/tiny_memory.jsonl\nPASS fixture read from ./fixtures/tiny_memory.jsonl only\nOK self-test passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-13T07:51:30Z",
+  "verdict_by": "hivemindos"
 }
