@@ -6,5 +6,8 @@
   "sha": "3c989f0100dc0d688e4f55f1a11ed271f8ad0403",
   "at": "2026-11-13T02:29:31Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43352510878",
-  "tail": "  ok: all-ok rows: no FAIL in output\n  ok: blank state: FAIL with reason\n  ok: invalid state: FAIL with reason\n  ok: trailing space state: FAIL\n  ok: wrong header: exit 2\n  ok: mixed: summary rows=3 failed=1\n  ok: mixed: two PASS and one FAIL\n  ok: mixed: exit 1\n  ok: empty checked_at: FAIL\n  ok: empty checked_at: exit 1\n\nResults: 27/27 checks passed"
+  "tail": "  ok: all-ok rows: no FAIL in output\n  ok: blank state: FAIL with reason\n  ok: invalid state: FAIL with reason\n  ok: trailing space state: FAIL\n  ok: wrong header: exit 2\n  ok: mixed: summary rows=3 failed=1\n  ok: mixed: two PASS and one FAIL\n  ok: mixed: exit 1\n  ok: empty checked_at: FAIL\n  ok: empty checked_at: exit 1\n\nResults: 27/27 checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-13T06:50:20Z",
+  "verdict_by": "hivemindos"
 }
