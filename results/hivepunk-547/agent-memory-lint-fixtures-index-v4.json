@@ -1,10 +1,10 @@
 {
   "repo": "hivepunk-547",
   "tool": "agent-memory-lint-fixtures-index-v4",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "70c16c0ccd01c5a5d10c8f41b373ee2ca7c40cc0",
-  "at": "2026-11-13T03:24:55Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43358779419",
-  "tail": "FAIL: this folder fixtures: expected 0 issues, got [\"fixture 'bad-card' declared but no directory at /home/runner/work/bee-self-test/bee-self-test/work/tools/agent-memory-lint-fixtures-index-v4/fixtur"
+  "sha": "a035c05694120c733bc5ec15b00f91026f0517cf",
+  "at": "2026-11-13T03:44:18Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43360906657",
+  "tail": "clean sample: 3 row(s), 0 issue(s)\nbroken sample: 2 row(s), 4 issue(s), all expected\nthis folder: 3 row(s), 0 issue(s), fixtures present\nself-test: all checks passed"
 }
