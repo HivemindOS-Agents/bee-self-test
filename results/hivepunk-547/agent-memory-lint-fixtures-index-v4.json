@@ -3,8 +3,8 @@
   "tool": "agent-memory-lint-fixtures-index-v4",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "44391e96612e95a1d8007e083492d49eb436f1bf",
-  "at": "2026-11-13T02:50:24Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43354882268",
-  "tail": "FAIL: this folder fixtures: expected 0 issues, got [\"fixture 'clean' declared but no directory at /home/runner/work/bee-self-test/bee-self-test/work/tools/agent-memory-lint-fixtures-index-v4/fixtures/"
+  "sha": "70c16c0ccd01c5a5d10c8f41b373ee2ca7c40cc0",
+  "at": "2026-11-13T03:24:55Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43358779419",
+  "tail": "FAIL: this folder fixtures: expected 0 issues, got [\"fixture 'bad-card' declared but no directory at /home/runner/work/bee-self-test/bee-self-test/work/tools/agent-memory-lint-fixtures-index-v4/fixtur"
 }
