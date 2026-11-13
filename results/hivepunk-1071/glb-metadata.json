@@ -1,13 +1,10 @@
 {
   "repo": "hivepunk-1071",
   "tool": "glb-metadata",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "4199ec6de09823645b9073e6e2b8ce9bc443bf76",
-  "at": "2026-11-13T06:04:08Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43376086609",
-  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/glb-metadata/self_test.py\", line 121, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/glb-metadata/self_test.py\", line 90, in main\n    assert len(valid_bytes) == valid_length, \"fixture size mismatch\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: fixture size mismatch",
-  "verdict": "failed",
-  "verdict_at": "2026-11-13T06:50:20Z",
-  "verdict_by": "hivemindos"
+  "sha": "b72a7b4de29b65a657845e20fee138549329dced",
+  "at": "2026-11-13T09:04:01Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43398181419",
+  "tail": "ok: bad magic: fixture is 12 bytes\nok: bad magic: tool reports wrong magic\nok: bad magic: check_glb returns False\nok: length mismatch: fixture still writes 24 bytes\nok: length mismatch: tool reports the mismatch\nok: length mismatch: check_glb returns False\n\nResults: 13/13 checks passed"
 }
