@@ -3,8 +3,8 @@
   "tool": "publish-attribution-run-lines-package",
   "result": "success",
   "file": "self_test.py",
-  "sha": "a74f0fd1aeedf402f650075f9f6b6e27bb60374f",
-  "at": "2026-11-05T12:33:58Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42028187813",
+  "sha": "f624042d599d92c8cadc0b85dc57b6e3da70cf8a",
+  "at": "2026-11-13T05:44:51Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43373994656",
   "tail": "PASS run_lines.csv has 8 distinct source pages\nPASS fixture_pairs.csv names 4 pairs\nPASS fixture_pairs.csv has exactly 2 quoted expected lines\nPASS what it is | PASS columns | PASS how it was made | PASS licence | PASS what I could not check | PASS unverified markers (shown 2 time(s)) | card_lint: all 6 honesty sections present\nPASS what it is | PASS columns | PASS how it was made | FAIL licence | PASS what I could not check | FAIL unverified markers | card_lint: 2 section(s) missing: licence, unverified markers\nPASS expected_line for missing_two matches produced output\nPASS expected_line for passing_card matches produced output\nself_test: 0 problems"
 }
