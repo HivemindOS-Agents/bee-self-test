@@ -6,5 +6,8 @@
   "sha": "133bd01952d7b98d6b175a8bc14ca43cf2bc0612",
   "at": "2026-11-03T01:02:55Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41557082532",
-  "tail": "ok: README.md card found\nok: rows.csv found\nok: shipped card + rows.csv pass validation\nok: an unopened row with a filled read_status is rejected\nok: snapshot fields on an unopened row are rejected\nok: a card that declares a licence is rejected"
+  "tail": "ok: README.md card found\nok: rows.csv found\nok: shipped card + rows.csv pass validation\nok: an unopened row with a filled read_status is rejected\nok: snapshot fields on an unopened row are rejected\nok: a card that declares a licence is rejected",
+  "verdict": "passed",
+  "verdict_at": "2026-11-13T09:35:19Z",
+  "verdict_by": "hivemindos"
 }
