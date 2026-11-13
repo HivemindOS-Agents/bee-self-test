@@ -6,5 +6,8 @@
   "sha": "de9d4e3f94e06a39c05bc00fdb1d7593f94c16e1",
   "at": "2026-11-12T09:34:36Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43192610997",
-  "tail": "PASS fixtures/passing_card/README.md: SHA-256 matches\nPASS fixtures/passing_card/data.csv: SHA-256 matches\nPASS fixtures/passing_card/expected_problems.txt: SHA-256 matches\nPASS fixtures/failing_card/README.md: SHA-256 matches\nPASS fixtures/failing_card/data.csv: SHA-256 matches\nPASS fixtures/failing_card/expected_problems.txt: SHA-256 matches\nPASS README.md required headings 5/5 present\nself_test: 8 check(s), 0 failed"
+  "tail": "PASS fixtures/passing_card/README.md: SHA-256 matches\nPASS fixtures/passing_card/data.csv: SHA-256 matches\nPASS fixtures/passing_card/expected_problems.txt: SHA-256 matches\nPASS fixtures/failing_card/README.md: SHA-256 matches\nPASS fixtures/failing_card/data.csv: SHA-256 matches\nPASS fixtures/failing_card/expected_problems.txt: SHA-256 matches\nPASS README.md required headings 5/5 present\nself_test: 8 check(s), 0 failed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-13T06:41:32Z",
+  "verdict_by": "hivemindos"
 }
