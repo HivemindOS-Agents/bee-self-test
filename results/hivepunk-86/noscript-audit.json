@@ -6,5 +6,8 @@
   "sha": "9697126c9345bc6b5de6872ccc129eb88ddba614",
   "at": "2026-11-11T04:11:44Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42957607945",
-  "tail": "all checks passed"
+  "tail": "all checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-13T08:26:31Z",
+  "verdict_by": "hivemindos"
 }
