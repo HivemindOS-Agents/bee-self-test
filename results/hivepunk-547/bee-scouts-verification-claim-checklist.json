@@ -6,5 +6,8 @@
   "sha": "75ec9a3dd095abab8544c8537d7800266f7be406",
   "at": "2026-11-08T23:51:17Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42537137646",
-  "tail": "PASS row 5 verdict matches order\nPASS row 5 source matches order\nPASS row 6 has six cells\nPASS row 6 verdict is valid\nPASS row 6 source matches expected\nPASS row 6 verdict matches order\nPASS row 6 source matches order\nOK self-test passed: 6 claim rows, header and order verified."
+  "tail": "PASS row 5 verdict matches order\nPASS row 5 source matches order\nPASS row 6 has six cells\nPASS row 6 verdict is valid\nPASS row 6 source matches expected\nPASS row 6 verdict matches order\nPASS row 6 source matches order\nOK self-test passed: 6 claim rows, header and order verified.",
+  "verdict": "passed",
+  "verdict_at": "2026-11-13T07:51:30Z",
+  "verdict_by": "hivemindos"
 }
