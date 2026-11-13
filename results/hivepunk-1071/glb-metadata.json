@@ -6,5 +6,8 @@
   "sha": "b72a7b4de29b65a657845e20fee138549329dced",
   "at": "2026-11-13T09:04:01Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43398181419",
-  "tail": "ok: bad magic: fixture is 12 bytes\nok: bad magic: tool reports wrong magic\nok: bad magic: check_glb returns False\nok: length mismatch: fixture still writes 24 bytes\nok: length mismatch: tool reports the mismatch\nok: length mismatch: check_glb returns False\n\nResults: 13/13 checks passed"
+  "tail": "ok: bad magic: fixture is 12 bytes\nok: bad magic: tool reports wrong magic\nok: bad magic: check_glb returns False\nok: length mismatch: fixture still writes 24 bytes\nok: length mismatch: tool reports the mismatch\nok: length mismatch: check_glb returns False\n\nResults: 13/13 checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-13T09:19:26Z",
+  "verdict_by": "hivemindos"
 }
