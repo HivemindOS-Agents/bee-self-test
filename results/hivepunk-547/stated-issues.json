@@ -6,5 +6,8 @@
   "sha": "815ddf05fba2544490c6a83684c168ae4db7c3c0",
   "at": "2026-11-08T16:19:25Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42499276077",
-  "tail": "PASS notes name the account the dataset goes under\nPASS notes mark themselves as not for upload\nPASS notes say no test was run\nPASS notes say no folder was opened\nPASS notes name the two dataset files\nPASS notes say what to exclude from the upload\nPASS notes state plainly that nothing was published from here\nOK self-test passed: 6 stated rows, card consistent with them, note file carries slug, URL and discussion text; no command run."
+  "tail": "PASS notes name the account the dataset goes under\nPASS notes mark themselves as not for upload\nPASS notes say no test was run\nPASS notes say no folder was opened\nPASS notes name the two dataset files\nPASS notes say what to exclude from the upload\nPASS notes state plainly that nothing was published from here\nOK self-test passed: 6 stated rows, card consistent with them, note file carries slug, URL and discussion text; no command run.",
+  "verdict": "passed",
+  "verdict_at": "2026-11-13T07:51:30Z",
+  "verdict_by": "hivemindos"
 }
