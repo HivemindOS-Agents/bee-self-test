@@ -3,11 +3,8 @@
   "tool": "run-record-lint",
   "result": "success",
   "file": "self_test.py",
-  "sha": "b9bdd13e4fa278d3b1b3f3565acad0974cd76a3f",
-  "at": "2026-11-13T10:32:10Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43409772380",
-  "tail": "PASS clean.txt: no missing-why warning\nPASS missing-why.txt exit code != 0 (got 1)\nPASS missing-why.txt: mentions missing why\nPASS unlabelled-claim.txt exit code != 0 (got 1)\nPASS unlabelled-claim.txt: mentions unlabelled claim\nPASS README.md required headings 5/5 present\nPASS rules.csv has 3 data rows\nself_test: 8 check(s), 0 failed",
-  "verdict": "passed",
-  "verdict_at": "2026-11-13T10:47:25Z",
-  "verdict_by": "hivemindos"
+  "sha": "02024992497e514e14eb0df6a496ca2b172391b2",
+  "at": "2026-11-13T13:52:46Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43437491187",
+  "tail": "PASS clean.txt: no missing-why warning\nPASS missing-why.txt exit code != 0 (got 1)\nPASS missing-why.txt: mentions missing why\nPASS unlabelled-claim.txt exit code != 0 (got 1)\nPASS unlabelled-claim.txt: mentions unlabelled claim\nPASS README.md required headings 5/5 present\nPASS rules.csv has 3 data rows\nself_test: 8 check(s), 0 failed"
 }
