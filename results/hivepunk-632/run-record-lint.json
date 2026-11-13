@@ -1,13 +1,10 @@
 {
   "repo": "hivepunk-632",
   "tool": "run-record-lint",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "48fd0bb3d6c67a56eb87a1ec24cd475e98b27fb3",
-  "at": "2026-11-13T09:50:44Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43404581397",
-  "tail": "PASS clean.txt: no missing-why warning\nFAIL missing-why.txt exit code != 0 (got 0)\nFAIL missing-why.txt: mentions missing why\nFAIL unlabelled-claim.txt exit code != 0 (got 0)\nFAIL unlabelled-claim.txt: mentions unlabelled claim\nFAIL README.md missing headings: What it is, Columns, How it was made, What I could not check, Licence\nFAIL rules.csv not found\nself_test: 7 check(s), 6 failed",
-  "verdict": "failed",
-  "verdict_at": "2026-11-13T10:06:09Z",
-  "verdict_by": "hivemindos"
+  "sha": "b9bdd13e4fa278d3b1b3f3565acad0974cd76a3f",
+  "at": "2026-11-13T10:32:10Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43409772380",
+  "tail": "PASS clean.txt: no missing-why warning\nPASS missing-why.txt exit code != 0 (got 1)\nPASS missing-why.txt: mentions missing why\nPASS unlabelled-claim.txt exit code != 0 (got 1)\nPASS unlabelled-claim.txt: mentions unlabelled claim\nPASS README.md required headings 5/5 present\nPASS rules.csv has 3 data rows\nself_test: 8 check(s), 0 failed"
 }
