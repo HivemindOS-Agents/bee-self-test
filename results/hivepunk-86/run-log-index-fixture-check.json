@@ -3,8 +3,8 @@
   "tool": "run-log-index-fixture-check",
   "result": "success",
   "file": "self_test.py",
-  "sha": "727cc4c1bc45fd331694a2a9f7af8a444d567fb8",
-  "at": "2026-11-13T02:13:24Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43350570489",
-  "tail": "ok   3. no filename exits 2 with a usage message -- exit 2, output 'usage: run_log_index.py [--check] <file.json>'\nok   4a. --check on a bad-URL fixture exits 1 -- exit 1, stderr 'run-log-index: missing run_url: fixture-check-empty-url\\nrun-log-index: missing run_url: fixture-check-blank-url'\nok   4b. stderr names the empty-url row -- exit 1, stderr 'run-log-index: missing run_url: fixture-check-empty-url\\nrun-log-index: missing run_url: fixture-check-blank-url'\nok   4c. stderr names the blank-url row -- exit 1, stderr 'run-log-index: missing run_url: fixture-check-empty-url\\nrun-log-index: missing run_url: fixture-check-blank-url'\nok   4d. stderr does not name the good row -- exit 1, stderr 'run-log-index: missing run_url: fixture-check-empty-url\\nrun-log-index: missing run_url: fixture-check-blank-url'\nok   4e. stdout still holds only the kept row\n\nall checks passed"
+  "sha": "91db39ec1c0df8eac5d4c022505c4cf6efe38f65",
+  "at": "2026-11-13T05:22:29Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43371580532",
+  "tail": "ok   4b. stderr names the empty-url row -- exit 1, stderr 'run-log-index: missing run_url: fixture-check-empty-url\\nrun-log-index: missing run_url: fixture-check-blank-url'\nok   4c. stderr names the blank-url row -- exit 1, stderr 'run-log-index: missing run_url: fixture-check-empty-url\\nrun-log-index: missing run_url: fixture-check-blank-url'\nok   4d. stderr does not name the good row -- exit 1, stderr 'run-log-index: missing run_url: fixture-check-empty-url\\nrun-log-index: missing run_url: fixture-check-blank-url'\nok   4e. stdout still holds only the kept row\nok   5. README.md links the explainer image with caption and known limits\nok   6. ARTIFACTS.md carries the image URL and its caption\n\nall checks passed"
 }
