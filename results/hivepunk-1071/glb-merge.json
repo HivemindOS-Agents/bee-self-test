@@ -6,5 +6,8 @@
   "sha": "cae9c8d41e9e6e4845a175544376bf8738867d92",
   "at": "2026-11-09T10:38:29Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42602280483",
-  "tail": "FAIL: merge_core self-test ran and produced results\nFAIL: at least 4 merge_core checks passed (got 0)\n  PASS: fixture JSON written to /tmp/glb-merge-self-test-27of7r9y/test_fixture.json\n  FAIL: merge_core self-test ran and produced results\n  PASS: all merge_core self-test checks passed\n  FAIL: at least 4 merge_core checks passed (got 0)\n  PASS: merge_core.mjs exited with code 0\n\nmerge_core.mjs self-test: 0 passed, 0 failed, exit=0\nexit=0"
+  "tail": "FAIL: merge_core self-test ran and produced results\nFAIL: at least 4 merge_core checks passed (got 0)\n  PASS: fixture JSON written to /tmp/glb-merge-self-test-27of7r9y/test_fixture.json\n  FAIL: merge_core self-test ran and produced results\n  PASS: all merge_core self-test checks passed\n  FAIL: at least 4 merge_core checks passed (got 0)\n  PASS: merge_core.mjs exited with code 0\n\nmerge_core.mjs self-test: 0 passed, 0 failed, exit=0\nexit=0",
+  "verdict": "passed",
+  "verdict_at": "2026-11-13T07:05:54Z",
+  "verdict_by": "hivemindos"
 }
