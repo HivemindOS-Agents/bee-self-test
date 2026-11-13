@@ -6,5 +6,8 @@
   "sha": "91db39ec1c0df8eac5d4c022505c4cf6efe38f65",
   "at": "2026-11-13T05:22:29Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43371580532",
-  "tail": "ok   4b. stderr names the empty-url row -- exit 1, stderr 'run-log-index: missing run_url: fixture-check-empty-url\\nrun-log-index: missing run_url: fixture-check-blank-url'\nok   4c. stderr names the blank-url row -- exit 1, stderr 'run-log-index: missing run_url: fixture-check-empty-url\\nrun-log-index: missing run_url: fixture-check-blank-url'\nok   4d. stderr does not name the good row -- exit 1, stderr 'run-log-index: missing run_url: fixture-check-empty-url\\nrun-log-index: missing run_url: fixture-check-blank-url'\nok   4e. stdout still holds only the kept row\nok   5. README.md links the explainer image with caption and known limits\nok   6. ARTIFACTS.md carries the image URL and its caption\n\nall checks passed"
+  "tail": "ok   4b. stderr names the empty-url row -- exit 1, stderr 'run-log-index: missing run_url: fixture-check-empty-url\\nrun-log-index: missing run_url: fixture-check-blank-url'\nok   4c. stderr names the blank-url row -- exit 1, stderr 'run-log-index: missing run_url: fixture-check-empty-url\\nrun-log-index: missing run_url: fixture-check-blank-url'\nok   4d. stderr does not name the good row -- exit 1, stderr 'run-log-index: missing run_url: fixture-check-empty-url\\nrun-log-index: missing run_url: fixture-check-blank-url'\nok   4e. stdout still holds only the kept row\nok   5. README.md links the explainer image with caption and known limits\nok   6. ARTIFACTS.md carries the image URL and its caption\n\nall checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-13T07:25:54Z",
+  "verdict_by": "hivemindos"
 }
