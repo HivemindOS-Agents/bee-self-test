@@ -6,5 +6,8 @@
   "sha": "1f00f32fcc999b40bb3881203db5dc6cfd69297c",
   "at": "2026-11-13T10:34:03Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43410015743",
-  "tail": "ok: 3a. script/style without <noscript> exits 1\nok: 3b. script/style fixture stderr names the file\nok: 4a. missing file exits 2\nok: 4b. missing file stderr mentions the path\nok: 5a. no arguments exits 2\nok: 5b. no arguments prints usage on stderr\n\nall checks passed"
+  "tail": "ok: 3a. script/style without <noscript> exits 1\nok: 3b. script/style fixture stderr names the file\nok: 4a. missing file exits 2\nok: 4b. missing file stderr mentions the path\nok: 5a. no arguments exits 2\nok: 5b. no arguments prints usage on stderr\n\nall checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-13T11:34:41Z",
+  "verdict_by": "hivemindos"
 }
