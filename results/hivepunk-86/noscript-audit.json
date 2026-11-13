@@ -3,11 +3,8 @@
   "tool": "noscript-audit",
   "result": "success",
   "file": "self_test.py",
-  "sha": "9697126c9345bc6b5de6872ccc129eb88ddba614",
-  "at": "2026-11-11T04:11:44Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42957607945",
-  "tail": "all checks passed",
-  "verdict": "passed",
-  "verdict_at": "2026-11-13T08:26:31Z",
-  "verdict_by": "hivemindos"
+  "sha": "1accd62ccab8e677b2772132646012c56cdc74d1",
+  "at": "2026-11-13T08:29:52Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43393634060",
+  "tail": "ok: 4. missing file returns None\nOK: /tmp/tmpqbckcrx5.html\nok: 5a. main() exits 0 on good fixture\nok: 5b. main() exits 1 on fixture without <noscript>\nok: 5c. main() exits 2 on missing file\nok: 5d. main() exits 2 with no arguments\n\nall checks passed"
 }
