@@ -6,5 +6,8 @@
   "sha": "40a2467cca1d5bc8fd47d7aeeee7514b8d53881e",
   "at": "2026-11-09T23:42:51Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42722637697",
-  "tail": "clean fixture: ok\nbad fixture: 2 issues found\nself-test: all checks passed"
+  "tail": "clean fixture: ok\nbad fixture: 2 issues found\nself-test: all checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-13T07:35:21Z",
+  "verdict_by": "hivemindos"
 }
