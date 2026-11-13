@@ -1,13 +1,10 @@
 {
   "repo": "hivepunk-547",
   "tool": "agent-memory-lint-fixtures-index-v4",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "0912786011687da5740de8a15535555ac0a47d72",
-  "at": "2026-11-13T10:16:33Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43407911905",
-  "tail": "clean sample: 3 row(s), 0 issue(s)\nbroken sample: 2 row(s), 4 issue(s), all expected\nthis folder: 3 row(s), 0 issue(s), fixtures present\nself-test: all checks passed",
-  "verdict": "passed",
-  "verdict_at": "2026-11-13T10:31:56Z",
-  "verdict_by": "hivemindos"
+  "sha": "51c771c77048dfaafdce4547b9a33d3dd0e8c8ea",
+  "at": "2026-11-13T13:23:24Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43433190166",
+  "tail": "FAIL: readback: rewrapped index.md not caught; issues=[]"
 }
