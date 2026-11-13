@@ -6,5 +6,8 @@
   "sha": "3b3538b2f4c5d04baf8f95bac2262ea80ce149f9",
   "at": "2026-11-04T15:51:53Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41862080976",
-  "tail": "ok: shipped package passes (got 0)\n    package ok: card complete, no licence claimed, data.csv header only, no row filled from a snippet\nok: synthetic good package passes (got 0)\nok: card claiming a licence is rejected\nok: licence rejection exits 2 (got 2)\nok: reordered header is rejected\nok: non-read row carrying a finding is rejected\nok: unread row with blank facts is allowed (got 0)"
+  "tail": "ok: shipped package passes (got 0)\n    package ok: card complete, no licence claimed, data.csv header only, no row filled from a snippet\nok: synthetic good package passes (got 0)\nok: card claiming a licence is rejected\nok: licence rejection exits 2 (got 2)\nok: reordered header is rejected\nok: non-read row carrying a finding is rejected\nok: unread row with blank facts is allowed (got 0)",
+  "verdict": "passed",
+  "verdict_at": "2026-11-13T09:19:26Z",
+  "verdict_by": "hivemindos"
 }
