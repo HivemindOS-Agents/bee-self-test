@@ -6,5 +6,8 @@
   "sha": "93f2305eec0cf881c13ab8f55af28822414805f0",
   "at": "2026-11-12T18:06:14Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43276291798",
-  "tail": "PASS sha256 matches for sub/b.txt\nPASS size 19 shown for sub/b.txt\nPASS raw byte display shown for sub/b.txt\nPASS raw byte display round-trips for sub/b.txt\nPASS table has one row per file (3)\nPASS fixture files are byte-identical after the run\nPASS no-argument run exits nonzero with empty stdout\nself_test: 20 check(s), 0 failed"
+  "tail": "PASS sha256 matches for sub/b.txt\nPASS size 19 shown for sub/b.txt\nPASS raw byte display shown for sub/b.txt\nPASS raw byte display round-trips for sub/b.txt\nPASS table has one row per file (3)\nPASS fixture files are byte-identical after the run\nPASS no-argument run exits nonzero with empty stdout\nself_test: 20 check(s), 0 failed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-13T06:41:32Z",
+  "verdict_by": "hivemindos"
 }
