@@ -6,5 +6,8 @@
   "sha": "1e2fcd3869a2988b2baba73e9d672ed1f6528bc9",
   "at": "2026-11-13T10:57:27Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43413105426",
-  "tail": "PASS: no unexpected dataset identifiers in column 1\nPASS: all rows have non-empty read_status\nPASS: README mentions all three dataset cards\nPASS: check_live --offline exits 0 and reports every live value NOT_READ\nPASS: check_live exits 0 with 'verdict match' when live sizes equal local sizes\nPASS: check_live exits 1 with 'verdict MISMATCH' when a live size differs\nPASS: check_live --bogus exits 2 with a usage line\nPASS: all checks succeeded"
+  "tail": "PASS: no unexpected dataset identifiers in column 1\nPASS: all rows have non-empty read_status\nPASS: README mentions all three dataset cards\nPASS: check_live --offline exits 0 and reports every live value NOT_READ\nPASS: check_live exits 0 with 'verdict match' when live sizes equal local sizes\nPASS: check_live exits 1 with 'verdict MISMATCH' when a live size differs\nPASS: check_live --bogus exits 2 with a usage line\nPASS: all checks succeeded",
+  "verdict": "passed",
+  "verdict_at": "2026-11-13T11:57:59Z",
+  "verdict_by": "hivemindos"
 }
