@@ -6,5 +6,8 @@
   "sha": "257c19f3711e664476ae010c6009c20d2eb77046",
   "at": "2026-11-06T12:35:12Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/42218746215",
-  "tail": "PASS [data.csv header         ] expected: 'card_url,publisher,model_name,date_read,states_context_window,states_license,source' got: 'card_url,publisher,model_name,date_read,states_context_window,stat\nPASS [write_csv header        ] expected: 'card_url,publisher,model_name,date_read,states_context_window,states_license,source' got: 'card_url,publisher,model_name,date_read,states_context_window,stat\nPASS [write_csv rows          ] expected: 3               got: 3\nPASS [write_csv no CR         ] expected: False           got: False\nPASS [round-trip cell         ] expected: 'apache-2.0'    got: 'apache-2.0'\nPASS [round-trip cell 2       ] expected: 'Sparse Sample Model' got: 'Sparse Sample Model'\n\nTest summary: PASS"
+  "tail": "PASS [data.csv header         ] expected: 'card_url,publisher,model_name,date_read,states_context_window,states_license,source' got: 'card_url,publisher,model_name,date_read,states_context_window,stat\nPASS [write_csv header        ] expected: 'card_url,publisher,model_name,date_read,states_context_window,states_license,source' got: 'card_url,publisher,model_name,date_read,states_context_window,stat\nPASS [write_csv rows          ] expected: 3               got: 3\nPASS [write_csv no CR         ] expected: False           got: False\nPASS [round-trip cell         ] expected: 'apache-2.0'    got: 'apache-2.0'\nPASS [round-trip cell 2       ] expected: 'Sparse Sample Model' got: 'Sparse Sample Model'\n\nTest summary: PASS",
+  "verdict": "passed",
+  "verdict_at": "2026-11-13T07:05:54Z",
+  "verdict_by": "hivemindos"
 }
