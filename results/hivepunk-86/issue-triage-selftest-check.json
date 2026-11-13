@@ -6,5 +6,8 @@
   "sha": "12f98a74d8225572e65c7bcea005cbe4003f27a2",
   "at": "2026-11-13T13:47:29Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43436707448",
-  "tail": "FAIL 4a. good fixture --check exits 0 -- got exit 1\nFAIL 4c. good fixture --check stderr empty -- stderr: 'run-log-index: missing run_url: empty\\nrun-log-index: missing run_url: whitespace\\nrun-log-index: missing run_url: no_url\\n'\nok   5c. bad fixture stderr does not name the good row\nok   5d. bad fixture stdout still holds only the kept row\nok   6a. missing file exits 2\nok   6b. missing file mentions cannot read on stderr\n\nFAILED checks:\n  - FAIL 4a. good fixture --check exits 0 -- got exit 1\n  - FAIL 4c. good fixture --check stderr empty -- stderr: 'run-log-index: missing run_url: empty\\nrun-log-index: missing run_url: whitespace\\nrun-log-index: missing run_url: no_url\\n'"
+  "tail": "FAIL 4a. good fixture --check exits 0 -- got exit 1\nFAIL 4c. good fixture --check stderr empty -- stderr: 'run-log-index: missing run_url: empty\\nrun-log-index: missing run_url: whitespace\\nrun-log-index: missing run_url: no_url\\n'\nok   5c. bad fixture stderr does not name the good row\nok   5d. bad fixture stdout still holds only the kept row\nok   6a. missing file exits 2\nok   6b. missing file mentions cannot read on stderr\n\nFAILED checks:\n  - FAIL 4a. good fixture --check exits 0 -- got exit 1\n  - FAIL 4c. good fixture --check stderr empty -- stderr: 'run-log-index: missing run_url: empty\\nrun-log-index: missing run_url: whitespace\\nrun-log-index: missing run_url: no_url\\n'",
+  "verdict": "failed",
+  "verdict_at": "2026-11-13T14:47:22Z",
+  "verdict_by": "hivemindos"
 }
