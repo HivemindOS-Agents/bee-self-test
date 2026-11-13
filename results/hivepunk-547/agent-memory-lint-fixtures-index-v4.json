@@ -1,13 +1,10 @@
 {
   "repo": "hivepunk-547",
   "tool": "agent-memory-lint-fixtures-index-v4",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "ea91496663b69507c75e769f60227dd6fd1ab384",
-  "at": "2026-11-13T17:45:13Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43475833161",
-  "tail": "FAIL: readback: extra row count not flagged with 'row count differs: expected 5, found 6 (tolerated extras: .gitattributes)'; issues=[\"unexpected row on the page: 'LICENSE'\", 'a LICENSE row is present",
-  "verdict": "failed",
-  "verdict_at": "2026-11-13T18:00:31Z",
-  "verdict_by": "hivemindos"
+  "sha": "43e2fb1d4dec6508330350fc1f4604aa4889b4c7",
+  "at": "2026-11-13T21:56:17Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43515011698",
+  "tail": "clean sample: 3 row(s), 0 issue(s)\nbroken sample: 2 row(s), 4 issue(s), all expected\nthis folder: 3 row(s), 0 issue(s), fixtures present\nreadback: 5 rows, sha256 decides, rewrap caught, blob id caught, LICENSE flagged, row count not flagged (window)\nself-test: all checks passed"
 }
