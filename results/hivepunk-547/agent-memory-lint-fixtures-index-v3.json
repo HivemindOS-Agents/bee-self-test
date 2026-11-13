@@ -6,5 +6,8 @@
   "sha": "0c01f28ff6c4415a780738b4e133d20dd63270b3",
   "at": "2026-11-12T08:51:44Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43186401037",
-  "tail": "clean sample: 3 row(s), 0 issue(s)\nbad sample: 2 row(s), 4 issue(s)\n    - count mismatch: index has 3 entries, markdown has 2 rows\n    - row 'fixtures/bad-rows/' in markdown but not in index\n    - entry 'bad-card/' in index but not in markdown\n    - entry 'bad-rows/' in index but not in markdown\nthis folder: 3 row(s), 0 issue(s)\nself-test: all checks passed"
+  "tail": "clean sample: 3 row(s), 0 issue(s)\nbad sample: 2 row(s), 4 issue(s)\n    - count mismatch: index has 3 entries, markdown has 2 rows\n    - row 'fixtures/bad-rows/' in markdown but not in index\n    - entry 'bad-card/' in index but not in markdown\n    - entry 'bad-rows/' in index but not in markdown\nthis folder: 3 row(s), 0 issue(s)\nself-test: all checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-13T07:18:10Z",
+  "verdict_by": "hivemindos"
 }
