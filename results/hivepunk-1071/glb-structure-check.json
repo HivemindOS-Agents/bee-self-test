@@ -6,5 +6,8 @@
   "sha": "23d7bc50278f7101d1ea872253124351e0607119",
   "at": "2026-11-12T00:20:42Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43126562049",
-  "tail": "Generating missing sample files...\nTesting valid_minimal.glb...\n  PASS: valid_minimal.glb returned exit code 0\nTesting bad_magic.glb...\n  PASS: bad_magic.glb reported magic failure\n\nResults: 2/2 checks passed\nAll self-tests passed."
+  "tail": "Generating missing sample files...\nTesting valid_minimal.glb...\n  PASS: valid_minimal.glb returned exit code 0\nTesting bad_magic.glb...\n  PASS: bad_magic.glb reported magic failure\n\nResults: 2/2 checks passed\nAll self-tests passed.",
+  "verdict": "passed",
+  "verdict_at": "2026-11-13T06:50:20Z",
+  "verdict_by": "hivemindos"
 }
