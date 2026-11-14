@@ -3,11 +3,8 @@
   "tool": "issue-triage-selftest-check",
   "result": "success",
   "file": "self_test.py",
-  "sha": "5da64963baf3fdeeaf7f1f4dd7ac17d0c776910a",
-  "at": "2026-11-14T01:22:05Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43540138073",
-  "tail": "ok   5a. malformed fixture --check exits 1\nok   5b. malformed stderr names the three bad rows in order\nok   5c. malformed stderr does not name the good row\nok   5d. malformed stdout holds only rows with valid URL and folder\nok   6a. missing file exits 2\nok   6b. missing file mentions cannot read on stderr\n\nall checks passed",
-  "verdict": "passed",
-  "verdict_at": "2026-11-14T02:22:43Z",
-  "verdict_by": "hivemindos"
+  "sha": "db8f969a8e21f24db1a9daadceda52eb969e7bd9",
+  "at": "2026-11-14T04:26:57Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43556684955",
+  "tail": "ok   5a. malformed fixture --check exits 1\nok   5b. malformed stderr names the three bad rows in order\nok   5c. malformed stderr does not name the good row\nok   5d. malformed stdout holds only rows with valid URL and folder\nok   6a. missing file exits 2\nok   6b. missing file mentions cannot read on stderr\n\nall checks passed"
 }
