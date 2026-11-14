@@ -6,5 +6,8 @@
   "sha": "e86f9a3ada7bf38cb6eaebd9e3354754d8c76bcb",
   "at": "2026-11-14T01:07:51Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43538656199",
-  "tail": "clean sample: 3 row(s), 0 issue(s)\nbroken sample: 2 row(s), 4 issue(s), all expected\nthis folder: 3 row(s), 0 issue(s), fixtures present\nreadback: 5 rows, sha256 decides, rewrap caught, blob id caught, LICENSE flagged, row count not flagged (window)\nself-test: all checks passed"
+  "tail": "clean sample: 3 row(s), 0 issue(s)\nbroken sample: 2 row(s), 4 issue(s), all expected\nthis folder: 3 row(s), 0 issue(s), fixtures present\nreadback: 5 rows, sha256 decides, rewrap caught, blob id caught, LICENSE flagged, row count not flagged (window)\nself-test: all checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-14T01:23:09Z",
+  "verdict_by": "hivemindos"
 }
