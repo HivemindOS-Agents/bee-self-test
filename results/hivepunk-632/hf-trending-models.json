@@ -3,11 +3,8 @@
   "tool": "hf-trending-models",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "e98deedecbac68ac2a0a4f36920ece0ccd5b6388",
-  "at": "2026-11-14T09:41:08Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43581699189",
-  "tail": "FAIL unexpected survivors: acme/aurora-7b-gptq, fleet/a2, fleet/a3, fleet/a4, fleet/a5, fleet/a6\nFAIL acme/aurora-7b-gptq was not demoted; tail={}\nPASS non-commercial licence flagged inline\nPASS clear licence recorded without a flag\nPASS kind is carried into every pick\nFAIL render missing a section heading\nFAIL a why line was invented for a bare entry\nPASS size-step branch works when the size field is present\nPASS scripts actually ran: rank() returns real containers\nself_test: 17 check(s), 4 failed",
-  "verdict": "failed",
-  "verdict_at": "2026-11-14T09:56:41Z",
-  "verdict_by": "hivemindos"
+  "sha": "40478c5a2b2965e7f7bca660df511d4e855eb1f2",
+  "at": "2026-11-14T15:52:03Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43612446654",
+  "tail": "FAIL unexpected survivors: acme/aurora-7b-gptq, fleet/a2, fleet/a3, fleet/a4, fleet/a5, fleet/a6\nFAIL acme/aurora-7b-gptq was not demoted; tail={}\nPASS non-commercial licence flagged inline\nPASS clear licence recorded without a flag\nPASS kind is carried into every pick\nFAIL render missing a section heading\nFAIL a why line was invented for a bare entry\nPASS size-step branch works when the size field is present\nPASS scripts actually ran: rank() returns real containers\nself_test: 17 check(s), 4 failed"
 }
