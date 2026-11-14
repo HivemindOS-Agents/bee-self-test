@@ -1,13 +1,10 @@
 {
   "repo": "hivepunk-547",
   "tool": "agent-memory-lint-fixtures-index-v4",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "73c8d8c2da7de98583899a76f46bc032a1e788b1",
-  "at": "2026-11-14T12:30:43Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43595168016",
-  "tail": "FAIL: this folder fixtures: expected 0 issues, got [\"fixture 'fixtures/clean' declared but no directory at /home/runner/work/bee-self-test/bee-self-test/work/tools/agent-memory-lint-fixtures-index-v4/",
-  "verdict": "failed",
-  "verdict_at": "2026-11-14T12:46:04Z",
-  "verdict_by": "hivemindos"
+  "sha": "21dfc0cc1c6fdae017d00039a60e9c84db317b32",
+  "at": "2026-11-14T14:00:54Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43602608188",
+  "tail": "clean sample: 3 row(s), 0 issue(s)\nbroken sample: 2 row(s), 4 issue(s), all expected\nthis folder: 3 row(s), 0 issue(s), 3 fixture(s) present\nself-test: all checks passed"
 }
