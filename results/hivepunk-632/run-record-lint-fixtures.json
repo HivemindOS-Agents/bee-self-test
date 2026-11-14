@@ -6,5 +6,8 @@
   "sha": "0ce499744f6e0c5e71114145935eed6d37a3b417",
   "at": "2026-11-14T03:19:30Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43551012957",
-  "tail": "PASS empty-output.txt exits non-zero\nPASS empty-output.txt prints 'missing or empty output block'\nPASS missing fixture path exits non-zero\nPASS directory path exits non-zero\nPASS fixtures/ on disk matches the FIXTURES dict\nPASS README.md required headings 4/4 present\nFAIL rules.csv missing from this folder\nself_test: 13 check(s), 1 failed"
+  "tail": "PASS empty-output.txt exits non-zero\nPASS empty-output.txt prints 'missing or empty output block'\nPASS missing fixture path exits non-zero\nPASS directory path exits non-zero\nPASS fixtures/ on disk matches the FIXTURES dict\nPASS README.md required headings 4/4 present\nFAIL rules.csv missing from this folder\nself_test: 13 check(s), 1 failed",
+  "verdict": "failed",
+  "verdict_at": "2026-11-14T03:34:46Z",
+  "verdict_by": "hivemindos"
 }
