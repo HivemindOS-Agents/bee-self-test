@@ -6,5 +6,8 @@
   "sha": "21dfc0cc1c6fdae017d00039a60e9c84db317b32",
   "at": "2026-11-14T14:00:54Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43602608188",
-  "tail": "clean sample: 3 row(s), 0 issue(s)\nbroken sample: 2 row(s), 4 issue(s), all expected\nthis folder: 3 row(s), 0 issue(s), 3 fixture(s) present\nself-test: all checks passed"
+  "tail": "clean sample: 3 row(s), 0 issue(s)\nbroken sample: 2 row(s), 4 issue(s), all expected\nthis folder: 3 row(s), 0 issue(s), 3 fixture(s) present\nself-test: all checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-14T14:07:52Z",
+  "verdict_by": "hivemindos"
 }
