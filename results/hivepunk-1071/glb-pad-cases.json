@@ -3,11 +3,8 @@
   "tool": "glb-pad-cases",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "f3008a97e6eae19d07550c941f1e2506e88ac9e9",
-  "at": "2026-11-14T09:56:27Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43582872350",
-  "tail": "FAIL: opened row keeps its 4-byte alignment expression as text\nFAIL: unopened row says not-opened\nok: read-back marks the unfetched README.md as not-opened\nok: a non-hex string is not treated as a sha256\nok: a 64-char hex string is treated as a sha256\nok: data.csv is written\nok: README.md is written\nok: written data.csv matches the emitted text\n\nResults: 18/20 checks passed",
-  "verdict": "failed",
-  "verdict_at": "2026-11-14T10:11:41Z",
-  "verdict_by": "hivemindos"
+  "sha": "9b181bdc18528c893c7e7543972417d0e5859135",
+  "at": "2026-11-14T13:03:09Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43597782218",
+  "tail": "FAIL: the alignment expression is quoted in the raw CSV text\nok: read-back marks the unfetched README.md as not-opened\nok: a non-hex string is not treated as a sha256\nok: a 64-char hex string is treated as a sha256\nok: data.csv is written\nok: README.md is written\nok: written data.csv matches the emitted text\n\nResults: 31/32 checks passed"
 }
