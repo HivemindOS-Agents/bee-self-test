@@ -6,5 +6,8 @@
   "sha": "89a2caabeadccbff739db585471e4f4ad09962bb",
   "at": "2026-11-14T06:41:34Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43567566216",
-  "tail": "Traceback (most recent call last):\n    readback_csv = (HERE / \"sample_readback.csv\").read_text(encoding=\"utf-8\")\n  File \"/usr/lib/python3.14/pathlib/__init__.py\", line 788, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:\n         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.14/pathlib/__init__.py\", line 772, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/bee-self-test/bee-self-test/work/tools/glb-pad-cases/sample_readback.csv'"
+  "tail": "Traceback (most recent call last):\n    readback_csv = (HERE / \"sample_readback.csv\").read_text(encoding=\"utf-8\")\n  File \"/usr/lib/python3.14/pathlib/__init__.py\", line 788, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:\n         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.14/pathlib/__init__.py\", line 772, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/bee-self-test/bee-self-test/work/tools/glb-pad-cases/sample_readback.csv'",
+  "verdict": "failed",
+  "verdict_at": "2026-11-14T06:56:48Z",
+  "verdict_by": "hivemindos"
 }
