@@ -6,5 +6,8 @@
   "sha": "73c8d8c2da7de98583899a76f46bc032a1e788b1",
   "at": "2026-11-14T12:30:43Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43595168016",
-  "tail": "FAIL: this folder fixtures: expected 0 issues, got [\"fixture 'fixtures/clean' declared but no directory at /home/runner/work/bee-self-test/bee-self-test/work/tools/agent-memory-lint-fixtures-index-v4/"
+  "tail": "FAIL: this folder fixtures: expected 0 issues, got [\"fixture 'fixtures/clean' declared but no directory at /home/runner/work/bee-self-test/bee-self-test/work/tools/agent-memory-lint-fixtures-index-v4/",
+  "verdict": "failed",
+  "verdict_at": "2026-11-14T12:46:04Z",
+  "verdict_by": "hivemindos"
 }
