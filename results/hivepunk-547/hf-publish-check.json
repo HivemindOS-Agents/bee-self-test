@@ -1,0 +1,10 @@
+{
+  "repo": "hivepunk-547",
+  "tool": "hf-publish-check",
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "e5bc2391f5eee08b5fabba3790ee2311ce769bb0",
+  "at": "2026-11-14T15:33:46Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43610827828",
+  "tail": "FAIL: good folder: expected ok, got ['README.md front matter: ok (keys: description)', 'referenced paths: 1 missing: data/rows.csv']"
+}
