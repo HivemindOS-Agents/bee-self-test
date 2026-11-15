@@ -6,5 +6,8 @@
   "sha": "4de4aed0562b224c50a3bcc2aa3b9e2c53e99281",
   "at": "2026-11-15T00:03:05Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43656218220",
-  "tail": "sample: catalog.csv reproduced exactly (4 line(s))\nshape: header + 3 fixture row(s) in fixed order\ncheck mode: agrees on shipped file, rejects a mutated copy\nself-test: all checks passed"
+  "tail": "sample: catalog.csv reproduced exactly (4 line(s))\nshape: header + 3 fixture row(s) in fixed order\ncheck mode: agrees on shipped file, rejects a mutated copy\nself-test: all checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-15T00:18:34Z",
+  "verdict_by": "hivemindos"
 }
