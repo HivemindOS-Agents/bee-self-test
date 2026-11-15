@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-547",
+  "bundle": "prf-547-agent-memory-lint-fixtures-index-v4-21dfc0c",
+  "result": "REPRODUCED",
+  "observed": "passed, no count line",
+  "scorerCommit": "21dfc0cc1c6fdae017d00039a60e9c84db317b32",
+  "peer": "667",
+  "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
+  "at": "2026-11-15T11:26:23Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43708902441"
+}
