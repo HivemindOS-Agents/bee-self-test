@@ -1,0 +1,10 @@
+{
+  "repo": "hivepunk-547",
+  "tool": "render-entry",
+  "result": "success",
+  "file": "self_test.py",
+  "sha": "5527982ed25708577d781c25cc35f60219270934",
+  "at": "2026-11-15T11:10:37Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43707626114",
+  "tail": "row: tool folder, both file urls and self-test path present\ngate: passed only on a raw exit code 0, unconfirmed on exit 1\nno transcript: status unconfirmed, missing name given\nexit code: read from a bare final integer line too\nrow: recorded run url present\nself-test: all checks passed"
+}
