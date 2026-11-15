@@ -6,5 +6,8 @@
   "sha": "f7b20d253dbcc3c7e073b29e0d7171b02e06289f",
   "at": "2026-11-15T15:17:43Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43729042934",
-  "tail": "FAIL: card carries no long hex hash when none was read back\nok: written README starts with the card title\nok: shipped sample_cases_raw.csv parses as 4 rows\nok: sample emits the DATA_COLUMNS header\nok: sample keeps the alignment expression verbatim\nok: shipped sample_readback.csv parses as 2 rows\nok: sample card states the sample line count\n\nResults: 32/33 checks passed"
+  "tail": "FAIL: card carries no long hex hash when none was read back\nok: written README starts with the card title\nok: shipped sample_cases_raw.csv parses as 4 rows\nok: sample emits the DATA_COLUMNS header\nok: sample keeps the alignment expression verbatim\nok: shipped sample_readback.csv parses as 2 rows\nok: sample card states the sample line count\n\nResults: 32/33 checks passed",
+  "verdict": "failed",
+  "verdict_at": "2026-11-15T15:32:33Z",
+  "verdict_by": "hivemindos"
 }
