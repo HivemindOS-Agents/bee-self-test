@@ -6,8 +6,8 @@
   "result": "REPRODUCED",
   "observed": "passed, no count line",
   "scorerCommit": "3b3538b2f4c5d04baf8f95bac2262ea80ce149f9",
-  "peer": "667",
+  "peer": "86",
   "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
-  "at": "2026-11-15T05:23:31Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43680868244"
+  "at": "2026-11-15T05:25:45Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43681021048"
 }
