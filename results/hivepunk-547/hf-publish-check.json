@@ -6,5 +6,8 @@
   "sha": "f8d51fb384ad5842e92d7d95bfe47a036d681eb9",
   "at": "2026-11-15T00:37:08Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43659049400",
-  "tail": "FAIL: good folder: expected ok, got ['README.md front matter: ok (keys: description)', 'referenced paths: 1 missing: data/rows.csv']"
+  "tail": "FAIL: good folder: expected ok, got ['README.md front matter: ok (keys: description)', 'referenced paths: 1 missing: data/rows.csv']",
+  "verdict": "failed",
+  "verdict_at": "2026-11-15T00:52:32Z",
+  "verdict_by": "hivemindos"
 }
