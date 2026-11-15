@@ -1,0 +1,325 @@
+{
+ "about": "The 15 Nov proposal bundle, Part 2, acceptance fixtures: four must ABSTAIN, four must be CURRENT. A wrong CURRENT and a needless ABSTAIN both fail. Example data, not live records. The same bytes are in HivemindOS-Agents/bee-self-test fixtures/memory-read/fixtures.json; both copies are pinned by sha256.",
+ "fixtures": [
+  {
+   "name": "current",
+   "query": {
+    "claim": "research-note-cites"
+   },
+   "records": [
+    {
+     "id": "les-1071-0042",
+     "version": 1,
+     "claim": "research-note-cites",
+     "value": "A research note quotes a passage from a page fetched in the same run.",
+     "label": "DERIVED",
+     "status": "fresh",
+     "asOf": 1794042000000,
+     "validTo": 1794744000000,
+     "supersedes": null,
+     "checks": [
+      {
+       "source": "src-7f3a",
+       "result": "MATCH"
+      }
+     ],
+     "citations": [
+      "src-7f3a"
+     ]
+    },
+    {
+     "id": "les-1071-0042",
+     "version": 2,
+     "claim": "research-note-cites",
+     "value": "A research note that cites a page must quote a passage from a source record fetched in the same run.",
+     "label": "DERIVED",
+     "status": "reverified",
+     "asOf": 1794744000000,
+     "validTo": null,
+     "supersedes": "les-1071-0042@1",
+     "checks": [
+      {
+       "source": "src-7f3a",
+       "result": "MATCH"
+      },
+      {
+       "source": "src-commit-1",
+       "result": "MATCH"
+      }
+     ],
+     "citations": [
+      "src-7f3a",
+      "src-commit-1"
+     ]
+    }
+   ],
+   "expect": {
+    "verdict": "CURRENT",
+    "record": "les-1071-0042@2"
+   }
+  },
+  {
+   "name": "conflict",
+   "query": {
+    "claim": "hf-card-max-tags"
+   },
+   "records": [
+    {
+     "id": "les-547-0007",
+     "version": 1,
+     "claim": "hf-card-max-tags",
+     "value": "A dataset card may carry at most 10 tags.",
+     "label": "FACT",
+     "status": "fresh",
+     "asOf": 1794600000000,
+     "validTo": null,
+     "supersedes": null,
+     "checks": [
+      {
+       "source": "src-a",
+       "result": "MATCH"
+      }
+     ],
+     "citations": [
+      "src-a"
+     ]
+    },
+    {
+     "id": "les-547-0011",
+     "version": 1,
+     "claim": "hf-card-max-tags",
+     "value": "A dataset card may carry at most 20 tags.",
+     "label": "FACT",
+     "status": "fresh",
+     "asOf": 1794700000000,
+     "validTo": null,
+     "supersedes": null,
+     "checks": [
+      {
+       "source": "src-b",
+       "result": "MATCH"
+      }
+     ],
+     "citations": [
+      "src-b"
+     ]
+    }
+   ],
+   "expect": {
+    "verdict": "ABSTAIN",
+    "reason": "conflict"
+   }
+  },
+  {
+   "name": "source-not-match",
+   "query": {
+    "claim": "gateway-free-quota"
+   },
+   "records": [
+    {
+     "id": "les-86-0003",
+     "version": 1,
+     "claim": "gateway-free-quota",
+     "value": "The free tier allows 50 calls a day.",
+     "label": "FACT",
+     "status": "fresh",
+     "asOf": 1794500000000,
+     "validTo": null,
+     "supersedes": null,
+     "checks": [
+      {
+       "source": "src-quota-page",
+       "result": "CHANGED"
+      }
+     ],
+     "citations": [
+      "src-quota-page"
+     ]
+    }
+   ],
+   "expect": {
+    "verdict": "ABSTAIN",
+    "reason": "source-not-match"
+   }
+  },
+  {
+   "name": "unknown-label",
+   "query": {
+    "claim": "glb-validator-version"
+   },
+   "records": [
+    {
+     "id": "les-1071-0019",
+     "version": 1,
+     "claim": "glb-validator-version",
+     "value": "The validator is at 2.0.0-dev.3.10.",
+     "label": "UNKNOWN",
+     "status": "fresh",
+     "asOf": 1794550000000,
+     "validTo": null,
+     "supersedes": null,
+     "checks": [],
+     "citations": [
+      "note-2026-11-14-0412"
+     ]
+    }
+   ],
+   "expect": {
+    "verdict": "ABSTAIN",
+    "reason": "unknown-label"
+   }
+  },
+  {
+   "name": "needless-abstain",
+   "query": {
+    "claim": "self-test-file-names"
+   },
+   "records": [
+    {
+     "id": "les-632-0021",
+     "version": 1,
+     "claim": "self-test-file-names",
+     "value": "The runner runs self_test.py, self_test.mjs or self_test.sh at the top of the tool folder.",
+     "label": "FACT",
+     "status": "fresh",
+     "asOf": 1794600000000,
+     "validTo": null,
+     "supersedes": null,
+     "checks": [
+      {
+       "source": "src-runner-yml",
+       "result": "MATCH"
+      }
+     ],
+     "citations": [
+      "src-runner-yml"
+     ]
+    }
+   ],
+   "expect": {
+    "verdict": "CURRENT",
+    "record": "les-632-0021@1"
+   }
+  },
+  {
+   "name": "sufficient-data",
+   "query": {
+    "claim": "holder-video-length"
+   },
+   "records": [
+    {
+     "id": "mem-632-holder-0004",
+     "version": 1,
+     "claim": "holder-video-length",
+     "value": "Videos for this holder run 30 seconds.",
+     "label": "FACT",
+     "status": "fresh",
+     "asOf": 1794650000000,
+     "validTo": null,
+     "supersedes": null,
+     "checks": [],
+     "citations": [
+      "memory:mem-632-holder-0004"
+     ]
+    }
+   ],
+   "expect": {
+    "verdict": "CURRENT",
+    "record": "mem-632-holder-0004@1"
+   }
+  },
+  {
+   "name": "as-of-historical",
+   "query": {
+    "claim": "hive-burn-share",
+    "asOfDate": 1794268800000
+   },
+   "records": [
+    {
+     "id": "rcp-hive-0002",
+     "version": 1,
+     "claim": "hive-burn-share",
+     "value": "10% of fees bought back.",
+     "label": "FACT",
+     "status": "fresh",
+     "asOf": 1794096000000,
+     "validTo": 1794441600000,
+     "supersedes": null,
+     "checks": [
+      {
+       "source": "src-tx-1",
+       "result": "MATCH"
+      }
+     ],
+     "citations": [
+      "src-tx-1"
+     ]
+    },
+    {
+     "id": "rcp-hive-0002",
+     "version": 2,
+     "claim": "hive-burn-share",
+     "value": "15% of fees bought back.",
+     "label": "FACT",
+     "status": "fresh",
+     "asOf": 1794441600000,
+     "validTo": null,
+     "supersedes": "rcp-hive-0002@1",
+     "checks": [
+      {
+       "source": "src-tx-2",
+       "result": "MATCH"
+      }
+     ],
+     "citations": [
+      "src-tx-2"
+     ]
+    }
+   ],
+   "expect": {
+    "verdict": "CURRENT",
+    "record": "rcp-hive-0002@1"
+   }
+  },
+  {
+   "name": "both-values-present",
+   "query": {
+    "claim": "eth-bought-gross-and-net"
+   },
+   "records": [
+    {
+     "id": "les-667-0030",
+     "version": 1,
+     "claim": "eth-bought-gross-and-net",
+     "value": {
+      "gross": "1.20 ETH",
+      "net": "1.17 ETH"
+     },
+     "label": "FACT",
+     "status": "fresh",
+     "asOf": 1794700000000,
+     "validTo": null,
+     "supersedes": null,
+     "checks": [
+      {
+       "source": "src-tx-buy",
+       "result": "MATCH"
+      },
+      {
+       "source": "src-tx-fee",
+       "result": "MATCH"
+      }
+     ],
+     "citations": [
+      "src-tx-buy",
+      "src-tx-fee"
+     ]
+    }
+   ],
+   "expect": {
+    "verdict": "CURRENT",
+    "record": "les-667-0030@1"
+   }
+  }
+ ]
+}
