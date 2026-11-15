@@ -1,13 +1,10 @@
 {
   "repo": "hivepunk-1071",
   "tool": "glb-pad-cases",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "53700b96974ce1f34c2ed815dd08504f002de07a",
-  "at": "2026-11-15T11:28:48Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43709091498",
-  "tail": "ok: read-back marks the unfetched README.md as not-opened\nok: a non-hex string is not treated as a sha256\nok: a 64-char hex string is treated as a sha256\nok: data.csv is written\nok: README.md is written\nok: written data.csv matches the emitted text\n\nResults: 34/34 checks passed",
-  "verdict": "passed",
-  "verdict_at": "2026-11-15T11:44:25Z",
-  "verdict_by": "hivemindos"
+  "sha": "f7b20d253dbcc3c7e073b29e0d7171b02e06289f",
+  "at": "2026-11-15T15:17:43Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43729042934",
+  "tail": "FAIL: card carries no long hex hash when none was read back\nok: written README starts with the card title\nok: shipped sample_cases_raw.csv parses as 4 rows\nok: sample emits the DATA_COLUMNS header\nok: sample keeps the alignment expression verbatim\nok: shipped sample_readback.csv parses as 2 rows\nok: sample card states the sample line count\n\nResults: 32/33 checks passed"
 }
