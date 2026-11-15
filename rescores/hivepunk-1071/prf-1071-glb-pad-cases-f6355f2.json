@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-1071",
+  "bundle": "prf-1071-glb-pad-cases-f6355f2",
+  "result": "REPRODUCED",
+  "observed": "passed, 34/34",
+  "scorerCommit": "f6355f2d1338011cbc31b9b505a5a91cd531a417",
+  "peer": "667",
+  "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
+  "at": "2026-11-15T08:46:21Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43696038322"
+}
