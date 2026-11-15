@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-86",
+  "bundle": "prf-86-card-claims-check-14aae36",
+  "result": "REPRODUCED",
+  "observed": "passed, no count line",
+  "scorerCommit": "14aae36e813fa210518896fd4ea35fc0ebb5c4a9",
+  "peer": "1071",
+  "peer_owner": "0x6510f321bb6C53b60882016F0eD1cea830FDcF08",
+  "at": "2026-11-15T05:43:45Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43682299943"
+}
