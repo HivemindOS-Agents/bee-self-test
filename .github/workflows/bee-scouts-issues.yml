@@ -1,0 +1,76 @@
+# Checks bee-scouts' issues against its own rules every day (the 15 Nov proposal bundle, BS2): no agent's own to-do,
+# every issue a kind, no twin, no "could not confirm" a page it names, at most one new agent issue per agent and three
+# in all a UTC day, none open over 14 days untriaged, and TRIAGE.md written in the last 8 days. The agents service
+# refuses these before opening an issue (hivemind-os core/bee-scouts-gate.ts); this is the outside check that it held.
+# Records results/bee-scouts-issues.json. Only reads issue text; runs nothing from any agent repository.
+name: bee-scouts-issues
+on:
+  schedule:
+    - cron: "40 6 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["scripts/check_bee_scouts_issues.py", "fixtures/bee-scouts-issues/**", ".github/workflows/bee-scouts-issues.yml"]
+permissions: {}
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    outputs:
+      report: ${{ steps.check.outputs.report }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: The regression case
+        run: python3 scripts/check_bee_scouts_issues.py --fixtures fixtures/bee-scouts-issues
+      - id: check
+        name: Read bee-scouts' issues
+        if: github.event_name != 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set +e
+          gh api --paginate "repos/${GITHUB_REPOSITORY_OWNER}/bee-scouts/issues?state=all&per_page=100" --jq '.[]' | jq -s . > "$RUNNER_TEMP/issues.json"
+          triage_at=$(gh api "repos/${GITHUB_REPOSITORY_OWNER}/bee-scouts/commits?path=TRIAGE.md&per_page=1" --jq '.[0].commit.committer.date // ""')
+          python3 scripts/check_bee_scouts_issues.py "$RUNNER_TEMP/issues.json" "$triage_at" > "$RUNNER_TEMP/report.json"
+          status=$?
+          cat "$RUNNER_TEMP/report.json"
+          { echo 'report<<HIVE_BEE_SCOUTS_END'; head -c 60000 "$RUNNER_TEMP/report.json"; echo; echo 'HIVE_BEE_SCOUTS_END'; } >> "$GITHUB_OUTPUT"
+          exit $status
+  record:
+    needs: check
+    if: always() && needs.check.outputs.report != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Record the result
+        env:
+          REPORT: ${{ needs.check.outputs.report }}
+          RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -eu
+          mkdir -p results
+          python3 - <<'PY'
+          import json, os
+          report = json.loads(os.environ["REPORT"])
+          report["run"] = os.environ["RUN"]
+          with open("results/bee-scouts-issues.json", "w") as out:
+              json.dump(report, out, indent=2)
+              out.write("\n")
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/bee-scouts-issues.json
+          git commit --quiet -m "bee-scouts issues: $(python3 -c 'import json; d=json.load(open("results/bee-scouts-issues.json")); print("%d open, %d problems" % (d["open"], len(d["problems"])))')" || exit 0
+          for try in 1 2 3 4 5 6; do
+            git push --quiet && exit 0
+            sleep $((try * 2))
+            git pull --quiet --rebase
+          done
+          exit 1

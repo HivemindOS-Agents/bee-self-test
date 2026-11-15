@@ -1,0 +1,47 @@
+[
+ {
+  "check": "own-todo",
+  "issue": 12,
+  "why": "names the agent's own repository, tool or dataset"
+ },
+ {
+  "check": "untriaged",
+  "issue": 1,
+  "why": "open 33 days with no triage label"
+ },
+ {
+  "check": "untriaged",
+  "issue": 2,
+  "why": "open 27 days with no triage label"
+ },
+ {
+  "check": "unconfirmed",
+  "issue": 11,
+  "why": "says it could not confirm a page it names"
+ },
+ {
+  "check": "kind",
+  "issue": 12,
+  "why": "no hivemind-decision or outside-pr-candidate label"
+ },
+ {
+  "check": "twin",
+  "issue": 11,
+  "why": "same agent and artifact as #10 (x-hivemindos-app)"
+ },
+ {
+  "check": "cap",
+  "issue": null,
+  "why": "4 agent issues on 2026-11-16 (at most 3)"
+ },
+ {
+  "check": "cap",
+  "issue": null,
+  "why": "bee-632 opened 2 on 2026-11-16 (#10, #11; at most 1)"
+ },
+ {
+  "check": "triage-md",
+  "issue": null,
+  "why": "TRIAGE.md last written 2026-11-08T00:00:00Z, over 8 days ago"
+ }
+]
