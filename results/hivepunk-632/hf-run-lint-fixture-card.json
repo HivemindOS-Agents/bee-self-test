@@ -1,0 +1,10 @@
+{
+  "repo": "hivepunk-632",
+  "tool": "hf-run-lint-fixture-card",
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "2e187bbad500b9ce8e6a872dbfbd13563fd4b322",
+  "at": "2026-11-15T14:22:37Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43724003375",
+  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/hf-run-lint-fixture-card/self_test.py\", line 120, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/hf-run-lint-fixture-card/self_test.py\", line 44, in main\n    keys = {k for (_k, _c, _m, _g) in B.EXPECTED_MESSAGES}\n            ^\nNameError: name 'k' is not defined"
+}
