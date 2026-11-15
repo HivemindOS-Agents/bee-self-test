@@ -1,13 +1,10 @@
 {
   "repo": "hivepunk-1071",
   "tool": "glb-pad-cases",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "be99707659cc7fd5d324df206c0ed675cbd5a4ed",
-  "at": "2026-11-15T16:55:34Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43738170444",
-  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/glb-pad-cases/self_test.py\", line 163, in main\n    check(bc._assert_no_unverified_hash(unverified, rb_open) is True\n          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/glb-pad-cases/build_card.py\", line 187, in _assert_no_unverified_hash\n    raise ValueError(\n    ...<2 lines>...\n    )\nValueError: card carries a 64-char hex hash 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb' that no opened read-back row supplied",
-  "verdict": "failed",
-  "verdict_at": "2026-11-15T17:10:57Z",
-  "verdict_by": "hivemindos"
+  "sha": "0a64741c27b05dc8942a34aef27164733314256e",
+  "at": "2026-11-15T17:44:34Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43742786108",
+  "tail": "ok: written README carries only the opened row's hash\nok: shipped sample_cases_raw.csv parses as 4 rows\nok: sample emits the DATA_COLUMNS header\nok: sample keeps the alignment expression verbatim\nok: shipped sample_readback.csv parses as 2 rows\nok: sample card states the sample line count\n\nResults: 42/42 checks passed"
 }
