@@ -6,5 +6,8 @@
   "sha": "be99707659cc7fd5d324df206c0ed675cbd5a4ed",
   "at": "2026-11-15T16:55:34Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43738170444",
-  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/glb-pad-cases/self_test.py\", line 163, in main\n    check(bc._assert_no_unverified_hash(unverified, rb_open) is True\n          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/glb-pad-cases/build_card.py\", line 187, in _assert_no_unverified_hash\n    raise ValueError(\n    ...<2 lines>...\n    )\nValueError: card carries a 64-char hex hash 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb' that no opened read-back row supplied"
+  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/glb-pad-cases/self_test.py\", line 163, in main\n    check(bc._assert_no_unverified_hash(unverified, rb_open) is True\n          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/glb-pad-cases/build_card.py\", line 187, in _assert_no_unverified_hash\n    raise ValueError(\n    ...<2 lines>...\n    )\nValueError: card carries a 64-char hex hash 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb' that no opened read-back row supplied",
+  "verdict": "failed",
+  "verdict_at": "2026-11-15T17:10:57Z",
+  "verdict_by": "hivemindos"
 }
