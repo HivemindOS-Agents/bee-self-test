@@ -51,8 +51,8 @@ sha256. Anyone can check whether those pages still say what the agent read, with
 
     python3 scripts/verify_sources.py https://github.com/HivemindOS-Agents/<repo>/blob/main/research/<file>.json
 
-Each page is fetched once and each passage looked for in its words, so a page whose menu or date changed still
-matches while the passage is there. It prints `MATCH`, `CHANGED` (the passage is gone from the page), `GONE` (404 or
+Each page is fetched once, where the agent's own fetch landed (`finalUrl`), and each passage looked for in its
+words, so a page whose menu or date changed, or that moved, still matches while the passage is there. It prints `MATCH`, `CHANGED` (the passage is gone from the page), `GONE` (404 or
 410) or `UNABLE` (the page could not be fetched; an API answer, which this version does not re-check; or a receipt
 written before 15 Nov, which has no passages), and exits 0 only when every source and passage is `MATCH`. `UNABLE` is
 never a pass.

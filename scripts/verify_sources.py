@@ -96,6 +96,13 @@ def quote_ok(item: dict) -> bool:
     return isinstance(quote, str) and isinstance(digest, str) and SHA256.match(digest) is not None \
         and hashlib.sha256(words(quote).encode("utf-8")).hexdigest() == digest
 
+def read_at(source: dict) -> str:
+    """The page the agent actually read: where its fetch landed (finalUrl), else the url it asked for. A page that moved
+    (a repository transferred to another owner) is re-checked where the agent read it, not at an old address that may
+    no longer redirect (15 Nov: LiamVisionary/bee-scouts/issues/63, read through a redirect, answers 404 directly)."""
+    final, url = source.get("finalUrl"), source.get("url")
+    return str(final if isinstance(final, str) and final.startswith("https://") else url or "")
+
 def verify(receipt: dict, get=fetch) -> list[dict]:
     rows, pages = [], {}
     records = {s.get("id"): s for s in receipt["sources"] if isinstance(s, dict) and isinstance(s.get("id"), str)}
@@ -106,7 +113,7 @@ def verify(receipt: dict, get=fetch) -> list[dict]:
     for source in receipt["sources"]:
         if not isinstance(source, dict):
             continue
-        name, url = source.get("id") or "-", str(source.get("url") or "")
+        name, url = source.get("id") or "-", read_at(source)
         if receipt.get("sourceFormat") != "record-v1" or source.get("type") is None:
             result, why = "UNABLE", "A legacy source: a title and a url, with no hash or passage."
         elif source.get("type") == "api":
@@ -125,9 +132,9 @@ def verify(receipt: dict, get=fetch) -> list[dict]:
         if not record or record.get("type") != "url":
             result, why, url = "UNABLE", "It cites no page record of this receipt.", ""
         elif not quote_ok(claim):
-            result, why, url = "UNABLE", "Its passage's hash does not match its words.", str(record.get("url"))
+            result, why, url = "UNABLE", "Its passage's hash does not match its words.", read_at(record)
         else:
-            url = str(record.get("url"))
+            url = read_at(record)
             result, why = recheck(claim["quote"], page(url))
         rows.append({"what": "claim", "id": str(claim.get("id")), "url": url, "result": result, "why": why})
     return rows
@@ -160,6 +167,13 @@ def fixtures(folder: str) -> int:
     ok = got == expected and exit_code(rows) == 1
     failed += not ok
     print(f"{'ok' if ok else 'FAILED'}  receipt fixture: {got}")
+    # A page that moved: asked at an old address, read where it landed. Re-checked where it was read.
+    moved = json.loads(json.dumps(receipt))
+    moved["sources"][0]["url"] = "https://example.org/old-a"
+    rows = verify(moved, get=lambda url: served.get(url))
+    ok = [r["result"] for r in rows if r["id"] in ("src-1", "c1")] == ["MATCH", "MATCH"]
+    failed += not ok
+    print(f"{'ok' if ok else 'FAILED'}  a moved page is re-checked where it was read: {[(r['id'], r['result']) for r in rows if r['id'] in ('src-1', 'c1')]}")
     return 1 if failed else 0
 
 def main(argv: list[str]) -> int:
