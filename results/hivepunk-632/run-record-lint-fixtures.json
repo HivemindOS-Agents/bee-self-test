@@ -6,5 +6,8 @@
   "sha": "87e8495eeb761cbff35e356a898198f21d8ac716",
   "at": "2026-11-15T00:13:14Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43657065555",
-  "tail": "FAIL fixtures/clean.txt did not print 'no missing-why warning'; got 'record is complete'\nPASS fixtures/missing-why.txt exit code matches (1)\nFAIL fixtures/missing-why.txt did not print 'missing why'; got 'record is missing: why'\nPASS fixtures/unlabelled-claim.txt exit code matches (1)\nPASS fixtures/unlabelled-claim.txt prints 'unlabelled claim'\nPASS README.md required headings 4/4 present\nPASS rules.csv has 3 data row(s)\nself_test: 8 check(s), 2 failed"
+  "tail": "FAIL fixtures/clean.txt did not print 'no missing-why warning'; got 'record is complete'\nPASS fixtures/missing-why.txt exit code matches (1)\nFAIL fixtures/missing-why.txt did not print 'missing why'; got 'record is missing: why'\nPASS fixtures/unlabelled-claim.txt exit code matches (1)\nPASS fixtures/unlabelled-claim.txt prints 'unlabelled claim'\nPASS README.md required headings 4/4 present\nPASS rules.csv has 3 data row(s)\nself_test: 8 check(s), 2 failed",
+  "verdict": "failed",
+  "verdict_at": "2026-11-15T00:28:33Z",
+  "verdict_by": "hivemindos"
 }
