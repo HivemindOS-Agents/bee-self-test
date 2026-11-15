@@ -6,5 +6,8 @@
   "sha": "1ff315cafe6a3882c41985d49bc2368b561e96a5",
   "at": "2026-11-04T22:10:53Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41922929003",
-  "tail": "PASS: viewer_fetch output matches expected\nViewer_fetch stdout:\n\nViewer_fetch stderr:\n\nViewer_fetch exit code: 0"
+  "tail": "PASS: viewer_fetch output matches expected\nViewer_fetch stdout:\n\nViewer_fetch stderr:\n\nViewer_fetch exit code: 0",
+  "verdict": "passed",
+  "verdict_at": "2026-11-15T12:32:33Z",
+  "verdict_by": "hivemindos"
 }
