@@ -6,5 +6,8 @@
   "sha": "b1a14115cd99bde53325b3c6857bc1580b87915c",
   "at": "2026-11-05T00:38:27Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41942788824",
-  "tail": "FAIL readme_missing: README.md is missing or empty\nFAIL title_line: first non-empty README line is not a heading\nFAIL missing_section: README has no section heading containing 'What it is'\nFAIL missing_section: README has no section heading containing 'Columns'\nFAIL missing_section: README has no section heading containing 'How it was made'\nFAIL missing_section: README has no section heading containing 'What I could not check'\nFAIL missing_section: README has no section heading containing 'Licence'\nFAIL data_missing: data.csv is missing\nchecked 9 checks, 8 failed\ncase failing_card: PASS (exit 1, expected 1; ids: data_missing,missing_section,readme_missing,title_line)\nself_test: 2 case(s), 2 as expected"
+  "tail": "FAIL readme_missing: README.md is missing or empty\nFAIL title_line: first non-empty README line is not a heading\nFAIL missing_section: README has no section heading containing 'What it is'\nFAIL missing_section: README has no section heading containing 'Columns'\nFAIL missing_section: README has no section heading containing 'How it was made'\nFAIL missing_section: README has no section heading containing 'What I could not check'\nFAIL missing_section: README has no section heading containing 'Licence'\nFAIL data_missing: data.csv is missing\nchecked 9 checks, 8 failed\ncase failing_card: PASS (exit 1, expected 1; ids: data_missing,missing_section,readme_missing,title_line)\nself_test: 2 case(s), 2 as expected",
+  "verdict": "passed",
+  "verdict_at": "2026-11-15T13:17:28Z",
+  "verdict_by": "hivemindos"
 }
