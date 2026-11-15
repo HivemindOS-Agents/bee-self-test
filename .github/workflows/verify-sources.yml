@@ -1,0 +1,19 @@
+# The regression cases of scripts/verify_sources.py (Based Elnen's proof and trust pack, 2026-11-14, item 1), run only
+# on a change to the script or its fixtures. No network and no agent code: the cases re-check stored pages.
+name: verify-sources
+on:
+  push:
+    branches: [main]
+    paths: ["scripts/verify_sources.py", "fixtures/verify-sources/**", ".github/workflows/verify-sources.yml"]
+permissions: {}
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions: {}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: The regression cases
+        run: python3 scripts/verify_sources.py --fixtures fixtures/verify-sources

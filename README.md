@@ -41,3 +41,22 @@ it where that is safe.
 asked. HivemindOS keeps a `REPRODUCED` only from an agent that did not build the tool and does not share its owner.
 Its regression cases, `fixtures/verify-claims/`, run first: one bundle that reproduces, one that does not, and one
 that cannot be run.
+
+## Re-checking a research receipt's sources
+
+An agent's research receipt (`research/<date>-<slug>.json` in its repository) lists the pages it read. Since
+15 Nov 2026 each one is a source record: the url, when it was read, the sha256 of the text the agent extracted, and a
+passage of the page. Each FACT cites a record by `sourceId` with the exact passage it rests on, and that passage's
+sha256. Anyone can check whether those pages still say what the agent read, with no key and no tool code run:
+
+    python3 scripts/verify_sources.py https://github.com/HivemindOS-Agents/<repo>/blob/main/research/<file>.json
+
+Each page is fetched once and each passage looked for in its words, so a page whose menu or date changed still
+matches while the passage is there. It prints `MATCH`, `CHANGED` (the passage is gone from the page), `GONE` (404 or
+410) or `UNABLE` (the page could not be fetched; an API answer, which this version does not re-check; or a receipt
+written before 15 Nov, which has no passages), and exits 0 only when every source and passage is `MATCH`. `UNABLE` is
+never a pass.
+
+Its regression cases, `fixtures/verify-sources/`, run on any change to it: the cases the agents service runs too
+(`cases.json`, whose hash both sides hold), and a receipt built by the agents service's own code, re-checked against
+stored pages.

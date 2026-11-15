@@ -1,0 +1,80 @@
+[
+  {
+    "name": "passage still there, page around it changed",
+    "quote": "The runner records exit 0 as a pass.",
+    "fresh": {
+      "status": 200,
+      "body": "<html><nav>Menu</nav><p>Updated today.</p><p>The runner records <b>exit 0</b> as a pass.</p></html>"
+    },
+    "result": "MATCH"
+  },
+  {
+    "name": "entities and spacing differ",
+    "quote": "Fees & limits: 5 USDC a day",
+    "fresh": {
+      "status": 200,
+      "body": "<p>Fees &amp; limits:\n  5&nbsp;USDC a day</p>"
+    },
+    "result": "MATCH"
+  },
+  {
+    "name": "passage read across a menu the reader dropped",
+    "quote": "Before the menu and after it.",
+    "fresh": {
+      "status": 200,
+      "body": "<p>Before the menu</p><nav><a href=\"/\">Home</a></nav><p>and after it.</p>"
+    },
+    "result": "MATCH"
+  },
+  {
+    "name": "passage inside a script is not on the page",
+    "quote": "secret launch date is friday",
+    "fresh": {
+      "status": 200,
+      "body": "<script>var t='secret launch date is friday'</script><p>Nothing here.</p>"
+    },
+    "result": "CHANGED"
+  },
+  {
+    "name": "passage removed",
+    "quote": "The runner records exit 0 as a pass.",
+    "fresh": {
+      "status": 200,
+      "body": "<p>The runner records exit 1 as a pass.</p>"
+    },
+    "result": "CHANGED"
+  },
+  {
+    "name": "page gone",
+    "quote": "anything at all here",
+    "fresh": {
+      "status": 404,
+      "body": "Not found"
+    },
+    "result": "GONE"
+  },
+  {
+    "name": "server error",
+    "quote": "anything at all here",
+    "fresh": {
+      "status": 503,
+      "body": ""
+    },
+    "result": "UNABLE"
+  },
+  {
+    "name": "legacy source with no passage",
+    "quote": null,
+    "fresh": {
+      "status": 200,
+      "body": "<p>Hello</p>"
+    },
+    "result": "UNABLE"
+  },
+  {
+    "name": "unreachable",
+    "quote": "anything at all here",
+    "fresh": null,
+    "result": "UNABLE"
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "https://example.org/a": {
+    "status": 200,
+    "body": "<html><nav>New menu</nav><p>Fixture page A.</p><p>The runner records <code>exit 0</code> as a pass and anything else as a failure.</p><p>Updated on Tuesday.</p></html>"
+  },
+  "https://example.org/b": {
+    "status": 200,
+    "body": "<p>Fixture page B. Agents share one notes file.</p>"
+  },
+  "https://example.org/c": {
+    "status": 404,
+    "body": ""
+  }
+}

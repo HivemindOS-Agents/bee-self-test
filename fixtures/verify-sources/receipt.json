@@ -1,0 +1,102 @@
+{
+  "v": 1,
+  "kind": "research-receipt",
+  "agent": "0",
+  "name": "Fixture",
+  "at": "2026-11-15T10:00:00.000Z",
+  "subject": "fixture",
+  "subjectKind": "project",
+  "chain": {
+    "id": null,
+    "name": "unknown",
+    "read": "unknown"
+  },
+  "address": null,
+  "thesis": "A fixture receipt for verify_sources.py, built by the agents service code.",
+  "claims": [
+    {
+      "id": "c1",
+      "label": "FACT",
+      "text": "The runner records exit 0 as a pass.",
+      "check": "page",
+      "source": "https://example.org/a",
+      "quote": "The runner records exit 0 as a pass and anything else as a failure.",
+      "sourceId": "src-1",
+      "quoteSha256": "3c4056153f66c10e41c734c66b611ffe17e4fe70003fc388d201a434f7e8a880"
+    },
+    {
+      "id": "c2",
+      "label": "FACT",
+      "text": "Every agent keeps its own lessons ledger.",
+      "check": "page",
+      "source": "https://example.org/b",
+      "sourceId": "src-2",
+      "quote": "Every agent keeps its own lessons ledger with versions and sources.",
+      "quoteSha256": "c85f33c454ba9a5546b4a0d9d051b35cad4a688d7a9c99d7caa374e291548f89"
+    }
+  ],
+  "counts": {
+    "fact": 2,
+    "derived": 0,
+    "unknown": 0
+  },
+  "risks": [],
+  "unknowns": [],
+  "wouldChangeMind": [],
+  "sources": [
+    {
+      "id": "src-1",
+      "type": "url",
+      "title": "A",
+      "url": "https://example.org/a",
+      "finalUrl": "https://example.org/a",
+      "status": 200,
+      "fetchedAt": "2026-11-15T10:00:00.000Z",
+      "extractor": "page-text-v1",
+      "sha256": "447bd48dab90de0abb4c5a62c06a054cdd494217663687909cdd1aa339fb0338",
+      "bytes": 102,
+      "quote": "The runner records exit 0 as a pass and anything else as a failure.",
+      "quoteSha256": "3c4056153f66c10e41c734c66b611ffe17e4fe70003fc388d201a434f7e8a880"
+    },
+    {
+      "id": "src-2",
+      "type": "url",
+      "title": "B",
+      "url": "https://example.org/b",
+      "finalUrl": "https://example.org/b",
+      "status": 200,
+      "fetchedAt": "2026-11-15T10:00:00.000Z",
+      "extractor": "page-text-v1",
+      "sha256": "d7d25b151f7880c7c68c31bbe4c94b0858a9673542cca269ab5ac22b0ac8421f",
+      "bytes": 83,
+      "quote": "Every agent keeps its own lessons ledger with versions and sources.",
+      "quoteSha256": "c85f33c454ba9a5546b4a0d9d051b35cad4a688d7a9c99d7caa374e291548f89"
+    },
+    {
+      "id": "src-3",
+      "type": "url",
+      "title": "C",
+      "url": "https://example.org/c",
+      "finalUrl": "https://example.org/c",
+      "status": 200,
+      "fetchedAt": "2026-11-15T10:00:00.000Z",
+      "extractor": "page-text-v1",
+      "sha256": "0de6f675360c908b154611847289596837c2c2604f0b693b38b0dca2ca1cd03e",
+      "bytes": 79,
+      "quote": "This page was later deleted by its owner and answers not found.",
+      "quoteSha256": "3fc2d9c596348a31c023256217df47664ef2612e1148de2acfda2b4c5a768cfe"
+    },
+    {
+      "id": "src-4",
+      "type": "api",
+      "title": "API",
+      "url": "https://api.example.org/v1/token",
+      "fetchedAt": "2026-11-15T10:00:00.000Z",
+      "extractor": "proof-read-v1",
+      "responseSha256": "fe9e6b646975df190758554e044ed35c7ede644c5a6be4dc402e04af4df0d789"
+    }
+  ],
+  "sourceFormat": "record-v1",
+  "note": null,
+  "decidedBy": "bee"
+}
