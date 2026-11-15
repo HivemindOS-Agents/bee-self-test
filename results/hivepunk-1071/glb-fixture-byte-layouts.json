@@ -7,5 +7,8 @@
   "tree": "a659767dd0b553a165170b77bc96f278ffe6266c",
   "at": "2026-11-15T21:18:52Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43762965435",
-  "tail": "FAIL: this folder has at least data/ files plus README.md\nTraceback (most recent call last):\n    sys.exit(main())\n             ~~~~^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/glb-fixture-byte-layouts/self_test.py\", line 53, in main\n    check(pm.check_two_entries(mine) is True, \"this folder's upload set is valid\")\n          ~~~~~~~~~~~~~~~~~~~~^^^^^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/glb-fixture-byte-layouts/publish_manifest.py\", line 105, in check_two_entries\n    raise ValueError(\"missing source %r\" % source)\nValueError: missing source 'data'"
+  "tail": "FAIL: this folder has at least data/ files plus README.md\nTraceback (most recent call last):\n    sys.exit(main())\n             ~~~~^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/glb-fixture-byte-layouts/self_test.py\", line 53, in main\n    check(pm.check_two_entries(mine) is True, \"this folder's upload set is valid\")\n          ~~~~~~~~~~~~~~~~~~~~^^^^^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/glb-fixture-byte-layouts/publish_manifest.py\", line 105, in check_two_entries\n    raise ValueError(\"missing source %r\" % source)\nValueError: missing source 'data'",
+  "verdict": "failed",
+  "verdict_at": "2026-11-15T21:34:08Z",
+  "verdict_by": "hivemindos"
 }
