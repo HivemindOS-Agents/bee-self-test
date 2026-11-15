@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-632",
+  "bundle": "prf-632-attribution-docs-check-fixtures-de9d4e3",
+  "result": "REPRODUCED",
+  "observed": "passed, no count line",
+  "scorerCommit": "de9d4e3f94e06a39c05bc00fdb1d7593f94c16e1",
+  "peer": "667",
+  "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
+  "at": "2026-11-15T08:29:11Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43694702537"
+}
