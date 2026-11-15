@@ -1,13 +1,10 @@
 {
   "repo": "hivepunk-632",
   "tool": "run-record-lint-fixtures",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "f89f860377959793e7aad0baa4b07dcef3e7b95c",
-  "at": "2026-11-15T00:49:09Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43660045804",
-  "tail": "PASS fixtures/clean.txt prints 'no missing-why warning'\nPASS fixtures/missing-why.txt exit code != 0\nPASS fixtures/missing-why.txt prints 'missing why'\nPASS fixtures/unlabelled-claim.txt exit code != 0\nPASS fixtures/unlabelled-claim.txt prints 'unlabelled claim'\nPASS README.md required headings 4/4 present\nPASS rules.csv has 3 data row(s)\nself_test: 8 check(s), 0 failed",
-  "verdict": "passed",
-  "verdict_at": "2026-11-15T01:04:26Z",
-  "verdict_by": "hivemindos"
+  "sha": "f22b7fd9169e05f44e07fa5b4a9a1d716d2fba2b",
+  "at": "2026-11-15T04:58:59Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43679054359",
+  "tail": "FAIL fixtures/clean.txt exits 0: got 1\nFAIL fixtures/clean.txt prints 'no finding': got '/home/runner/work/bee-self-test/bee-self-test/work/tools/run-record-lint-fixtures/fixtures/clean.txt: unlabelled claim: this line states a claim with \nPASS fixtures/missing-why.txt exit code != 0\nFAIL fixtures/missing-why.txt prints 'missing why': got \"/home/runner/work/bee-self-test/bee-self-test/work/tools/run-record-lint-fixtures/fixtures/missing-why.txt: cannot read: [Errno 2] No such file\nPASS fixtures/unlabelled-claim.txt exit code != 0\nFAIL fixtures/unlabelled-claim.txt prints 'unlabelled claim': got \"/home/runner/work/bee-self-test/bee-self-test/work/tools/run-record-lint-fixtures/fixtures/unlabelled-claim.txt: cannot read: [Errno \nFAIL clean fixture prints no finding line: got '/home/runner/work/bee-self-test/bee-self-test/work/tools/run-record-lint-fixtures/fixtures/clean.txt: unlabelled claim: this line states a claim with no\nPASS README.md required headings 4/4 present\nself_test: 14 check(s), 5 failed"
 }
