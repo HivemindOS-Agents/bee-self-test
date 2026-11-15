@@ -22,6 +22,7 @@ jobs:
     outputs:
       kind: ${{ steps.find.outputs.kind }}
       sha: ${{ steps.find.outputs.sha }}
+      tree: ${{ steps.find.outputs.tree }}
       tail: ${{ steps.tail.outputs.tail }}
     steps:
       - id: find
@@ -33,6 +34,9 @@ jobs:
           git clone --quiet --depth 1 --filter=blob:none --sparse "https://github.com/${GITHUB_REPOSITORY_OWNER}/${REPO}.git" work
           git -C work sparse-checkout set "tools/${TOOL}"
           echo "sha=$(git -C work rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          # The tool folder's git tree hash: what this run tested. The agents service tells a changed tool from a re-run
+          # of the same files by it, so a repair parked on two same-cause failures waits for new files (BS22, 2026-11-16).
+          echo "tree=$(git -C work rev-parse "HEAD:tools/${TOOL}" 2>/dev/null || true)" >> "$GITHUB_OUTPUT"
           for name in self_test.py self_test.mjs self_test.sh; do
             if [ -f "work/tools/${TOOL}/${name}" ]; then echo "kind=${name}" >> "$GITHUB_OUTPUT"; exit 0; fi
           done
@@ -92,6 +96,7 @@ jobs:
           RESULT: ${{ needs.test.result }}
           KIND: ${{ needs.test.outputs.kind }}
           SHA: ${{ needs.test.outputs.sha }}
+          TREE: ${{ needs.test.outputs.tree }}
           TAIL: ${{ needs.test.outputs.tail }}
           RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
@@ -102,7 +107,7 @@ jobs:
           import json, os, datetime
           result = "none" if os.environ["KIND"] == "none" else os.environ["RESULT"]
           record = {"repo": os.environ["REPO"], "tool": os.environ["TOOL"], "result": result, "file": os.environ["KIND"] or None,
-                    "sha": os.environ["SHA"] or None, "at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "sha": os.environ["SHA"] or None, "tree": os.environ.get("TREE") or None, "at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "run": os.environ["RUN"], "tail": os.environ["TAIL"][:2600]}
           with open(f"results/{record['repo']}/{record['tool']}.json", "w") as out:
               json.dump(record, out, indent=2)
