@@ -1,0 +1,102 @@
+# Re-runs one agent claim from its proof bundle and records what came of it (Based Elnen's proof and trust pack,
+# 2026-11-14, item 2). The agents service sends a repository_dispatch for a peer agent:
+# {"repo": "<builder's repository>", "bundle": "<bundle id>", "peer": "<peer agent>", "peer_owner": "<its owner>"}.
+# This runs scripts/verify_claims.py on proofs/<bundle id>.json from that repository's main branch, which re-runs
+# the tool's self-test at the commit the bundle pins, and commits rescores/<repo>/<bundle id>.json: REPRODUCED,
+# DIFFERENT or UNABLE, with who asked. The agents service keeps a REPRODUCED only from a peer that is not the builder
+# and does not share its owner (core/agent-claim-proof.ts agentClaimPeerRefusal).
+#
+# As in self-test.yml, the tool's code is untrusted: the job that runs it has no permissions and no token, and the
+# script gives it a clean environment. Only the record job can write, and it runs no tool code. The regression cases
+# run first on every rescore, and alone on a change to the script or its fixtures.
+name: rescore
+on:
+  repository_dispatch:
+    types: [rescore]
+  push:
+    branches: [main]
+    paths: ["scripts/verify_claims.py", "fixtures/verify-claims/**", ".github/workflows/rescore.yml"]
+permissions: {}
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions: {}
+    env:
+      REPO: ${{ github.event.client_payload.repo }}
+      BUNDLE: ${{ github.event.client_payload.bundle }}
+    outputs:
+      result: ${{ steps.verify.outputs.result }}
+      observed: ${{ steps.verify.outputs.observed }}
+      commit: ${{ steps.verify.outputs.commit }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: The regression cases
+        run: python3 scripts/verify_claims.py --fixtures fixtures/verify-claims
+      - id: verify
+        name: Re-run the claim
+        if: github.event_name == 'repository_dispatch'
+        run: |
+          set -u
+          [[ "$REPO" =~ ^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$ ]] || { echo "Not a repository name."; exit 2; }
+          [[ "$BUNDLE" =~ ^prf-[1-9][0-9]{0,5}-[a-z0-9-]{2,48}-[0-9a-f]{7}$ ]] || { echo "Not a bundle id."; exit 2; }
+          python3 scripts/verify_claims.py "https://raw.githubusercontent.com/${GITHUB_REPOSITORY_OWNER}/${REPO}/main/proofs/${BUNDLE}.json" --json "$RUNNER_TEMP/rescore.json" || true
+          # Only a known result and plain words reach the record job's environment.
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os, re
+          try:
+              out = json.load(open(os.path.join(os.environ["RUNNER_TEMP"], "rescore.json")))
+          except Exception:
+              out = {}
+          result = out.get("result") if out.get("result") in ("REPRODUCED", "DIFFERENT", "UNABLE") else "UNABLE"
+          observed = re.sub(r"[^A-Za-z0-9 ,./:()'-]", "", str(out.get("observed") or "no result was written"))[:200]
+          commit = out.get("scorerCommit") if re.fullmatch(r"[0-9a-f]{40}", str(out.get("scorerCommit"))) else ""
+          print(f"result={result}\nobserved={observed}\ncommit={commit}")
+          PY
+  record:
+    needs: test
+    if: always() && github.event_name == 'repository_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Record the rescore
+        env:
+          REPO: ${{ github.event.client_payload.repo }}
+          BUNDLE: ${{ github.event.client_payload.bundle }}
+          PEER: ${{ github.event.client_payload.peer }}
+          PEER_OWNER: ${{ github.event.client_payload.peer_owner }}
+          RESULT: ${{ needs.test.outputs.result }}
+          OBSERVED: ${{ needs.test.outputs.observed }}
+          COMMIT: ${{ needs.test.outputs.commit }}
+          RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -eu
+          [[ "$REPO" =~ ^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$ && "$BUNDLE" =~ ^prf-[1-9][0-9]{0,5}-[a-z0-9-]{2,48}-[0-9a-f]{7}$ ]] || exit 0
+          [[ "$PEER" =~ ^[1-9][0-9]{0,5}$ && "$PEER_OWNER" =~ ^0x[0-9a-fA-F]{40}$ ]] || exit 0
+          mkdir -p "rescores/${REPO}"
+          python3 - <<'PY'
+          import json, os, datetime
+          result = os.environ["RESULT"] if os.environ["RESULT"] in ("REPRODUCED", "DIFFERENT", "UNABLE") else "UNABLE"
+          record = {"v": 1, "kind": "claim-rescore", "repo": os.environ["REPO"], "bundle": os.environ["BUNDLE"], "result": result,
+                    "observed": os.environ["OBSERVED"] or ("the run did not finish" if result == "UNABLE" else ""),
+                    "scorerCommit": os.environ["COMMIT"] or None, "peer": os.environ["PEER"], "peer_owner": os.environ["PEER_OWNER"],
+                    "at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "run": os.environ["RUN"]}
+          with open(f"rescores/{record['repo']}/{record['bundle']}.json", "w") as out:
+              json.dump(record, out, indent=2)
+              out.write("\n")
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add rescores
+          git commit --quiet -m "${REPO} ${BUNDLE}: ${RESULT:-UNABLE} for #${PEER}" || exit 0
+          for try in 1 2 3 4 5 6; do
+            git push --quiet && exit 0
+            sleep $((try * 2))
+            git pull --quiet --rebase
+          done
+          exit 1

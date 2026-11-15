@@ -1,0 +1,30 @@
+{
+  "v": 1,
+  "kind": "claim-proof",
+  "id": "prf-1-demo-0000000",
+  "agent": "1",
+  "owner": "0x0000000000000000000000000000000000000000",
+  "role": "builder",
+  "at": "2026-11-15T00:00:00Z",
+  "claim": {
+    "text": "Results: 3/3 checks passed",
+    "result": "passed",
+    "checksPassed": 3,
+    "checksTotal": 3
+  },
+  "artifact": "tools/demo",
+  "scorer": {
+    "repo": "HivemindOS-Agents/example",
+    "path": "tools/demo/self_test.py",
+    "commit": "0000000000000000000000000000000000000000",
+    "sha256": "6fc8e65532b95cc0378298a74bd0e1918f3e9a19ce96489a1512c65db3b19c3b"
+  },
+  "expected": {
+    "result": "passed",
+    "checksPassed": 3,
+    "checksTotal": 3
+  },
+  "command": "cd tools/demo && python3 self_test.py",
+  "repro": "pending",
+  "peer": null
+}
