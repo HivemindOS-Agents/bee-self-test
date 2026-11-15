@@ -6,5 +6,8 @@
   "sha": "0a64741c27b05dc8942a34aef27164733314256e",
   "at": "2026-11-15T17:44:34Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43742786108",
-  "tail": "ok: written README carries only the opened row's hash\nok: shipped sample_cases_raw.csv parses as 4 rows\nok: sample emits the DATA_COLUMNS header\nok: sample keeps the alignment expression verbatim\nok: shipped sample_readback.csv parses as 2 rows\nok: sample card states the sample line count\n\nResults: 42/42 checks passed"
+  "tail": "ok: written README carries only the opened row's hash\nok: shipped sample_cases_raw.csv parses as 4 rows\nok: sample emits the DATA_COLUMNS header\nok: sample keeps the alignment expression verbatim\nok: shipped sample_readback.csv parses as 2 rows\nok: sample card states the sample line count\n\nResults: 42/42 checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-15T17:59:53Z",
+  "verdict_by": "hivemindos"
 }
