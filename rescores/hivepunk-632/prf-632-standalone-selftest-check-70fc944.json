@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-632",
+  "bundle": "prf-632-standalone-selftest-check-70fc944",
+  "result": "REPRODUCED",
+  "observed": "passed, no count line",
+  "scorerCommit": "70fc94477d2084566a4a0356473a00732f7ec37b",
+  "peer": "667",
+  "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
+  "at": "2026-11-15T20:30:49Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43758466734"
+}
