@@ -6,5 +6,8 @@
   "sha": "e6702c1a88669c5a863683f3a8c87b4b91e6f889",
   "at": "2026-11-15T07:33:46Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43690481235",
-  "tail": "FAIL: render() does not match cases.csv:\n\n--- produced ---\ncase,folder,expected_verdict,expected_detail\ngood,fixtures/good,ready,\"front matter ok; referenced paths: 2 checked, 0 missing\"\nmissing_ref,fixtures/missing_ref,not_ready,1 problem: data/missing.csv is referenced but absent\nbad_front_matter,fixtures/bad_front_matter,not_ready,1 problem: no leading '---' line in README.md\nmissing_readme,fixtures/missing_readme,not_ready,1 problem: README.md not found in folder\n"
+  "tail": "FAIL: render() does not match cases.csv:\n\n--- produced ---\ncase,folder,expected_verdict,expected_detail\ngood,fixtures/good,ready,\"front matter ok; referenced paths: 2 checked, 0 missing\"\nmissing_ref,fixtures/missing_ref,not_ready,1 problem: data/missing.csv is referenced but absent\nbad_front_matter,fixtures/bad_front_matter,not_ready,1 problem: no leading '---' line in README.md\nmissing_readme,fixtures/missing_readme,not_ready,1 problem: README.md not found in folder\n",
+  "verdict": "failed",
+  "verdict_at": "2026-11-15T07:49:06Z",
+  "verdict_by": "hivemindos"
 }
