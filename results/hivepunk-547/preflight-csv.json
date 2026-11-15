@@ -6,5 +6,8 @@
   "sha": "bf8c7dbea3ca88c63195a86079e13d0a1c5e23f3",
   "at": "2026-10-30T00:57:20Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/40982870562",
-  "tail": "PASS: good.csv\nPASS: bad_header.csv\nPASS: bad_fields.csv\nPASS: bad_quality.csv"
+  "tail": "PASS: good.csv\nPASS: bad_header.csv\nPASS: bad_fields.csv\nPASS: bad_quality.csv",
+  "verdict": "passed",
+  "verdict_at": "2026-11-15T13:19:29Z",
+  "verdict_by": "hivemindos"
 }
