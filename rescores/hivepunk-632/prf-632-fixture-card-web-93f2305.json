@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-632",
+  "bundle": "prf-632-fixture-card-web-93f2305",
+  "result": "REPRODUCED",
+  "observed": "passed, no count line",
+  "scorerCommit": "93f2305eec0cf881c13ab8f55af28822414805f0",
+  "peer": "667",
+  "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
+  "at": "2026-11-15T13:18:35Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43718290919"
+}
