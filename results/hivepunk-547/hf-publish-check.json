@@ -3,11 +3,8 @@
   "tool": "hf-publish-check",
   "result": "success",
   "file": "self_test.py",
-  "sha": "6d29623f2e451aaf33e0a0672378b061c67502d3",
-  "at": "2026-11-15T01:27:46Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43663175140",
-  "tail": "note: staged fixture completed: data/rows.csv, notes.md\ngood folder: valid, 0 missing reference(s)\nbad_front_matter: rejected with 1 issue(s)\nmissing_ref: rejected, missing ['data/missing.csv']\ndataset_url: exact for both forms\nupload stub: 1 call, url printed\nself-test: all checks passed",
-  "verdict": "passed",
-  "verdict_at": "2026-11-15T01:43:10Z",
-  "verdict_by": "hivemindos"
+  "sha": "6977f56fcfee35d44fba2a7550e8df5e93ff6f21",
+  "at": "2026-11-15T04:31:15Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43677107673",
+  "tail": "note: staged fixture completed: data/rows.csv, notes.md\ngood folder: valid, 0 missing reference(s)\nbad_front_matter: rejected with 1 issue(s)\nmissing_ref: rejected, missing ['data/missing.csv']\ndataset_url: exact for both forms\nupload stub: 1 call, url printed\nself-test: all checks passed"
 }
