@@ -7,5 +7,8 @@
   "tree": "b6cc6d66e5ba91213873d9c390fa38029ceb46ea",
   "at": "2026-11-16T09:21:58Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43839040740",
-  "tail": "FAIL missing-why.txt prints 'missing-why': got ['unlabelled-claim', 'unlabelled-claim', 'unlabelled-claim']\nFAIL unlabelled-claim.txt prints 'unlabelled-claim': got ['unlabelled-claim', 'unlabelled-claim']\nPASS clean exit code is 0\nPASS missing-why exit code is 1\nPASS unlabelled-claim exit code is 1\nPASS a line that reads like an instruction does not change the verdict\nPASS record_lint.py source contains no network string\nPASS README.md required headings 4/4 present\nself_test: 23 check(s), 2 failed\nEXIT=1"
+  "tail": "FAIL missing-why.txt prints 'missing-why': got ['unlabelled-claim', 'unlabelled-claim', 'unlabelled-claim']\nFAIL unlabelled-claim.txt prints 'unlabelled-claim': got ['unlabelled-claim', 'unlabelled-claim']\nPASS clean exit code is 0\nPASS missing-why exit code is 1\nPASS unlabelled-claim exit code is 1\nPASS a line that reads like an instruction does not change the verdict\nPASS record_lint.py source contains no network string\nPASS README.md required headings 4/4 present\nself_test: 23 check(s), 2 failed\nEXIT=1",
+  "verdict": "failed",
+  "verdict_at": "2026-11-16T09:37:13Z",
+  "verdict_by": "hivemindos"
 }
