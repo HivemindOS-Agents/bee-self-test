@@ -1,0 +1,601 @@
+{
+  "schema": "hive.bazaar-intent-rank.v1",
+  "date": "2026-11-16",
+  "startedAt": "2026-11-16T14:48:04Z",
+  "fixture": {
+    "path": "fixtures/bazaar-intents/bazaar-intents.json",
+    "sha256": "55e8df2ba83d75d47d8a4cf953dcf7e7f2315d07f6925acef215803461d8ccd6",
+    "intents": 20
+  },
+  "hiveHosts": [
+    "api.hivemindos.app",
+    "hivemindos-paid-agent-gateway.hivemindos.workers.dev"
+  ],
+  "paid": false,
+  "complete": true,
+  "finishedAt": "2026-11-16T14:48:36Z",
+  "search": {
+    "url": "https://api.cdp.coinbase.com/platform/v2/x402/discovery/search",
+    "network": "eip155:8453",
+    "limit": 20
+  },
+  "listed": {
+    "url": "https://api.cdp.coinbase.com/platform/v2/x402/discovery/merchant",
+    "payTo": [
+      "0xbD62F8DCB52E21CA5BDf20ba173488Da101eBCf0"
+    ],
+    "count": 57,
+    "otherPayTo": []
+  },
+  "counts": {
+    "intents": 20,
+    "hiveInTop20": 8,
+    "absent": 12,
+    "listedIntentsRanked": 8,
+    "listedIntents": 18,
+    "expectedResourceFound": 8,
+    "outOfScope": 2,
+    "expectedResourceNotListed": 0
+  },
+  "rows": [
+    {
+      "id": "web-search",
+      "query": "web search api for ai agents",
+      "expect": "listed",
+      "bestRank": "absent",
+      "resource": null,
+      "resourceIsExpected": false,
+      "expectedFound": [],
+      "l30DaysUniquePayers": null,
+      "l30DaysTotalCalls": null,
+      "hiveHits": [],
+      "top": {
+        "host": "agent-data-tools.revmesh2074.workers.dev",
+        "resource": "https://agent-data-tools.revmesh2074.workers.dev/search/web",
+        "l30DaysUniquePayers": 2
+      },
+      "resultCount": 16,
+      "partialResults": false,
+      "searchMethod": "hybrid",
+      "fetchedAt": "2026-11-16T14:48:06Z",
+      "attempts": 1,
+      "flags": []
+    },
+    {
+      "id": "news",
+      "query": "latest news headlines search",
+      "expect": "listed",
+      "bestRank": "absent",
+      "resource": null,
+      "resourceIsExpected": false,
+      "expectedFound": [],
+      "l30DaysUniquePayers": null,
+      "l30DaysTotalCalls": null,
+      "hiveHits": [],
+      "top": {
+        "host": "api.agentstools.dev",
+        "resource": "https://api.agentstools.dev/search/news",
+        "l30DaysUniquePayers": 8
+      },
+      "resultCount": 9,
+      "partialResults": false,
+      "searchMethod": "hybrid",
+      "fetchedAt": "2026-11-16T14:48:07Z",
+      "attempts": 1,
+      "flags": []
+    },
+    {
+      "id": "prediction-markets",
+      "query": "prediction market odds polymarket",
+      "expect": "listed",
+      "bestRank": "absent",
+      "resource": null,
+      "resourceIsExpected": false,
+      "expectedFound": [],
+      "l30DaysUniquePayers": null,
+      "l30DaysTotalCalls": null,
+      "hiveHits": [],
+      "top": {
+        "host": "agent-data-tools.revmesh2074.workers.dev",
+        "resource": "https://agent-data-tools.revmesh2074.workers.dev/polymarket/markets",
+        "l30DaysUniquePayers": 1
+      },
+      "resultCount": 16,
+      "partialResults": false,
+      "searchMethod": "hybrid",
+      "fetchedAt": "2026-11-16T14:48:08Z",
+      "attempts": 1,
+      "flags": []
+    },
+    {
+      "id": "token-analysis",
+      "query": "token due diligence report",
+      "expect": "listed",
+      "bestRank": 13,
+      "resource": "https://api.hivemindos.app/v1/x402/token-autopsy/reports.create",
+      "resourceIsExpected": true,
+      "expectedFound": [
+        "https://api.hivemindos.app/v1/x402/token-autopsy/reports.create"
+      ],
+      "l30DaysUniquePayers": 1,
+      "l30DaysTotalCalls": 2,
+      "hiveHits": [
+        {
+          "rank": 13,
+          "resource": "https://api.hivemindos.app/v1/x402/token-autopsy/reports.create"
+        }
+      ],
+      "top": {
+        "host": "api.messyvirgo.com",
+        "resource": "https://api.messyvirgo.com/api/v1/paid/token-due-diligence/report",
+        "l30DaysUniquePayers": 1
+      },
+      "resultCount": 16,
+      "partialResults": false,
+      "searchMethod": "hybrid",
+      "fetchedAt": "2026-11-16T14:48:09Z",
+      "attempts": 1,
+      "flags": []
+    },
+    {
+      "id": "wallet-risk",
+      "query": "wallet risk check for a base address",
+      "expect": "listed",
+      "bestRank": "absent",
+      "resource": null,
+      "resourceIsExpected": false,
+      "expectedFound": [],
+      "l30DaysUniquePayers": null,
+      "l30DaysTotalCalls": null,
+      "hiveHits": [],
+      "top": {
+        "host": "agent-data-tools.revmesh2074.workers.dev",
+        "resource": "https://agent-data-tools.revmesh2074.workers.dev/wallet-audit",
+        "l30DaysUniquePayers": 2
+      },
+      "resultCount": 12,
+      "partialResults": false,
+      "searchMethod": "hybrid",
+      "fetchedAt": "2026-11-16T14:48:10Z",
+      "attempts": 1,
+      "flags": []
+    },
+    {
+      "id": "reddit-voc",
+      "query": "reddit voice of customer research",
+      "expect": "listed",
+      "bestRank": 1,
+      "resource": "https://api.hivemindos.app/v1/x402/reddit-voc/runs.create",
+      "resourceIsExpected": true,
+      "expectedFound": [
+        "https://api.hivemindos.app/v1/x402/reddit-voc/runs.create",
+        "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/reddit-voc/runs"
+      ],
+      "l30DaysUniquePayers": 1,
+      "l30DaysTotalCalls": 2,
+      "hiveHits": [
+        {
+          "rank": 1,
+          "resource": "https://api.hivemindos.app/v1/x402/reddit-voc/runs.create"
+        },
+        {
+          "rank": 7,
+          "resource": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/reddit-voc/runs"
+        }
+      ],
+      "top": {
+        "host": "api.hivemindos.app",
+        "resource": "https://api.hivemindos.app/v1/x402/reddit-voc/runs.create",
+        "l30DaysUniquePayers": 1
+      },
+      "resultCount": 14,
+      "partialResults": false,
+      "searchMethod": "hybrid",
+      "fetchedAt": "2026-11-16T14:48:13Z",
+      "attempts": 1,
+      "flags": []
+    },
+    {
+      "id": "research-report",
+      "query": "crypto research report from multiple agents",
+      "expect": "listed",
+      "bestRank": "absent",
+      "resource": null,
+      "resourceIsExpected": false,
+      "expectedFound": [],
+      "l30DaysUniquePayers": null,
+      "l30DaysTotalCalls": null,
+      "hiveHits": [],
+      "top": {
+        "host": "agentsvc.io",
+        "resource": "https://agentsvc.io/api/v1/proxy/research-report",
+        "l30DaysUniquePayers": 1
+      },
+      "resultCount": 11,
+      "partialResults": false,
+      "searchMethod": "hybrid",
+      "fetchedAt": "2026-11-16T14:48:14Z",
+      "attempts": 1,
+      "flags": []
+    },
+    {
+      "id": "svg-vectorize",
+      "query": "convert png image to svg vector",
+      "expect": "listed",
+      "bestRank": 2,
+      "resource": "https://api.hivemindos.app/v1/x402/svg-studio/svgs.vectorize",
+      "resourceIsExpected": true,
+      "expectedFound": [
+        "https://api.hivemindos.app/v1/x402/svg-studio/svgs.vectorize"
+      ],
+      "l30DaysUniquePayers": 2,
+      "l30DaysTotalCalls": 26,
+      "hiveHits": [
+        {
+          "rank": 2,
+          "resource": "https://api.hivemindos.app/v1/x402/svg-studio/svgs.vectorize"
+        },
+        {
+          "rank": 5,
+          "resource": "https://api.hivemindos.app/v1/x402/svg-studio/svgs.generate"
+        },
+        {
+          "rank": 6,
+          "resource": "https://api.hivemindos.app/v1/x402/svg-studio/svgs.edit"
+        }
+      ],
+      "top": {
+        "host": "api.svgsmith.dev",
+        "resource": "https://api.svgsmith.dev/v1/convert",
+        "l30DaysUniquePayers": 1
+      },
+      "resultCount": 10,
+      "partialResults": false,
+      "searchMethod": "hybrid",
+      "fetchedAt": "2026-11-16T14:48:15Z",
+      "attempts": 1,
+      "flags": []
+    },
+    {
+      "id": "image-generation",
+      "query": "text to image generation",
+      "expect": "listed",
+      "bestRank": "absent",
+      "resource": null,
+      "resourceIsExpected": false,
+      "expectedFound": [],
+      "l30DaysUniquePayers": null,
+      "l30DaysTotalCalls": null,
+      "hiveHits": [],
+      "top": {
+        "host": "seenly-video-clip.vercel.app",
+        "resource": "https://seenly-video-clip.vercel.app/api/image",
+        "l30DaysUniquePayers": 3
+      },
+      "resultCount": 18,
+      "partialResults": false,
+      "searchMethod": "hybrid",
+      "fetchedAt": "2026-11-16T14:48:17Z",
+      "attempts": 1,
+      "flags": []
+    },
+    {
+      "id": "video-generation",
+      "query": "text to video generation",
+      "expect": "listed",
+      "bestRank": "absent",
+      "resource": null,
+      "resourceIsExpected": false,
+      "expectedFound": [],
+      "l30DaysUniquePayers": null,
+      "l30DaysTotalCalls": null,
+      "hiveHits": [],
+      "top": {
+        "host": "www.trezalabs.com",
+        "resource": "https://www.trezalabs.com/api/x402/video",
+        "l30DaysUniquePayers": 9
+      },
+      "resultCount": 10,
+      "partialResults": false,
+      "searchMethod": "hybrid",
+      "fetchedAt": "2026-11-16T14:48:18Z",
+      "attempts": 1,
+      "flags": []
+    },
+    {
+      "id": "photo-keywords",
+      "query": "stock photo keywords and description",
+      "expect": "listed",
+      "bestRank": 1,
+      "resource": "https://api.hivemindos.app/v1/x402/photo-keyworder/photos.analyze",
+      "resourceIsExpected": true,
+      "expectedFound": [
+        "https://api.hivemindos.app/v1/x402/photo-keyworder/photos.analyze",
+        "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/photo-keyworder/analyses"
+      ],
+      "l30DaysUniquePayers": 1,
+      "l30DaysTotalCalls": 22,
+      "hiveHits": [
+        {
+          "rank": 1,
+          "resource": "https://api.hivemindos.app/v1/x402/photo-keyworder/photos.analyze"
+        },
+        {
+          "rank": 2,
+          "resource": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/photo-keyworder/analyses"
+        }
+      ],
+      "top": {
+        "host": "api.hivemindos.app",
+        "resource": "https://api.hivemindos.app/v1/x402/photo-keyworder/photos.analyze",
+        "l30DaysUniquePayers": 1
+      },
+      "resultCount": 7,
+      "partialResults": false,
+      "searchMethod": "hybrid",
+      "fetchedAt": "2026-11-16T14:48:19Z",
+      "attempts": 1,
+      "flags": []
+    },
+    {
+      "id": "lead-generation",
+      "query": "find local business leads",
+      "expect": "listed",
+      "bestRank": 3,
+      "resource": "https://api.hivemindos.app/v1/x402/leadgen-data/leads.discover",
+      "resourceIsExpected": true,
+      "expectedFound": [
+        "https://api.hivemindos.app/v1/x402/leadgen-data/leads.discover",
+        "https://api.hivemindos.app/v1/x402/leadgen-data/leads.nearby"
+      ],
+      "l30DaysUniquePayers": 1,
+      "l30DaysTotalCalls": 21,
+      "hiveHits": [
+        {
+          "rank": 3,
+          "resource": "https://api.hivemindos.app/v1/x402/leadgen-data/leads.discover"
+        },
+        {
+          "rank": 6,
+          "resource": "https://api.hivemindos.app/v1/x402/leadgen-data/leads.nearby"
+        }
+      ],
+      "top": {
+        "host": "local-leads-api.vercel.app",
+        "resource": "https://local-leads-api.vercel.app/api/v1/leads",
+        "l30DaysUniquePayers": 2
+      },
+      "resultCount": 17,
+      "partialResults": false,
+      "searchMethod": "hybrid",
+      "fetchedAt": "2026-11-16T14:48:21Z",
+      "attempts": 1,
+      "flags": []
+    },
+    {
+      "id": "onchain-data",
+      "query": "onchain token transfers and holder flows",
+      "expect": "listed",
+      "bestRank": 1,
+      "resource": "https://api.hivemindos.app/v1/x402/onchain-intelligence/tokens.transfers",
+      "resourceIsExpected": true,
+      "expectedFound": [
+        "https://api.hivemindos.app/v1/x402/onchain-intelligence/tokens.flows",
+        "https://api.hivemindos.app/v1/x402/onchain-intelligence/tokens.transfers"
+      ],
+      "l30DaysUniquePayers": 2,
+      "l30DaysTotalCalls": 23,
+      "hiveHits": [
+        {
+          "rank": 1,
+          "resource": "https://api.hivemindos.app/v1/x402/onchain-intelligence/tokens.transfers"
+        },
+        {
+          "rank": 2,
+          "resource": "https://api.hivemindos.app/v1/x402/onchain-intelligence/tokens.flows"
+        }
+      ],
+      "top": {
+        "host": "api.hivemindos.app",
+        "resource": "https://api.hivemindos.app/v1/x402/onchain-intelligence/tokens.transfers",
+        "l30DaysUniquePayers": 2
+      },
+      "resultCount": 5,
+      "partialResults": false,
+      "searchMethod": "hybrid",
+      "fetchedAt": "2026-11-16T14:48:23Z",
+      "attempts": 1,
+      "flags": []
+    },
+    {
+      "id": "testnet-faucet",
+      "query": "base sepolia testnet faucet",
+      "expect": "listed",
+      "bestRank": 1,
+      "resource": "https://api.hivemindos.app/v1/x402/testnet-faucet/claims.create",
+      "resourceIsExpected": true,
+      "expectedFound": [
+        "https://api.hivemindos.app/v1/x402/testnet-faucet/claims.create",
+        "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/testnet-faucet/claims"
+      ],
+      "l30DaysUniquePayers": 2,
+      "l30DaysTotalCalls": 22,
+      "hiveHits": [
+        {
+          "rank": 1,
+          "resource": "https://api.hivemindos.app/v1/x402/testnet-faucet/claims.create"
+        },
+        {
+          "rank": 9,
+          "resource": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/testnet-faucet/claims"
+        }
+      ],
+      "top": {
+        "host": "api.hivemindos.app",
+        "resource": "https://api.hivemindos.app/v1/x402/testnet-faucet/claims.create",
+        "l30DaysUniquePayers": 2
+      },
+      "resultCount": 10,
+      "partialResults": false,
+      "searchMethod": "hybrid",
+      "fetchedAt": "2026-11-16T14:48:25Z",
+      "attempts": 1,
+      "flags": []
+    },
+    {
+      "id": "x-studio",
+      "query": "twitter account engagement audit",
+      "expect": "listed",
+      "bestRank": "absent",
+      "resource": null,
+      "resourceIsExpected": false,
+      "expectedFound": [],
+      "l30DaysUniquePayers": null,
+      "l30DaysTotalCalls": null,
+      "hiveHits": [],
+      "top": {
+        "host": "social.duoleads.com",
+        "resource": "https://social.duoleads.com/v1/social/audience",
+        "l30DaysUniquePayers": 2
+      },
+      "resultCount": 10,
+      "partialResults": false,
+      "searchMethod": "hybrid",
+      "fetchedAt": "2026-11-16T14:48:27Z",
+      "attempts": 1,
+      "flags": []
+    },
+    {
+      "id": "social-simulation",
+      "query": "multi-agent swarm simulation of audience reaction",
+      "expect": "listed",
+      "bestRank": 1,
+      "resource": "https://api.hivemindos.app/v1/x402/swarm/runs.create",
+      "resourceIsExpected": true,
+      "expectedFound": [
+        "https://api.hivemindos.app/v1/x402/miroshark/runs.create",
+        "https://api.hivemindos.app/v1/x402/swarm/runs.create"
+      ],
+      "l30DaysUniquePayers": 1,
+      "l30DaysTotalCalls": 2,
+      "hiveHits": [
+        {
+          "rank": 1,
+          "resource": "https://api.hivemindos.app/v1/x402/swarm/runs.create"
+        },
+        {
+          "rank": 3,
+          "resource": "https://api.hivemindos.app/v1/x402/miroshark/runs.create"
+        }
+      ],
+      "top": {
+        "host": "api.hivemindos.app",
+        "resource": "https://api.hivemindos.app/v1/x402/swarm/runs.create",
+        "l30DaysUniquePayers": 1
+      },
+      "resultCount": 9,
+      "partialResults": false,
+      "searchMethod": "hybrid",
+      "fetchedAt": "2026-11-16T14:48:28Z",
+      "attempts": 1,
+      "flags": []
+    },
+    {
+      "id": "memory-store",
+      "query": "store long-term memory for an ai agent",
+      "expect": "out_of_scope",
+      "bestRank": "absent",
+      "resource": null,
+      "resourceIsExpected": false,
+      "expectedFound": [],
+      "l30DaysUniquePayers": null,
+      "l30DaysTotalCalls": null,
+      "hiveHits": [],
+      "top": {
+        "host": "agentsvc.io",
+        "resource": "https://agentsvc.io/api/v1/proxy/agent-memory",
+        "l30DaysUniquePayers": 7
+      },
+      "resultCount": 14,
+      "partialResults": false,
+      "searchMethod": "hybrid",
+      "fetchedAt": "2026-11-16T14:48:30Z",
+      "attempts": 1,
+      "flags": [],
+      "note": "2026-11-16: memory is sold by key, not over x402; decision pending"
+    },
+    {
+      "id": "memory-recall",
+      "query": "recall agent memory by query",
+      "expect": "out_of_scope",
+      "bestRank": "absent",
+      "resource": null,
+      "resourceIsExpected": false,
+      "expectedFound": [],
+      "l30DaysUniquePayers": null,
+      "l30DaysTotalCalls": null,
+      "hiveHits": [],
+      "top": {
+        "host": "agent-data-tools.revmesh2074.workers.dev",
+        "resource": "https://agent-data-tools.revmesh2074.workers.dev/memory/get",
+        "l30DaysUniquePayers": 2
+      },
+      "resultCount": 14,
+      "partialResults": false,
+      "searchMethod": "hybrid",
+      "fetchedAt": "2026-11-16T14:48:31Z",
+      "attempts": 1,
+      "flags": [],
+      "note": "2026-11-16: memory is sold by key, not over x402; decision pending"
+    },
+    {
+      "id": "model-route",
+      "query": "llm chat completions pay per call",
+      "expect": "listed",
+      "bestRank": "absent",
+      "resource": null,
+      "resourceIsExpected": false,
+      "expectedFound": [],
+      "l30DaysUniquePayers": null,
+      "l30DaysTotalCalls": null,
+      "hiveHits": [],
+      "top": {
+        "host": "x402.agentindex.world",
+        "resource": "https://x402.agentindex.world/v1/chat/completions",
+        "l30DaysUniquePayers": 1
+      },
+      "resultCount": 8,
+      "partialResults": false,
+      "searchMethod": "hybrid",
+      "fetchedAt": "2026-11-16T14:48:33Z",
+      "attempts": 1,
+      "flags": []
+    },
+    {
+      "id": "video-transcript",
+      "query": "transcribe a youtube video",
+      "expect": "listed",
+      "bestRank": "absent",
+      "resource": null,
+      "resourceIsExpected": false,
+      "expectedFound": [],
+      "l30DaysUniquePayers": null,
+      "l30DaysTotalCalls": null,
+      "hiveHits": [],
+      "top": {
+        "host": "social.duoleads.com",
+        "resource": "https://social.duoleads.com/v1/youtube/transcript",
+        "l30DaysUniquePayers": 2
+      },
+      "resultCount": 14,
+      "partialResults": false,
+      "searchMethod": "hybrid",
+      "fetchedAt": "2026-11-16T14:48:34Z",
+      "attempts": 1,
+      "flags": []
+    }
+  ],
+  "notes": [
+    "Bazaar's 30-day payers and calls are what Bazaar reports; they include HivemindOS's own test purchases, so they are never counted as outside use."
+  ]
+}

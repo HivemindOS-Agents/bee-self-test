@@ -1,0 +1,215 @@
+{
+  "schema": "hive.bazaar-intents.v1",
+  "about": "HB-022 and HB-033 (S5 of the Launch-readiness & Trust upgrade, HB-035): 20 fixed Bazaar searches an agent shopping for what HivemindOS sells would run, each mapped to the HivemindOS resources it should find (listed), to none (unlisted), or out_of_scope with a dated note; plus one deliberately unlisted control URL for the unpaid Agents Trust sweep. Two copies, byte-identical, pinned by the same sha256: hivemind-cloud-services/workers/platform-api/bazaar/bazaar-intents.json in the HivemindOS monorepo (test/bazaar-intents.test.mjs) and fixtures/bazaar-intents/bazaar-intents.json in HivemindOS-Agents/bee-self-test (scripts/bazaar_weekly.py). Change both and both pins together.",
+  "fixedAt": "2026-11-16",
+  "hiveHosts": [
+    "api.hivemindos.app",
+    "hivemindos-paid-agent-gateway.hivemindos.workers.dev"
+  ],
+  "search": {
+    "url": "https://api.cdp.coinbase.com/platform/v2/x402/discovery/search",
+    "network": "eip155:8453",
+    "limit": 20
+  },
+  "listed": {
+    "url": "https://api.cdp.coinbase.com/platform/v2/x402/discovery/merchant",
+    "payTo": [
+      "0xbD62F8DCB52E21CA5BDf20ba173488Da101eBCf0"
+    ],
+    "note": "Bazaar's list of every active resource paid to HivemindOS's payTo, kept to hiveHosts. 57 URLs on 2026-11-16 (37 on api.hivemindos.app, 20 on the gateway). A urlSubstring search per host cross-checks for a HivemindOS URL listed under another payTo."
+  },
+  "inspect": {
+    "url": "https://api.agents-trust.com/inspect",
+    "view": "compact",
+    "missesPerMinute": 20
+  },
+  "control": {
+    "id": "control-unlisted",
+    "url": "https://api.hivemindos.app/v1/x402/bazaar-control/never-listed",
+    "expect": "unlisted",
+    "note": "No such route exists or is listed. Bazaar must not list it and Agents Trust must answer 404 ENDPOINT_NOT_INDEXED; anything else means the sweep cannot tell indexed from not."
+  },
+  "intents": [
+    {
+      "id": "web-search",
+      "query": "web search api for ai agents",
+      "expect": "listed",
+      "resources": [
+        "https://api.hivemindos.app/v1/x402/web-data/web.search",
+        "https://api.hivemindos.app/v1/x402/web-data/search.results"
+      ]
+    },
+    {
+      "id": "news",
+      "query": "latest news headlines search",
+      "expect": "listed",
+      "resources": [
+        "https://api.hivemindos.app/v1/x402/web-data/web.news",
+        "https://api.hivemindos.app/v1/x402/web-data/news.recent"
+      ]
+    },
+    {
+      "id": "prediction-markets",
+      "query": "prediction market odds polymarket",
+      "expect": "listed",
+      "resources": [
+        "https://api.hivemindos.app/v1/x402/onchain-intelligence/predictionMarkets.search",
+        "https://api.hivemindos.app/v1/x402/onchain-intelligence/predictionMarkets.market",
+        "https://api.hivemindos.app/v1/x402/onchain-intelligence/predictionMarkets.wallet"
+      ]
+    },
+    {
+      "id": "token-analysis",
+      "query": "token due diligence report",
+      "expect": "listed",
+      "resources": [
+        "https://api.hivemindos.app/v1/x402/token-autopsy/reports.create",
+        "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/token-autopsy/runs",
+        "https://api.hivemindos.app/v1/x402/onchain-intelligence/tokens.brief"
+      ]
+    },
+    {
+      "id": "wallet-risk",
+      "query": "wallet risk check for a base address",
+      "expect": "listed",
+      "resources": [
+        "https://api.hivemindos.app/v1/x402/wallet-risk/snapshots.create",
+        "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/wallet-risk/runs",
+        "https://api.hivemindos.app/v1/x402/onchain-intelligence/wallets.brief"
+      ]
+    },
+    {
+      "id": "reddit-voc",
+      "query": "reddit voice of customer research",
+      "expect": "listed",
+      "resources": [
+        "https://api.hivemindos.app/v1/x402/reddit-voc/runs.create",
+        "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/reddit-voc/runs"
+      ]
+    },
+    {
+      "id": "research-report",
+      "query": "crypto research report from multiple agents",
+      "expect": "listed",
+      "resources": [
+        "https://api.hivemindos.app/v1/x402/hive-research/analyses.create",
+        "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/hive-research/runs"
+      ]
+    },
+    {
+      "id": "svg-vectorize",
+      "query": "convert png image to svg vector",
+      "expect": "listed",
+      "resources": [
+        "https://api.hivemindos.app/v1/x402/svg-studio/svgs.vectorize"
+      ]
+    },
+    {
+      "id": "image-generation",
+      "query": "text to image generation",
+      "expect": "listed",
+      "resources": [
+        "https://api.hivemindos.app/v1/x402/media-studio/generations.create",
+        "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/image-generator/generations",
+        "https://api.hivemindos.app/v1/x402/svg-studio/svgs.generate"
+      ]
+    },
+    {
+      "id": "video-generation",
+      "query": "text to video generation",
+      "expect": "listed",
+      "resources": [
+        "https://api.hivemindos.app/v1/x402/media-studio/generations.create",
+        "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/video-generator/generations"
+      ]
+    },
+    {
+      "id": "photo-keywords",
+      "query": "stock photo keywords and description",
+      "expect": "listed",
+      "resources": [
+        "https://api.hivemindos.app/v1/x402/photo-keyworder/photos.analyze",
+        "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/photo-keyworder/analyses"
+      ]
+    },
+    {
+      "id": "lead-generation",
+      "query": "find local business leads",
+      "expect": "listed",
+      "resources": [
+        "https://api.hivemindos.app/v1/x402/leadgen-data/leads.discover",
+        "https://api.hivemindos.app/v1/x402/leadgen-data/leads.nearby",
+        "https://api.hivemindos.app/v1/x402/leadgen-data/leads.enrich"
+      ]
+    },
+    {
+      "id": "onchain-data",
+      "query": "onchain token transfers and holder flows",
+      "expect": "listed",
+      "resources": [
+        "https://api.hivemindos.app/v1/x402/onchain-intelligence/tokens.transfers",
+        "https://api.hivemindos.app/v1/x402/onchain-intelligence/tokens.flows",
+        "https://api.hivemindos.app/v1/x402/onchain-intelligence/exchanges.flows"
+      ]
+    },
+    {
+      "id": "testnet-faucet",
+      "query": "base sepolia testnet faucet",
+      "expect": "listed",
+      "resources": [
+        "https://api.hivemindos.app/v1/x402/testnet-faucet/claims.create",
+        "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/testnet-faucet/claims"
+      ]
+    },
+    {
+      "id": "x-studio",
+      "query": "twitter account engagement audit",
+      "expect": "listed",
+      "resources": [
+        "https://api.hivemindos.app/v1/x402/x-studio/runs.create",
+        "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/engagement-audit/runs",
+        "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/style-skill-maker/runs"
+      ]
+    },
+    {
+      "id": "social-simulation",
+      "query": "multi-agent swarm simulation of audience reaction",
+      "expect": "listed",
+      "resources": [
+        "https://api.hivemindos.app/v1/x402/swarm/runs.create",
+        "https://api.hivemindos.app/v1/x402/miroshark/runs.create",
+        "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/swarm-quick/runs",
+        "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/swarm-theater/runs",
+        "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/miroshark/x402/run"
+      ]
+    },
+    {
+      "id": "memory-store",
+      "query": "store long-term memory for an ai agent",
+      "expect": "out_of_scope",
+      "note": "2026-11-16: memory is sold by key, not over x402; decision pending"
+    },
+    {
+      "id": "memory-recall",
+      "query": "recall agent memory by query",
+      "expect": "out_of_scope",
+      "note": "2026-11-16: memory is sold by key, not over x402; decision pending"
+    },
+    {
+      "id": "model-route",
+      "query": "llm chat completions pay per call",
+      "expect": "listed",
+      "resources": [
+        "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/paid-agents/default/chat/completions"
+      ]
+    },
+    {
+      "id": "video-transcript",
+      "query": "transcribe a youtube video",
+      "expect": "listed",
+      "resources": [
+        "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/x-transcript/runs"
+      ]
+    }
+  ]
+}

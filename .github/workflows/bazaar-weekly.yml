@@ -1,0 +1,99 @@
+# Where HivemindOS ranks when an agent shops on the x402 Bazaar (HB-022), and which of its listed URLs Agents Trust
+# already indexes (the unpaid half of HB-033): block S5 of the Launch-readiness & Trust upgrade (HB-035, 2026-11-16).
+# Every Monday at 04:35 UTC, and on demand: 20 fixed Bazaar searches from fixtures/bazaar-intents/bazaar-intents.json,
+# then one unpaid Agents Trust Inspect read per listed URL. Writes reports/bazaar-intent-rank/DATE.json + .md and
+# reports/agents-trust-index/DATE.json + .md.
+#
+# Nothing is paid and no payment header is ever sent; no key or secret is used. The sweep job has read access only and
+# runs only this repository's script; the record job writes reports/ and runs nothing else. An incomplete run is
+# written as DATE.incomplete.json, never as a board, and the run goes red. It is not a required check anywhere.
+name: bazaar-weekly
+on:
+  schedule:
+    - cron: "35 4 * * 1"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["scripts/bazaar_weekly.py", "tests/test_bazaar_weekly.py", "fixtures/bazaar-intents/**", ".github/workflows/bazaar-weekly.yml"]
+permissions: {}
+concurrency:
+  group: bazaar-weekly
+  cancel-in-progress: false
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: The fixture has 20 intents and a sound shape
+        run: python3 scripts/bazaar_weekly.py --check-fixture fixtures/bazaar-intents/bazaar-intents.json
+      - name: Rank parsing and the incompleteness rule, on canned answers
+        run: python3 -m unittest discover -s tests -p 'test_bazaar_weekly.py' -v
+  sweep:
+    needs: check
+    if: github.event_name != 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Search the Bazaar and read Agents Trust, unpaid
+        run: python3 scripts/bazaar_weekly.py --fixture fixtures/bazaar-intents/bazaar-intents.json --out .
+      - name: Keep the reports for the record job
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bazaar-weekly-reports
+          path: |
+            reports/bazaar-intent-rank/
+            reports/agents-trust-index/
+          if-no-files-found: ignore
+          retention-days: 14
+  record:
+    needs: sweep
+    if: always() && needs.sweep.result != 'skipped' && needs.sweep.result != 'cancelled'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: bazaar-weekly-reports
+          path: reports/
+      - name: Record the reports
+        run: |
+          set -eu
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- reports/bazaar-intent-rank reports/agents-trust-index
+          summary=$(python3 - <<'PY'
+          import glob, json, os
+          parts = []
+          for kind in ("bazaar-intent-rank", "agents-trust-index"):
+              paths = sorted(glob.glob(f"reports/{kind}/*.json"), key=os.path.getmtime)
+              if not paths:
+                  continue
+              d = json.load(open(paths[-1]))
+              c = d["counts"]
+              done = "" if d["complete"] else " INCOMPLETE"
+              parts.append(f"rank {c['hiveInTop20']}/{c['intents']} in top 20{done}" if kind == "bazaar-intent-rank"
+                           else f"indexed {c['indexed']}/{c['listed']}{done}")
+          print(", ".join(parts))
+          PY
+          )
+          git commit --quiet -m "bazaar weekly: ${summary}" || exit 0
+          for try in 1 2 3 4 5 6; do
+            git push --quiet && exit 0
+            sleep $((try * 2))
+            git pull --quiet --rebase
+          done
+          exit 1
