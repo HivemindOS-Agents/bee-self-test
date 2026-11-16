@@ -1,0 +1,146 @@
+# Skill lift (HB-036 of the Agent Learning & Self-heal Loop, HB-044): does a shared skill help, against the same agent
+# with no skill? scripts/lift_run.py runs each task of lift/<skill>/tasks.json twice on the same explicit model, tools,
+# attempts and budget, once with the skill's SKILL.md and once without, and writes a `lift` block. A partial,
+# incomplete, unreviewed or stale run keeps its counts and `lift: null`: it is never shown as lift.
+#
+# On demand only for now (Phase 0: no paid run has been made). The check job needs no secret: the unit tests on canned
+# answers, the task set's shape and hashes, and every task's checks re-derived from the chain over a keyless public RPC.
+# The run job is the only one that holds the gateway key, as an environment variable of its one step; the model's tools
+# get no key (a keyless read-only RPC and a stubbed notify). Model spend is host CI spend, capped by --max-cost-usd,
+# never an agent's wallet. The record job runs no model and no tool code, and writes lift/<skill>/runs/ only.
+name: skill-lift
+on:
+  workflow_dispatch:
+    inputs:
+      skill:
+        description: "The task set: lift/<skill>/tasks.json"
+        required: true
+        default: tx-explain
+      model:
+        description: "The explicit model id for both arms (no default is used)"
+        required: true
+      prices:
+        description: 'The model''s price, JSON: {"<model>": {"inputUsdPerMTok": n, "outputUsdPerMTok": n}}'
+        required: true
+      max_cost_usd:
+        description: "Model spend cap for the whole run, in USD (judge calls excluded)"
+        required: true
+        default: "1"
+      max_judge_calls:
+        description: "Judge-call cap (tx-explain has no judge checks)"
+        required: true
+        default: "0"
+      allow_unreviewed:
+        description: "Run on a task set whose different-owner review is still pending (its lift stays null)"
+        type: boolean
+        default: false
+permissions: {}
+concurrency:
+  group: skill-lift
+  cancel-in-progress: false
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    env:
+      SKILL: ${{ inputs.skill }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Unit tests on canned answers
+        run: python3 -m unittest discover -s tests -p 'test_lift_run.py' -v
+      - name: The task set is sound and its checks hold on the chain
+        run: |
+          set -eu
+          [[ "$SKILL" =~ ^[a-z0-9][a-z0-9-]{0,60}$ ]] || { echo "Not a skill slug."; exit 2; }
+          python3 scripts/lift_run.py --check-taskset "lift/$SKILL/tasks.json"
+          python3 scripts/lift_run.py --verify-tasks "lift/$SKILL/tasks.json"
+  run:
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    env:
+      SKILL: ${{ inputs.skill }}
+      MODEL: ${{ inputs.model }}
+      PRICES: ${{ inputs.prices }}
+      MAX_COST_USD: ${{ inputs.max_cost_usd }}
+      MAX_JUDGE_CALLS: ${{ inputs.max_judge_calls }}
+      ALLOW_UNREVIEWED: ${{ inputs.allow_unreviewed }}
+      ENDPOINT: ${{ vars.LIFT_ENDPOINT }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Read the inputs and the pinned skill file
+        run: |
+          set -eu
+          [[ "$SKILL" =~ ^[a-z0-9][a-z0-9-]{0,60}$ ]] || { echo "Not a skill slug."; exit 2; }
+          [[ "$MODEL" =~ ^[A-Za-z0-9][A-Za-z0-9._/:-]{2,100}$ ]] || { echo "Not a model id."; exit 2; }
+          [[ "$MAX_COST_USD" =~ ^[0-9]+(\.[0-9]+)?$ && "$MAX_JUDGE_CALLS" =~ ^[0-9]{1,3}$ ]] || { echo "Not a cap."; exit 2; }
+          [[ "$ENDPOINT" =~ ^https:// ]] || { echo "Set the repository variable LIFT_ENDPOINT to the gateway's chat completions URL."; exit 2; }
+          printf '%s' "$PRICES" | python3 -c 'import json,sys; p=json.load(sys.stdin); assert isinstance(p, dict) and p' > /dev/null
+          printf '%s' "$PRICES" > "$RUNNER_TEMP/prices.json"
+          URL=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["skillUrl"])' "lift/$SKILL/tasks.json")
+          [[ "$URL" =~ ^https://raw\.githubusercontent\.com/ ]] || { echo "The task set's skillUrl is not a pinned raw file."; exit 2; }
+          curl -fsS -m 20 "$URL" -o "$RUNNER_TEMP/SKILL.md"
+      - name: Both arms, with and without the skill
+        env:
+          HIVEMINDOS_GATEWAY_KEY: ${{ secrets.HIVEMINDOS_GATEWAY_KEY }}
+        run: |
+          set -u
+          EXTRA=""; [ "$ALLOW_UNREVIEWED" = "true" ] && EXTRA="--allow-unreviewed"
+          mkdir -p "$RUNNER_TEMP/out"
+          python3 scripts/lift_run.py --taskset "lift/$SKILL/tasks.json" --skill-file "$RUNNER_TEMP/SKILL.md" \
+            --model "$MODEL" --endpoint "$ENDPOINT" --key-env HIVEMINDOS_GATEWAY_KEY \
+            --max-cost-usd "$MAX_COST_USD" --price-file "$RUNNER_TEMP/prices.json" --max-judge-calls "$MAX_JUDGE_CALLS" \
+            --report "$RUN_URL" --out "$RUNNER_TEMP/out/run.json" $EXTRA
+          echo "exit=$?" >> "$GITHUB_OUTPUT"
+      - name: The run's lift block passes the CI checks
+        if: always()
+        run: |
+          set -eu
+          [ -f "$RUNNER_TEMP/out/run.json" ] || { echo "No run was written."; exit 1; }
+          python3 -c 'import json,sys; json.dump(json.load(open(sys.argv[1]))["lift"], open(sys.argv[2], "w"))' "$RUNNER_TEMP/out/run.json" "$RUNNER_TEMP/out/lift.json"
+          python3 scripts/lift_run.py --check-lift "$RUNNER_TEMP/out/lift.json" --taskset "lift/$SKILL/tasks.json" --skill-file "$RUNNER_TEMP/SKILL.md"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lift-run
+          path: ${{ runner.temp }}/out/
+          if-no-files-found: ignore
+  record:
+    needs: run
+    if: always() && needs.run.result != 'skipped'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: write
+    env:
+      SKILL: ${{ inputs.skill }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: lift-run
+          path: ${{ runner.temp }}/out
+        continue-on-error: true
+      - name: Record the run under lift/<skill>/runs/
+        run: |
+          set -eu
+          [[ "$SKILL" =~ ^[a-z0-9][a-z0-9-]{0,60}$ ]] || exit 0
+          [ -f "$RUNNER_TEMP/out/run.json" ] || { echo "Nothing to record."; exit 0; }
+          python3 -c 'import json,sys; r=json.load(open(sys.argv[1])); assert r["lift"]["state"] in ("complete","partial","incomplete","unreviewed","stale")' "$RUNNER_TEMP/out/run.json"
+          mkdir -p "lift/$SKILL/runs"
+          cp "$RUNNER_TEMP/out/run.json" "lift/$SKILL/runs/$(date -u +%Y-%m-%dT%H%M%SZ)-${GITHUB_RUN_ID}.json"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "lift/$SKILL/runs"
+          git commit -m "skill-lift $SKILL: run ${GITHUB_RUN_ID}" || exit 0
+          git pull --rebase --quiet
+          git push --quiet

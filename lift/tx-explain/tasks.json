@@ -1,0 +1,218 @@
+{
+ "about": "HB-036 Phase 0: the fixed task set for tx-explain's skill lift. Five real public Base mainnet transactions, each with deterministic checks on the model's final JSON answer. Every check was verified against the chain's own reference answer (scripts/lift_run.py --verify-tasks, keyless public RPC). No run has been made on it; its review by an agent with a different owner is pending.",
+ "skill": "tx-explain",
+ "skillUrl": "https://raw.githubusercontent.com/aeonfun/aeon/b2f58a34a724d5bbcd53c4b696be5664370ec2b2/skills/tx-explain/SKILL.md",
+ "registryVersion": "aeon/tx-explain@eafd1ae43bdf5fca",
+ "skillSha256": "eafd1ae43bdf5fcacc8c5c02bcb6f7848eb533c34bfeb3e7f2b06dbf9bf4df94",
+ "publisher": {
+  "source": "aeon",
+  "owner": "aeonfun"
+ },
+ "chain": {
+  "name": "Base",
+  "chainId": 8453,
+  "rpc": "https://mainnet.base.org"
+ },
+ "tasks": [
+  {
+   "id": "usdc-transfer",
+   "txHash": "0x5eae27dd011066cfe578ac328e0130009bdaeac6d872adc07f7e1376259b5b62",
+   "blockNumber": 58236942,
+   "about": "A plain USDC transfer: one Transfer log, no native value.",
+   "checks": [
+    {
+     "field": "status",
+     "equals": "success"
+    },
+    {
+     "field": "action",
+     "oneOf": [
+      "transfer"
+     ]
+    },
+    {
+     "field": "method",
+     "oneOf": [
+      "transfer"
+     ]
+    },
+    {
+     "field": "from",
+     "equalsAddress": "0x740da33f3b179a5771df62f14f55cf8f4f0d25cc"
+    },
+    {
+     "field": "to",
+     "equalsAddress": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+    },
+    {
+     "field": "nativeValueWei",
+     "equals": "0"
+    },
+    {
+     "movement": {
+      "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "from": "0x740da33f3b179a5771df62f14f55cf8f4f0d25cc",
+      "to": "0x07249decebaa94c4038df109811296d5d7f10282",
+      "amountRaw": "36930000"
+     }
+    },
+    {
+     "field": "unlimitedApproval",
+     "isNull": true
+    }
+   ]
+  },
+  {
+   "id": "native-transfer",
+   "txHash": "0xf0ddeecc8398086b95b46ee8999fc2e3bb37043bc8e198368efb006a5f548553",
+   "blockNumber": 58236931,
+   "about": "ETH sent with no calldata and no logs: no token moved.",
+   "checks": [
+    {
+     "field": "status",
+     "equals": "success"
+    },
+    {
+     "field": "action",
+     "oneOf": [
+      "native-transfer"
+     ]
+    },
+    {
+     "field": "from",
+     "equalsAddress": "0x42d0ef7c7deeabfabd5f33e528d7cf2e7fd7e9ae"
+    },
+    {
+     "field": "to",
+     "equalsAddress": "0x63df213cb017eb4a80cf4af595cdb8925489b63d"
+    },
+    {
+     "field": "nativeValueWei",
+     "equals": "720415337186"
+    },
+    {
+     "field": "movements",
+     "length": 0
+    }
+   ]
+  },
+  {
+   "id": "reverted-call",
+   "txHash": "0x8c1d4071d8c9d962199ee066bf3076dfd7e87192a3580028f90423a6060cb9a7",
+   "blockNumber": 58236931,
+   "about": "A call that reverted: nothing moved and no state changed (the skill: never narrate a reverted tx's intent as done).",
+   "checks": [
+    {
+     "field": "status",
+     "equals": "reverted"
+    },
+    {
+     "field": "from",
+     "equalsAddress": "0xd1f24c0f230ddb1818ae26e1daedd770c2d227fc"
+    },
+    {
+     "field": "to",
+     "equalsAddress": "0x83d55acdc72027ed339d267eebaf9a41e47490d5"
+    },
+    {
+     "field": "movements",
+     "length": 0
+    },
+    {
+     "field": "unlimitedApproval",
+     "isNull": true
+    }
+   ]
+  },
+  {
+   "id": "unlimited-approve",
+   "txHash": "0x05fd756fe7c9e45cec3619d1d58d00d1e0ed41386d4351b0dec9be75725e1cf4",
+   "blockNumber": 58236995,
+   "about": "approve() of the maximum uint256 amount: an unlimited approval, with its token and spender.",
+   "checks": [
+    {
+     "field": "status",
+     "equals": "success"
+    },
+    {
+     "field": "action",
+     "oneOf": [
+      "approve"
+     ]
+    },
+    {
+     "field": "method",
+     "oneOf": [
+      "approve"
+     ]
+    },
+    {
+     "field": "unlimitedApproval.token",
+     "equalsAddress": "0xb200000000000000000000039c6467c6faec91a2"
+    },
+    {
+     "field": "unlimitedApproval.spender",
+     "equalsAddress": "0x215199f691cd1cc86ce7bbf803a8b9d9e79eb2e7"
+    },
+    {
+     "field": "movements",
+     "length": 0
+    }
+   ]
+  },
+  {
+   "id": "router-swap",
+   "txHash": "0x7a7fd670563bb76f902d8e478438c30397aa2805eaf7a6e8acc223cbaf11337d",
+   "blockNumber": 58236931,
+   "about": "A swap through a router's execute(): USDC out of the sender to a pool, another token from the pool to the sender.",
+   "checks": [
+    {
+     "field": "status",
+     "equals": "success"
+    },
+    {
+     "field": "action",
+     "oneOf": [
+      "swap"
+     ]
+    },
+    {
+     "field": "from",
+     "equalsAddress": "0xb09a7cc562236f93c3f3a105729f2e2f9fe678a0"
+    },
+    {
+     "field": "nativeValueWei",
+     "equals": "0"
+    },
+    {
+     "movement": {
+      "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "from": "0xb09a7cc562236f93c3f3a105729f2e2f9fe678a0",
+      "to": "0xe8f16fbf4eafec04bcf0c06d768e7ba325f9d6de",
+      "amountRaw": "81867112"
+     }
+    },
+    {
+     "movement": {
+      "token": "0xdcf5130274753c8050ab061b1a1dcbf583f5bfd0",
+      "from": "0xe8f16fbf4eafec04bcf0c06d768e7ba325f9d6de",
+      "to": "0xb09a7cc562236f93c3f3a105729f2e2f9fe678a0",
+      "amountRaw": "4500000000000000000"
+     }
+    }
+   ]
+  }
+ ],
+ "writtenBy": {
+  "agent": "claude-code (HivemindOS dev session)",
+  "owner": "hivemindos",
+  "at": "2026-11-17"
+ },
+ "reviewedBy": null,
+ "reviewedAt": null,
+ "verified": {
+  "at": "2026-11-17",
+  "with": "scripts/lift_run.py --verify-tasks against https://mainnet.base.org"
+ },
+ "tasksetSha256": "659ec43f83afc7c116f99fdc46adfdfdfba87d8649c99fcf0cd9ca67de25d607"
+}

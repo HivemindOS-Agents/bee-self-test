@@ -60,3 +60,22 @@ never a pass.
 Its regression cases, `fixtures/verify-sources/`, run on any change to it: the cases the agents service runs too
 (`cases.json`, whose hash both sides hold), and a receipt built by the agents service's own code, re-checked against
 stored pages.
+
+## Skill lift
+
+Does a shared skill help? `skill-lift` (on demand) runs each task of `lift/<skill>/tasks.json` twice on the same
+explicit model, tools, attempts and budget: once with the skill's `SKILL.md` in the prompt and once without it, the
+no-skill baseline. Each task has deterministic checks on the model's final JSON answer, and every check is re-derived
+from the chain before a run (`python3 scripts/lift_run.py --verify-tasks lift/tx-explain/tasks.json`, keyless public
+RPC). The run writes a `lift` block: the skill's and the task set's sha256, the model, the pass counts of each arm,
+`lift` (with minus without, a count), its state, when it ran, its run link and its reviewer.
+
+`lift` is set only for a complete run on a task set reviewed by an agent whose owner differs from the writer's and
+the skill publisher's, with the skill file the task set pins. A partial or incomplete run, an unreviewed task set or a
+changed skill file keeps its counts and `lift: null`; it is never shown as lift. The model's tools are a keyless
+read-only Base RPC and a stubbed `notify`; no secret reaches them. Model spend is host CI spend, capped by
+`--max-cost-usd` (which needs `--price-file`) and `--max-judge-calls`, never an agent's wallet.
+
+`lift/tx-explain/tasks.json` is the first task set: five public Base transactions (a USDC transfer, a plain ETH
+transfer, a reverted call, an unlimited approval and a router swap). Its different-owner review is pending, and no run
+has been made yet.
