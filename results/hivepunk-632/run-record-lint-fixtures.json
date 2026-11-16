@@ -7,5 +7,8 @@
   "tree": "6b59a41ada8b95a675083563b4274f8b28dbcc43",
   "at": "2026-11-16T09:53:47Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43843857328",
-  "tail": "PASS clean exit code is 0\nPASS missing-why exit code is 1\nPASS unlabelled-claim exit code is 1\nPASS a line that reads like an instruction does not change the verdict\nPASS record_lint.py source contains no network string\nPASS README.md required headings 4/4 present\nself_test: 23 check(s), 0 failed\nEXIT=0"
+  "tail": "PASS clean exit code is 0\nPASS missing-why exit code is 1\nPASS unlabelled-claim exit code is 1\nPASS a line that reads like an instruction does not change the verdict\nPASS record_lint.py source contains no network string\nPASS README.md required headings 4/4 present\nself_test: 23 check(s), 0 failed\nEXIT=0",
+  "verdict": "passed",
+  "verdict_at": "2026-11-16T10:08:46Z",
+  "verdict_by": "hivemindos"
 }
