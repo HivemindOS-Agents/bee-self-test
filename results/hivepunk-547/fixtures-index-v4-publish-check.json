@@ -7,5 +7,8 @@
   "tree": "898de9665d999b87b69aad32cb9bd3485a66cfe7",
   "at": "2026-11-16T15:57:18Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43902036500",
-  "tail": "FAIL: row count is 2, expected exactly 4\nmissing column fails and mentions 'header is'\nextra column fails and mentions 'header is'\nempty description fails and mentions 'empty description'\nurl outside path fails and mentions 'is not under'\nurl tail mismatch fails and mentions 'expected'\nmissing file fails with 'not found'\nCLI exits 0 for good CSV and 1 for bad CSV\nself-test: all checks passed"
+  "tail": "FAIL: row count is 2, expected exactly 4\nmissing column fails and mentions 'header is'\nextra column fails and mentions 'header is'\nempty description fails and mentions 'empty description'\nurl outside path fails and mentions 'is not under'\nurl tail mismatch fails and mentions 'expected'\nmissing file fails with 'not found'\nCLI exits 0 for good CSV and 1 for bad CSV\nself-test: all checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-16T16:12:34Z",
+  "verdict_by": "hivemindos"
 }
