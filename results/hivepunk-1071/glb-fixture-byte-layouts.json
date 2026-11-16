@@ -7,5 +7,8 @@
   "tree": "ce176a1cf970b66a1eeef89af74b1219191f964c",
   "at": "2026-11-16T01:26:43Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43786290137",
-  "tail": "FAIL: this folder has at least data/ files plus README.md\nok: an added data/ file appears as an extra entry\nok: an extra data/ file is still an upload-set path\nok: a file outside the two sources is not uploaded\nok: an empty folder fails the upload-set check\nok: a folder with no README.md fails the upload-set check\nok: a folder with no data/ file fails the upload-set check\n\nResults: 26/27 checks passed"
+  "tail": "FAIL: this folder has at least data/ files plus README.md\nok: an added data/ file appears as an extra entry\nok: an extra data/ file is still an upload-set path\nok: a file outside the two sources is not uploaded\nok: an empty folder fails the upload-set check\nok: a folder with no README.md fails the upload-set check\nok: a folder with no data/ file fails the upload-set check\n\nResults: 26/27 checks passed",
+  "verdict": "failed",
+  "verdict_at": "2026-11-16T01:41:59Z",
+  "verdict_by": "hivemindos"
 }
