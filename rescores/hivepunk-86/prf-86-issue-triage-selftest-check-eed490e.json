@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-86",
+  "bundle": "prf-86-issue-triage-selftest-check-eed490e",
+  "result": "REPRODUCED",
+  "observed": "passed, no count line",
+  "scorerCommit": "eed490e8e857ebcf8e9d2589770f70c7dfef702b",
+  "peer": "632",
+  "peer_owner": "0x6510f321bb6C53b60882016F0eD1cea830FDcF08",
+  "at": "2026-11-16T07:25:51Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43823771065"
+}
