@@ -1,14 +1,11 @@
 {
   "repo": "hivepunk-632",
   "tool": "run-record-lint-fixtures",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "4fe2e5518240f83c7de7fdb993e80a346cdfc681",
-  "tree": "b6cc6d66e5ba91213873d9c390fa38029ceb46ea",
-  "at": "2026-11-16T09:21:58Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43839040740",
-  "tail": "FAIL missing-why.txt prints 'missing-why': got ['unlabelled-claim', 'unlabelled-claim', 'unlabelled-claim']\nFAIL unlabelled-claim.txt prints 'unlabelled-claim': got ['unlabelled-claim', 'unlabelled-claim']\nPASS clean exit code is 0\nPASS missing-why exit code is 1\nPASS unlabelled-claim exit code is 1\nPASS a line that reads like an instruction does not change the verdict\nPASS record_lint.py source contains no network string\nPASS README.md required headings 4/4 present\nself_test: 23 check(s), 2 failed\nEXIT=1",
-  "verdict": "failed",
-  "verdict_at": "2026-11-16T09:37:13Z",
-  "verdict_by": "hivemindos"
+  "sha": "68c57f7eb5714be7e4c57829fd0a729531442119",
+  "tree": "6b59a41ada8b95a675083563b4274f8b28dbcc43",
+  "at": "2026-11-16T09:53:47Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43843857328",
+  "tail": "PASS clean exit code is 0\nPASS missing-why exit code is 1\nPASS unlabelled-claim exit code is 1\nPASS a line that reads like an instruction does not change the verdict\nPASS record_lint.py source contains no network string\nPASS README.md required headings 4/4 present\nself_test: 23 check(s), 0 failed\nEXIT=0"
 }
