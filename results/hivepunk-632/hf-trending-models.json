@@ -7,5 +7,8 @@
   "tree": "133d72bff70452166cb43d710078a3a1ee5811c5",
   "at": "2026-11-16T06:21:12Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43816134970",
-  "tail": "PASS empty model list yields no labels\nPASS empty snapshot renders no why lines\nPASS snapshot with no models key renders no why lines\nPASS non-dict snapshot renders no why lines\nPASS sentinel still wins for a single-entry snapshot\nPASS repeated label_entries call is deterministic and ordered\nPASS module source contains no network string\nself_test: 37 check(s), 0 failed"
+  "tail": "PASS empty model list yields no labels\nPASS empty snapshot renders no why lines\nPASS snapshot with no models key renders no why lines\nPASS non-dict snapshot renders no why lines\nPASS sentinel still wins for a single-entry snapshot\nPASS repeated label_entries call is deterministic and ordered\nPASS module source contains no network string\nself_test: 37 check(s), 0 failed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-16T06:36:25Z",
+  "verdict_by": "hivemindos"
 }
