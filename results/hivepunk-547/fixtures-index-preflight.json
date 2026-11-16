@@ -1,0 +1,11 @@
+{
+  "repo": "hivepunk-547",
+  "tool": "fixtures-index-preflight",
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "c7a7718dca7b8da4658821f10a73f0d64962d487",
+  "tree": "394bba4fcd48e94173a6f8ccdcfd2de7de6cf22c",
+  "at": "2026-11-16T06:08:52Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43814750801",
+  "tail": "FAIL: __pycache__ not excluded"
+}
