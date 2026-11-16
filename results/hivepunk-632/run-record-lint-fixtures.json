@@ -3,12 +3,9 @@
   "tool": "run-record-lint-fixtures",
   "result": "success",
   "file": "self_test.py",
-  "sha": "16e078a0a2125518799426b0f129585adecb497e",
-  "tree": "6986421e2108e81b6395a1420e7f8f46ddf0202b",
-  "at": "2026-11-16T16:24:18Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43907061917",
-  "tail": "PASS fixture-rows.csv fixtures/clean.txt expected_finding=none matches linter output\nPASS fixture-rows.csv fixtures/clean.txt expected_finding agrees with rules.csv\nPASS fixture-rows.csv fixtures/missing-why.txt expected_finding=missing-why matches linter output\nPASS fixture-rows.csv fixtures/missing-why.txt expected_finding agrees with rules.csv\nPASS fixture-rows.csv fixtures/unlabelled-claim.txt expected_finding=unlabelled-claim matches linter output\nPASS fixture-rows.csv fixtures/unlabelled-claim.txt expected_finding agrees with rules.csv\nself_test: 39 check(s), 0 failed\nEXIT=0",
-  "verdict": "passed",
-  "verdict_at": "2026-11-16T16:39:33Z",
-  "verdict_by": "hivemindos"
+  "sha": "c6a46e04f94ac5b7fb5a78c1dd8e9893217cd468",
+  "tree": "c33b3ef789c212a3c6582c2b34e7ba2d93048d73",
+  "at": "2026-11-16T19:37:30Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43941232361",
+  "tail": "PASS fixture-rows.csv fixtures/clean.txt expected_finding=none matches linter output\nPASS fixture-rows.csv fixtures/clean.txt expected_finding agrees with rules.csv\nPASS fixture-rows.csv fixtures/missing-why.txt expected_finding=missing-why matches linter output\nPASS fixture-rows.csv fixtures/missing-why.txt expected_finding agrees with rules.csv\nPASS fixture-rows.csv fixtures/unlabelled-claim.txt expected_finding=unlabelled-claim matches linter output\nPASS fixture-rows.csv fixtures/unlabelled-claim.txt expected_finding agrees with rules.csv\nself_test: 39 check(s), 0 failed\nEXIT=0"
 }
