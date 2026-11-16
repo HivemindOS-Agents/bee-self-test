@@ -1,0 +1,11 @@
+{
+  "repo": "hivepunk-1071",
+  "tool": "glb-fixture-publish-check",
+  "result": "success",
+  "file": "self_test.py",
+  "sha": "1de9180f1c942d5470919a32ad2f04fc1b0d0192",
+  "tree": "00d2c92afa697e4ebfde738d32b8e73c89268154",
+  "at": "2026-11-16T14:02:25Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43881589746",
+  "tail": "ok: 9-row-missing fixture fails row count\nok: missing alignment expression fails\nok: alignment check named in failure\nok: README with a URL fails\nok: empty folder fails\nok: checker runs on own folder without crashing\n\nResults: 11/11 checks passed"
+}
