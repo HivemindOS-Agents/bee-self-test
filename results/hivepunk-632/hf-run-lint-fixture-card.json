@@ -7,5 +7,8 @@
   "tree": "4aba3b91119c631ac41179821765d07d741b5cab",
   "at": "2026-11-16T00:20:47Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43779789413",
-  "tail": "PASS fixture fixtures/unlabelled-claim.txt expected_exit is 0 or nonzero\nPASS fixture fixtures/unlabelled-claim.txt source_path names self_test.py\nPASS exactly one fixture expects exit 0\nPASS data.csv header matches COLUMNS\nPASS write() produced README.md\nPASS write() produced data.csv\nPASS write() produced forum_post.md\nself_test: 38 check(s), 0 failed"
+  "tail": "PASS fixture fixtures/unlabelled-claim.txt expected_exit is 0 or nonzero\nPASS fixture fixtures/unlabelled-claim.txt source_path names self_test.py\nPASS exactly one fixture expects exit 0\nPASS data.csv header matches COLUMNS\nPASS write() produced README.md\nPASS write() produced data.csv\nPASS write() produced forum_post.md\nself_test: 38 check(s), 0 failed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-16T00:36:05Z",
+  "verdict_by": "hivemindos"
 }
