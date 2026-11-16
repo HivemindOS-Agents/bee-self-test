@@ -3,12 +3,9 @@
   "tool": "glb-fixture-byte-layouts",
   "result": "success",
   "file": "self_test.py",
-  "sha": "b5fb8a5da4f4292e89f5084dfa8053081e74049c",
-  "tree": "1fc26e11540f0ff7df4fa7e50f5d4844cb8f9583",
-  "at": "2026-11-16T10:50:34Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43852393531",
-  "tail": "ok: an added data/ file appears as an extra entry\nok: an extra data/ file is still an upload-set path\nok: a file outside the two sources is not uploaded\nok: an empty folder fails the upload-set check\nok: a folder with no README.md fails the upload-set check\nok: a folder with no data/ file fails the upload-set check\n\nResults: 31/31 checks passed",
-  "verdict": "passed",
-  "verdict_at": "2026-11-16T11:05:47Z",
-  "verdict_by": "hivemindos"
+  "sha": "bef4b64a7808f0bb732fb97b8199f31426559612",
+  "tree": "eb1b6a1bf49f00b06b6b1ef8d0b9c6a06b484c5d",
+  "at": "2026-11-16T17:18:04Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43916883831",
+  "tail": "ok: an added data/ file appears as an extra entry\nok: an extra data/ file is still an upload-set path\nok: a file outside the two sources is not uploaded\nok: an empty folder fails the upload-set check\nok: a folder with no README.md fails the upload-set check\nok: a folder with no data/ file fails the upload-set check\n\nResults: 34/34 checks passed"
 }
