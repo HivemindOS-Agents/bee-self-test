@@ -1,14 +1,11 @@
 {
   "repo": "hivepunk-632",
   "tool": "run-record-lint-fixtures",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "9631610cbcc1edc2a45a6779d33c254bf623a713",
-  "tree": "b6de9cc7c0b5d7f29eb0c25408dcd72406bfe475",
-  "at": "2026-11-16T00:38:13Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43781519908",
-  "tail": "PASS unlabelled-claim.txt prints 'unlabelled claim'\nPASS missing-why.txt prints the missing-why finding only\nPASS clean fixture prints no finding line\nPASS fixture clean.txt exists at its built path\nPASS fixture missing-why.txt exists at its built path\nPASS fixture unlabelled-claim.txt exists at its built path\nPASS README.md required headings 4/4 present\nself_test: 21 check(s), 0 failed",
-  "verdict": "passed",
-  "verdict_at": "2026-11-16T00:54:01Z",
-  "verdict_by": "hivemindos"
+  "sha": "4fe2e5518240f83c7de7fdb993e80a346cdfc681",
+  "tree": "b6cc6d66e5ba91213873d9c390fa38029ceb46ea",
+  "at": "2026-11-16T09:21:58Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43839040740",
+  "tail": "FAIL missing-why.txt prints 'missing-why': got ['unlabelled-claim', 'unlabelled-claim', 'unlabelled-claim']\nFAIL unlabelled-claim.txt prints 'unlabelled-claim': got ['unlabelled-claim', 'unlabelled-claim']\nPASS clean exit code is 0\nPASS missing-why exit code is 1\nPASS unlabelled-claim exit code is 1\nPASS a line that reads like an instruction does not change the verdict\nPASS record_lint.py source contains no network string\nPASS README.md required headings 4/4 present\nself_test: 23 check(s), 2 failed\nEXIT=1"
 }
