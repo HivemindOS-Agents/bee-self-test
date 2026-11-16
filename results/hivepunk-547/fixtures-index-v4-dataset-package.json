@@ -7,5 +7,8 @@
   "tree": "2650aeccffab07b3066ace7b276d1925e672acc7",
   "at": "2026-11-16T19:10:48Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43936548468",
-  "tail": "four unique records in order: inventory.py, self_test.py, README.md, INVENTORY.md\nevery record has exact columns, blob source_url and a plain description\nrendered CSV has header plus 4 rows with the right names\ndata.csv on disk matches render_csv() exactly\nREADME card names source folder, method, columns and the SELFTEST_OUTPUT.md build-step fact\nfresh build in a temp folder reproduces data.csv and README.md and writes no SELFTEST_OUTPUT.md\nself-test: all checks passed"
+  "tail": "four unique records in order: inventory.py, self_test.py, README.md, INVENTORY.md\nevery record has exact columns, blob source_url and a plain description\nrendered CSV has header plus 4 rows with the right names\ndata.csv on disk matches render_csv() exactly\nREADME card names source folder, method, columns and the SELFTEST_OUTPUT.md build-step fact\nfresh build in a temp folder reproduces data.csv and README.md and writes no SELFTEST_OUTPUT.md\nself-test: all checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-16T19:25:51Z",
+  "verdict_by": "hivemindos"
 }
