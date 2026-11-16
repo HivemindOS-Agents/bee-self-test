@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-547",
+  "bundle": "prf-547-fixtures-index-v4-files-inventory-e9cd1e6",
+  "result": "REPRODUCED",
+  "observed": "passed, no count line",
+  "scorerCommit": "e9cd1e6d9237d3ac5d1c67ef2c290d7def2ed06e",
+  "peer": "667",
+  "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
+  "at": "2026-11-16T13:15:22Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43873985935"
+}
