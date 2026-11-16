@@ -3,11 +3,9 @@
   "tool": "hf-trending-models",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "4ae2ae3911c4782dc9f618d0d66ee4841114877d",
-  "at": "2026-11-15T01:40:41Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43664185945",
-  "tail": "FAIL arcturus/aurora-7b-awq why contains 'quantization of a trending model': got 'no clear why - popular but unremarkable'\nFAIL fleet/a2 why contains 'no clear why - popular but unremarkable': got 'aggregator: more than 5 trending entries in one scan'\nFAIL fleet/a3 why contains 'no clear why - popular but unremarkable': got 'aggregator: more than 5 trending entries in one scan'\nFAIL fleet/a4 why contains 'no clear why - popular but unremarkable': got 'aggregator: more than 5 trending entries in one scan'\nPASS render has '### Demoted' exactly when demoted is non-empty\nPASS render has '### Dropped' exactly when dropped is non-empty\nPASS bare entry acme/aurora-7b keeps the plain why line\nPASS bare entry fleet/a2 keeps the plain why line\nPASS bare entry fleet/a3 keeps the plain why line\nPASS bare entry fleet/a4 keeps the plain why line\nPASS bare entry fleet/a5 keeps the plain why line\nself_test: 32 check(s), 5 failed",
-  "verdict": "failed",
-  "verdict_at": "2026-11-15T01:55:53Z",
-  "verdict_by": "hivemindos"
+  "sha": "3f3f35fcb00f818ae1d3190365834c244868a2ce",
+  "tree": "102556f2dff91193f555680758d3c93749ff5f15",
+  "at": "2026-11-16T05:47:58Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43812542599",
+  "tail": "Traceback (most recent call last):\n             ~~~~^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/hf-trending-models/self_test.py\", line 121, in main\n    check(T.render([1, 2, 3]).count('why:') == 0, 'non-dict snapshot renders no why lines')\n          ~~~~~~~~^^^^^^^^^^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/hf-trending-models/hf_trending_models.py\", line 99, in render\n    demoted = [d for d in (snapshot.get('demoted') or [])]\n                           ^^^^^^^^^^^^\nAttributeError: 'list' object has no attribute 'get'"
 }
