@@ -1,14 +1,11 @@
 {
   "repo": "hivepunk-547",
   "tool": "fixtures-index-preflight",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "c7a7718dca7b8da4658821f10a73f0d64962d487",
-  "tree": "394bba4fcd48e94173a6f8ccdcfd2de7de6cf22c",
-  "at": "2026-11-16T06:08:52Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43814750801",
-  "tail": "FAIL: __pycache__ not excluded",
-  "verdict": "failed",
-  "verdict_at": "2026-11-16T06:23:47Z",
-  "verdict_by": "hivemindos"
+  "sha": "5c46af7cd6942af2671af98e953cb4394cfaeaa4",
+  "tree": "15495765a69728fa385c289c7954dfb255066e95",
+  "at": "2026-11-16T06:41:04Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43818422930",
+  "tail": "sha256 and byte counts match a fresh hash for every file\nmatching listing verifies ok (page lists 3 path(s); folder holds 3 file(s))\nmismatch names both data/a.csv (missing) and data/extra.csv (extra)\nparser ignores comments and blanks, strips ./ and spaces\nno README.md: STOP and exit 1\nmissing folder: STOP and exit 1\nCLI codes: list 0, verify match 0, verify mismatch 1\nself-test: all checks passed"
 }
