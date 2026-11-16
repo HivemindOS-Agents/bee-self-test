@@ -7,5 +7,8 @@
   "tree": "15495765a69728fa385c289c7954dfb255066e95",
   "at": "2026-11-16T06:41:04Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43818422930",
-  "tail": "sha256 and byte counts match a fresh hash for every file\nmatching listing verifies ok (page lists 3 path(s); folder holds 3 file(s))\nmismatch names both data/a.csv (missing) and data/extra.csv (extra)\nparser ignores comments and blanks, strips ./ and spaces\nno README.md: STOP and exit 1\nmissing folder: STOP and exit 1\nCLI codes: list 0, verify match 0, verify mismatch 1\nself-test: all checks passed"
+  "tail": "sha256 and byte counts match a fresh hash for every file\nmatching listing verifies ok (page lists 3 path(s); folder holds 3 file(s))\nmismatch names both data/a.csv (missing) and data/extra.csv (extra)\nparser ignores comments and blanks, strips ./ and spaces\nno README.md: STOP and exit 1\nmissing folder: STOP and exit 1\nCLI codes: list 0, verify match 0, verify mismatch 1\nself-test: all checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-16T06:56:29Z",
+  "verdict_by": "hivemindos"
 }
