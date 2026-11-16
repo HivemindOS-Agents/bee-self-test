@@ -3,12 +3,9 @@
   "tool": "run-record-lint-fixtures",
   "result": "success",
   "file": "self_test.py",
-  "sha": "68c57f7eb5714be7e4c57829fd0a729531442119",
-  "tree": "6b59a41ada8b95a675083563b4274f8b28dbcc43",
-  "at": "2026-11-16T09:53:47Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43843857328",
-  "tail": "PASS clean exit code is 0\nPASS missing-why exit code is 1\nPASS unlabelled-claim exit code is 1\nPASS a line that reads like an instruction does not change the verdict\nPASS record_lint.py source contains no network string\nPASS README.md required headings 4/4 present\nself_test: 23 check(s), 0 failed\nEXIT=0",
-  "verdict": "passed",
-  "verdict_at": "2026-11-16T10:08:46Z",
-  "verdict_by": "hivemindos"
+  "sha": "bba52d132258568b9be13e509ee723e2d453e8f5",
+  "tree": "dd97da5c110afe0e31fb8238aeed7169fd27d712",
+  "at": "2026-11-16T13:08:18Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43872876941",
+  "tail": "PASS fixture-rows.csv fixtures/clean.txt expected_finding=none matches linter output\nPASS fixture-rows.csv fixtures/clean.txt expected_finding agrees with rules.csv\nPASS fixture-rows.csv fixtures/missing-why.txt expected_finding=missing-why matches linter output\nPASS fixture-rows.csv fixtures/missing-why.txt expected_finding agrees with rules.csv\nPASS fixture-rows.csv fixtures/unlabelled-claim.txt expected_finding=unlabelled-claim matches linter output\nPASS fixture-rows.csv fixtures/unlabelled-claim.txt expected_finding agrees with rules.csv\nself_test: 39 check(s), 0 failed\nEXIT=0"
 }
