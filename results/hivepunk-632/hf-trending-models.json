@@ -7,5 +7,8 @@
   "tree": "102556f2dff91193f555680758d3c93749ff5f15",
   "at": "2026-11-16T05:47:58Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43812542599",
-  "tail": "Traceback (most recent call last):\n             ~~~~^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/hf-trending-models/self_test.py\", line 121, in main\n    check(T.render([1, 2, 3]).count('why:') == 0, 'non-dict snapshot renders no why lines')\n          ~~~~~~~~^^^^^^^^^^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/hf-trending-models/hf_trending_models.py\", line 99, in render\n    demoted = [d for d in (snapshot.get('demoted') or [])]\n                           ^^^^^^^^^^^^\nAttributeError: 'list' object has no attribute 'get'"
+  "tail": "Traceback (most recent call last):\n             ~~~~^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/hf-trending-models/self_test.py\", line 121, in main\n    check(T.render([1, 2, 3]).count('why:') == 0, 'non-dict snapshot renders no why lines')\n          ~~~~~~~~^^^^^^^^^^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/hf-trending-models/hf_trending_models.py\", line 99, in render\n    demoted = [d for d in (snapshot.get('demoted') or [])]\n                           ^^^^^^^^^^^^\nAttributeError: 'list' object has no attribute 'get'",
+  "verdict": "failed",
+  "verdict_at": "2026-11-16T06:03:20Z",
+  "verdict_by": "hivemindos"
 }
