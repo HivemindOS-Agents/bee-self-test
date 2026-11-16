@@ -1,13 +1,11 @@
 {
   "repo": "hivepunk-632",
   "tool": "hf-run-lint-fixture-card",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "2e187bbad500b9ce8e6a872dbfbd13563fd4b322",
-  "at": "2026-11-15T14:22:37Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43724003375",
-  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/hf-run-lint-fixture-card/self_test.py\", line 120, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/hf-run-lint-fixture-card/self_test.py\", line 44, in main\n    keys = {k for (_k, _c, _m, _g) in B.EXPECTED_MESSAGES}\n            ^\nNameError: name 'k' is not defined",
-  "verdict": "failed",
-  "verdict_at": "2026-11-15T14:37:55Z",
-  "verdict_by": "hivemindos"
+  "sha": "f8221e5e6e17a375f6abfa14c3a2284a2a92e4c4",
+  "tree": "4aba3b91119c631ac41179821765d07d741b5cab",
+  "at": "2026-11-16T00:20:47Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43779789413",
+  "tail": "PASS fixture fixtures/unlabelled-claim.txt expected_exit is 0 or nonzero\nPASS fixture fixtures/unlabelled-claim.txt source_path names self_test.py\nPASS exactly one fixture expects exit 0\nPASS data.csv header matches COLUMNS\nPASS write() produced README.md\nPASS write() produced data.csv\nPASS write() produced forum_post.md\nself_test: 38 check(s), 0 failed"
 }
