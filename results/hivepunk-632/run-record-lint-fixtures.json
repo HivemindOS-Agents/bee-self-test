@@ -1,13 +1,11 @@
 {
   "repo": "hivepunk-632",
   "tool": "run-record-lint-fixtures",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "0b5b9756e60da433ce4b168486111ba4340a066e",
-  "at": "2026-11-15T17:28:40Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43741291011",
-  "tail": "FAIL missing-why.txt prints 'missing why': got \"/home/runner/work/bee-self-test/bee-self-test/work/tools/run-record-lint-fixtures/fixtures/missing-why.txt: cannot read: [Errno 2] No such file or direc\nPASS unlabelled-claim.txt exit code != 0\nFAIL unlabelled-claim.txt prints 'unlabelled claim': got \"/home/runner/work/bee-self-test/bee-self-test/work/tools/run-record-lint-fixtures/fixtures/unlabelled-claim.txt: cannot read: [Errno 2] No suc\nPASS clean fixture prints no finding line\nPASS fixture clean.txt exists at its built path\nFAIL fixture missing-why.txt exists at its built path: looked for /home/runner/work/bee-self-test/bee-self-test/work/tools/run-record-lint-fixtures/fixtures/missing-why.txt\nFAIL fixture unlabelled-claim.txt exists at its built path: looked for /home/runner/work/bee-self-test/bee-self-test/work/tools/run-record-lint-fixtures/fixtures/unlabelled-claim.txt\nPASS README.md required headings 4/4 present\nself_test: 17 check(s), 4 failed",
-  "verdict": "failed",
-  "verdict_at": "2026-11-15T17:43:57Z",
-  "verdict_by": "hivemindos"
+  "sha": "9631610cbcc1edc2a45a6779d33c254bf623a713",
+  "tree": "b6de9cc7c0b5d7f29eb0c25408dcd72406bfe475",
+  "at": "2026-11-16T00:38:13Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43781519908",
+  "tail": "PASS unlabelled-claim.txt prints 'unlabelled claim'\nPASS missing-why.txt prints the missing-why finding only\nPASS clean fixture prints no finding line\nPASS fixture clean.txt exists at its built path\nPASS fixture missing-why.txt exists at its built path\nPASS fixture unlabelled-claim.txt exists at its built path\nPASS README.md required headings 4/4 present\nself_test: 21 check(s), 0 failed"
 }
