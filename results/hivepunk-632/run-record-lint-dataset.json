@@ -7,5 +7,8 @@
   "tree": "6d50f4aaf2e3bff53ca7d16abf875d0604599a52",
   "at": "2026-11-17T11:52:03Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44077815663",
-  "tail": "PASS README heading ## How to run present\nPASS README heading ## What it does present\nPASS README heading ## What is untested present\nPASS README heading ## Licence present\nPASS README states verified self-test command\nPASS exporter source has no network string\nself_test: 28 check(s), 0 failed\nEXIT=0"
+  "tail": "PASS README heading ## How to run present\nPASS README heading ## What it does present\nPASS README heading ## What is untested present\nPASS README heading ## Licence present\nPASS README states verified self-test command\nPASS exporter source has no network string\nself_test: 28 check(s), 0 failed\nEXIT=0",
+  "verdict": "passed",
+  "verdict_at": "2026-11-17T12:07:47Z",
+  "verdict_by": "hivemindos"
 }
