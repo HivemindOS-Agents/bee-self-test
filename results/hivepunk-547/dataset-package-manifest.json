@@ -7,5 +7,8 @@
   "tree": "200708b2f8f54f23089ad7dd822b1e2eeaae1b76",
   "at": "2026-11-17T21:13:39Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44177524708",
-  "tail": "match case passes; CSV header, sorted rows, bytes/lines and sha256 correct\nmismatch case reports missing (gamma.py) and extra (stray.py) with no CSV\nduplicate case fails and names alpha.py\nmissing-file, missing folder and missing README fail with clear messages\nmissing Files section fails and mentions '## Files'\nCLI exits 0 with CSV for match and 1 with FAIL on stderr for mismatch\nself-test: all checks passed"
+  "tail": "match case passes; CSV header, sorted rows, bytes/lines and sha256 correct\nmismatch case reports missing (gamma.py) and extra (stray.py) with no CSV\nduplicate case fails and names alpha.py\nmissing-file, missing folder and missing README fail with clear messages\nmissing Files section fails and mentions '## Files'\nCLI exits 0 with CSV for match and 1 with FAIL on stderr for mismatch\nself-test: all checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-17T21:28:56Z",
+  "verdict_by": "hivemindos"
 }
