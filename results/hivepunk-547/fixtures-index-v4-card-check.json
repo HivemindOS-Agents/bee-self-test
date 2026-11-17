@@ -3,12 +3,9 @@
   "tool": "fixtures-index-v4-card-check",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "1b6ffa63a127556767d88e6273b220201f9d6030",
-  "tree": "2c1bfe3ca2b98eaacb64808d88475c2ce809b62a",
-  "at": "2026-11-17T01:24:05Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43995265262",
-  "tail": "FAIL: unexpected AttributeError: 'str' object has no attribute 'append'",
-  "verdict": "failed",
-  "verdict_at": "2026-11-17T01:39:28Z",
-  "verdict_by": "hivemindos"
+  "sha": "0be0e47dbcc6de857584dbf8323a2b9be7d26cc9",
+  "tree": "031df4f24e2461c6636e41336d7d66fe9c250718",
+  "at": "2026-11-17T01:56:10Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43999242303",
+  "tail": "FAIL: inline tags card failed: [\"unparseable frontmatter line: '[fixtures, inventory]'\", 'frontmatter tags is empty']"
 }
