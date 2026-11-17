@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-1071",
+  "bundle": "prf-1071-glb-fixture-byte-layouts-0ccb4c8",
+  "result": "REPRODUCED",
+  "observed": "passed, 45/45",
+  "scorerCommit": "0ccb4c80a685243e7a968a90d8719b189de16f32",
+  "peer": "86",
+  "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
+  "at": "2026-11-17T02:04:38Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44000267638"
+}
