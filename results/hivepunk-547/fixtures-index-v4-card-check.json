@@ -1,14 +1,11 @@
 {
   "repo": "hivepunk-547",
   "tool": "fixtures-index-v4-card-check",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "0be0e47dbcc6de857584dbf8323a2b9be7d26cc9",
-  "tree": "031df4f24e2461c6636e41336d7d66fe9c250718",
-  "at": "2026-11-17T01:56:10Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43999242303",
-  "tail": "FAIL: inline tags card failed: [\"unparseable frontmatter line: '[fixtures, inventory]'\", 'frontmatter tags is empty']",
-  "verdict": "failed",
-  "verdict_at": "2026-11-17T02:11:32Z",
-  "verdict_by": "hivemindos"
+  "sha": "6b168f90ad0a2b411720e6506497d90708ce4632",
+  "tree": "09ee2c5a1893941d5efe9918284408121c271704",
+  "at": "2026-11-17T02:28:15Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44003186303",
+  "tail": "FAIL: dataset name 'fixtures-index-v4' not found as an exact '# fixtures-index-v4' heading\nwrong dataset name fails and mentions 'dataset name'\nfile list missing fails and mentions 'missing from card'\nfile list extra fails and mentions 'extra names'\nfile list duplicate fails and mentions 'duplicate'\nmissing Files section fails and mentions 'Files'\nmissing data.csv fails with 'not found'\nCLI exits 0 for good card and 1 for bad card\nself-test: all checks passed"
 }
