@@ -3,12 +3,9 @@
   "tool": "fixtures-index-v4",
   "result": "success",
   "file": "self_test.py",
-  "sha": "cf840325200e9aa10b310c417c725fe739d378cc",
-  "tree": "544c104afcffd8e4549628d104e63611bc84560c",
-  "at": "2026-11-16T09:41:58Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43842050544",
-  "tail": "\nStatus: ABSENT — /tmp/tmp7xfbmarf/fixtures-index-v4/not_there is not a folder that can be read here. No file names are listed, because none could be verified.\ndirect listing is exactly README.md, data, self_test.py (no INVENTORY.md)\ndata/a.csv first col1,col2 last 3,4; data/sub/b.txt single line\nrendered inventory contains every expected path and first/last line\nabsent folder: ABSENT, no invented names\n--check prints, writes nothing, exits 0 real / 1 absent\nself-test: all checks passed",
-  "verdict": "passed",
-  "verdict_at": "2026-11-16T09:57:30Z",
-  "verdict_by": "hivemindos"
+  "sha": "c20215a5e5a2c4b222d2d52dd5d3b21d91f907b3",
+  "tree": "91a4a6282481bc05f042a2b6ec45a1fce9e2cbca",
+  "at": "2026-11-17T11:40:19Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44076069584",
+  "tail": "normal fixture: sizes and line counts correct, subdirectory skipped\nempty directory yields header only\nbinary-size fixture: exact bytes, blank lines, uppercase extension counted\nsorting fixture: rows sorted by file_name\nmissing path and not-a-directory fail with clear messages\nCLI exits 0 with CSV for good dir and 1 with FAIL for missing dir\nself-test: all checks passed"
 }
