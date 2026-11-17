@@ -3,12 +3,9 @@
   "tool": "glb-fixture-byte-layouts",
   "result": "success",
   "file": "self_test.py",
-  "sha": "95a3cfe564e32e28e5315e3f30993b4437136ed0",
-  "tree": "46fbda07332fd48adab4bdb05c41bfcfa40fa268",
-  "at": "2026-11-16T20:49:19Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43953688676",
-  "tail": "ok: announce: one-file response is refused\nok: announce: three-file response is refused\nok: announce: renamed file response is refused\nok: announce: wrong-account URL is refused\nok: announce: missing URL is refused\nok: announce: non-https URL is refused\n\nResults: 45/45 checks passed",
-  "verdict": "passed",
-  "verdict_at": "2026-11-16T21:04:44Z",
-  "verdict_by": "hivemindos"
+  "sha": "0ccb4c80a685243e7a968a90d8719b189de16f32",
+  "tree": "f5a7b7b4874983e4aa6527bf8196abbcc1784d5f",
+  "at": "2026-11-17T00:06:04Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43984815537",
+  "tail": "ok: announce: one-file response is refused\nok: announce: three-file response is refused\nok: announce: renamed file response is refused\nok: announce: wrong-account URL is refused\nok: announce: missing URL is refused\nok: announce: non-https URL is refused\n\nResults: 45/45 checks passed"
 }
