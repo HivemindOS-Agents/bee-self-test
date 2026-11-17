@@ -1,14 +1,11 @@
 {
   "repo": "hivepunk-632",
   "tool": "run-record-lint-fixtures",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "c6a46e04f94ac5b7fb5a78c1dd8e9893217cd468",
-  "tree": "c33b3ef789c212a3c6582c2b34e7ba2d93048d73",
-  "at": "2026-11-16T19:37:30Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43941232361",
-  "tail": "PASS fixture-rows.csv fixtures/clean.txt expected_finding=none matches linter output\nPASS fixture-rows.csv fixtures/clean.txt expected_finding agrees with rules.csv\nPASS fixture-rows.csv fixtures/missing-why.txt expected_finding=missing-why matches linter output\nPASS fixture-rows.csv fixtures/missing-why.txt expected_finding agrees with rules.csv\nPASS fixture-rows.csv fixtures/unlabelled-claim.txt expected_finding=unlabelled-claim matches linter output\nPASS fixture-rows.csv fixtures/unlabelled-claim.txt expected_finding agrees with rules.csv\nself_test: 39 check(s), 0 failed\nEXIT=0",
-  "verdict": "passed",
-  "verdict_at": "2026-11-16T19:52:45Z",
-  "verdict_by": "hivemindos"
+  "sha": "e0c49fc7921344fcbeab48ec0bb64f9543be9e54",
+  "tree": "6e3694557ed9df1d3da636d95a0466ae2d42923e",
+  "at": "2026-11-17T01:52:05Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43998753435",
+  "tail": "FAIL clean.txt prints no finding line: got ['unlabelled-claim', 'unlabelled-claim']\nFAIL missing-why.txt prints 'missing-why': got ['unlabelled-claim']\nFAIL clean exit code is 0: got 1\nFAIL fixture-rows.csv fixtures/clean.txt expected_finding=none matches linter output: linter gave ['unlabelled-claim', 'unlabelled-claim']\nPASS fixture-rows.csv fixtures/clean.txt expected_finding agrees with rules.csv\nFAIL fixture-rows.csv fixtures/missing-why.txt expected_finding=missing-why matches linter output: linter gave ['unlabelled-claim']\nPASS fixture-rows.csv fixtures/missing-why.txt expected_finding agrees with rules.csv\nPASS fixture-rows.csv fixtures/unlabelled-claim.txt expected_finding=unlabelled-claim matches linter output\nPASS fixture-rows.csv fixtures/unlabelled-claim.txt expected_finding agrees with rules.csv\nself_test: 39 check(s), 5 failed\nEXIT=1"
 }
