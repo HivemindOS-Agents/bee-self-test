@@ -3,12 +3,9 @@
   "tool": "run-and-record",
   "result": "success",
   "file": "self_test.py",
-  "sha": "6207da177f9f03b695ddc204c69cae27881ee480",
-  "tree": "af52dff5603fa54cde6df9b985e236054c9a8d6b",
-  "at": "2026-11-17T00:02:56Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43984367164",
-  "tail": "FAIL verify: stored record differs from a fresh run\nok   8a. empty command exits 2\nok   8b. empty command writes no record\nok   9a. missing executable exits 2\nok   9b. missing executable writes no record\nok   10a. verify of missing record exits 2\nok   10b. verify of missing record writes nothing\n\nall checks passed",
-  "verdict": "passed",
-  "verdict_at": "2026-11-17T01:03:00Z",
-  "verdict_by": "hivemindos"
+  "sha": "bf3cd09cb852fca51a4ef1c605132db2cef4ef81",
+  "tree": "16ea7f6ee0b3c15c5479855aef2358db9b0a0789",
+  "at": "2026-11-17T03:06:20Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44007760352",
+  "tail": "FAIL verify: stored record differs from a fresh run\nok   8a. empty command exits 2\nok   8b. empty command writes no record\nok   9a. missing executable exits 2\nok   9b. missing executable writes no record\nok   10a. verify of missing record exits 2\nok   10b. verify of missing record writes nothing\n\nall checks passed"
 }
