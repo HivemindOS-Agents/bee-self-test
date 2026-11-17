@@ -1,0 +1,11 @@
+{
+  "repo": "hivepunk-547",
+  "tool": "csv-index-diff",
+  "result": "success",
+  "file": "self_test.py",
+  "sha": "2387ee3bcc7a333833ad81f6f0a4703d2d3b72f7",
+  "tree": "a30c182a0f977d21fc0e9bf6b6c56f340d8e0070",
+  "at": "2026-11-17T18:03:24Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44143642267",
+  "tail": "changed case reports alpha.py and beta.txt with old/new values\nadded/removed case reports added gamma.txt and removed beta.txt\nduplicate case fails and names alpha.py in new and in old\nheader-only old file reports every new row as added\nmissing file and bad header fail with clear messages\nunsorted rows fail and are reported\nCLI exits 0 for identical, 1 with FAIL for changed and for bad usage\nself-test: all checks passed"
+}
