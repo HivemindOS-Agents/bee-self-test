@@ -7,5 +7,8 @@
   "tree": "031df4f24e2461c6636e41336d7d66fe9c250718",
   "at": "2026-11-17T01:56:10Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43999242303",
-  "tail": "FAIL: inline tags card failed: [\"unparseable frontmatter line: '[fixtures, inventory]'\", 'frontmatter tags is empty']"
+  "tail": "FAIL: inline tags card failed: [\"unparseable frontmatter line: '[fixtures, inventory]'\", 'frontmatter tags is empty']",
+  "verdict": "failed",
+  "verdict_at": "2026-11-17T02:11:32Z",
+  "verdict_by": "hivemindos"
 }
