@@ -7,5 +7,8 @@
   "tree": "fccecf5e1c5283402f1d43fed2885aa81f01b5d2",
   "at": "2026-11-17T23:21:05Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44198564829",
-  "tail": "PASS fixture-rows.csv fixtures/clean.txt expected_finding=none matches linter output\nPASS fixture-rows.csv fixtures/clean.txt expected_finding agrees with rules.csv\nPASS fixture-rows.csv fixtures/missing-why.txt expected_finding=missing-why matches linter output\nPASS fixture-rows.csv fixtures/missing-why.txt expected_finding agrees with rules.csv\nPASS fixture-rows.csv fixtures/unlabelled-claim.txt expected_finding=unlabelled-claim matches linter output\nPASS fixture-rows.csv fixtures/unlabelled-claim.txt expected_finding agrees with rules.csv\nself_test: 39 check(s), 0 failed\nEXIT=0"
+  "tail": "PASS fixture-rows.csv fixtures/clean.txt expected_finding=none matches linter output\nPASS fixture-rows.csv fixtures/clean.txt expected_finding agrees with rules.csv\nPASS fixture-rows.csv fixtures/missing-why.txt expected_finding=missing-why matches linter output\nPASS fixture-rows.csv fixtures/missing-why.txt expected_finding agrees with rules.csv\nPASS fixture-rows.csv fixtures/unlabelled-claim.txt expected_finding=unlabelled-claim matches linter output\nPASS fixture-rows.csv fixtures/unlabelled-claim.txt expected_finding agrees with rules.csv\nself_test: 39 check(s), 0 failed\nEXIT=0",
+  "verdict": "passed",
+  "verdict_at": "2026-11-17T23:36:28Z",
+  "verdict_by": "hivemindos"
 }
