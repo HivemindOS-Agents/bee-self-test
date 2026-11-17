@@ -1,0 +1,11 @@
+{
+  "repo": "hivepunk-547",
+  "tool": "fixtures-index-v4-card-check",
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "1b6ffa63a127556767d88e6273b220201f9d6030",
+  "tree": "2c1bfe3ca2b98eaacb64808d88475c2ce809b62a",
+  "at": "2026-11-17T01:24:05Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43995265262",
+  "tail": "FAIL: unexpected AttributeError: 'str' object has no attribute 'append'"
+}
