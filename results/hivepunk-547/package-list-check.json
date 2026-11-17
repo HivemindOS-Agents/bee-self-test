@@ -1,0 +1,11 @@
+{
+  "repo": "hivepunk-547",
+  "tool": "package-list-check",
+  "result": "success",
+  "file": "self_test.py",
+  "sha": "1feb1c124992f04d092aa00f92ecb3546c8807bf",
+  "tree": "71112707a675b11a34d5222bece8639495db5133",
+  "at": "2026-11-17T14:53:03Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44107956644",
+  "tail": "match case passes with exit-0 data\nmismatch case reports missing (gamma.py) and extra (stray.py)\nduplicate case fails and names alpha.py\nmissing-file case (listed but absent on disk) fails and names ghost.py\nmissing README and missing folder fail with clear messages\nmissing Files section fails and mentions '## Files'\nCLI exits 0 with ok for match and 1 with FAIL for mismatch\nself-test: all checks passed"
+}
