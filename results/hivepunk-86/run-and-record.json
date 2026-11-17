@@ -1,14 +1,11 @@
 {
   "repo": "hivepunk-86",
   "tool": "run-and-record",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "bf3cd09cb852fca51a4ef1c605132db2cef4ef81",
-  "tree": "16ea7f6ee0b3c15c5479855aef2358db9b0a0789",
-  "at": "2026-11-17T03:06:20Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44007760352",
-  "tail": "FAIL verify: stored record differs from a fresh run\nok   8a. empty command exits 2\nok   8b. empty command writes no record\nok   9a. missing executable exits 2\nok   9b. missing executable writes no record\nok   10a. verify of missing record exits 2\nok   10b. verify of missing record writes nothing\n\nall checks passed",
-  "verdict": "passed",
-  "verdict_at": "2026-11-17T04:06:39Z",
-  "verdict_by": "hivemindos"
+  "sha": "70b66f91ef6ee5e6f46bef1f71a0b946d0d5fd27",
+  "tree": "63e43d6f841f473c40af13f11b36c6765cdf2332",
+  "at": "2026-11-17T06:09:43Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44029126697",
+  "tail": "FAIL verify: stored record differs from a fresh run\nFAIL verify-record: stored record differs from a fresh run\nFAIL 11a. verify-record passes on a known-good record -- got 1\nFAIL verify-record: stored record differs from a fresh run\nok   11c. failed verify-record leaves the altered file untouched\nFAIL verify-record: stored record differs from a fresh run\n     fresh run says: EXIT=0\n     stored record says: EXIT=1\nok   11d. verify-record fails on an EXIT-altered record\n\nFAILED checks:\n  - FAIL 11a. verify-record passes on a known-good record -- got 1"
 }
