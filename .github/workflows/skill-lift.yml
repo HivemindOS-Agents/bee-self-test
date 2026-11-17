@@ -34,6 +34,9 @@ on:
         description: "Run on a task set whose different-owner review is still pending (its lift stays null)"
         type: boolean
         default: false
+      reasoning_effort:
+        description: "For a reasoning model: low, medium or high, the same in both arms (blank sends none)"
+        default: ""
 permissions: {}
 concurrency:
   group: skill-lift
@@ -71,6 +74,7 @@ jobs:
       MAX_COST_USD: ${{ inputs.max_cost_usd }}
       MAX_JUDGE_CALLS: ${{ inputs.max_judge_calls }}
       ALLOW_UNREVIEWED: ${{ inputs.allow_unreviewed }}
+      REASONING_EFFORT: ${{ inputs.reasoning_effort }}
       ENDPOINT: ${{ vars.LIFT_ENDPOINT }}
       RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
     steps:
@@ -95,6 +99,7 @@ jobs:
         run: |
           set -u
           EXTRA=""; [ "$ALLOW_UNREVIEWED" = "true" ] && EXTRA="--allow-unreviewed"
+          case "$REASONING_EFFORT" in low|medium|high) EXTRA="$EXTRA --reasoning-effort $REASONING_EFFORT" ;; "") ;; *) echo "Not a reasoning effort."; exit 2 ;; esac
           mkdir -p "$RUNNER_TEMP/out"
           python3 scripts/lift_run.py --taskset "lift/$SKILL/tasks.json" --skill-file "$RUNNER_TEMP/SKILL.md" \
             --model "$MODEL" --endpoint "$ENDPOINT" --key-env HIVEMINDOS_GATEWAY_KEY \

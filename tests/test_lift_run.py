@@ -177,6 +177,28 @@ class Runs(unittest.TestCase):
         self.assertEqual(lift["state"], "partial")
         self.assertIsNone(lift["lift"])
 
+    def test_a_gateway_failure_takes_the_next_attempt_and_says_its_status(self):
+        class Flaky(CannedModel):
+            def __init__(self):
+                super().__init__(right_without={"native-transfer", "reverted-call", "usdc-transfer", "unlimited-approve", "router-swap"})
+                self.failed = False
+            def __call__(self, body):
+                if not self.failed:
+                    self.failed = True
+                    self.bodies.append(body)
+                    raise lr.GatewayError("502 MODEL_NO_OUTPUT")
+                return super().__call__(body)
+        cfg = {**CFG, "attempts": 2}
+        lift, results, _ = lr.run(taskset(), SKILL, cfg, Flaky(), fake_rpc, self.budget(), now=0)
+        self.assertEqual(lift["with"]["incomplete"] + lift["without"]["incomplete"], 0, "the second attempt ran")
+        one = lr.run_arm(TASKS["tasks"][0], "with", SKILL, CFG, lambda body: (_ for _ in ()).throw(lr.GatewayError("502 MODEL_NO_OUTPUT")), fake_rpc, self.budget())
+        self.assertEqual((one["outcome"], one["why"]), ("incomplete", "gateway: 502 MODEL_NO_OUTPUT"))
+
+    def test_a_reasoning_effort_is_the_same_in_both_arms(self):
+        model = CannedModel()
+        lr.run(taskset(), SKILL, {**CFG, "reasoning_effort": "low"}, model, fake_rpc, self.budget(), now=0)
+        self.assertEqual({json.dumps(b.get("reasoning")) for b in model.bodies}, {json.dumps({"effort": "low"})})
+
     def test_the_cost_cap_stops_the_run_and_it_is_incomplete(self):
         lift, results, budget = lr.run(taskset(), SKILL, CFG, CannedModel(), fake_rpc, self.budget(max_cost=0.01), now=0)
         self.assertEqual(lift["state"], "incomplete")

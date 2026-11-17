@@ -26,6 +26,7 @@ model or its tools; the gateway key is read from an environment variable and sen
 
 Python 3.9+ standard library only."""
 import argparse, hashlib, json, os, re, sys, time, urllib.error, urllib.request
+import uuid
 
 RPC_DEFAULT = "https://mainnet.base.org"
 RPC_METHODS = ("eth_getTransactionByHash", "eth_getTransactionReceipt", "eth_getBlockByNumber", "eth_getCode", "eth_call", "eth_chainId")
@@ -317,22 +318,26 @@ def run_arm(task, arm, skill_text, cfg, chat, rpc, budget, judge=None):
     for _attempt in range(cfg["attempts"]):
         convo = list(messages)
         for _turn in range(cfg["max_turns"]):
-            body = {"model": cfg["model"], "messages": convo, "tools": TOOLS, "max_tokens": cfg["max_tokens"], "temperature": 0}
+            body = {"model": cfg["model"], "messages": convo, "tools": TOOLS, "max_tokens": cfg["max_tokens"], "temperature": 0,
+                    **({"reasoning": {"effort": cfg["reasoning_effort"]}} if cfg.get("reasoning_effort") else {})}
             if not budget.fits(body, cfg["max_tokens"]):
                 raise Stop("the model budget would be exceeded")
             try:
                 completion = chat(body)
             except Stop:
                 raise
-            except Exception as error:  # the gateway failing is the host's, never the arm's
-                return {"outcome": "incomplete", "why": f"gateway: {type(error).__name__}", "turns": turns, "notifications": len(notifications)}
+            except Exception as error:  # the gateway failing is the host's, never the arm's: the next attempt, if any
+                last = {"outcome": "incomplete", "why": f"gateway: {error}" if isinstance(error, GatewayError) else f"gateway: {type(error).__name__}"}
+                break
             turns += 1
             budget.charge(completion.get("usage"))
             choice = (completion.get("choices") or [{}])[0]
             message = choice.get("message") or {}
             if choice.get("finish_reason") == "length":
-                # A cut-off answer is a platform cause (B2): the task is incomplete, never a skill's failure.
-                return {"outcome": "incomplete", "why": "the answer was cut off at its limit", "turns": turns, "notifications": len(notifications)}
+                # A cut-off answer is a platform cause (B2): the task is incomplete, never a skill's failure; the next
+                # attempt, if any, starts again.
+                last = {"outcome": "incomplete", "why": "the answer was cut off at its limit"}
+                break
             calls = message.get("tool_calls") or []
             if calls:
                 convo.append({"role": "assistant", "content": message.get("content") or "", "tool_calls": calls})
@@ -432,19 +437,31 @@ def lift_block_problems(lift, current_skill_sha, ts=None):
 
 # ---- The gateway ---------------------------------------------------------------------------------------------------
 
+class GatewayError(Exception):
+    """A gateway answer that was not a completion: its HTTP status and code."""
+
+
 def gateway_chat(endpoint, key, timeout=90):
     if not endpoint.startswith("https://"):
         raise ValueError("the endpoint must be https")
     def chat(body):
+        # A paid route refuses a request it could not safely retry: each call carries its own key, so a retried call is
+        # never charged twice (HivemindOS's paid-agent gateway, 2026-11-17).
         req = urllib.request.Request(endpoint, data=json.dumps(body).encode(), headers={
-            "content-type": "application/json", "authorization": f"Bearer {key}", "user-agent": "bee-self-test-lift/1"})
+            "content-type": "application/json", "authorization": f"Bearer {key}", "user-agent": "bee-self-test-lift/1",
+            "idempotency-key": f"lift-{uuid.uuid4()}"})
         try:
             with urllib.request.urlopen(req, timeout=timeout) as response:
                 return json.load(response)
         except urllib.error.HTTPError as error:
             if error.code in (401, 402, 403):
                 raise Stop(f"the gateway refused the key or the payment ({error.code})")
-            raise
+            # Its status and the gateway's own code only (never its text), so an incomplete task says why.
+            try:
+                code = str(json.loads(error.read()[:4000] or b"{}").get("code") or "")[:40]
+            except Exception:
+                code = ""
+            raise GatewayError(f"{error.code}{' ' + code if code else ''}") from None
     return chat
 
 
@@ -483,6 +500,7 @@ def main(argv=None):
     p.add_argument("--attempts", type=int, default=1)
     p.add_argument("--max-turns", type=int, default=6)
     p.add_argument("--max-tokens", type=int, default=1500)
+    p.add_argument("--reasoning-effort", choices=["low", "medium", "high"], help="for a reasoning model: the same effort in both arms")
     p.add_argument("--max-cost-usd", type=float)
     p.add_argument("--price-file")
     p.add_argument("--max-judge-calls", type=int)
@@ -528,7 +546,8 @@ def main(argv=None):
     if not key:
         p.error(f"no gateway key in {a.key_env}")
     budget = Budget(a.max_cost_usd, load_json(a.price_file), a.model, a.max_judge_calls)
-    cfg = {"model": a.model, "attempts": a.attempts, "max_turns": a.max_turns, "max_tokens": a.max_tokens}
+    cfg = {"model": a.model, "attempts": a.attempts, "max_turns": a.max_turns, "max_tokens": a.max_tokens,
+           **({"reasoning_effort": a.reasoning_effort} if a.reasoning_effort else {})}
     lift, results, budget = run(ts, skill_text, cfg, gateway_chat(a.endpoint, key), lambda method, params: rpc_call(a.rpc, method, params), budget, report=a.report)
     record = {"lift": lift, "harness": {"name": "bee-self-test scripts/lift_run.py", "commit": os.environ.get("GITHUB_SHA") or None},
               "config": {**cfg, "rpc": a.rpc, "maxCostUsd": a.max_cost_usd, "maxJudgeCalls": a.max_judge_calls, "notifications": "stubbed"},

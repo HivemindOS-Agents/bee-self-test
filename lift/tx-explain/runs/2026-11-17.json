@@ -1,0 +1,269 @@
+{
+ "lift": {
+  "skillSha256": "eafd1ae43bdf5fcacc8c5c02bcb6f7848eb533c34bfeb3e7f2b06dbf9bf4df94",
+  "tasksetSha256": "659ec43f83afc7c116f99fdc46adfdfdfba87d8649c99fcf0cd9ca67de25d607",
+  "model": "meta/muse-ember",
+  "with": {
+   "passed": 5,
+   "failed": 0,
+   "incomplete": 0,
+   "of": 5
+  },
+  "without": {
+   "passed": 4,
+   "failed": 1,
+   "incomplete": 0,
+   "of": 5
+  },
+  "lift": null,
+  "state": "unreviewed",
+  "runAt": "2026-11-17T04:31:42Z",
+  "report": null,
+  "reviewedBy": null
+ },
+ "harness": {
+  "name": "bee-self-test scripts/lift_run.py",
+  "commit": null
+ },
+ "config": {
+  "model": "meta/muse-ember",
+  "attempts": 2,
+  "max_turns": 6,
+  "max_tokens": 3000,
+  "reasoning_effort": "low",
+  "rpc": "https://mainnet.base.org",
+  "maxCostUsd": 1.0,
+  "maxJudgeCalls": 0,
+  "notifications": "stubbed"
+ },
+ "spentUsd": 0.064166,
+ "judgeCalls": 0,
+ "results": {
+  "usdc-transfer": {
+   "with": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "transfer",
+     "method": "transfer",
+     "from": "0x740da33f3b179a5771df62f14f55cf8f4f0d25cc",
+     "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+     "nativeValueWei": "0",
+     "movements": [
+      {
+       "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+       "from": "0x740da33f3b179a5771df62f14f55cf8f4f0d25cc",
+       "to": "0x07249decebaa94c4038df109811296d5d7f10282",
+       "amountRaw": "36930000"
+      }
+     ],
+     "unlimitedApproval": null,
+     "summary": "Successful ERC-20 transfer of 36930000 raw units (36.93 USDC at 6 decimals) of token 0x833589fcd6edb6e08f4c7c32d4f71b54bda02913 from 0x740da33f3b179a5771df62f14f55cf8f4f0d25cc to 0x07249decebaa94c4038df109811296d5d7f10282, with no native value transferred."
+    },
+    "turns": 2,
+    "notifications": 0
+   },
+   "without": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "transfer",
+     "method": "transfer",
+     "from": "0x740da33f3b179a5771df62f14f55cf8f4f0d25cc",
+     "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+     "nativeValueWei": "0",
+     "movements": [
+      {
+       "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+       "from": "0x740da33f3b179a5771df62f14f55cf8f4f0d25cc",
+       "to": "0x07249decebaa94c4038df109811296d5d7f10282",
+       "amountRaw": "36930000"
+      }
+     ],
+     "unlimitedApproval": null,
+     "summary": "Successful ERC-20 transfer of 36930000 raw units of token 0x833589fcd6edb6e08f4c7c32d4f71b54bda02913 from 0x740da33f3b179a5771df62f14f55cf8f4f0d25cc to 0x07249decebaa94c4038df109811296d5d7f10282 with no native value transferred."
+    },
+    "turns": 2,
+    "notifications": 0
+   }
+  },
+  "native-transfer": {
+   "without": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "native-transfer",
+     "method": null,
+     "from": "0x42d0ef7c7deeabfabd5f33e528d7cf2e7fd7e9ae",
+     "to": "0x63df213cb017eb4a80cf4af595cdb8925489b63d",
+     "nativeValueWei": "720415337186",
+     "movements": [],
+     "unlimitedApproval": null,
+     "summary": "Successful native ETH transfer on Base from 0x42d0ef7c7deeabfabd5f33e528d7cf2e7fd7e9ae to 0x63df213cb017eb4a80cf4af595cdb8925489b63d of 720415337186 wei (0xa7bc19aae2) with empty input data, 21000 gas used, and no logs or token movements."
+    },
+    "turns": 2,
+    "notifications": 0
+   },
+   "with": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "native-transfer",
+     "method": null,
+     "from": "0x42d0ef7c7deeabfabd5f33e528d7cf2e7fd7e9ae",
+     "to": "0x63df213cb017eb4a80cf4af595cdb8925489b63d",
+     "nativeValueWei": "720415337186",
+     "movements": [],
+     "unlimitedApproval": null,
+     "summary": "Successful native ETH transfer of 720415337186 wei from 0x42d0ef7c7deeabfabd5f33e528d7cf2e7fd7e9ae to 0x63df213cb017eb4a80cf4af595cdb8925489b63d in block 58720259. No contract input and no token movements in logs."
+    },
+    "turns": 2,
+    "notifications": 0
+   }
+  },
+  "reverted-call": {
+   "with": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "reverted",
+     "action": "contract-call",
+     "method": null,
+     "from": "0xd1f24c0f230ddb1818ae26e1daedd770c2d227fc",
+     "to": "0x83d55acdc72027ed339d267eebaf9a41e47490d5",
+     "nativeValueWei": "0",
+     "movements": [],
+     "unlimitedApproval": null,
+     "summary": "Transaction from 0xd1f24c0f230ddb1818ae26e1daedd770c2d227fc to 0x83d55acdc72027ed339d267eebaf9a41e47490d5 with selector 0x7eb64413 and 0 native value reverted (status 0x0) in block 0x378a003, using 42655 gas. Receipt contains no logs, so no token movements occurred and no state changed."
+    },
+    "turns": 2,
+    "notifications": 0
+   },
+   "without": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "reverted",
+     "action": "contract-call",
+     "method": null,
+     "from": "0xd1f24c0f230ddb1818ae26e1daedd770c2d227fc",
+     "to": "0x83d55acdc72027ed339d267eebaf9a41e47490d5",
+     "nativeValueWei": "0",
+     "movements": [],
+     "unlimitedApproval": null,
+     "summary": "Transaction 0x8c1d4071d8c9d962199ee066bf3076dfd7e87192a3580028f90423a6060cb9a7 from 0xd1f24c0f230ddb1818ae26e1daedd770c2d227fc to contract 0x83d55acdc72027ed339d267eebaf9a41e47490d5 with 0 wei and input selector 7eb64413 reverted (receipt status 0x0, gas used 0xa69f, no logs), so no native or token movements occurred."
+    },
+    "turns": 3,
+    "notifications": 0
+   }
+  },
+  "unlimited-approve": {
+   "without": {
+    "outcome": "fail",
+    "why": "2 of 6 checks failed",
+    "answer": {
+     "status": "success",
+     "action": "approve",
+     "method": "approve",
+     "from": "0xb1829f859c37292acb92bd1be255e8955fc6784e",
+     "to": "0xb200000000000000000000039c6467c6faec91a2",
+     "nativeValueWei": "0",
+     "movements": [],
+     "unlimitedApproval": {
+      "token": "0xb200000000000000000000000039c6467c6faec91a2",
+      "spender": "0x0215199f691cd1cc86ce7bbf803a8b9d9e79eb2e7"
+     },
+     "summary": "Successful ERC20 approve call to token 0xb200000000000000000000039c6467c6faec91a2: 0xb1829f859c37292acb92bd1be255e8955fc6784e approved spender 0x0215199f691cd1cc86ce7bbf803a8b9d9e79eb2e7 for the maximum uint256 amount (2^256-1), confirmed by the Approval log. No native value was transferred."
+    },
+    "turns": 4,
+    "notifications": 0
+   },
+   "with": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "approve",
+     "method": "approve",
+     "from": "0xb1829f859c37292acb92bd1be255e8955fc6784e",
+     "to": "0xb200000000000000000000039c6467c6faec91a2",
+     "nativeValueWei": "0",
+     "movements": [],
+     "unlimitedApproval": {
+      "token": "0xb200000000000000000000039c6467c6faec91a2",
+      "spender": "0x215199f691cd1cc86ce7bbf803a8b9d9e79eb2e7"
+     },
+     "summary": "Successful approve call: 0xb1829f859c37292acb92bd1be255e8955fc6784e approved spender 0x215199f691cd1cc86ce7bbf803a8b9d9e79eb2e7 to spend token 0xb200000000000000000000039c6467c6faec91a2 with unlimited amount (2^256-1, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff). No native value transferred and no token Transfer movements in logs; only an Approval event was emitted."
+    },
+    "turns": 8,
+    "notifications": 0
+   }
+  },
+  "router-swap": {
+   "with": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "swap",
+     "method": null,
+     "from": "0xb09a7cc562236f93c3f3a105729f2e2f9fe678a0",
+     "to": "0xd6145b2d3f379919e8cdeda7b97e37c4b2ca9c40",
+     "nativeValueWei": "0",
+     "movements": [
+      {
+       "token": "0xdcf5130274753c8050ab061b1a1dcbf583f5bfd0",
+       "from": "0xe8f16fbf4eafec04bcf0c06d768e7ba325f9d6de",
+       "to": "0xb09a7cc562236f93c3f3a105729f2e2f9fe678a0",
+       "amountRaw": "4500000000000000000"
+      },
+      {
+       "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+       "from": "0xb09a7cc562236f93c3f3a105729f2e2f9fe678a0",
+       "to": "0xe8f16fbf4eafec04bcf0c06d768e7ba325f9d6de",
+       "amountRaw": "81867112"
+      }
+     ],
+     "unlimitedApproval": null,
+     "summary": "Successful swap via contract 0xd6145b2d3f379919e8cdeda7b97e37c4b2ca9c40 with no native value: 0xb09a7cc562236f93c3f3a105729f2e2f9fe678a0 sent 81867112 raw units of token 0x833589fcd6edb6e08f4c7c32d4f71b54bda02913 to 0xe8f16fbf4eafec04bcf0c06d768e7ba325f9d6de and received 4500000000000000000 raw units of token 0xdcf5130274753c8050ab061b1a1dcbf583f5bfd0 from 0xe8f16fbf4eafec04bcf0c06d768e7ba325f9d6de. No Approval event was present."
+    },
+    "turns": 4,
+    "notifications": 0
+   },
+   "without": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "swap",
+     "method": "execute",
+     "from": "0xb09a7cc562236f93c3f3a105729f2e2f9fe678a0",
+     "to": "0xd6145b2d3f379919e8cdeda7b97e37c4b2ca9c40",
+     "nativeValueWei": "0",
+     "movements": [
+      {
+       "token": "0xdcf5130274753c8050ab061b1a1dcbf583f5bfd0",
+       "from": "0xe8f16fbf4eafec04bcf0c06d768e7ba325f9d6de",
+       "to": "0xb09a7cc562236f93c3f3a105729f2e2f9fe678a0",
+       "amountRaw": "4500000000000000000"
+      },
+      {
+       "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+       "from": "0xb09a7cc562236f93c3f3a105729f2e2f9fe678a0",
+       "to": "0xe8f16fbf4eafec04bcf0c06d768e7ba325f9d6de",
+       "amountRaw": "81867112"
+      }
+     ],
+     "unlimitedApproval": null,
+     "summary": "Successful swap via Universal Router execute with no native value: 0xb09a7cc562236f93c3f3a105729f2e2f9fe678a0 sent 81867112 raw units of token 0x833589fcd6edb6e08f4c7c32d4f71b54bda02913 to 0xe8f16fbf4eafec04bcf0c06d768e7ba325f9d6de and received 4500000000000000000 raw units of token 0xdcf5130274753c8050ab061b1a1dcbf583f5bfd0 from 0xe8f16fbf4eafec04bcf0c06d768e7ba325f9d6de."
+    },
+    "turns": 2,
+    "notifications": 0
+   }
+  }
+ }
+}
