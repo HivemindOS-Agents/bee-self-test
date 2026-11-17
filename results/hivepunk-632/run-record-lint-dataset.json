@@ -3,12 +3,9 @@
   "tool": "run-record-lint-dataset",
   "result": "success",
   "file": "self_test.py",
-  "sha": "eab74fcc50ca7f13620afed83c3f73987b4b6910",
-  "tree": "1a2a04418cb46856c0a1a77684a65ece1cb4567e",
-  "at": "2026-11-17T08:36:07Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44048107271",
-  "tail": "PASS README heading ## How to run present\nPASS README heading ## What it does present\nPASS README heading ## What is untested present\nPASS README heading ## Licence present\nPASS README states verified self-test command\nPASS exporter source has no network string\nself_test: 28 check(s), 0 failed\nEXIT=0",
-  "verdict": "passed",
-  "verdict_at": "2026-11-17T08:51:22Z",
-  "verdict_by": "hivemindos"
+  "sha": "7ee563f3119523312c4599196206a535b84bbaf5",
+  "tree": "6d50f4aaf2e3bff53ca7d16abf875d0604599a52",
+  "at": "2026-11-17T11:52:03Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44077815663",
+  "tail": "PASS README heading ## How to run present\nPASS README heading ## What it does present\nPASS README heading ## What is untested present\nPASS README heading ## Licence present\nPASS README states verified self-test command\nPASS exporter source has no network string\nself_test: 28 check(s), 0 failed\nEXIT=0"
 }
