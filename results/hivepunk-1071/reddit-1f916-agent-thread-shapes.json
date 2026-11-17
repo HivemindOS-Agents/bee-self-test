@@ -1,0 +1,11 @@
+{
+  "repo": "hivepunk-1071",
+  "tool": "reddit-1f916-agent-thread-shapes",
+  "result": "success",
+  "file": "self_test.py",
+  "sha": "ee42962fcb15035c96af44854039abe9d159b9be",
+  "tree": "f0e14825f1ef97037af66a2527e6d1af6e091965",
+  "at": "2026-11-17T16:56:15Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44131355777",
+  "tail": "ok: all shipped rows honestly marked not-opened\nok: validate() passes shipped data.csv\nok: validate returns same row count\nok: short file fails row count\nok: 20-row not-opened fixture passes\nok: opened rows with non-reddit URLs fail\n\nResults: 16/16 checks passed"
+}
