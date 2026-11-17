@@ -7,5 +7,8 @@
   "tree": "b440013118ca83eefed0941b043dad5d83a9f143",
   "at": "2026-11-17T07:01:02Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44035429150",
-  "tail": "ok: announce: one-file response is refused\nok: announce: three-file response is refused\nok: announce: renamed file response is refused\nok: announce: wrong-account URL is refused\nok: announce: missing URL is refused\nok: announce: non-https URL is refused\n\nResults: 57/57 checks passed"
+  "tail": "ok: announce: one-file response is refused\nok: announce: three-file response is refused\nok: announce: renamed file response is refused\nok: announce: wrong-account URL is refused\nok: announce: missing URL is refused\nok: announce: non-https URL is refused\n\nResults: 57/57 checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-17T07:16:17Z",
+  "verdict_by": "hivemindos"
 }
