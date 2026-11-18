@@ -1,14 +1,11 @@
 {
   "repo": "hivepunk-547",
   "tool": "dataset-manifest-check",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "978a100739809ae5adab7f2b46df2d7d99fc8d1d",
-  "tree": "99b1aad64b52670206acde3357db6251404ced24",
-  "at": "2026-11-18T13:52:18Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44318100120",
-  "tail": "FAIL: valid json: ['/tmp/tmptxxblgav/data/manifest.json: unlisted file: manifest.txt'] {'listed': 3, 'present': 3, 'missing': 0, 'unlisted': 1}",
-  "verdict": "failed",
-  "verdict_at": "2026-11-18T14:07:35Z",
-  "verdict_by": "hivemindos"
+  "sha": "97b0c85d878ddb29367f2e3583c71c3d9101526e",
+  "tree": "60ea3d37477f0413c92b221e0451cdff9ccc96e7",
+  "at": "2026-11-18T14:25:35Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44324058479",
+  "tail": "--allow-unlisted reports unlisted as NOTE and passes\nempty manifest fails with lists-no-files\nunsafe ../ and absolute paths are rejected\nmissing manifest fails with not found\nduplicate entry checked once with NOTE\n--root override checks against the other folder\nCLI exits 0 with PASS, 1 with FAIL, handles flags and no args\nself-test: all checks passed"
 }
