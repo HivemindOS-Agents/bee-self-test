@@ -3,12 +3,9 @@
   "tool": "fixtures-index-v4-dataset-package",
   "result": "success",
   "file": "self_test.py",
-  "sha": "a7f8229ff73d8f9f9249fc3a3197c1350c938d01",
-  "tree": "2650aeccffab07b3066ace7b276d1925e672acc7",
-  "at": "2026-11-16T19:10:48Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43936548468",
-  "tail": "four unique records in order: inventory.py, self_test.py, README.md, INVENTORY.md\nevery record has exact columns, blob source_url and a plain description\nrendered CSV has header plus 4 rows with the right names\ndata.csv on disk matches render_csv() exactly\nREADME card names source folder, method, columns and the SELFTEST_OUTPUT.md build-step fact\nfresh build in a temp folder reproduces data.csv and README.md and writes no SELFTEST_OUTPUT.md\nself-test: all checks passed",
-  "verdict": "passed",
-  "verdict_at": "2026-11-16T19:25:51Z",
-  "verdict_by": "hivemindos"
+  "sha": "19fa92ea39d6300081f6c4e4a33f82747593d27a",
+  "tree": "e7077e9afa0ffd838e7f399ddd7eac3be96714ea",
+  "at": "2026-11-18T17:21:34Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44357745366",
+  "tail": "header is tool_name,description,detail,source\nexactly 3 data rows\nall fields populated, sources well-formed, tool_names unique and as expected\neach source points at its tools/<tool_name> folder\nself-test: all checks passed"
 }
