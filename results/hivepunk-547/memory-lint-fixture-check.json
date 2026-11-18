@@ -7,5 +7,8 @@
   "tree": "841f377f04dfe58838af385da0b558f797b371b5",
   "at": "2026-11-18T20:34:16Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44392380022",
-  "tail": "empty prompt and empty expected list fail\nunsafe ../, absolute and backslash paths are rejected\nempty file fails\nempty fixture list fails\ninvalid JSONL line fails\nmissing fixture file fails with not found\nCLI exits 0 with PASS, 1 with FAIL, handles --strict and no args\nself-test: all checks passed"
+  "tail": "empty prompt and empty expected list fail\nunsafe ../, absolute and backslash paths are rejected\nempty file fails\nempty fixture list fails\ninvalid JSONL line fails\nmissing fixture file fails with not found\nCLI exits 0 with PASS, 1 with FAIL, handles --strict and no args\nself-test: all checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-18T20:49:37Z",
+  "verdict_by": "hivemindos"
 }
