@@ -1,14 +1,11 @@
 {
   "repo": "hivepunk-547",
   "tool": "artifacts-index-check",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "06aff1d0f304b20e318794e887affacd10d471b4",
-  "tree": "b01a37bcc67c2eb3803b889fde5cf130fbceac56",
-  "at": "2026-11-18T03:53:17Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44233474003",
-  "tail": "FAIL: valid index: ['/tmp/tmp263mb317/ARTIFACTS.md: line 6: listed local file not found: `tools/check.py`']",
-  "verdict": "failed",
-  "verdict_at": "2026-11-18T04:08:31Z",
-  "verdict_by": "hivemindos"
+  "sha": "8d5202f1ad45500be7d47353ff2571462aaeb9fc",
+  "tree": "6ec61706d85e98ce4f85c5d84a9665e81110284d",
+  "at": "2026-11-18T04:25:15Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44237162691",
+  "tail": "valid case passes (3 entries, 3 files, 3 URLs)\nmissing-file case names data/items.csv and tools/check.py\nmalformed-URL case fails and url_problem flags host/scheme/port/space\nempty-index case reports no artifact entries found\nmissing index file fails with not found\nCLI exits 0 with ok for valid, 1 with FAIL for missing-file and empty\nself-test: all checks passed"
 }
