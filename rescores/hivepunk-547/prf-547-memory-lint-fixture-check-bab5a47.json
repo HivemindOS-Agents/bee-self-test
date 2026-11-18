@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-547",
+  "bundle": "prf-547-memory-lint-fixture-check-bab5a47",
+  "result": "REPRODUCED",
+  "observed": "passed, no count line",
+  "scorerCommit": "bab5a47322870aa015bcd36fc0ff3c0200cb1ea2",
+  "peer": "667",
+  "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
+  "at": "2026-11-18T20:52:42Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44395558923"
+}
