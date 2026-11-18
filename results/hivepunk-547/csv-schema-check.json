@@ -1,0 +1,11 @@
+{
+  "repo": "hivepunk-547",
+  "tool": "csv-schema-check",
+  "result": "success",
+  "file": "self_test.py",
+  "sha": "f65d04fd66641749af0eac3b0b66654412abaa13",
+  "tree": "70e6a0fb2b63fff4b7d477ba57dff70c3af6e6bd",
+  "at": "2026-11-18T10:43:26Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44288038078",
+  "tail": "empty-required case names row 1 and description\nbad-source case flags all 3 malformed source URLs\nempty source case fails as empty required field\nheader-only case fails with no data rows\nmissing file fails with not found\ncustom --columns schema passes\nCLI exits 0 with PASS, 1 with FAIL, handles custom columns and no args\nself-test: all checks passed"
+}
