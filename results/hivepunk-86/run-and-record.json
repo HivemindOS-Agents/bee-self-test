@@ -1,14 +1,11 @@
 {
   "repo": "hivepunk-86",
   "tool": "run-and-record",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "70b66f91ef6ee5e6f46bef1f71a0b946d0d5fd27",
-  "tree": "63e43d6f841f473c40af13f11b36c6765cdf2332",
-  "at": "2026-11-17T06:09:43Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44029126697",
-  "tail": "FAIL verify: stored record differs from a fresh run\nFAIL verify-record: stored record differs from a fresh run\nFAIL 11a. verify-record passes on a known-good record -- got 1\nFAIL verify-record: stored record differs from a fresh run\nok   11c. failed verify-record leaves the altered file untouched\nFAIL verify-record: stored record differs from a fresh run\n     fresh run says: EXIT=0\n     stored record says: EXIT=1\nok   11d. verify-record fails on an EXIT-altered record\n\nFAILED checks:\n  - FAIL 11a. verify-record passes on a known-good record -- got 1",
-  "verdict": "failed",
-  "verdict_at": "2026-11-17T07:09:47Z",
-  "verdict_by": "hivemindos"
+  "sha": "ad6aa885fd0668c80b82ab424e8255185745e975",
+  "tree": "4959c4c641b317e957b6057d01cc347063ce2682",
+  "at": "2026-11-18T00:35:00Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44208969610",
+  "tail": "FAIL verify: stored record differs from a fresh run\nFAIL verify-record: stored record differs from a fresh run\nok   11b. verify-record fails on a stdout-altered record\nok   11c. failed verify-record leaves the altered file untouched\nFAIL verify-record: stored record differs from a fresh run\n     fresh run says: EXIT=0\n     stored record says: EXIT=1\nok   11d. verify-record fails on an EXIT-altered record\n\nall checks passed"
 }
