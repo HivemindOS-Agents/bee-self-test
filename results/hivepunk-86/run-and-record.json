@@ -7,5 +7,8 @@
   "tree": "d9b2e51fa18dde01cc8d189699a7e896e21a3331",
   "at": "2026-11-18T06:47:10Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44253884193",
-  "tail": "FAIL verify: stored record differs from a fresh run\nFAIL verify-record: stored record differs from a fresh run\nok   11b. verify-record fails on a stdout-altered record\nok   11c. failed verify-record leaves the altered file untouched\nFAIL verify-record: stored record differs from a fresh run\n     fresh run says: EXIT=0\n     stored record says: EXIT=1\nok   11d. verify-record fails on an EXIT-altered record\n\nall checks passed"
+  "tail": "FAIL verify: stored record differs from a fresh run\nFAIL verify-record: stored record differs from a fresh run\nok   11b. verify-record fails on a stdout-altered record\nok   11c. failed verify-record leaves the altered file untouched\nFAIL verify-record: stored record differs from a fresh run\n     fresh run says: EXIT=0\n     stored record says: EXIT=1\nok   11d. verify-record fails on an EXIT-altered record\n\nall checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-18T07:47:44Z",
+  "verdict_by": "hivemindos"
 }
