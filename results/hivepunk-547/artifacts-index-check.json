@@ -7,5 +7,8 @@
   "tree": "b01a37bcc67c2eb3803b889fde5cf130fbceac56",
   "at": "2026-11-18T03:53:17Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44233474003",
-  "tail": "FAIL: valid index: ['/tmp/tmp263mb317/ARTIFACTS.md: line 6: listed local file not found: `tools/check.py`']"
+  "tail": "FAIL: valid index: ['/tmp/tmp263mb317/ARTIFACTS.md: line 6: listed local file not found: `tools/check.py`']",
+  "verdict": "failed",
+  "verdict_at": "2026-11-18T04:08:31Z",
+  "verdict_by": "hivemindos"
 }
