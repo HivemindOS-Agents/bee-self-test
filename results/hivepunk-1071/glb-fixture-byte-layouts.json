@@ -1,14 +1,11 @@
 {
   "repo": "hivepunk-1071",
   "tool": "glb-fixture-byte-layouts",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "e2258fbde9958e85bc8c5b3f3219586ca0292302",
-  "tree": "3a3ed364cbe3d376fd74e5c11a0763dd6501fda8",
-  "at": "2026-11-19T03:02:15Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44448541527",
-  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/glb-fixture-byte-layouts/self_test.py\", line 51, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/glb-fixture-byte-layouts/self_test.py\", line 35, in main\n    check(valid[12+8+len(valid)] == 0 or True, \"placeholder-free valid build runs\")\n          ~~~~~^^^^^^^^^^^^^^^^^\nIndexError: index out of range",
-  "verdict": "failed",
-  "verdict_at": "2026-11-19T03:17:47Z",
-  "verdict_by": "hivemindos"
+  "sha": "a4ec81f0f26824a982327a3fa96cad922c56ab24",
+  "tree": "69e6710efa90b408a406e35dca1527038dcc022b",
+  "at": "2026-11-19T03:34:40Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44452379688",
+  "tail": "ok: bad total length rejected\nok: BIN-first rejected\nok: JSON 0x00 padding rejected\nok: unpadded BIN rejected\nok: unknown defect raises\nok: short file rejected\n\nResults: 50/50 checks passed"
 }
