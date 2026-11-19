@@ -1,14 +1,11 @@
 {
   "repo": "hivepunk-1071",
   "tool": "glb-fixture-byte-layouts",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "beab19b7cd86875f3a889a1243e031629a1b2ea5",
-  "tree": "a605f72cad241b5fc57675f6457e4991f32ed774",
-  "at": "2026-11-17T13:23:57Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44092290976",
-  "tail": "ok: announce: one-file response is refused\nok: announce: three-file response is refused\nok: announce: renamed file response is refused\nok: announce: wrong-account URL is refused\nok: announce: missing URL is refused\nok: announce: non-https URL is refused\n\nResults: 57/57 checks passed",
-  "verdict": "passed",
-  "verdict_at": "2026-11-17T13:39:10Z",
-  "verdict_by": "hivemindos"
+  "sha": "e2258fbde9958e85bc8c5b3f3219586ca0292302",
+  "tree": "3a3ed364cbe3d376fd74e5c11a0763dd6501fda8",
+  "at": "2026-11-19T03:02:15Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44448541527",
+  "tail": "Traceback (most recent call last):\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/glb-fixture-byte-layouts/self_test.py\", line 51, in <module>\n    sys.exit(main())\n             ~~~~^^\n  File \"/home/runner/work/bee-self-test/bee-self-test/work/tools/glb-fixture-byte-layouts/self_test.py\", line 35, in main\n    check(valid[12+8+len(valid)] == 0 or True, \"placeholder-free valid build runs\")\n          ~~~~~^^^^^^^^^^^^^^^^^\nIndexError: index out of range"
 }
