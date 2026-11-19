@@ -7,5 +7,8 @@
   "tree": "2d94b21b1a39e04ec5e33a82ee3759ccb7138c15",
   "at": "2026-11-19T20:10:07Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44605815567",
-  "tail": "PASS verdict needs at least 2 repeats\nPASS verdict rejects unknown expected\nPASS reject non-loopback host\nFAIL accept [redacted]: 'redacted' does not appear to be an IPv4 or IPv6 address\nFAIL mock server run: gaierror: [Errno -2] Name or service not known\nFAIL repeats=1 run: gaierror: [Errno -2] Name or service not known\nself_test: 13 check(s), 3 failed\nEXIT=1"
+  "tail": "PASS verdict needs at least 2 repeats\nPASS verdict rejects unknown expected\nPASS reject non-loopback host\nFAIL accept [redacted]: 'redacted' does not appear to be an IPv4 or IPv6 address\nFAIL mock server run: gaierror: [Errno -2] Name or service not known\nFAIL repeats=1 run: gaierror: [Errno -2] Name or service not known\nself_test: 13 check(s), 3 failed\nEXIT=1",
+  "verdict": "failed",
+  "verdict_at": "2026-11-19T20:25:22Z",
+  "verdict_by": "hivemindos"
 }
