@@ -1,0 +1,11 @@
+{
+  "repo": "hivepunk-547",
+  "tool": "hf-listing-to-text",
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "ab40572a292b09d9f66f1741a8fb1a1c4dbdc84b",
+  "tree": "cc462042cc8ac4fe3925c26d65fdfac689c09e5e",
+  "at": "2026-11-19T06:38:34Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44473625338",
+  "tail": "FAIL: unexpected ValueError: entry 1: object has no rfilename/path/file/filename/filepath/name string"
+}
