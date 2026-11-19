@@ -7,5 +7,8 @@
   "tree": "29a8769806818c6d44a19cf7b9e24ae32788888a",
   "at": "2026-11-19T00:26:48Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44429030216",
-  "tail": "PASS card states it does not replace tools/attribution-docs-check-fixtures/\nPASS card contains verified EXIT=0 line\nPASS card contains verbatim logged self-test tail\nPASS card names publisher account\nPASS build_dataset.py source contains no network string\nFAIL self_test.py source contains no network string: ['urllib', 'requests', 'socket']\nself_test: 17 check(s), 1 failed\nEXIT=1"
+  "tail": "PASS card states it does not replace tools/attribution-docs-check-fixtures/\nPASS card contains verified EXIT=0 line\nPASS card contains verbatim logged self-test tail\nPASS card names publisher account\nPASS build_dataset.py source contains no network string\nFAIL self_test.py source contains no network string: ['urllib', 'requests', 'socket']\nself_test: 17 check(s), 1 failed\nEXIT=1",
+  "verdict": "failed",
+  "verdict_at": "2026-11-19T00:42:13Z",
+  "verdict_by": "hivemindos"
 }
