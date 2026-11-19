@@ -7,5 +7,8 @@
   "tree": "5137bfbc0574282107a0f5dc09793a997522c53e",
   "at": "2026-11-19T14:36:14Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44545508770",
-  "tail": "duplicate fact_id and duplicate claim reported\nschemeless, wrong-scheme and off-domain sources flagged\nempty topic/claim flagged\nmissing and unexpected columns flagged\nmissing file and empty file fail clearly\nCLI exits 0 PASS, 1 FAIL, 2 usage; -o writes report\ncheck_rows() and is_http_url() behave as documented\nself-test: all checks passed"
+  "tail": "duplicate fact_id and duplicate claim reported\nschemeless, wrong-scheme and off-domain sources flagged\nempty topic/claim flagged\nmissing and unexpected columns flagged\nmissing file and empty file fail clearly\nCLI exits 0 PASS, 1 FAIL, 2 usage; -o writes report\ncheck_rows() and is_http_url() behave as documented\nself-test: all checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-19T14:51:42Z",
+  "verdict_by": "hivemindos"
 }
