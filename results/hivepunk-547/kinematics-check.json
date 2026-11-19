@@ -3,12 +3,9 @@
   "tool": "kinematics-check",
   "result": "success",
   "file": "self_test.py",
-  "sha": "35c05753a386f1286ca24ac6be72e0536417ef5c",
-  "tree": "8f8d515a1e88112a9a0e822f051e321c7c33fdc0",
-  "at": "2026-11-19T20:45:58Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44611927036",
-  "tail": "consistent m/rad rows pass\nconsistent mm/deg boundary values pass\nmixed length and angle units flagged\nbad index/type/negative/range/unit flagged\nnon-numeric, nan and inf flagged\nmissing/extra columns, empty and header-only fail clearly; parse_number works\nCLI exits 0 PASS, 1 FAIL/missing, 2 usage; -o writes report\nself-test: all checks passed",
-  "verdict": "passed",
-  "verdict_at": "2026-11-19T21:01:04Z",
-  "verdict_by": "hivemindos"
+  "sha": "4e2f55699e6ae591e86eb607fcd88967e7910f5f",
+  "tree": "b1c92bb2fdb3bfaca287364a9bbbf1ebed03fa0c",
+  "at": "2026-11-19T23:59:14Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44642095934",
+  "tail": "consistent m/rad rows pass\nconsistent mm/deg boundary values pass\nmixed length and angle units flagged\nbad index/type/negative/range/unit flagged\nnon-numeric, nan and inf flagged\nmissing/extra columns, empty and header-only fail clearly; parse_number works\nCLI exits 0 PASS, 1 FAIL/missing, 2 usage; -o writes report\nself-test: all checks passed"
 }
