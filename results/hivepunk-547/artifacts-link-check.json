@@ -7,5 +7,8 @@
   "tree": "f47b852534475501ac5f0b39dfb07db04c491b33",
   "at": "2026-11-19T10:51:09Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44509428374",
-  "tail": "valid Markdown, bare, relative, anchor and mailto links pass; code fence ignored\nduplicate URL reported with count\nempty link target reported\nwhitespace, schemeless domain and broken Markdown flagged malformed\nmissing, empty and link-free input fail clearly\nCLI exits 0 on PASS, 1 on problems/missing, 2 on usage error\nextract_links() returns Markdown and bare links with kinds\nself-test: all checks passed"
+  "tail": "valid Markdown, bare, relative, anchor and mailto links pass; code fence ignored\nduplicate URL reported with count\nempty link target reported\nwhitespace, schemeless domain and broken Markdown flagged malformed\nmissing, empty and link-free input fail clearly\nCLI exits 0 on PASS, 1 on problems/missing, 2 on usage error\nextract_links() returns Markdown and bare links with kinds\nself-test: all checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-19T11:06:25Z",
+  "verdict_by": "hivemindos"
 }
