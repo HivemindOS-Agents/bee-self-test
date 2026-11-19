@@ -7,6 +7,9 @@ HB-060, on the five active agents' public OPPORTUNITIES.md:
   staple   no item carries the Hall bounty as its ask unless the item is about the bounty or paid calls
   junk     no Candidate in its lane whose title is a report, phone spam, a bare domain or good-first-issue trivia
   sized    an in-lane Candidate with an outside ask is never a bare "Effort: not estimated": a count, or why not
+  taken    an ask "taken from the registry" (an agent with none of its own to try takes one from another agent's list)
+           quotes its ask, is sized at 3 work steps or fewer, is taken by one agent only, and is not also the
+           Exploratory item of the agent it was taken from
 
 HB-059, on FROZEN.md (bee-scouts): every `Done when: <path> sha256 <hex>` pin still matches the agent's file at main, so
 the host's opportunity linker wrote into no pinned file.
@@ -29,6 +32,7 @@ HALL = "https://api.hivemindos.app/v1/hall#bounty"
 JUNK = re.compile(r"^(upload|delete|create|update|rename|add files?)\b|^[^a-z0-9]*report:|security alert|conversion to parquet|"
                   r"collaborator request|^\[bot\]|good[ -]first[ -]issue|hacktoberfest|kundservice|klantenservice|kundendienst|"
                   r"service client|customer (service|care|support)|helpline|☎|^[a-z0-9-]+(\.[a-z0-9-]+)+$", re.I)
+TAKEN = re.compile(r"Fit: taken from the registry \((opp-[\w-]+):")
 HALL_NEED = re.compile(r"\b(hall|bount(y|ies)|paid[ -]calls?|payers?|x402)\b", re.I)
 
 
@@ -48,8 +52,9 @@ def asks_of(block):
 
 
 def check_agent(n, text):
-    """Problems on one agent's file, and whether it quotes the Hall bounty as demand."""
-    problems, hall = [], False
+    """Problems on one agent's file, whether it quotes the Hall bounty as demand, the items it took that still wait
+    ([(its id, the id taken)]), and its Exploratory Candidates' ids."""
+    problems, hall, takes, exploratory = [], False, [], []
     for oid, title, block in blocks(text):
         candidate = re.search(r"^- Status: Candidate\b", block, re.M) is not None
         in_lane = "Fit: in its lane" in block
@@ -65,16 +70,26 @@ def check_agent(n, text):
         quoted = re.search(r"^- Asks: \d+ quoted", block, re.M) is not None
         if candidate and in_lane and quoted and re.search(r"Effort: not estimated(?! \(| yet:)", block):
             problems.append(f"sized: {oid} says only 'Effort: not estimated'")
-    return problems, hall
+        if candidate and re.search(r"^- Tier: exploratory\b", block, re.M):
+            exploratory.append(oid)
+        took = TAKEN.search(block)
+        if candidate and took:
+            takes.append((oid, took.group(1)))
+            if not quoted or not re.search(r"Effort: [123] work steps", block):
+                problems.append(f"taken: {oid} was taken from the registry without a quoted ask sized at 3 steps or fewer")
+    return problems, hall, takes, exploratory
 
 
 def check_opportunities(files):
     """files: {agent: text}. (lines, failed)."""
-    lines, failed, halls = [], 0, []
+    lines, failed, halls, taken_by, tried = [], 0, [], {}, set()
     for n, text in files.items():
-        problems, hall = check_agent(n, text)
+        problems, hall, takes, exploratory = check_agent(n, text)
         if hall:
             halls.append(n)
+        tried.update(exploratory)
+        for oid, source in takes:
+            taken_by.setdefault(source, []).append(oid)
         failed += len(problems)
         lines += [f"{n}: {p}" for p in problems] or [f"{n}: clean"]
     if len(halls) > 1:
@@ -82,6 +97,14 @@ def check_opportunities(files):
         lines.append(f"hall: the open Hall bounty is demand on {len(halls)} agents ({', '.join(halls)}); at most one")
     else:
         lines.append(f"hall: demand on {halls[0] if halls else 'no agent'}")
+    for source, takers in sorted(taken_by.items()):
+        if len(takers) > 1:
+            failed += 1
+            lines.append(f"taken: {source} is taken by {len(takers)} agents ({', '.join(takers)}); at most one")
+        if source in tried:
+            failed += 1
+            lines.append(f"taken: {source} is taken by {takers[0]} and is still its own agent's exploratory item")
+    lines.append(f"taken: {sum(len(t) for t in taken_by.values())} from the registry" + (f" ({', '.join(f'{t[0]} from {s}' for s, t in sorted(taken_by.items()))})" if taken_by else ""))
     return lines, failed
 
 
@@ -135,13 +158,14 @@ def main(argv):
     return 0 if not (fa + fb) else 1
 
 
-def item(oid, title, status="Candidate", lane=True, asks=None, effort="3 work steps", extra=""):
+def item(oid, title, status="Candidate", lane=True, asks=None, effort="3 work steps", extra="", tier="watch (queue)", fit=None):
     ask_lines = "".join(f"  - \"{q}\" by someone, {u} (asked 2026-11-01)\n" for q, u in (asks or []))
-    return (f"## {oid} · {title}\n\nA need.\n\n- Status: {status} since 2026-11-19\n- Tier: watch (queue)\n"
+    fit = fit or ('in its lane' if lane else 'outside its lane')
+    return (f"## {oid} · {title}\n\nA need.\n\n- Status: {status} since 2026-11-19\n- Tier: {tier}\n"
             f"- Asks: {len(asks or [])} quoted\n{ask_lines}{extra}"
-            f"- Fit: {'in its lane' if lane else 'outside its lane'} · Effort: {effort} · Paid path: none\n\n") if asks else \
+            f"- Fit: {fit} · Effort: {effort} · Paid path: none\n\n") if asks else \
            (f"## {oid} · {title}\n\nA need.\n\n- Status: {status} since 2026-11-19\n- Asks: none quoted yet\n{extra}"
-            f"- Fit: {'in its lane' if lane else 'outside its lane'} · Effort: {effort} · Paid path: none\n\n")
+            f"- Fit: {fit} · Effort: {effort} · Paid path: none\n\n")
 
 
 def self_test():
@@ -177,6 +201,16 @@ def self_test():
     ok(check_opportunities({"547": head + item("opp-547-5", "data update", asks=real, effort="not estimated (its scout at 12:00 UTC could not size it; the next scout tries again)")})[1] == 0, "with why")
     ok(check_opportunities({"547": head + item("opp-547-5", "data update", asks=real, effort="not estimated yet: its next scout sizes it")})[1] == 0, "queued")
     ok(check_opportunities({"547": head + item("opp-547-5", "data update", lane=False, asks=real, effort="not estimated")})[1] == 0, "outside its lane is not sized")
+    # The registry fill: 86 has no ask of its own and takes 547's second ask, which 547 keeps out of its own try.
+    took = "taken from the registry (opp-547-14: it had no ask of its own to try)"
+    source = head + item("opp-547-13", "licence tag", asks=real, effort="1 work steps", tier="exploratory") + \
+        item("opp-547-14", "kinematics", asks=real, effort="1 work steps", extra="- Registry: taken by agent 86, which had no ask of its own to try\n")
+    copy = lambda oid, **over: head + item(oid, "kinematics", **{"lane": False, "asks": real, "effort": "1 work steps", "tier": "exploratory", "fit": took, **over})
+    ok(check_opportunities({"547": source, "86": copy("opp-86-36")})[1] == 0, "one take, the source keeps its own try")
+    ok(any("still its own agent's exploratory" in line for line in check_opportunities({"547": source.replace("opp-547-13", "opp-547-99").replace("watch (queue)", "exploratory"), "86": copy("opp-86-36")})[0]), "taken and still tried by its source")
+    ok(any("taken by 2 agents" in line for line in check_opportunities({"547": source, "86": copy("opp-86-36"), "667": copy("opp-667-30")})[0]), "one ask taken twice")
+    ok(any(line.startswith("86: taken:") for line in check_opportunities({"547": source, "86": copy("opp-86-36", effort="5 work steps")})[0]), "a take over 3 steps")
+    ok(check_opportunities({"547": source, "86": copy("opp-86-36", status="Expired")})[1] == 0, "a take given back is not counted")
     # HB-059: a pinned README unchanged passes; the same README with a link line written into it fails.
     readme = b"# agent-memory-lint-fixtures\n\nFixtures.\n"
     frozen = ("## #<n>\n\n- Done when: <path in its repository> sha256 <64 hex>\n\n## #547\n\n- Tool: agent-memory-lint-fixtures\n"
