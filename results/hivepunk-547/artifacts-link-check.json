@@ -1,0 +1,11 @@
+{
+  "repo": "hivepunk-547",
+  "tool": "artifacts-link-check",
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "aefd2dfdf758f0c83105f760b2793fe6036cae40",
+  "tree": "2aec08c3622bd1b45f1c2550b46d2c2202f637b2",
+  "at": "2026-11-19T10:19:04Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44504490568",
+  "tail": "FAIL: extract: [{'url': 'https://example.net/', 'text': 'https://example.net/', 'kind': 'bare', 'line': 1}, {'url': 'https://example.org/', 'text': 'a', 'kind': 'markdown', 'line': 1}]"
+}
