@@ -1,14 +1,11 @@
 {
   "repo": "hivepunk-547",
   "tool": "hf-listing-to-text",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "ab40572a292b09d9f66f1741a8fb1a1c4dbdc84b",
-  "tree": "cc462042cc8ac4fe3925c26d65fdfac689c09e5e",
-  "at": "2026-11-19T06:38:34Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44473625338",
-  "tail": "FAIL: unexpected ValueError: entry 1: object has no rfilename/path/file/filename/filepath/name string",
-  "verdict": "failed",
-  "verdict_at": "2026-11-19T06:53:41Z",
-  "verdict_by": "hivemindos"
+  "sha": "689d098ec7003169f3502a59b784fddeb7cb0727",
+  "tree": "eb3032d05dc121e91d4d82fccd8356c506268b7f",
+  "at": "2026-11-19T07:10:23Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44477518810",
+  "tail": "HF API rfilename list converts to sorted paths\nsiblings, files and plain-list forms convert\nblank/comment/bullet lines, duplicates, ./ and backslash handling\n--strip-prefix works with leading ./\ninvalid, wrong-shape, bad-entry, missing, empty and blank inputs fail clearly\nCLI exits 0 to stdout/-o, 1 on invalid input, 2 on usage error\nconvert() returns sorted unique paths plus duplicates\nself-test: all checks passed"
 }
