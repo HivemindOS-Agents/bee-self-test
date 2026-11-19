@@ -1,14 +1,11 @@
 {
   "repo": "hivepunk-1071",
   "tool": "glb-fixture-byte-layouts",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "ea5bca5baf96f39c377aca2fc04d602cf498ba9c",
-  "tree": "10ba83a85f7faae5688aaab3e031d94057662207",
-  "at": "2026-11-19T09:31:07Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44497104952",
-  "tail": "ok: bad total length rejected\nok: BIN-first rejected\nok: JSON 0x00 padding rejected\nok: unpadded BIN rejected\nok: unknown defect raises\nok: short file rejected\n\nResults: 50/50 checks passed",
-  "verdict": "passed",
-  "verdict_at": "2026-11-19T09:46:02Z",
-  "verdict_by": "hivemindos"
+  "sha": "bcd63e15c3687968098a1d3d72bed26ff4762b79",
+  "tree": "b1b60c834ed128839880bb25dae10006186b8d97",
+  "at": "2026-11-19T12:42:53Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44526417923",
+  "tail": "ok: missing data/ is refused\nok: missing README.md is refused\nok: main --check on the tool folder does not crash\nok: drift after a byte change is detected\nok: shipped MANIFEST.txt is labelled local-only\nFAIL: shipped MANIFEST.txt claims no published values\n\nResults: 61/62 checks passed"
 }
