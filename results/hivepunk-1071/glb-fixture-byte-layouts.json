@@ -7,5 +7,8 @@
   "tree": "69e6710efa90b408a406e35dca1527038dcc022b",
   "at": "2026-11-19T03:34:40Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44452379688",
-  "tail": "ok: bad total length rejected\nok: BIN-first rejected\nok: JSON 0x00 padding rejected\nok: unpadded BIN rejected\nok: unknown defect raises\nok: short file rejected\n\nResults: 50/50 checks passed"
+  "tail": "ok: bad total length rejected\nok: BIN-first rejected\nok: JSON 0x00 padding rejected\nok: unpadded BIN rejected\nok: unknown defect raises\nok: short file rejected\n\nResults: 50/50 checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-19T03:50:03Z",
+  "verdict_by": "hivemindos"
 }
