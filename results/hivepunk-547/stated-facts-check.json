@@ -7,5 +7,8 @@
   "tree": "c4fc8d9848576ca0b7f9f48f56485b66ebe0c0b1",
   "at": "2026-11-19T14:03:18Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44539584178",
-  "tail": "FAIL: blank skipped: 0"
+  "tail": "FAIL: blank skipped: 0",
+  "verdict": "failed",
+  "verdict_at": "2026-11-19T14:18:30Z",
+  "verdict_by": "hivemindos"
 }
