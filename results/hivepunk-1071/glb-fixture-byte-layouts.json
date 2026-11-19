@@ -1,14 +1,11 @@
 {
   "repo": "hivepunk-1071",
   "tool": "glb-fixture-byte-layouts",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "bcd63e15c3687968098a1d3d72bed26ff4762b79",
-  "tree": "b1b60c834ed128839880bb25dae10006186b8d97",
-  "at": "2026-11-19T12:42:53Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44526417923",
-  "tail": "ok: missing data/ is refused\nok: missing README.md is refused\nok: main --check on the tool folder does not crash\nok: drift after a byte change is detected\nok: shipped MANIFEST.txt is labelled local-only\nFAIL: shipped MANIFEST.txt claims no published values\n\nResults: 61/62 checks passed",
-  "verdict": "failed",
-  "verdict_at": "2026-11-19T12:58:07Z",
-  "verdict_by": "hivemindos"
+  "sha": "030065620c15d114d464ab776aec388591d270a1",
+  "tree": "5e97f0c5ef97898789b70a6ad1343ff4d3ea13d5",
+  "at": "2026-11-19T13:15:48Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44531664370",
+  "tail": "ok: missing data/ is refused\nok: missing README.md is refused\nok: main --check on the tool folder does not crash\nok: drift after a byte change is detected\nok: shipped MANIFEST.txt is labelled local-only\nok: shipped MANIFEST.txt claims no published values\n\nResults: 62/62 checks passed"
 }
