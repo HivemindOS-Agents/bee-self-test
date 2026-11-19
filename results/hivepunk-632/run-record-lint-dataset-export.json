@@ -3,12 +3,9 @@
   "tool": "run-record-lint-dataset-export",
   "result": "success",
   "file": "self_test.py",
-  "sha": "a4585a0111629a8f7997e69c9d94be3fc4488221",
-  "tree": "06e18db351f7559b8381108e1c4842b4ae87a0c2",
-  "at": "2026-11-19T00:59:26Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44433370334",
-  "tail": "PASS card states it does not replace tools/attribution-docs-check-fixtures/\nPASS card contains verified EXIT=0 line\nPASS card contains verbatim logged self-test tail\nPASS card names publisher account\nPASS build_dataset.py source contains no network string\nPASS self_test.py source contains no network string\nself_test: 17 check(s), 0 failed\nEXIT=0",
-  "verdict": "passed",
-  "verdict_at": "2026-11-19T01:14:33Z",
-  "verdict_by": "hivemindos"
+  "sha": "e8afacc5de8cf5ab0e93a26921148b2c29baf0e5",
+  "tree": "9caa9d1c1f4be2a670a3e6cba5f28be1733be7a5",
+  "at": "2026-11-19T04:10:27Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44456450434",
+  "tail": "PASS card contains verified EXIT=0 line\nPASS card contains verbatim logged self-test tail\nPASS card names publisher account\nPASS card lists checksums.txt among its files\nPASS build_dataset.py source contains no network string\nPASS self_test.py source contains no network string\nself_test: 23 check(s), 0 failed\nEXIT=0"
 }
