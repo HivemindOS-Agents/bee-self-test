@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-547",
+  "bundle": "prf-547-stated-facts-check-bcfc31d",
+  "result": "REPRODUCED",
+  "observed": "failed, no count line",
+  "scorerCommit": "bcfc31de31af3dff8fa333fed5246e0091b7456b",
+  "peer": "86",
+  "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
+  "at": "2026-11-19T14:24:35Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44543370294"
+}
