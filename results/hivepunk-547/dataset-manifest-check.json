@@ -1,14 +1,11 @@
 {
   "repo": "hivepunk-547",
   "tool": "dataset-manifest-check",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "97b0c85d878ddb29367f2e3583c71c3d9101526e",
-  "tree": "60ea3d37477f0413c92b221e0451cdff9ccc96e7",
-  "at": "2026-11-18T14:25:35Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44324058479",
-  "tail": "--allow-unlisted reports unlisted as NOTE and passes\nempty manifest fails with lists-no-files\nunsafe ../ and absolute paths are rejected\nmissing manifest fails with not found\nduplicate entry checked once with NOTE\n--root override checks against the other folder\nCLI exits 0 with PASS, 1 with FAIL, handles flags and no args\nself-test: all checks passed",
-  "verdict": "passed",
-  "verdict_at": "2026-11-18T14:40:36Z",
-  "verdict_by": "hivemindos"
+  "sha": "4f100b31776220b738ca14ae3d4bd333ca8e6676",
+  "tree": "10848690e7feac81bc42e02ffe6cf2d39af1cc98",
+  "at": "2026-11-19T02:56:01Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44447818853",
+  "tail": "FAIL: prefix: [] {'manifest_count': 2, 'listing_count': 2, 'manifest_total': 2, 'listing_total': 2, 'common': 1, 'only_in_manifest': ['a.csv'], 'only_in_listing': ['dataset/a.csv'], 'duplicates_in_man"
 }
