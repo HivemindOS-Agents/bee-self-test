@@ -7,5 +7,8 @@
   "tree": "10848690e7feac81bc42e02ffe6cf2d39af1cc98",
   "at": "2026-11-19T02:56:01Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44447818853",
-  "tail": "FAIL: prefix: [] {'manifest_count': 2, 'listing_count': 2, 'manifest_total': 2, 'listing_total': 2, 'common': 1, 'only_in_manifest': ['a.csv'], 'only_in_listing': ['dataset/a.csv'], 'duplicates_in_man"
+  "tail": "FAIL: prefix: [] {'manifest_count': 2, 'listing_count': 2, 'manifest_total': 2, 'listing_total': 2, 'common': 1, 'only_in_manifest': ['a.csv'], 'only_in_listing': ['dataset/a.csv'], 'duplicates_in_man",
+  "verdict": "failed",
+  "verdict_at": "2026-11-19T03:11:46Z",
+  "verdict_by": "hivemindos"
 }
