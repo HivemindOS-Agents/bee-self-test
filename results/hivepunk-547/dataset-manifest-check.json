@@ -7,5 +7,8 @@
   "tree": "00f7e53a84750e6f70405e0673f22f9ef29c1f0b",
   "at": "2026-11-19T03:28:37Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44451665466",
-  "tail": "duplicates on either side fail and name the entry\n--strip-prefix and leading ./ normalisation work\nempty manifest fails\ninvalid JSON manifest fails\nmissing manifest or listing fails with not found\ncompare() returns exact set differences\nCLI exits 0 with PASS, 1 with FAIL, 2 on usage error\nself-test: all checks passed"
+  "tail": "duplicates on either side fail and name the entry\n--strip-prefix and leading ./ normalisation work\nempty manifest fails\ninvalid JSON manifest fails\nmissing manifest or listing fails with not found\ncompare() returns exact set differences\nCLI exits 0 with PASS, 1 with FAIL, 2 on usage error\nself-test: all checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-19T03:44:04Z",
+  "verdict_by": "hivemindos"
 }
