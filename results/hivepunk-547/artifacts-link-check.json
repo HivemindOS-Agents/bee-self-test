@@ -1,14 +1,11 @@
 {
   "repo": "hivepunk-547",
   "tool": "artifacts-link-check",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "aefd2dfdf758f0c83105f760b2793fe6036cae40",
-  "tree": "2aec08c3622bd1b45f1c2550b46d2c2202f637b2",
-  "at": "2026-11-19T10:19:04Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44504490568",
-  "tail": "FAIL: extract: [{'url': 'https://example.net/', 'text': 'https://example.net/', 'kind': 'bare', 'line': 1}, {'url': 'https://example.org/', 'text': 'a', 'kind': 'markdown', 'line': 1}]",
-  "verdict": "failed",
-  "verdict_at": "2026-11-19T10:34:28Z",
-  "verdict_by": "hivemindos"
+  "sha": "3d5eb26274710886cf73439bee1200096edb303d",
+  "tree": "f47b852534475501ac5f0b39dfb07db04c491b33",
+  "at": "2026-11-19T10:51:09Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44509428374",
+  "tail": "valid Markdown, bare, relative, anchor and mailto links pass; code fence ignored\nduplicate URL reported with count\nempty link target reported\nwhitespace, schemeless domain and broken Markdown flagged malformed\nmissing, empty and link-free input fail clearly\nCLI exits 0 on PASS, 1 on problems/missing, 2 on usage error\nextract_links() returns Markdown and bare links with kinds\nself-test: all checks passed"
 }
