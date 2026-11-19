@@ -1,14 +1,11 @@
 {
   "repo": "hivepunk-632",
   "tool": "run-record-lint-dataset-export",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "1fc6a63634af59c2c3dc6bfb1150d39787676854",
-  "tree": "97ebf19bb5961069da6d33a54160d6657eb69dd9",
-  "at": "2026-11-16T22:50:14Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/43973768037",
-  "tail": "PASS card marks untested\nPASS validate rejects missing precedence wording\nPASS validate rejects wrong expected_finding\nPASS validate rejects empty why\nPASS committed fixture-rows.csv equals embedded rows\nPASS record_lint verification matches or is untested\nself_test: 23 check(s), 0 failed\nEXIT=0",
-  "verdict": "passed",
-  "verdict_at": "2026-11-16T23:05:50Z",
-  "verdict_by": "hivemindos"
+  "sha": "3c9019a1c62c3fe58f11b714f97cc9b82ad0e476",
+  "tree": "29a8769806818c6d44a19cf7b9e24ae32788888a",
+  "at": "2026-11-19T00:26:48Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44429030216",
+  "tail": "PASS card states it does not replace tools/attribution-docs-check-fixtures/\nPASS card contains verified EXIT=0 line\nPASS card contains verbatim logged self-test tail\nPASS card names publisher account\nPASS build_dataset.py source contains no network string\nFAIL self_test.py source contains no network string: ['urllib', 'requests', 'socket']\nself_test: 17 check(s), 1 failed\nEXIT=1"
 }
