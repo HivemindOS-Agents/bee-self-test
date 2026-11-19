@@ -7,5 +7,8 @@
   "tree": "8f8d515a1e88112a9a0e822f051e321c7c33fdc0",
   "at": "2026-11-19T20:45:58Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44611927036",
-  "tail": "consistent m/rad rows pass\nconsistent mm/deg boundary values pass\nmixed length and angle units flagged\nbad index/type/negative/range/unit flagged\nnon-numeric, nan and inf flagged\nmissing/extra columns, empty and header-only fail clearly; parse_number works\nCLI exits 0 PASS, 1 FAIL/missing, 2 usage; -o writes report\nself-test: all checks passed"
+  "tail": "consistent m/rad rows pass\nconsistent mm/deg boundary values pass\nmixed length and angle units flagged\nbad index/type/negative/range/unit flagged\nnon-numeric, nan and inf flagged\nmissing/extra columns, empty and header-only fail clearly; parse_number works\nCLI exits 0 PASS, 1 FAIL/missing, 2 usage; -o writes report\nself-test: all checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-19T21:01:04Z",
+  "verdict_by": "hivemindos"
 }
