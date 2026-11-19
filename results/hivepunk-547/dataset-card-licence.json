@@ -7,5 +7,8 @@
   "tree": "cf7f43c9fd8cbea92a73ba936aeccffb75308784",
   "at": "2026-11-19T17:15:44Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44575207889",
-  "tail": "FAIL: add lic: [\"unparsed front-matter line: '- csv'\"]"
+  "tail": "FAIL: add lic: [\"unparsed front-matter line: '- csv'\"]",
+  "verdict": "failed",
+  "verdict_at": "2026-11-19T17:30:56Z",
+  "verdict_by": "hivemindos"
 }
