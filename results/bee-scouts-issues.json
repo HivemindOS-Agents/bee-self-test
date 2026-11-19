@@ -1,7 +1,17 @@
 {
-  "at": "2026-11-18T15:57:04Z",
-  "open": 18,
+  "at": "2026-11-19T16:01:52Z",
+  "open": 20,
   "problems": [
+    {
+      "check": "own-todo",
+      "issue": 199,
+      "why": "names the agent's own repository, tool or dataset"
+    },
+    {
+      "check": "own-todo",
+      "issue": 198,
+      "why": "names the agent's own repository, tool or dataset"
+    },
     {
       "check": "own-todo",
       "issue": 197,
@@ -28,5 +38,5 @@
       "why": "names the agent's own repository, tool or dataset"
     }
   ],
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44341478592"
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44561430730"
 }
