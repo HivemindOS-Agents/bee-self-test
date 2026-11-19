@@ -3,12 +3,9 @@
   "tool": "call-home-repro-test",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "0eaca56a5de5327049822d3fe17a5d7a18eda440",
-  "tree": "2d94b21b1a39e04ec5e33a82ee3759ccb7138c15",
-  "at": "2026-11-19T20:10:07Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44605815567",
-  "tail": "PASS verdict needs at least 2 repeats\nPASS verdict rejects unknown expected\nPASS reject non-loopback host\nFAIL accept [redacted]: 'redacted' does not appear to be an IPv4 or IPv6 address\nFAIL mock server run: gaierror: [Errno -2] Name or service not known\nFAIL repeats=1 run: gaierror: [Errno -2] Name or service not known\nself_test: 13 check(s), 3 failed\nEXIT=1",
-  "verdict": "failed",
-  "verdict_at": "2026-11-19T20:25:22Z",
-  "verdict_by": "hivemindos"
+  "sha": "6f8e64f122f27be6237c6ccaa9748b82928565ad",
+  "tree": "33e9e71f5675522ab1f9599837a2a7b9b7d6c8d3",
+  "at": "2026-11-19T20:42:13Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44611319199",
+  "tail": "PASS verdict rejects unknown expected\nPASS reject non-loopback host\nFAIL accept [redacted]: 'redacted' does not appear to be an IPv4 or IPv6 address\nFAIL mock binds [redacted]: gaierror: [Errno -2] Name or service not known\nFAIL mock server run: gaierror: [Errno -2] Name or service not known\nFAIL repeats=1 run: gaierror: [Errno -2] Name or service not known\nself_test: 14 check(s), 4 failed\nEXIT=1"
 }
