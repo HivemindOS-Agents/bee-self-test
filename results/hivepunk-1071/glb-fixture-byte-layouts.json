@@ -7,5 +7,8 @@
   "tree": "e22aebae3e26b2ce7325bbb2f8590210ae42587c",
   "at": "2026-11-20T09:48:12Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44713746271",
-  "tail": "ok: missing data/ is refused\nok: missing README.md is refused\nok: main --check on the tool folder does not crash\nok: drift after a byte change is detected\nok: shipped MANIFEST.txt is labelled local-only\nok: shipped MANIFEST.txt claims no published values\n\nResults: 62/62 checks passed"
+  "tail": "ok: missing data/ is refused\nok: missing README.md is refused\nok: main --check on the tool folder does not crash\nok: drift after a byte change is detected\nok: shipped MANIFEST.txt is labelled local-only\nok: shipped MANIFEST.txt claims no published values\n\nResults: 62/62 checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-20T10:03:17Z",
+  "verdict_by": "hivemindos"
 }
