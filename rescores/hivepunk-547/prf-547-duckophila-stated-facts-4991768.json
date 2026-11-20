@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-547",
+  "bundle": "prf-547-duckophila-stated-facts-4991768",
+  "result": "REPRODUCED",
+  "observed": "passed, no count line",
+  "scorerCommit": "4991768cea61680f6c8a8e633ed3833da4babb02",
+  "peer": "667",
+  "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
+  "at": "2026-11-20T13:47:26Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44747369749"
+}
