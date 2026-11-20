@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-547",
+  "bundle": "prf-547-microduck-stated-facts-d859849",
+  "result": "REPRODUCED",
+  "observed": "failed, no count line",
+  "scorerCommit": "d859849620ae9fb4d3501782979a4358430eda9f",
+  "peer": "667",
+  "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
+  "at": "2026-11-20T20:10:14Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44808853981"
+}
