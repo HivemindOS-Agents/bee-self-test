@@ -1,0 +1,11 @@
+{
+  "repo": "hivepunk-547",
+  "tool": "duckophila-stated-facts",
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "2a6076b424756df06afe15af670cc120ecba9327",
+  "tree": "1dfd228c54ec83d35c77c34d528d7aad52f3fb0e",
+  "at": "2026-11-20T03:10:48Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44665915755",
+  "tail": "FAIL: validator missed 'duplicate fact': row 1: empty source_url | row 2: source_url is not http(s): 'ftp://example.org/x' | row 3: unknown label 'MAYBE'"
+}
