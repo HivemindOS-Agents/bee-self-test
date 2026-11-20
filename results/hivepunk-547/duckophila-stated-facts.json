@@ -1,14 +1,11 @@
 {
   "repo": "hivepunk-547",
   "tool": "duckophila-stated-facts",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "2a6076b424756df06afe15af670cc120ecba9327",
-  "tree": "1dfd228c54ec83d35c77c34d528d7aad52f3fb0e",
-  "at": "2026-11-20T03:10:48Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44665915755",
-  "tail": "FAIL: validator missed 'duplicate fact': row 1: empty source_url | row 2: source_url is not http(s): 'ftp://example.org/x' | row 3: unknown label 'MAYBE'",
-  "verdict": "failed",
-  "verdict_at": "2026-11-20T03:25:41Z",
-  "verdict_by": "hivemindos"
+  "sha": "b52ad8327d167056440409beaabec07f27d4efee",
+  "tree": "3e0e63764b472a15ae1e9faeccd3e7817686dd9a",
+  "at": "2026-11-20T03:42:36Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44669522722",
+  "tail": "built rows validate: 17 rows\nevery built row has a non-empty http(s) source_url, a known label and a unique fact\nall rows use only the two allowed sources, and both appear\nfacts.csv matches the built rows (17 rows)\nevery committed row has a non-empty source_url\nvalidator rejects empty/off-scheme source_url, unknown label and duplicate fact\nself-test: all checks passed"
 }
