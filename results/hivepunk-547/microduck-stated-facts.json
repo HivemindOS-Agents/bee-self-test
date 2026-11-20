@@ -3,12 +3,9 @@
   "tool": "microduck-stated-facts",
   "result": "success",
   "file": "self_test.py",
-  "sha": "528fd9631be0173ee3e999da8a25989e9f8a7767",
-  "tree": "41ad7c1b4979fef945a7dc5fd2d36b439284f380",
-  "at": "2026-11-20T20:44:57Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44814109707",
-  "tail": "every row uses an allowed https source, a known label, a known subject and the observed date\nboth repositories are covered and FACT, DERIVED and UNKNOWN all appear\nvalidator rejects empty id/url/subject, off-scheme url, unknown label, bad date and duplicate id\nfacts.csv matches the built rows (24 rows)\nMANIFEST.json row_count 24 matches facts.csv and its label counts\ndataset card gives the name, row count, columns and marks unverified licences UNKNOWN\nCLI writes rows, --check passes on a clean copy and fails on a changed one\nself-test: all checks passed",
-  "verdict": "passed",
-  "verdict_at": "2026-11-20T21:00:13Z",
-  "verdict_by": "hivemindos"
+  "sha": "737813b9d8f7f67d8aa0c7e2c23987fdc78da093",
+  "tree": "9f85d5e178f836c3256fef10ba618953b3df0367",
+  "at": "2026-11-20T23:59:21Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44840691001",
+  "tail": "both repositories are covered and FACT, DERIVED and UNKNOWN all appear\nvalidator rejects empty id/url/subject, off-scheme url, unknown label, bad date and duplicate id\nfacts.csv matches the built rows (24 rows)\nMANIFEST.json row_count 24 matches facts.csv and its label counts\ndataset card gives the name, row count, columns and marks unverified licences UNKNOWN\nARTIFACTS.md records the intended live URL, expected files and row count, marked NOT confirmed\nCLI writes rows, --check passes on a clean copy and fails on a changed one\nself-test: all checks passed"
 }
