@@ -7,5 +7,8 @@
   "tree": "3e0e63764b472a15ae1e9faeccd3e7817686dd9a",
   "at": "2026-11-20T03:42:36Z",
   "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44669522722",
-  "tail": "built rows validate: 17 rows\nevery built row has a non-empty http(s) source_url, a known label and a unique fact\nall rows use only the two allowed sources, and both appear\nfacts.csv matches the built rows (17 rows)\nevery committed row has a non-empty source_url\nvalidator rejects empty/off-scheme source_url, unknown label and duplicate fact\nself-test: all checks passed"
+  "tail": "built rows validate: 17 rows\nevery built row has a non-empty http(s) source_url, a known label and a unique fact\nall rows use only the two allowed sources, and both appear\nfacts.csv matches the built rows (17 rows)\nevery committed row has a non-empty source_url\nvalidator rejects empty/off-scheme source_url, unknown label and duplicate fact\nself-test: all checks passed",
+  "verdict": "passed",
+  "verdict_at": "2026-11-20T03:58:07Z",
+  "verdict_by": "hivemindos"
 }
