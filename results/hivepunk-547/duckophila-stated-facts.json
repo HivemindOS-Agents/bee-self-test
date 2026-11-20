@@ -3,12 +3,9 @@
   "tool": "duckophila-stated-facts",
   "result": "success",
   "file": "self_test.py",
-  "sha": "d982b8e89ac0cd038243726da2554bc6215e165b",
-  "tree": "c5f64f6798fcc600a7735954ece732661b6e013c",
-  "at": "2026-11-20T06:53:42Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44690994352",
-  "tail": "every built row has a non-empty http(s) source_url, a known label and a unique fact\nall rows use only the two allowed sources, and both appear\nfacts.csv matches the built rows (17 rows)\nevery committed row has a non-empty source_url\nvalidator rejects empty/off-scheme source_url, unknown label and duplicate fact\ndataset card names both sources, states each licence as UNKNOWN and gives 17 rows\nARTIFACTS.md records intended URL, upload files and 17 rows, marked unconfirmed\nself-test: all checks passed",
-  "verdict": "passed",
-  "verdict_at": "2026-11-20T07:08:47Z",
-  "verdict_by": "hivemindos"
+  "sha": "7c30ddd2f5e6531c96ec409d37ee40924c0ce9ac",
+  "tree": "0bb41167dfb8ab711b299bd22227770fb4a55736",
+  "at": "2026-11-20T10:04:31Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44716043935",
+  "tail": "every built row has a non-empty http(s) source_url, a known label and a unique fact\nall rows use only the two allowed sources, and both appear\nfacts.csv matches the built rows (17 rows)\nevery committed row has a non-empty source_url\nvalidator rejects empty/off-scheme source_url, unknown label and duplicate fact\ndataset card names both sources, states each licence as UNKNOWN and gives 17 rows\nARTIFACTS.md records intended URL, upload files, 17 rows, confirmed self-test run, marked live-unconfirmed\nself-test: all checks passed"
 }
