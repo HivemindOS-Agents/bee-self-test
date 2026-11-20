@@ -1,0 +1,38 @@
+# The host's own rule checks, on their fixtures and then on the live public files:
+#   scripts/opportunities_48h.py   HB-056's 48-hour check (20 Nov 2026 update, Part 2: an asked-for item that went on to
+#                                  Building or Shipped inside the window counts)
+#   scripts/opportunities_hb060.py HB-060 and HB-059: every in-lane ask sized or said why, one Hall owner, frozen pins
+#   scripts/health_hb062.py        HB-062: a topic-filter refusal is a policy skip and does not hold health
+#
+# The fixtures are the required part: this run fails when a script stops catching its own regression cases. The live
+# reads are report-only: they say where the agents stand today, and never fail the run. Everything is read from public
+# files with no token; nothing in an agent repository is run, and this job writes nothing.
+name: host-checks
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "40 6 * * *"
+  push:
+    branches: [main]
+    paths: ["scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/health_hb062.py", ".github/workflows/host-checks.yml"]
+permissions: {}
+jobs:
+  fixtures:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fixtures (required)
+        run: |
+          set -eu
+          python3 scripts/opportunities_48h.py --self-test
+          python3 scripts/opportunities_hb060.py --self-test
+          python3 scripts/health_hb062.py --self-test
+      - name: Live, the 48-hour check (report-only)
+        run: python3 scripts/opportunities_48h.py || echo "report-only: exit $?"
+      - name: Live, HB-060 and HB-059 (report-only)
+        run: python3 scripts/opportunities_hb060.py || echo "report-only: exit $?"
+      - name: Live, HB-062 health (report-only)
+        run: python3 scripts/health_hb062.py || echo "report-only: exit $?"
