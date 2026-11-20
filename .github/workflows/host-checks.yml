@@ -31,8 +31,11 @@ jobs:
           python3 scripts/opportunities_hb060.py --self-test
           python3 scripts/health_hb062.py --self-test
       - name: Live, the 48-hour check (report-only)
-        run: python3 scripts/opportunities_48h.py || echo "report-only: exit $?"
+        run: |
+          python3 scripts/opportunities_48h.py || echo "report-only, exit $?"
       - name: Live, HB-060 and HB-059 (report-only)
-        run: python3 scripts/opportunities_hb060.py || echo "report-only: exit $?"
+        run: |
+          python3 scripts/opportunities_hb060.py || echo "report-only, exit $?"
       - name: Live, HB-062 health (report-only)
-        run: python3 scripts/health_hb062.py || echo "report-only: exit $?"
+        run: |
+          python3 scripts/health_hb062.py || echo "report-only, exit $?"
