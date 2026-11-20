@@ -1,0 +1,11 @@
+{
+  "repo": "hivepunk-547",
+  "tool": "microduck-stated-facts",
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "d859849620ae9fb4d3501782979a4358430eda9f",
+  "tree": "ec6982370d50c77d390329f2289306d462d89d43",
+  "at": "2026-11-20T19:40:09Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44804251842",
+  "tail": "FAIL: facts.csv not found"
+}
