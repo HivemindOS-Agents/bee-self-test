@@ -14,13 +14,21 @@ HB-060, on the five active agents' public OPPORTUNITIES.md:
 HB-059, on FROZEN.md (bee-scouts): every `Done when: <path> sha256 <hex>` pin still matches the agent's file at main, so
 the host's opportunity linker wrote into no pinned file.
 
+HB-059, the linker's skip itself (20 Nov 2026 update, Part 3), on each agent repository's history: the host's link
+commits ("HivemindOS linked tools/<x>/ to opp-...") since the skip was released, 10:57:56 UTC 19 Nov 2026. None may
+touch a file FROZEN.md pins or a file in the agent's frozen tool's folder. A link written before the release is listed
+and not counted. The history is read from local clones, with no key (`git log`; a blobless clone is enough).
+
     python3 scripts/opportunities_hb060.py              # all checks, live
+    python3 scripts/opportunities_hb060.py --linker CLONE_OF_hivepunk-547 CLONE_OF_hivepunk-632 ...
     python3 scripts/opportunities_hb060.py --self-test  # the fixtures only, no network
 
 Exit 0 only when every check is clean.
 """
 import hashlib
+import os
 import re
+import subprocess
 import sys
 import urllib.request
 
@@ -28,6 +36,9 @@ AGENTS = ["547", "632", "667", "1071", "86"]
 RAW = "https://raw.githubusercontent.com/HivemindOS-Agents/hivepunk-{n}/main/{path}"
 FROZEN = "https://raw.githubusercontent.com/HivemindOS-Agents/bee-scouts/main/FROZEN.md"
 HALL = "https://api.hivemindos.app/v1/hall#bounty"
+# When the host's linker began to keep out of frozen files (agents service d0f724c0, the 19 Nov return).
+LINKER_SKIP_FROM = "2026-11-19T10:57:56Z"
+LINK_SUBJECT = re.compile(r"^HivemindOS linked tools/([a-z0-9][a-z0-9-]*)/ to (opp-[\w-]+)")
 # The host's own junk rule (hivemind-os core agent-opportunity.ts JUNK_TITLE), as titles read on the public files.
 JUNK = re.compile(r"^(upload|delete|create|update|rename|add files?)\b|^[^a-z0-9]*report:|security alert|conversion to parquet|"
                   r"collaborator request|^\[bot\]|good[ -]first[ -]issue|hacktoberfest|kundservice|klantenservice|kundendienst|"
@@ -138,6 +149,77 @@ def check_frozen(text, read):
     return lines, failed
 
 
+def frozen_folders(text):
+    """{agent: its frozen tool's folder} from FROZEN.md's blocks (skipping the template)."""
+    out, agent = {}, None
+    for line in (text or "").splitlines():
+        m = re.match(r"## #(\d+)\s*$", line)
+        if m:
+            agent = m.group(1)
+            continue
+        if line.startswith("## "):
+            agent = None
+        t = re.match(r"- Tool: ([a-z0-9][a-z0-9-]*)\s*$", line)
+        if agent and t:
+            out[agent] = f"tools/{t.group(1)}/"
+    return out
+
+
+def link_commits(log):
+    """The host's link commits in `git log --format='%x01%H%x09%cI%x09%s' --name-only` output: [(sha, time, subject, paths)]."""
+    out = []
+    for chunk in (log or "").split("\x01")[1:]:
+        head, _, rest = chunk.partition("\n")
+        parts = head.split("\t", 2)
+        if len(parts) == 3 and LINK_SUBJECT.match(parts[2]):
+            out.append((parts[0], parts[1], parts[2], [p for p in rest.splitlines() if p.strip()]))
+    return out
+
+
+def utc(stamp):
+    """A commit time as UTC seconds text that sorts: 2026-11-19T10:57:56Z, whatever offset git printed."""
+    import calendar, time
+    m = re.match(r"(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d)(Z|[+-]\d\d:\d\d)$", stamp.strip())
+    if not m:
+        return ""
+    at = calendar.timegm(time.strptime(m.group(1), "%Y-%m-%dT%H:%M:%S"))
+    if m.group(2) != "Z":
+        sign = 1 if m.group(2)[0] == "+" else -1
+        at -= sign * (int(m.group(2)[1:3]) * 3600 + int(m.group(2)[4:6]) * 60)
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(at))
+
+
+def check_linker(frozen_text, logs, since=LINKER_SKIP_FROM):
+    """logs: {agent: git log text}. (lines, failed): a link commit since the skip that touches a pinned file or a file in
+    the agent's frozen folder is a fail; one before it is listed only."""
+    lines, failed, counted = [], 0, 0
+    pinned = {}
+    for agent, path, _ in frozen_pins(frozen_text):
+        pinned.setdefault(agent, set()).add(path)
+    folders = frozen_folders(frozen_text)
+    for agent in sorted(logs, key=lambda a: int(a) if a.isdigit() else 0):
+        for sha, stamp, subject, paths in link_commits(logs[agent]):
+            at = utc(stamp)
+            inside = [p for p in paths if p in pinned.get(agent, ()) or (folders.get(agent) and p.startswith(folders[agent]))]
+            if at >= since:
+                counted += 1
+                if inside:
+                    failed += 1
+                    lines.append(f"linker: #{agent} {sha[:7]} {at} wrote a link into {', '.join(inside)}")
+            elif inside:
+                lines.append(f"linker: #{agent} {sha[:7]} {at} wrote a link into {', '.join(inside)} before the skip (listed, not counted)")
+    lines.append(f"linker: {counted} link commits since {since}, {failed} into a frozen folder or a pinned file")
+    return lines, failed
+
+
+def git_log(clone):
+    try:
+        return subprocess.run(["git", "-C", clone, "log", "--format=%x01%H%x09%cI%x09%s", "--name-only", "--grep=^HivemindOS linked tools/"],
+                              capture_output=True, text=True, timeout=60, check=True).stdout
+    except Exception:
+        return None
+
+
 def fetch(url):
     try:
         with urllib.request.urlopen(urllib.request.Request(url, headers={"user-agent": "bee-self-test-opportunities-hb060"}), timeout=20) as r:
@@ -149,6 +231,20 @@ def fetch(url):
 def main(argv):
     if "--self-test" in argv:
         return self_test()
+    if "--linker" in argv:
+        logs = {}
+        for clone in [a for a in argv if not a.startswith("--")]:
+            m = re.search(r"hivepunk-(\d+)/?$", os.path.abspath(clone))
+            log = git_log(clone) if m else None
+            if log is None:
+                print(f"linker: {clone} could not be read as a clone of hivepunk-<n>")
+                return 1
+            logs[m.group(1)] = log
+        lines, failed = check_linker((fetch(FROZEN) or b"").decode("utf-8", "replace"), logs)
+        for line in lines:
+            print(line)
+        print("HB-059 linker check:", "PASS" if not failed else f"FAIL ({failed} problems)")
+        return 0 if not failed else 1
     files = {n: (fetch(RAW.format(n=n, path="OPPORTUNITIES.md")) or b"").decode("utf-8", "replace") for n in AGENTS}
     a, fa = check_opportunities(files)
     b, fb = check_frozen((fetch(FROZEN) or b"").decode("utf-8", "replace"), lambda agent, path: fetch(RAW.format(n=agent, path=path)))
@@ -220,6 +316,23 @@ def self_test():
     linked = readme.replace(b"\n\nFixtures", b"\n\nopportunity: opp-547-1\n\nFixtures")
     ok(check_frozen(frozen, lambda a, p: linked)[1] == 1, "a link line written into a pinned README is caught")
     ok(check_frozen(frozen, lambda a, p: None)[1] == 1, "an unreadable pinned file is a fail, said as such")
+    # HB-059, the skip itself: the host's link commits since it was released, read from each repository's history.
+    blocks_ = frozen + "- Done when: tools/other-tool/pinned.py sha256 " + "0" * 64 + "\n\n## #632\n\n- Tool: attribution-docs-check-fixtures\n"
+    ok(frozen_folders(blocks_) == {"547": "tools/agent-memory-lint-fixtures/", "632": "tools/attribution-docs-check-fixtures/"}, "each agent's frozen folder, the template skipped")
+    entry = lambda sha, stamp, subject, *paths: "\x01" + "\t".join([sha, stamp, subject]) + "\n\n" + "\n".join(paths) + "\n"
+    link = lambda tool: f"HivemindOS linked tools/{tool}/ to opp-547-9"
+    outside = entry("a" * 40, "2026-11-20T08:45:00Z", link("hf-publish-check"), "tools/hf-publish-check/README.md")
+    ok(len(link_commits(outside + entry("b" * 40, "2026-11-20T09:00:00Z", "It updated its goal", "GOAL.md"))) == 1, "only the host's link commits are read")
+    ok(check_linker(blocks_, {"547": outside}) == (["linker: 1 link commits since 2026-11-19T10:57:56Z, 0 into a frozen folder or a pinned file"], 0), "a link outside the frozen folder")
+    in_folder = entry("c" * 40, "2026-11-20T10:00:00+00:00", link("agent-memory-lint-fixtures"), "tools/agent-memory-lint-fixtures/NOTES.md")
+    ok(check_linker(blocks_, {"547": outside + in_folder})[1] == 1, "a link into a file in the frozen folder, pinned or not")
+    pinned_elsewhere = entry("d" * 40, "2026-11-20T11:00:00Z", link("other-tool"), "tools/other-tool/pinned.py")
+    ok(check_linker(blocks_, {"547": pinned_elsewhere})[1] == 1, "a link into a pinned file outside the frozen folder")
+    early = entry("e" * 40, "2026-11-19T02:21:00+08:00", link("attribution-docs-check-fixtures"), "tools/attribution-docs-check-fixtures/README.md")
+    before = check_linker(blocks_, {"632": early})
+    ok(before[1] == 0 and "before the skip (listed, not counted)" in before[0][0] and "2026-11-18T18:21:00Z" in before[0][0], "a link before the skip is listed, not counted, in UTC")
+    ok(check_linker(blocks_, {"632": early.replace("2026-11-19T02:21:00+08:00", "2026-11-19T10:57:56Z")})[1] == 1, "the release second itself counts")
+    ok(check_linker(blocks_, {"86": in_folder})[1] == 0, "another agent's folder is not this agent's frozen folder")
     print(f"self-test: {n}/{n} PASS")
     return 0
 

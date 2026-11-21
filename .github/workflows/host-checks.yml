@@ -1,7 +1,8 @@
 # The host's own rule checks, on their fixtures and then on the live public files:
 #   scripts/opportunities_48h.py   HB-056's 48-hour check (20 Nov 2026 update, Part 2: an asked-for item that went on to
 #                                  Building or Shipped inside the window counts)
-#   scripts/opportunities_hb060.py HB-060 and HB-059: every in-lane ask sized or said why, one Hall owner, frozen pins
+#   scripts/opportunities_hb060.py HB-060 and HB-059: every in-lane ask sized or said why, one Hall owner, frozen pins,
+#                                  and the host's link commits since its linker began to keep out of frozen files
 #   scripts/health_hb062.py        HB-062: a topic-filter refusal is a policy skip and does not hold health
 #   scripts/first_pass_replay.py   HB-058: a proof bundle's first-pass record worked out again from its listed steps
 #   scripts/rule_map_check.py      HB-063: the rule map is valid and matches AUTONOMY.md, rule for rule
@@ -49,6 +50,13 @@ jobs:
       - name: Live, HB-060 and HB-059 (report-only)
         run: |
           python3 scripts/opportunities_hb060.py || echo "report-only, exit $?"
+      - name: Live, HB-059 the linker's skip, from each agent repository's history (report-only)
+        run: |
+          mkdir -p "$RUNNER_TEMP/history"
+          for n in 547 632 667 1071 86; do
+            git clone --quiet --filter=blob:none --no-checkout --shallow-since=2026-11-17 "https://github.com/${GITHUB_REPOSITORY_OWNER}/hivepunk-${n}.git" "$RUNNER_TEMP/history/hivepunk-${n}" || echo "could not read hivepunk-${n}"
+          done
+          python3 scripts/opportunities_hb060.py --linker "$RUNNER_TEMP"/history/hivepunk-* || echo "report-only, exit $?"
       - name: Live, HB-062 health (report-only)
         run: |
           python3 scripts/health_hb062.py || echo "report-only, exit $?"
