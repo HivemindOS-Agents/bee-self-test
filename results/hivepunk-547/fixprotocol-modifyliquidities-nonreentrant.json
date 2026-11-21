@@ -3,16 +3,16 @@
   "tool": "fixprotocol-modifyliquidities-nonreentrant",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "c9d0887dfed462ce2694787eccf8b04b0e3ec3c9",
-  "tree": "03971f5a9340ca64fa256a0dfeb748ca5fde8d8f",
+  "sha": "deabf2269c6e8951a2fca2cdae7fa1bb62cb34f1",
+  "tree": "251f23e7c6b3d264d00ba414a33c19ce0a508a60",
   "check_sha256": "73e1d1e385a17ad5cbc2d52b1aea7aad1ef9d57ac17b3415f136c271e60bade0",
-  "at": "2026-11-21T18:12:32Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44934210646",
+  "at": "2026-11-21T18:44:23Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44937131965",
   "tail": "FAIL: missing modifyLiquidities-nonReentrant.patch",
   "verified_by": {
     "kind": "none",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44934210646",
-    "tested_sha": "c9d0887dfed462ce2694787eccf8b04b0e3ec3c9",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44937131965",
+    "tested_sha": "deabf2269c6e8951a2fca2cdae7fa1bb62cb34f1",
     "check_from": "none",
     "base_sha": null,
     "check_sha256": "73e1d1e385a17ad5cbc2d52b1aea7aad1ef9d57ac17b3415f136c271e60bade0",
@@ -25,8 +25,5 @@
       "the run did not pass"
     ],
     "mode": "observe"
-  },
-  "verdict": "failed",
-  "verdict_at": "2026-11-21T18:27:47Z",
-  "verdict_by": "hivemindos"
+  }
 }
