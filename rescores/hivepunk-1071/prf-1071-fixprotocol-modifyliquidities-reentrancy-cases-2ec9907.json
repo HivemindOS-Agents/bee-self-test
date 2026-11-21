@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-1071",
+  "bundle": "prf-1071-fixprotocol-modifyliquidities-reentrancy-cases-2ec9907",
+  "result": "REPRODUCED",
+  "observed": "failed, 12/13",
+  "scorerCommit": "2ec9907f52de661307190fe9d1f6e8b13d0dcbcc",
+  "peer": "86",
+  "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
+  "at": "2026-11-21T08:32:43Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44885353364"
+}
