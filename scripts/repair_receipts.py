@@ -27,7 +27,8 @@ A recheck must name a receipt beside it, say held or recurred, and be written no
 A health file must:
   H1  name a receiver on every ESCALATED repair within 24 hours of its escalation
   H2  keep an open step repair's counters moving: no LESSONS failure of that play more than 20 minutes newer than
-      its lastObservedAt
+      its lastObservedAt. A failure the file lists under `policySkips` (HB-062), or whose line went to `skip`,
+      `policy_skip` or `stopped_on_rule`, is not a failed attempt and is not counted here either.
 
 LESSONS.md, once the host writes them: every failure line ends "Went to: <bucket>", one of the eight buckets.
 `unrouted` lines are listed, since a line no bucket took has no owner.
@@ -141,6 +142,12 @@ def escalated_at(repair):
 def health_problems(health, failures, now):
     """H1 and H2, on one health file and its agent's LESSONS failure lines."""
     p = []
+    skipped = [(s.get("play") or str(s.get("repair", "")).split("-s-", 1)[-1], ts(s["at"])) for s in health.get("policySkips") or [] if s.get("at")]
+    def counted(f):
+        if f.get("bucket") in ("skip", "policy_skip", "stopped_on_rule"):
+            return False
+        return not any(play == f["play"] and abs((f["at"] - at).total_seconds()) <= 1800 for play, at in skipped)
+    failures = [f for f in failures if counted(f)]
     for r in health.get("repairs") or []:
         if r.get("state") == "ESCALATED" and not (r.get("receiver") or {}).get("who"):
             at = escalated_at(r)
@@ -321,6 +328,16 @@ def self_test():
     received = {"repairs": [dict(r, receiver={"who": "HivemindOS host"}, lastObservedAt="2026-11-21T09:19:00.000Z") for r in health["repairs"]]}
     if health_problems(received, lessons(text), now):
         bad.append(f"received and counted: got {health_problems(received, lessons(text), now)}")
+    # 547 at 11:05 UTC 21 Nov: its one later publish-dataset line is a topic refusal the file lists as a policy skip.
+    skip547 = {"policySkips": [{"at": "2026-11-21T02:53:17.049Z", "play": "publish-dataset", "filter": "hb043:topic"}],
+               "repairs": [{"id": "rp-547-s-publish-dataset", "artifact": "publish-dataset", "kind": "step:publish-dataset", "state": "RECURRENCE_DETECTED", "lastObservedAt": "2026-11-20T23:57:05.729Z", "closedBy": None, "escalation": None}]}
+    line547 = "- Failed: Publish a small open dataset · Reason: No dataset this time: it was about HivemindOS's own issues or self-tests, not something people outside need. Nothing was published. · 2026-11-21 02:53 UTC"
+    if health_problems(skip547, lessons(line547), now):
+        bad.append("a policy skip the file lists is not a stopped counter")
+    if len(health_problems({**skip547, "policySkips": []}, lessons(line547), now)) != 1:
+        bad.append("the same line with no policy skip listed is a stopped counter")
+    if health_problems({**skip547, "policySkips": []}, lessons(line547 + " · Went to: policy_skip"), now):
+        bad.append("a line that went to policy_skip is not a stopped counter")
     fresh = {"repairs": [row("propose", "2026-11-20T06:17:44.280Z", "2026-11-21T04:00:00.000Z")]}
     if health_problems(fresh, [], now):
         bad.append("escalated under 24 hours ago is not yet a problem")
@@ -347,7 +364,7 @@ def self_test():
     to_open, contradictions = watchdog_intake(findings, repairs, now)
     if [x.split(":")[0] for x in to_open] != ["wd-632-D17-b"] or [x.split(":")[0] for x in contradictions] != ["wd-632-D22-a"]:
         bad.append(f"watchdog intake: got {to_open} and {contradictions}")
-    total = len(cases) + 6 + 5 + 1
+    total = len(cases) + 6 + 5 + 1 + 3
     for line in bad:
         print("FAIL", line)
     print(f"repair receipts self-test: {total - len(bad)} of {total} passed")
