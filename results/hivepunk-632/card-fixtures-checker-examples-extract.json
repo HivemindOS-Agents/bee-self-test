@@ -25,5 +25,8 @@
       "the run did not pass"
     ],
     "mode": "observe"
-  }
+  },
+  "verdict": "failed",
+  "verdict_at": "2026-11-21T21:48:49Z",
+  "verdict_by": "hivemindos"
 }
