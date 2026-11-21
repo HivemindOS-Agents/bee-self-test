@@ -1,0 +1,42 @@
+# HB-054 Agent Claim Watch: the day file anyone can recompute, replayed from the outside every day.
+#
+# The agents service writes bee-scouts/watch/<date>.jsonl once a day: what each of HivemindOS's pinned skills claims
+# against what is there, as canonical JSON lines, and watch/index.json with each day's sha256. This job holds the same
+# checks (scripts/claim_watch.py), runs their fixtures, and replays the newest day file: that the file is the bytes its
+# sha256 names, that no line says more of a finding than its number, that no sensitive outcome is public, and that each
+# row's target still gives that outcome (MATCH, CHANGED, GONE or UNABLE).
+#
+# The fixtures are required. The replay is report-only: a source that moved since the file was written is CHANGED, and
+# that is the world, not a fault. Everything is read from public files with no token; nothing in any repository is run,
+# and this job writes nothing.
+name: claim-watch
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "10 7 * * *"
+  push:
+    branches: [main]
+    paths: ["scripts/claim_watch.py", ".github/workflows/claim-watch.yml"]
+permissions: {}
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Fixtures (required)
+        run: python3 scripts/claim_watch.py --self-test
+      - name: Replay the newest day file (report-only)
+        run: |
+          set +e
+          base="https://raw.githubusercontent.com/${GITHUB_REPOSITORY_OWNER}/bee-scouts/main/watch"
+          if ! curl -fsS "$base/index.json" -o "$RUNNER_TEMP/index.json"; then echo "no day file is published yet"; exit 0; fi
+          newest=$(python3 -c 'import json,sys; d=json.load(open(sys.argv[1]))["days"][0]; print(d["day"], d["sha256"])' "$RUNNER_TEMP/index.json")
+          set -- $newest
+          echo "newest day file: $1, sha256 $2"
+          if ! curl -fsS "$base/$1.jsonl" -o "$RUNNER_TEMP/$1.jsonl"; then echo "the day file $1 could not be read"; exit 0; fi
+          python3 scripts/claim_watch.py --replay "$RUNNER_TEMP/$1.jsonl" "$2" || echo "report-only, exit $?"
