@@ -21,7 +21,8 @@ and the named signals in its text (pipe_to_shell, remote_instructions, instructi
 invisible_chars). A signal on a line that is itself a warning is counted as <signal>_quoted_example, never as a signal.
 
 The three outward families: record (ERC-8004 registrations on Base: RESOLVES, RESOLVES_NO_SERVICES,
-PROFILE_KEYS_IN_JSON, NOT_JSON, URI_UNREACHABLE, EMPTY_URI, NOT_REGISTERED, NOT_READ), listing (x402 listings against the
+PROFILE_KEYS_IN_JSON, NOT_JSON, URI_UNREACHABLE, EMPTY_URI, NOT_REGISTERED, NOT_READ (over its host's cap for the day, or its host asked to slow down),
+REGISTRY_UNREAD (the chain did not answer)), listing (x402 listings against the
 402 they answer: MATCH, PRICE_QUOTED, PRICE_DIFF, PAYTO_DIFF, NETWORK_DIFF, NO_402, UNREACHABLE, UNPARSEABLE) and advisory
 (the packages a pinned skill installs against GitHub's malware advisories: NO_HIT, ADVISORY_HIT, NOT_READ). HivemindOS's
 own targets have a row each; other parties' are counted ("target": "sample", one row an outcome with "count"), with the
@@ -250,6 +251,10 @@ def check_listing(target, listed, status, live, dynamic=False):
     row = {"family": "listing", "target": target, "outcome": "UNREACHABLE"}
     if status is None:
         return row
+    if status == 429:
+        # A host that asks to slow down said nothing about its price: not read, never "no 402".
+        row["outcome"], row["status"] = "NOT_READ", status
+        return row
     if status != 402:
         row["outcome"], row["status"] = "NO_402", status
         return row
@@ -394,7 +399,16 @@ def record_again(row):
     own_file = f"https://agents.hivemindos.app/agents/{agent}/registration.json"
     agent_id = row.get("agentId")
     if not agent_id:
-        return None
+        # Its own file named no Agent ID: read it again; still none is the same NOT_REGISTERED.
+        body = read_body(own_file)
+        if body is None:
+            return None
+        try:
+            regs = json.loads(body[0]).get("registrations") or []
+        except (ValueError, AttributeError):
+            return None
+        named = [r for r in regs if isinstance(r, dict) and str(r.get("agentRegistry", "")).lower() == f"eip155:8453:{REGISTRY.lower()}" and r.get("agentId")]
+        return {"family": "record", "target": row["target"], "outcome": "NOT_REGISTERED"} if not named else {"family": "record", "target": row["target"], "outcome": "REGISTERED_SINCE", "agentId": named[0]["agentId"]}
     onchain = registration(int(agent_id))
     if onchain is None:
         return None
@@ -403,22 +417,42 @@ def record_again(row):
     return dict(check_record(row["target"], onchain[0], onchain[1], body, own_file), agentId=agent_id)
 
 
+def read_body_or_slowed(url):
+    """(text, sha256), None, or "slowed" when the host answered 429."""
+    try:
+        with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": UA}), timeout=20) as response:
+            data = response.read(262144)
+    except urllib.error.HTTPError as error:
+        return "slowed" if error.code == 429 else None
+    except (OSError, ValueError):
+        return None
+    return (data.decode("utf-8", "replace"), hashlib.sha256(data).hexdigest()) if data else None
+
+
 def sample_again(seed, count, maximum):
-    used = {}
+    """The Worker's budget: one read a host (ipfs.io 10); none more of a host that answered 429; none at all after
+    three 429s in a row."""
+    used, slowed_hosts, slowed = {}, set(), 0
     out = []
     for i in sample(seed, count, maximum):
         onchain = registration(i)
         if onchain is None:
-            out.append({"outcome": "NOT_READ"})
+            out.append({"outcome": "REGISTRY_UNREAD"})
             continue
         inline = data_uri(onchain[1]) if onchain[0] else None
         url = record_url(onchain[1]) if onchain[0] and inline is None else None
-        host = urllib.parse.urlparse(url).hostname if url else None
-        allowed = bool(host) and used.get(host, 0) < (10 if host == "ipfs.io" else 1)
+        host = (urllib.parse.urlparse(url).hostname or "").lower() if url else ""
+        allowed = bool(host) and slowed < 3 and host not in slowed_hosts and used.get(host, 0) < (10 if host == "ipfs.io" else 1)
         if allowed:
             used[host] = used.get(host, 0) + 1
-        body = (inline, hashlib.sha256(inline.encode()).hexdigest()) if inline is not None else (read_body(url) if allowed else None)
-        out.append(check_record(str(i), onchain[0], onchain[1], body, not_read=bool(url) and not allowed))
+        read = (inline, hashlib.sha256(inline.encode()).hexdigest()) if inline is not None else (read_body_or_slowed(url) if allowed else None)
+        if allowed:
+            if read == "slowed":
+                slowed += 1
+                slowed_hosts.add(host)
+            else:
+                slowed = 0
+        out.append(check_record(str(i), onchain[0], onchain[1], None if read == "slowed" else read, not_read=(bool(url) and not allowed) or read == "slowed"))
     return out
 
 
@@ -461,7 +495,7 @@ def replay_outward(row, rows):
     if family == "record" and target.startswith("hivepunk:"):
         now = record_again(row)
         if now is None:
-            return (target, "UNABLE", "the chain did not answer, or the row names no Agent ID")
+            return (target, "UNABLE", "the chain or its own file did not answer")
         same = (now["outcome"], now.get("sha256"), now.get("uriIsItsFile")) == (row["outcome"], row.get("sha256"), row.get("uriIsItsFile"))
         return (target, "MATCH" if same else "CHANGED", f"{row['outcome']} then, {now['outcome']} now")
     if family == "listing" and target == "sample":
@@ -568,6 +602,7 @@ def self_test():
         ("not registered", check_record("t", False, "", None)["outcome"], "NOT_REGISTERED"),
         ("empty", check_record("t", True, " ", None)["outcome"], "EMPTY_URI"),
         ("not read", check_record("t", True, "https://x", None, not_read=True)["outcome"], "NOT_READ"),
+        ("a listing that asked to slow down", check_listing("t", [], 429, None)["outcome"], "NOT_READ"),
         ("unreachable", check_record("t", True, "https://x", None)["outcome"], "URI_UNREACHABLE"),
         ("not json", check_record("t", True, "https://x", body("<html>"))["outcome"], "NOT_JSON"),
         ("a list is not a registration", check_record("t", True, "https://x", body([1]))["outcome"], "NOT_JSON"),
@@ -597,7 +632,7 @@ def self_test():
             bad.append(f"{name}: got {got!r}, want {want!r}")
     if protect("d", [{"family": "advisory", "target": "aeon/x@1", "outcome": "ADVISORY_HIT"}])["wouldBlock"] != [{"target": "aeon/x@1", "why": "it installs a package a published malware advisory names"}]:
         bad.append("an advisory hit on a pin is listed for protection")
-    total = 19 + 2 + 4 + 2 + 1 + 1 + 28 + 1
+    total = 19 + 2 + 4 + 2 + 1 + 1 + 29 + 1
     for line in bad:
         print("FAIL", line)
     print(f"claim watch self-test: {total - len(bad)} of {total} passed")
