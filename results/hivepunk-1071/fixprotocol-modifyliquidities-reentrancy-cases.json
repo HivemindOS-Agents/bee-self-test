@@ -3,30 +3,25 @@
   "tool": "fixprotocol-modifyliquidities-reentrancy-cases",
   "result": "success",
   "file": "self_test.py",
-  "sha": "ca53b8fe5a96c4486d7012926c30d43954606fa5",
-  "tree": "0ea4c5cc0c0aac6e65881c2ec65353cd69042066",
+  "sha": "cf83ed0becfc7f0ef338fa885756b0a8eced129d",
+  "tree": "a6f1f7538c484cf14246892382d15be80885af50",
   "check_sha256": "7e6b4ce741d7b129a2b20fd180db3bb7def857635c96b28a8293c71df5aa14fd",
-  "at": "2026-11-21T08:30:00Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44885139037",
+  "at": "2026-11-21T13:48:03Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44910638944",
   "tail": "ok: ARTIFACTS claims no publication\nok: README marks work untested\nok: no harmful instructions in records\nok: no invented URLs in records\nok: no invented long hashes in records\nok: README documents offline run command\n\nResults: 13/13 checks passed",
   "verified_by": {
     "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44885139037",
-    "tested_sha": "ca53b8fe5a96c4486d7012926c30d43954606fa5",
-    "check_from": "same-change",
-    "base_sha": null,
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44910638944",
+    "tested_sha": "cf83ed0becfc7f0ef338fa885756b0a8eced129d",
+    "check_from": "base",
+    "base_sha": "ca53b8fe5a96c4486d7012926c30d43954606fa5",
     "check_sha256": "7e6b4ce741d7b129a2b20fd180db3bb7def857635c96b28a8293c71df5aa14fd",
-    "check_edited": null,
-    "base_check": "unavailable-new-tool",
+    "check_edited": false,
+    "base_check": "unchanged",
     "new_check_on_base": "not-run",
-    "signal": "new-check",
+    "signal": null,
     "would_block": false,
-    "reasons": [
-      "no earlier passing run to take a check from"
-    ],
+    "reasons": [],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-21T08:45:08Z",
-  "verdict_by": "hivemindos"
+  }
 }
