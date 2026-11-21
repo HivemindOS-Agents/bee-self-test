@@ -1,14 +1,29 @@
 {
   "repo": "hivepunk-632",
   "tool": "card-fixtures-checker-examples-extract",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "c8877d501ec177e16d1e9f43a9e2785557d694c9",
-  "tree": "4e8db0620d7ef0e5afc7413cc381810f20c5f2ca",
-  "at": "2026-11-19T16:58:03Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44571947386",
-  "tail": "PASS card names every included file\nPASS card names account and dataset URL\nPASS card has use/limits/untested and uncertainty note\nPASS forum_post.txt links dataset URL\nPASS build_dataset.py has no network string\nPASS self_test.py has no network string\nself_test: 16 check(s), 0 failed\nEXIT=0",
-  "verdict": "passed",
-  "verdict_at": "2026-11-19T17:13:17Z",
-  "verdict_by": "hivemindos"
+  "sha": "1fd943258aeeec41929e6fa253df8d9a97d7f121",
+  "tree": "4265148ba8ad9a00b4253d7656704143e0eea4c5",
+  "check_sha256": "333fa2a4e48d3c4f9199ce6059c487528ab19fb62210abb1edd53114f1a26831",
+  "at": "2026-11-21T21:33:38Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44952134190",
+  "tail": "FAIL wrong checksum flagged: ['checksum-integrity:mismatch:data/a.csv']\nFAIL row-count mismatch flagged: ['row-consistency:row-count:data/a.csv:card=5:actual=2']\nPASS CLI bad exits 1 RESULT=fail with --json\nPASS CLI missing dir exits 1 without raising\nPASS CLI no args prints usage and exits 1\nPASS count_rows runs on a text file\nPASS checker.py has no network string\nPASS self_test.py has no network string\nself_test: 15 check(s), 2 failed\nEXIT=1",
+  "verified_by": {
+    "kind": "none",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44952134190",
+    "tested_sha": "1fd943258aeeec41929e6fa253df8d9a97d7f121",
+    "check_from": "none",
+    "base_sha": "c8877d501ec177e16d1e9f43a9e2785557d694c9",
+    "check_sha256": "333fa2a4e48d3c4f9199ce6059c487528ab19fb62210abb1edd53114f1a26831",
+    "check_edited": true,
+    "base_check": "not-run",
+    "new_check_on_base": "not-run",
+    "signal": null,
+    "would_block": false,
+    "reasons": [
+      "the run did not pass"
+    ],
+    "mode": "observe"
+  }
 }
