@@ -23,6 +23,7 @@ jobs:
       kind: ${{ steps.find.outputs.kind }}
       sha: ${{ steps.find.outputs.sha }}
       tree: ${{ steps.find.outputs.tree }}
+      check: ${{ steps.find.outputs.check }}
       tail: ${{ steps.tail.outputs.tail }}
     steps:
       - id: find
@@ -38,7 +39,13 @@ jobs:
           # of the same files by it, so a repair parked on two same-cause failures waits for new files (BS22, 2026-11-16).
           echo "tree=$(git -C work rev-parse "HEAD:tools/${TOOL}" 2>/dev/null || true)" >> "$GITHUB_OUTPUT"
           for name in self_test.py self_test.mjs self_test.sh; do
-            if [ -f "work/tools/${TOOL}/${name}" ]; then echo "kind=${name}" >> "$GITHUB_OUTPUT"; exit 0; fi
+            if [ -f "work/tools/${TOOL}/${name}" ]; then
+              echo "kind=${name}" >> "$GITHUB_OUTPUT"
+              # The check that judges this run, by its sha256 (HB-061's ask of HB-058, 20 Nov 2026): a reader tells a run
+              # judged by an edited self-test from one judged by the same file as the run before.
+              echo "check=$(sha256sum "work/tools/${TOOL}/${name}" | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
           done
           echo "kind=none" >> "$GITHUB_OUTPUT"
       - name: Compile its Python
@@ -97,6 +104,7 @@ jobs:
           KIND: ${{ needs.test.outputs.kind }}
           SHA: ${{ needs.test.outputs.sha }}
           TREE: ${{ needs.test.outputs.tree }}
+          CHECK: ${{ needs.test.outputs.check }}
           TAIL: ${{ needs.test.outputs.tail }}
           RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
@@ -107,7 +115,7 @@ jobs:
           import json, os, datetime
           result = "none" if os.environ["KIND"] == "none" else os.environ["RESULT"]
           record = {"repo": os.environ["REPO"], "tool": os.environ["TOOL"], "result": result, "file": os.environ["KIND"] or None,
-                    "sha": os.environ["SHA"] or None, "tree": os.environ.get("TREE") or None, "at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "sha": os.environ["SHA"] or None, "tree": os.environ.get("TREE") or None, "check_sha256": os.environ.get("CHECK") or None, "at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "run": os.environ["RUN"], "tail": os.environ["TAIL"][:2600]}
           with open(f"results/{record['repo']}/{record['tool']}.json", "w") as out:
               json.dump(record, out, indent=2)
