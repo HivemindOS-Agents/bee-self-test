@@ -10,6 +10,9 @@
 #   scripts/source_match.py        HB-054 "+": a Sourcify "verified" label recomputed against the code on Base
 #   scripts/lift_run.py            HB-036 "+": held-out tasks picked after a skill's edit, a calibrated proxy, and what a
 #                                  promotion needs (tests/test_lift_run.py)
+#   scripts/repair_receipts.py     HB-065: a repair that ended has a valid receipt in its agent's repository, never
+#                                  edited; an escalation names its receiver within 24 hours; an open step repair's
+#                                  counters follow LESSONS.md; every LESSONS failure names its one bucket
 #
 # The fixtures are the required part: this run fails when a script stops catching its own regression cases. The live
 # reads are report-only: they say where the agents stand today, and never fail the run. One live read is the exception:
@@ -23,7 +26,7 @@ on:
     - cron: "40 6 * * *"
   push:
     branches: [main]
-    paths: ["scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "fixtures/source-match/**", "scripts/lift_run.py", "tests/test_lift_run.py", "lift/**/held-out.json", "lift/**/tasks.json", ".github/workflows/host-checks.yml"]
+    paths: ["scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "scripts/repair_receipts.py", "fixtures/source-match/**", "scripts/lift_run.py", "tests/test_lift_run.py", "lift/**/held-out.json", "lift/**/tasks.json", ".github/workflows/host-checks.yml"]
 permissions: {}
 jobs:
   fixtures:
@@ -43,6 +46,7 @@ jobs:
           python3 scripts/rule_map_check.py --self-test
           python3 scripts/base_check.py --self-test
           python3 scripts/source_match.py --self-test
+          python3 scripts/repair_receipts.py --self-test
           python3 -m unittest discover -s tests -p 'test_lift_run.py'
       - name: Live, the 48-hour check (report-only)
         run: |
@@ -68,6 +72,14 @@ jobs:
               && git -C "$RUNNER_TEMP/repos/hivepunk-${n}" sparse-checkout set proofs || echo "could not read hivepunk-${n}"
           done
           python3 scripts/first_pass_replay.py "$RUNNER_TEMP"/repos/hivepunk-* || echo "report-only, exit $?"
+      - name: Live, HB-065 repair receipts, escalation receivers and where failures went (report-only)
+        run: |
+          mkdir -p "$RUNNER_TEMP/receipts"
+          for n in 547 632 667 1071 86; do
+            git clone --quiet --filter=blob:none --sparse "https://github.com/${GITHUB_REPOSITORY_OWNER}/hivepunk-${n}.git" "$RUNNER_TEMP/receipts/hivepunk-${n}" \
+              && git -C "$RUNNER_TEMP/receipts/hivepunk-${n}" sparse-checkout set repairs watchdog || echo "could not read hivepunk-${n}"
+          done
+          python3 scripts/repair_receipts.py "$RUNNER_TEMP"/receipts/hivepunk-* || echo "report-only, exit $?"
       - name: Live, HB-063 rule map against AUTONOMY.md, and the five agents' copies (report-only)
         run: |
           python3 scripts/rule_map_check.py --agents 547 632 667 1071 86 || echo "report-only, exit $?"
