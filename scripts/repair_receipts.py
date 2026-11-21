@@ -17,7 +17,8 @@ A receipt must:
   R3  outcome-verified: link the done step publicly; without a link it is outcome-unverified, which is allowed and
       counted
   R4  administrative: say why (closedBy), or be marked removedWithoutClosure with its reason
-  R5  name who received its escalation, when it was escalated
+  R5  name who received its escalation, when it was escalated (a receipt marked `backfilled`, written after the fact
+      from the health file's public history, records an escalation as it was and may name nobody)
   R6  name a known source (runner, host-step, frozen, watchdog, lesson)
   R7  carry no key, seed phrase or token
   R8  never be edited: one commit a file, when the clone has history
@@ -86,7 +87,7 @@ def receipt_problems(r):
         p.append("R4 an administrative close says no reason")
     if r["close"].get("removedWithoutClosure") and not r["close"].get("why"):
         p.append("R4 a removed row says no reason")
-    if r.get("escalation") and not (r["escalation"].get("receiver") or {}).get("who"):
+    if r.get("escalation") and not (r["escalation"].get("receiver") or {}).get("who") and not r.get("backfilled"):
         p.append("R5 an escalated episode names no receiver")
     if (r["source"] or {}).get("type") not in SOURCES:
         p.append(f"R6 bad source type {(r['source'] or {}).get('type')!r}")
@@ -271,6 +272,7 @@ def self_test():
         ("a removed row with no reason", admin(removedWithoutClosure=True), ["R4 a removed row says no reason"]),
         ("an escalated episode with no receiver", receipt(escalation=escalation), ["R5 an escalated episode names no receiver"]),
         ("an escalated episode with its receiver", receipt(escalation={**escalation, "receiver": {"who": "HivemindOS host: HB-041", "by": "rule", "at": T, "returned": "x", "returnedAt": T}}), []),
+        ("a backfilled receipt records an escalation nobody received", {**admin(removedWithoutClosure=True, why="reclassified: every failure it held was a policy skip (HB-062)"), "escalation": escalation, "backfilled": True, "note": "from the public history"}, []),
         ("an unknown close kind and source", receipt(close={"kind": "fixed", "closedBy": "x", "at": T, "removedWithoutClosure": False, "why": None}, source={"type": "agent-note", "ref": None, "health": "x"}),
          ["R1 bad close kind 'fixed'", "R6 bad source type 'agent-note'"]),
         ("a receipt that carries a key", receipt(cause={"text": "api_key=sk-live-123", "hash": "x", "laterCauses": [], "hashes": ["x"]}), ["R7 it carries something that reads as a secret"]),
