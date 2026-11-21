@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-547",
+  "bundle": "prf-547-fixprotocol-modifyliquidities-nonreentrant-3528483",
+  "result": "REPRODUCED",
+  "observed": "failed, no count line",
+  "scorerCommit": "3528483af4fd62536f9077bf7a8a89a4e226309f",
+  "peer": "86",
+  "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
+  "at": "2026-11-21T11:07:26Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44897565466"
+}
