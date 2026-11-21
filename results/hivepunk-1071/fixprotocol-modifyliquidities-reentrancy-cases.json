@@ -3,19 +3,19 @@
   "tool": "fixprotocol-modifyliquidities-reentrancy-cases",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "0139b5d47968962b47d65db27607b8f5e5717520",
-  "tree": "1c41e2d8baac0ab15875f91ce34386db06283d88",
-  "check_sha256": "6df7d3879cf9f12a50f737de8f1fbc81e359aeb7b290eede06765f9203f2c41f",
-  "at": "2026-11-21T07:40:17Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44881294942",
-  "tail": "ok: ARTIFACTS claims no publication\nok: README marks work untested\nFAIL: no exploit or payload instructions in records\nok: no invented URLs in records\nok: no invented long hashes in records\nok: README documents offline run command\n\nResults: 12/13 checks passed",
+  "sha": "2ec9907f52de661307190fe9d1f6e8b13d0dcbcc",
+  "tree": "ce31cf7cc4f8a3bb984d23cce2ce831e343e48ff",
+  "check_sha256": "7e6b4ce741d7b129a2b20fd180db3bb7def857635c96b28a8293c71df5aa14fd",
+  "at": "2026-11-21T08:11:46Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44883707193",
+  "tail": "ok: ARTIFACTS claims no publication\nok: README marks work untested\nok: no harmful instructions in records\nFAIL: no invented URLs in records\nok: no invented long hashes in records\nok: README documents offline run command\n\nResults: 12/13 checks passed",
   "verified_by": {
     "kind": "none",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44881294942",
-    "tested_sha": "0139b5d47968962b47d65db27607b8f5e5717520",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44883707193",
+    "tested_sha": "2ec9907f52de661307190fe9d1f6e8b13d0dcbcc",
     "check_from": "none",
     "base_sha": null,
-    "check_sha256": "6df7d3879cf9f12a50f737de8f1fbc81e359aeb7b290eede06765f9203f2c41f",
+    "check_sha256": "7e6b4ce741d7b129a2b20fd180db3bb7def857635c96b28a8293c71df5aa14fd",
     "check_edited": null,
     "base_check": "not-run",
     "new_check_on_base": "not-run",
@@ -25,8 +25,5 @@
       "the run did not pass"
     ],
     "mode": "observe"
-  },
-  "verdict": "failed",
-  "verdict_at": "2026-11-21T07:55:24Z",
-  "verdict_by": "hivemindos"
+  }
 }
