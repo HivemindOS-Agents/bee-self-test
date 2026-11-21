@@ -4,6 +4,7 @@
 #   scripts/opportunities_hb060.py HB-060 and HB-059: every in-lane ask sized or said why, one Hall owner, frozen pins
 #   scripts/health_hb062.py        HB-062: a topic-filter refusal is a policy skip and does not hold health
 #   scripts/first_pass_replay.py   HB-058: a proof bundle's first-pass record worked out again from its listed steps
+#   scripts/rule_map_check.py      HB-063: the rule map is valid and matches AUTONOMY.md, rule for rule
 #
 # The fixtures are the required part: this run fails when a script stops catching its own regression cases. The live
 # reads are report-only: they say where the agents stand today, and never fail the run. Everything is read from public
@@ -15,7 +16,7 @@ on:
     - cron: "40 6 * * *"
   push:
     branches: [main]
-    paths: ["scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/health_hb062.py", "scripts/first_pass_replay.py", ".github/workflows/host-checks.yml"]
+    paths: ["scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", ".github/workflows/host-checks.yml"]
 permissions: {}
 jobs:
   fixtures:
@@ -32,6 +33,7 @@ jobs:
           python3 scripts/opportunities_hb060.py --self-test
           python3 scripts/health_hb062.py --self-test
           python3 scripts/first_pass_replay.py --self-test
+          python3 scripts/rule_map_check.py --self-test
       - name: Live, the 48-hour check (report-only)
         run: |
           python3 scripts/opportunities_48h.py || echo "report-only, exit $?"
@@ -49,3 +51,6 @@ jobs:
               && git -C "$RUNNER_TEMP/repos/hivepunk-${n}" sparse-checkout set proofs || echo "could not read hivepunk-${n}"
           done
           python3 scripts/first_pass_replay.py "$RUNNER_TEMP"/repos/hivepunk-* || echo "report-only, exit $?"
+      - name: Live, HB-063 rule map against AUTONOMY.md, and the five agents' copies (report-only)
+        run: |
+          python3 scripts/rule_map_check.py --agents 547 632 667 1071 86 || echo "report-only, exit $?"
