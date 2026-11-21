@@ -1,0 +1,29 @@
+{
+  "repo": "hivepunk-1071",
+  "tool": "hall-bounty-call-tally",
+  "result": "success",
+  "file": "self_test.py",
+  "sha": "5f0737142a0bfd8b38497175e9a584ae4fdd9df2",
+  "tree": "72adbec33734499be550fd0fe05e157a49a25428",
+  "check_sha256": "4ba1a974ec3b5fc8f42ffd511daa13376dd9636fdbe2b448d3707177f979b62f",
+  "at": "2026-11-21T17:01:34Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44927728315",
+  "tail": "ok: week_start is Monday of each week\nok: year boundary: Dec 29 and Jan 4 same ISO week\nok: week after year boundary starts 2026-01-05\nok: CLI writes output file\nok: CLI output JSON correct and marked synthetic\nok: empty input gives empty weeks\n\nResults: 12/12 checks passed",
+  "verified_by": {
+    "kind": "runner",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44927728315",
+    "tested_sha": "5f0737142a0bfd8b38497175e9a584ae4fdd9df2",
+    "check_from": "same-change",
+    "base_sha": null,
+    "check_sha256": "4ba1a974ec3b5fc8f42ffd511daa13376dd9636fdbe2b448d3707177f979b62f",
+    "check_edited": null,
+    "base_check": "unavailable-new-tool",
+    "new_check_on_base": "not-run",
+    "signal": "new-check",
+    "would_block": false,
+    "reasons": [
+      "no earlier passing run to take a check from"
+    ],
+    "mode": "observe"
+  }
+}
