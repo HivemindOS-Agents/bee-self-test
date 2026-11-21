@@ -1,32 +1,29 @@
 {
   "repo": "hivepunk-1071",
   "tool": "fixprotocol-modifyliquidities-reentrancy-cases",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "2ec9907f52de661307190fe9d1f6e8b13d0dcbcc",
-  "tree": "ce31cf7cc4f8a3bb984d23cce2ce831e343e48ff",
+  "sha": "ca53b8fe5a96c4486d7012926c30d43954606fa5",
+  "tree": "0ea4c5cc0c0aac6e65881c2ec65353cd69042066",
   "check_sha256": "7e6b4ce741d7b129a2b20fd180db3bb7def857635c96b28a8293c71df5aa14fd",
-  "at": "2026-11-21T08:11:46Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44883707193",
-  "tail": "ok: ARTIFACTS claims no publication\nok: README marks work untested\nok: no harmful instructions in records\nFAIL: no invented URLs in records\nok: no invented long hashes in records\nok: README documents offline run command\n\nResults: 12/13 checks passed",
+  "at": "2026-11-21T08:30:00Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44885139037",
+  "tail": "ok: ARTIFACTS claims no publication\nok: README marks work untested\nok: no harmful instructions in records\nok: no invented URLs in records\nok: no invented long hashes in records\nok: README documents offline run command\n\nResults: 13/13 checks passed",
   "verified_by": {
-    "kind": "none",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44883707193",
-    "tested_sha": "2ec9907f52de661307190fe9d1f6e8b13d0dcbcc",
-    "check_from": "none",
+    "kind": "runner",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44885139037",
+    "tested_sha": "ca53b8fe5a96c4486d7012926c30d43954606fa5",
+    "check_from": "same-change",
     "base_sha": null,
     "check_sha256": "7e6b4ce741d7b129a2b20fd180db3bb7def857635c96b28a8293c71df5aa14fd",
     "check_edited": null,
-    "base_check": "not-run",
+    "base_check": "unavailable-new-tool",
     "new_check_on_base": "not-run",
-    "signal": null,
+    "signal": "new-check",
     "would_block": false,
     "reasons": [
-      "the run did not pass"
+      "no earlier passing run to take a check from"
     ],
     "mode": "observe"
-  },
-  "verdict": "failed",
-  "verdict_at": "2026-11-21T08:26:59Z",
-  "verdict_by": "hivemindos"
+  }
 }
