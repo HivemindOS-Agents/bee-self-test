@@ -1,0 +1,1319 @@
+{
+ "about": "HB-054 \"+\": a Sourcify label recomputed against the chain's code. One set of cases for two copies of the rule: HivemindOS core agent-source-match.ts and bee-self-test scripts/source_match.py. The same bytes in both repositories, pinned by sha256 in each side's test.",
+ "cases": [
+  {
+   "name": "the same code, nothing to change",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x6080604052",
+     "transformations": []
+    }
+   },
+   "liveCode": "0x6080604052",
+   "expect": {
+    "outcome": "MATCH",
+    "label": "exact_match",
+    "transformations": [],
+    "codeBytes": 5,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": null
+   }
+  },
+  {
+   "name": "no transformations listed at all",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x6080604052"
+    }
+   },
+   "liveCode": "0x6080604052",
+   "expect": {
+    "outcome": "MATCH",
+    "label": "exact_match",
+    "transformations": [],
+    "codeBytes": 5,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": null
+   }
+  },
+  {
+   "name": "immutables written at the places the compiler listed",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x608000000000000000000000000000000000000000000000000000000000000000006001000000000000000000000000000000000000000000000000000000000000000000",
+     "immutableReferences": {
+      "7": [
+       {
+        "start": 2,
+        "length": 32
+       },
+       {
+        "start": 36,
+        "length": 32
+       }
+      ]
+     },
+     "transformations": [
+      {
+       "id": "7",
+       "type": "replace",
+       "offset": 2,
+       "reason": "immutable"
+      },
+      {
+       "id": "7",
+       "type": "replace",
+       "offset": 36,
+       "reason": "immutable"
+      }
+     ],
+     "transformationValues": {
+      "immutables": {
+       "7": "0x000000000000000000000000000000000000000000000000000000000000abcd"
+      }
+     }
+    }
+   },
+   "liveCode": "0x6080000000000000000000000000000000000000000000000000000000000000abcd6001000000000000000000000000000000000000000000000000000000000000abcd00",
+   "expect": {
+    "outcome": "MATCH",
+    "label": "exact_match",
+    "transformations": [
+     "immutable"
+    ],
+    "codeBytes": 69,
+    "transformedBytes": 64,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": null
+   }
+  },
+  {
+   "name": "an immutable whose id is not the listing's id, at a listed place",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "match",
+    "runtimeMatch": "match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x608000000000000000000000000000000000000000000000000000000000000000006001000000000000000000000000000000000000000000000000000000000000000000",
+     "immutableReferences": {
+      "3481": [
+       {
+        "start": 2,
+        "length": 32
+       },
+       {
+        "start": 36,
+        "length": 32
+       }
+      ]
+     },
+     "transformations": [
+      {
+       "id": "3477",
+       "type": "replace",
+       "offset": 2,
+       "reason": "immutable"
+      },
+      {
+       "id": "3477",
+       "type": "replace",
+       "offset": 36,
+       "reason": "immutable"
+      }
+     ],
+     "transformationValues": {
+      "immutables": {
+       "3477": "0x000000000000000000000000000000000000000000000000000000000000abcd"
+      }
+     }
+    }
+   },
+   "liveCode": "0x6080000000000000000000000000000000000000000000000000000000000000abcd6001000000000000000000000000000000000000000000000000000000000000abcd00",
+   "expect": {
+    "outcome": "MATCH",
+    "label": "match",
+    "transformations": [
+     "immutable"
+    ],
+    "codeBytes": 69,
+    "transformedBytes": 64,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": null
+   },
+   "why": "Uniswap's v4 Quoter on Base (0x0d5e0F97\u2026048D, read 21 Nov 2026): the transformations carry id 3477 and the compiler's places id 3481"
+  },
+  {
+   "name": "a partial label with the same code still matches",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "match",
+    "runtimeMatch": "match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x608000000000000000000000000000000000000000000000000000000000000000006001000000000000000000000000000000000000000000000000000000000000000000",
+     "immutableReferences": {
+      "7": [
+       {
+        "start": 2,
+        "length": 32
+       },
+       {
+        "start": 36,
+        "length": 32
+       }
+      ]
+     },
+     "transformations": [
+      {
+       "id": "7",
+       "type": "replace",
+       "offset": 2,
+       "reason": "immutable"
+      },
+      {
+       "id": "7",
+       "type": "replace",
+       "offset": 36,
+       "reason": "immutable"
+      }
+     ],
+     "transformationValues": {
+      "immutables": {
+       "7": "0x000000000000000000000000000000000000000000000000000000000000abcd"
+      }
+     }
+    }
+   },
+   "liveCode": "0x6080000000000000000000000000000000000000000000000000000000000000abcd6001000000000000000000000000000000000000000000000000000000000000abcd00",
+   "expect": {
+    "outcome": "MATCH",
+    "label": "match",
+    "transformations": [
+     "immutable"
+    ],
+    "codeBytes": 69,
+    "transformedBytes": 64,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": null
+   }
+  },
+  {
+   "name": "an exact_match label on an address that holds other code",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x608000000000000000000000000000000000000000000000000000000000000000006001000000000000000000000000000000000000000000000000000000000000000000",
+     "immutableReferences": {
+      "7": [
+       {
+        "start": 2,
+        "length": 32
+       },
+       {
+        "start": 36,
+        "length": 32
+       }
+      ]
+     },
+     "transformations": [
+      {
+       "id": "7",
+       "type": "replace",
+       "offset": 2,
+       "reason": "immutable"
+      },
+      {
+       "id": "7",
+       "type": "replace",
+       "offset": 36,
+       "reason": "immutable"
+      }
+     ],
+     "transformationValues": {
+      "immutables": {
+       "7": "0x000000000000000000000000000000000000000000000000000000000000abcd"
+      }
+     }
+    }
+   },
+   "liveCode": "0x6080000000000000000000000000000000000000000000000000000000000000abcd6001000000000000000000000000000000000000000000000000000000000000abcdfe",
+   "expect": {
+    "outcome": "DIFFERENT",
+    "label": "exact_match",
+    "transformations": [
+     "immutable"
+    ],
+    "codeBytes": 69,
+    "transformedBytes": 64,
+    "metadataDiffers": false,
+    "firstDifference": 68,
+    "detail": null
+   },
+   "why": "GHSA-w97v-g4q9-998q: a match on an old creation transaction stored an Exact Match for an address holding different code"
+  },
+  {
+   "name": "the address holds longer code",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x6080604052"
+    }
+   },
+   "liveCode": "0x608060405200",
+   "expect": {
+    "outcome": "DIFFERENT",
+    "label": "exact_match",
+    "transformations": [],
+    "codeBytes": 6,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": 5,
+    "detail": null
+   }
+  },
+  {
+   "name": "the address holds shorter code",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x6080604052"
+    }
+   },
+   "liveCode": "0x60806040",
+   "expect": {
+    "outcome": "DIFFERENT",
+    "label": "exact_match",
+    "transformations": [],
+    "codeBytes": 4,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": 4,
+    "detail": null
+   }
+  },
+  {
+   "name": "a library's call protection writes its own address",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x73000000000000000000000000000000000000000030146080",
+     "transformations": [
+      {
+       "type": "replace",
+       "offset": 1,
+       "reason": "callProtection"
+      }
+     ],
+     "transformationValues": {
+      "callProtection": "0x1111111111111111111111111111111111111111"
+     }
+    }
+   },
+   "liveCode": "0x73111111111111111111111111111111111111111130146080",
+   "expect": {
+    "outcome": "MATCH",
+    "label": "exact_match",
+    "transformations": [
+     "callProtection"
+    ],
+    "codeBytes": 25,
+    "transformedBytes": 20,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": null
+   }
+  },
+  {
+   "name": "a checksummed address and upper-case code read the same",
+   "address": "0xaBaBaBaBaBaBaBaBaBaBaBaBaBaBaBaBaBaBaBaB",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x73000000000000000000000000000000000000000030146080",
+     "transformations": [
+      {
+       "type": "replace",
+       "offset": 1,
+       "reason": "callProtection"
+      }
+     ],
+     "transformationValues": {
+      "callProtection": "0xabababababababababababababababababababab"
+     }
+    }
+   },
+   "liveCode": "0x73ABABABABABABABABABABABABABABABABABABABAB30146080",
+   "expect": {
+    "outcome": "MATCH",
+    "label": "exact_match",
+    "transformations": [
+     "callProtection"
+    ],
+    "codeBytes": 25,
+    "transformedBytes": 20,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": null
+   }
+  },
+  {
+   "name": "call protection cannot hide a different first byte",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x73000000000000000000000000000000000000000030146080",
+     "transformations": [
+      {
+       "type": "replace",
+       "offset": 1,
+       "reason": "callProtection"
+      }
+     ],
+     "transformationValues": {
+      "callProtection": "0x1111111111111111111111111111111111111111"
+     }
+    }
+   },
+   "liveCode": "0x60111111111111111111111111111111111111111130146080",
+   "expect": {
+    "outcome": "DIFFERENT",
+    "label": "exact_match",
+    "transformations": [
+     "callProtection"
+    ],
+    "codeBytes": 25,
+    "transformedBytes": 20,
+    "metadataDiffers": false,
+    "firstDifference": 0,
+    "detail": null
+   },
+   "why": "GHSA-mg7q-xhfh-rmfq: library call protection left the first 21 bytes unchecked"
+  },
+  {
+   "name": "call protection cannot write another address",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x73000000000000000000000000000000000000000030146080",
+     "transformations": [
+      {
+       "type": "replace",
+       "offset": 1,
+       "reason": "callProtection"
+      }
+     ],
+     "transformationValues": {
+      "callProtection": "0x3333333333333333333333333333333333333333"
+     }
+    }
+   },
+   "liveCode": "0x73333333333333333333333333333333333333333330146080",
+   "expect": {
+    "outcome": "UNABLE",
+    "label": "exact_match",
+    "transformations": [],
+    "codeBytes": 0,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": "call protection would write something other than the contract's own address"
+   },
+   "why": "GHSA-mg7q-xhfh-rmfq: the 20 bytes after the first may only be the contract's own address"
+  },
+  {
+   "name": "call protection over code that is not a placeholder",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x73000000000000000000000000000000000000000130146080",
+     "transformations": [
+      {
+       "type": "replace",
+       "offset": 1,
+       "reason": "callProtection"
+      }
+     ],
+     "transformationValues": {
+      "callProtection": "0x1111111111111111111111111111111111111111"
+     }
+    }
+   },
+   "liveCode": "0x73111111111111111111111111111111111111111130146080",
+   "expect": {
+    "outcome": "UNABLE",
+    "label": "exact_match",
+    "transformations": [],
+    "codeBytes": 0,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": "call protection is not over a library's own-address placeholder"
+   }
+  },
+  {
+   "name": "call protection on code that does not start with PUSH20",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x60000000000000000000000000000000000000000030146080",
+     "transformations": [
+      {
+       "type": "replace",
+       "offset": 1,
+       "reason": "callProtection"
+      }
+     ],
+     "transformationValues": {
+      "callProtection": "0x1111111111111111111111111111111111111111"
+     }
+    }
+   },
+   "liveCode": "0x60111111111111111111111111111111111111111130146080",
+   "expect": {
+    "outcome": "UNABLE",
+    "label": "exact_match",
+    "transformations": [],
+    "codeBytes": 0,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": "call protection is not over a library's own-address placeholder"
+   }
+  },
+  {
+   "name": "an immutable at a place the compiler did not list",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x608000000000000000000000000000000000000000000000000000000000000000006001000000000000000000000000000000000000000000000000000000000000000000",
+     "immutableReferences": {
+      "7": [
+       {
+        "start": 2,
+        "length": 32
+       },
+       {
+        "start": 36,
+        "length": 32
+       }
+      ]
+     },
+     "transformations": [
+      {
+       "id": "7",
+       "type": "replace",
+       "offset": 3,
+       "reason": "immutable"
+      }
+     ],
+     "transformationValues": {
+      "immutables": {
+       "7": "0x000000000000000000000000000000000000000000000000000000000000abcd"
+      }
+     }
+    }
+   },
+   "liveCode": "0x6080000000000000000000000000000000000000000000000000000000000000abcd6001000000000000000000000000000000000000000000000000000000000000abcd00",
+   "expect": {
+    "outcome": "UNABLE",
+    "label": "exact_match",
+    "transformations": [],
+    "codeBytes": 0,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": "an immutable is not at a place the compiler listed for it"
+   },
+   "why": "a listing may not move code under the name of an immutable"
+  },
+  {
+   "name": "an immutable of another size",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x608000000000000000000000000000000000000000000000000000000000000000006001000000000000000000000000000000000000000000000000000000000000000000",
+     "immutableReferences": {
+      "7": [
+       {
+        "start": 2,
+        "length": 32
+       },
+       {
+        "start": 36,
+        "length": 32
+       }
+      ]
+     },
+     "transformations": [
+      {
+       "id": "7",
+       "type": "replace",
+       "offset": 2,
+       "reason": "immutable"
+      },
+      {
+       "id": "7",
+       "type": "replace",
+       "offset": 36,
+       "reason": "immutable"
+      }
+     ],
+     "transformationValues": {
+      "immutables": {
+       "7": "0x0000000000000000000000000000000000000000000000000000000000abcd"
+      }
+     }
+    }
+   },
+   "liveCode": "0x6080000000000000000000000000000000000000000000000000000000000000abcd6001000000000000000000000000000000000000000000000000000000000000abcd00",
+   "expect": {
+    "outcome": "UNABLE",
+    "label": "exact_match",
+    "transformations": [],
+    "codeBytes": 0,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": "an immutable is not at a place the compiler listed for it"
+   }
+  },
+  {
+   "name": "an immutable with no value",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x608000000000000000000000000000000000000000000000000000000000000000006001000000000000000000000000000000000000000000000000000000000000000000",
+     "immutableReferences": {
+      "7": [
+       {
+        "start": 2,
+        "length": 32
+       },
+       {
+        "start": 36,
+        "length": 32
+       }
+      ]
+     },
+     "transformations": [
+      {
+       "id": "7",
+       "type": "replace",
+       "offset": 2,
+       "reason": "immutable"
+      },
+      {
+       "id": "7",
+       "type": "replace",
+       "offset": 36,
+       "reason": "immutable"
+      }
+     ],
+     "transformationValues": {}
+    }
+   },
+   "liveCode": "0x6080000000000000000000000000000000000000000000000000000000000000abcd6001000000000000000000000000000000000000000000000000000000000000abcd00",
+   "expect": {
+    "outcome": "UNABLE",
+    "label": "exact_match",
+    "transformations": [],
+    "codeBytes": 0,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": "an immutable is not at a place the compiler listed for it"
+   }
+  },
+  {
+   "name": "an immutable over code that is not a placeholder",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x608000000000000000000000000000000000000000000000000000000000000000016001000000000000000000000000000000000000000000000000000000000000000000",
+     "immutableReferences": {
+      "7": [
+       {
+        "start": 2,
+        "length": 32
+       },
+       {
+        "start": 36,
+        "length": 32
+       }
+      ]
+     },
+     "transformations": [
+      {
+       "id": "7",
+       "type": "replace",
+       "offset": 2,
+       "reason": "immutable"
+      },
+      {
+       "id": "7",
+       "type": "replace",
+       "offset": 36,
+       "reason": "immutable"
+      }
+     ],
+     "transformationValues": {
+      "immutables": {
+       "7": "0x000000000000000000000000000000000000000000000000000000000000abcd"
+      }
+     }
+    }
+   },
+   "liveCode": "0x6080000000000000000000000000000000000000000000000000000000000000abcd6001000000000000000000000000000000000000000000000000000000000000abcd00",
+   "expect": {
+    "outcome": "UNABLE",
+    "label": "exact_match",
+    "transformations": [],
+    "codeBytes": 0,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": "an immutable would overwrite code that is not a placeholder"
+   }
+  },
+  {
+   "name": "two transformations write the same bytes",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x608000000000000000000000000000000000000000000000000000000000000000006001000000000000000000000000000000000000000000000000000000000000000000",
+     "immutableReferences": {
+      "7": [
+       {
+        "start": 2,
+        "length": 32
+       }
+      ],
+      "8": [
+       {
+        "start": 2,
+        "length": 32
+       }
+      ]
+     },
+     "transformations": [
+      {
+       "id": "7",
+       "type": "replace",
+       "offset": 2,
+       "reason": "immutable"
+      },
+      {
+       "id": "8",
+       "type": "replace",
+       "offset": 2,
+       "reason": "immutable"
+      }
+     ],
+     "transformationValues": {
+      "immutables": {
+       "7": "0x0000000000000000000000000000000000000000000000000000000000000000",
+       "8": "0x000000000000000000000000000000000000000000000000000000000000abcd"
+      }
+     }
+    }
+   },
+   "liveCode": "0x6080000000000000000000000000000000000000000000000000000000000000abcd6001000000000000000000000000000000000000000000000000000000000000abcd00",
+   "expect": {
+    "outcome": "UNABLE",
+    "label": "exact_match",
+    "transformations": [],
+    "codeBytes": 0,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": "two transformations write the same bytes"
+   }
+  },
+  {
+   "name": "a library address at the link the compiler listed",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x60807300000000000000000000000000000000000000005000",
+     "linkReferences": {
+      "lib/Math.sol": {
+       "Math": [
+        {
+         "start": 3,
+         "length": 20
+        }
+       ]
+      }
+     },
+     "transformations": [
+      {
+       "id": "lib/Math.sol:Math",
+       "type": "replace",
+       "offset": 3,
+       "reason": "library"
+      }
+     ],
+     "transformationValues": {
+      "libraries": {
+       "lib/Math.sol:Math": "0x2222222222222222222222222222222222222222"
+      }
+     }
+    }
+   },
+   "liveCode": "0x60807322222222222222222222222222222222222222225000",
+   "expect": {
+    "outcome": "MATCH",
+    "label": "exact_match",
+    "transformations": [
+     "library"
+    ],
+    "codeBytes": 25,
+    "transformedBytes": 20,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": null
+   }
+  },
+  {
+   "name": "a link whose length arrives as text",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x60807300000000000000000000000000000000000000005000",
+     "linkReferences": {
+      "lib/Math.sol": {
+       "Math": [
+        {
+         "start": 3,
+         "length": "20"
+        }
+       ]
+      }
+     },
+     "transformations": [
+      {
+       "id": "lib/Math.sol:Math",
+       "type": "replace",
+       "offset": 3,
+       "reason": "library"
+      }
+     ],
+     "transformationValues": {
+      "libraries": {
+       "lib/Math.sol:Math": "0x2222222222222222222222222222222222222222"
+      }
+     }
+    }
+   },
+   "liveCode": "0x60807322222222222222222222222222222222222222225000",
+   "expect": {
+    "outcome": "MATCH",
+    "label": "exact_match",
+    "transformations": [
+     "library"
+    ],
+    "codeBytes": 25,
+    "transformedBytes": 20,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": null
+   }
+  },
+  {
+   "name": "a library address at a place the compiler did not list",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x60807300000000000000000000000000000000000000005000",
+     "linkReferences": {
+      "lib/Math.sol": {
+       "Math": [
+        {
+         "start": 3,
+         "length": 20
+        }
+       ]
+      }
+     },
+     "transformations": [
+      {
+       "id": "lib/Math.sol:Math",
+       "type": "replace",
+       "offset": 2,
+       "reason": "library"
+      }
+     ],
+     "transformationValues": {
+      "libraries": {
+       "lib/Math.sol:Math": "0x2222222222222222222222222222222222222222"
+      }
+     }
+    }
+   },
+   "liveCode": "0x60807322222222222222222222222222222222222222225000",
+   "expect": {
+    "outcome": "UNABLE",
+    "label": "exact_match",
+    "transformations": [],
+    "codeBytes": 0,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": "a library address is not at a link the compiler listed for it"
+   }
+  },
+  {
+   "name": "metadata that differs, code that does not",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "match",
+    "runtimeMatch": "match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x608060405200a264697066735822",
+     "cborAuxdata": {
+      "1": {
+       "offset": 6,
+       "value": "0xa264697066735822"
+      }
+     },
+     "transformations": [
+      {
+       "id": "1",
+       "type": "replace",
+       "offset": 6,
+       "reason": "cborAuxdata"
+      }
+     ],
+     "transformationValues": {
+      "cborAuxdata": {
+       "1": "0xa2646970667358ff"
+      }
+     }
+    }
+   },
+   "liveCode": "0x608060405200a2646970667358ff",
+   "expect": {
+    "outcome": "MATCH",
+    "label": "match",
+    "transformations": [
+     "cborAuxdata"
+    ],
+    "codeBytes": 14,
+    "transformedBytes": 8,
+    "metadataDiffers": true,
+    "firstDifference": null,
+    "detail": null
+   }
+  },
+  {
+   "name": "a metadata change of another size",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "match",
+    "runtimeMatch": "match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x608060405200a264697066735822",
+     "cborAuxdata": {
+      "1": {
+       "offset": 6,
+       "value": "0xa264697066735822"
+      }
+     },
+     "transformations": [
+      {
+       "id": "1",
+       "type": "replace",
+       "offset": 6,
+       "reason": "cborAuxdata"
+      }
+     ],
+     "transformationValues": {
+      "cborAuxdata": {
+       "1": "0xa2646970667358ff00"
+      }
+     }
+    }
+   },
+   "liveCode": "0x608060405200a2646970667358ff00",
+   "expect": {
+    "outcome": "UNABLE",
+    "label": "match",
+    "transformations": [],
+    "codeBytes": 0,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": "a metadata change is not where the compiled metadata is"
+   }
+  },
+  {
+   "name": "a metadata change somewhere else",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "match",
+    "runtimeMatch": "match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x608060405200a264697066735822",
+     "cborAuxdata": {
+      "1": {
+       "offset": 6,
+       "value": "0xa264697066735822"
+      }
+     },
+     "transformations": [
+      {
+       "id": "1",
+       "type": "replace",
+       "offset": 4,
+       "reason": "cborAuxdata"
+      }
+     ],
+     "transformationValues": {
+      "cborAuxdata": {
+       "1": "0xa2646970667358ff"
+      }
+     }
+    }
+   },
+   "liveCode": "0x608060405200a2646970667358ff",
+   "expect": {
+    "outcome": "UNABLE",
+    "label": "match",
+    "transformations": [],
+    "codeBytes": 0,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": "a metadata change is not where the compiled metadata is"
+   }
+  },
+  {
+   "name": "a metadata change that runs past the end",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "match",
+    "runtimeMatch": "match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x608060405200a264697066735822",
+     "cborAuxdata": {
+      "1": {
+       "offset": 8,
+       "value": "0xa264697066735822"
+      }
+     },
+     "transformations": [
+      {
+       "id": "1",
+       "type": "replace",
+       "offset": 8,
+       "reason": "cborAuxdata"
+      }
+     ],
+     "transformationValues": {
+      "cborAuxdata": {
+       "1": "0xa2646970667358ff"
+      }
+     }
+    }
+   },
+   "liveCode": "0x608060405200a2646970667358ff",
+   "expect": {
+    "outcome": "UNABLE",
+    "label": "match",
+    "transformations": [],
+    "codeBytes": 0,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": "a transformation (cborAuxdata) runs past the end of the code"
+   }
+  },
+  {
+   "name": "a transformation of an unknown kind",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x6080604052",
+     "transformations": [
+      {
+       "id": "1",
+       "type": "replace",
+       "offset": 0,
+       "reason": "anything"
+      }
+     ],
+     "transformationValues": {}
+    }
+   },
+   "liveCode": "0x6080604052",
+   "expect": {
+    "outcome": "UNABLE",
+    "label": "exact_match",
+    "transformations": [],
+    "codeBytes": 0,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": "a transformation of a kind this check does not know: anything"
+   }
+  },
+  {
+   "name": "an insert",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x6080604052",
+     "transformations": [
+      {
+       "type": "insert",
+       "offset": 5,
+       "reason": "constructorArguments"
+      }
+     ],
+     "transformationValues": {
+      "constructorArguments": "0x00"
+     }
+    }
+   },
+   "liveCode": "0x608060405200",
+   "expect": {
+    "outcome": "UNABLE",
+    "label": "exact_match",
+    "transformations": [],
+    "codeBytes": 0,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": "a transformation (constructorArguments) is not a replace"
+   }
+  },
+  {
+   "name": "a transformation with no offset",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x608000000000000000000000000000000000000000000000000000000000000000006001000000000000000000000000000000000000000000000000000000000000000000",
+     "immutableReferences": {
+      "7": [
+       {
+        "start": 2,
+        "length": 32
+       },
+       {
+        "start": 36,
+        "length": 32
+       }
+      ]
+     },
+     "transformations": [
+      {
+       "id": "7",
+       "type": "replace",
+       "reason": "immutable"
+      }
+     ],
+     "transformationValues": {
+      "immutables": {
+       "7": "0x000000000000000000000000000000000000000000000000000000000000abcd"
+      }
+     }
+    }
+   },
+   "liveCode": "0x6080000000000000000000000000000000000000000000000000000000000000abcd6001000000000000000000000000000000000000000000000000000000000000abcd00",
+   "expect": {
+    "outcome": "UNABLE",
+    "label": "exact_match",
+    "transformations": [],
+    "codeBytes": 0,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": "a transformation (immutable) has no offset"
+   }
+  },
+  {
+   "name": "transformations that are not a list",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x6080604052",
+     "transformations": {
+      "0": "x"
+     }
+    }
+   },
+   "liveCode": "0x6080604052",
+   "expect": {
+    "outcome": "UNABLE",
+    "label": "exact_match",
+    "transformations": [],
+    "codeBytes": 0,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": "the transformations are not a list"
+   }
+  },
+  {
+   "name": "a label and no compiled code",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match"
+   },
+   "liveCode": "0x6080604052",
+   "expect": {
+    "outcome": "UNABLE",
+    "label": "exact_match",
+    "transformations": [],
+    "codeBytes": 0,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": "Sourcify gave no compiled runtime code"
+   }
+  },
+  {
+   "name": "compiled code that is not hex",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x60__$1234$__52"
+    }
+   },
+   "liveCode": "0x6080604052",
+   "expect": {
+    "outcome": "UNABLE",
+    "label": "exact_match",
+    "transformations": [],
+    "codeBytes": 0,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": "Sourcify gave no compiled runtime code"
+   }
+  },
+  {
+   "name": "no code at the address",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x6080604052"
+    }
+   },
+   "liveCode": "0x",
+   "expect": {
+    "outcome": "UNABLE",
+    "label": "exact_match",
+    "transformations": [],
+    "codeBytes": 0,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": "there is no code at the address"
+   }
+  },
+  {
+   "name": "the chain's code could not be read",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "match": "exact_match",
+    "runtimeMatch": "exact_match",
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x6080604052"
+    }
+   },
+   "liveCode": null,
+   "expect": {
+    "outcome": "UNABLE",
+    "label": "exact_match",
+    "transformations": [],
+    "codeBytes": 0,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": "the chain's code could not be read"
+   }
+  },
+  {
+   "name": "an answer with no label",
+   "address": "0x1111111111111111111111111111111111111111",
+   "answer": {
+    "runtimeBytecode": {
+     "recompiledBytecode": "0x6080604052"
+    }
+   },
+   "liveCode": "0x6080604052",
+   "expect": {
+    "outcome": "MATCH",
+    "label": null,
+    "transformations": [],
+    "codeBytes": 5,
+    "transformedBytes": 0,
+    "metadataDiffers": false,
+    "firstDifference": null,
+    "detail": null
+   }
+  }
+ ]
+}
