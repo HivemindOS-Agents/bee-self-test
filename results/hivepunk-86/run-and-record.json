@@ -3,12 +3,9 @@
   "tool": "run-and-record",
   "result": "success",
   "file": "self_test.py",
-  "sha": "3459f7f19cef30ebf87c22c2a227c825afb0289c",
-  "tree": "ee929c76283f09098538f4440a72ee257193e0c1",
-  "at": "2026-11-20T05:02:58Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44678372235",
-  "tail": "FAIL verify: stored record differs from a fresh run\nFAIL verify-record: stored record differs from a fresh run\nok   11b. verify-record fails on a stdout-altered record\nok   11c. failed verify-record leaves the altered file untouched\nFAIL verify-record: stored record differs from a fresh run\n     fresh run says: EXIT=0\n     stored record says: EXIT=1\nok   11d. verify-record fails on an EXIT-altered record\n\nall checks passed",
-  "verdict": "passed",
-  "verdict_at": "2026-11-20T06:02:56Z",
-  "verdict_by": "hivemindos"
+  "sha": "7eb427b55d7fac9c73abd9a4c4e63d847998f338",
+  "tree": "52bd550cc9df2887f870f1561a21773d39ec3ebe",
+  "at": "2026-11-21T02:04:58Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44853844878",
+  "tail": "FAIL verify: stored record differs from a fresh run\nFAIL verify-record: stored record differs from a fresh run\nok   11b. verify-record fails on a stdout-altered record\nok   11c. failed verify-record leaves the altered file untouched\nFAIL verify-record: stored record differs from a fresh run\n     fresh run says: EXIT=0\n     stored record says: EXIT=1\nok   11d. verify-record fails on an EXIT-altered record\n\nall checks passed"
 }
