@@ -300,6 +300,12 @@ def made_tx(kind, n, i):
     elif kind == "swap":
         tx.update(to=C, input="0x3593564c" + "00" * 32)
         receipt["logs"] = [move(TOKEN, A, C, 9), move(TOKEN2, C, A, 4)]
+    elif kind == "deposit":        # two tokens leave the sender and nothing comes back: the reader calls it a swap
+        tx.update(to=C, input="0x3593564c" + "00" * 32)
+        receipt["logs"] = [move(TOKEN, A, C, 9), move(TOKEN2, A, C, 4)]
+    elif kind == "nft-swap":       # a real swap, with an NFT's Transfer log (4 topics) the reader does not count
+        tx.update(to=C, input="0x3593564c" + "00" * 32)
+        receipt["logs"] = [move(TOKEN, A, C, 9), move(TOKEN2, C, A, 4), {"address": C, "topics": [lr.TRANSFER, PAD(A), PAD(C), "0x" + "0" * 63 + "7"], "data": "0x"}]
     elif kind == "busy-swap":      # more movements than a held-out task may have
         tx.update(to=C, input="0x3593564c" + "00" * 32)
         receipt["logs"] = [move(TOKEN, A, C, k + 1) for k in range(3)] + [move(TOKEN2, C, A, k + 1) for k in range(3)]
@@ -432,6 +438,29 @@ class HeldOut(unittest.TestCase):
         self.assertIn("the held-out tasks were picked for another version of the skill", lr.held_out_problems(held, taskset(skill_sha="0" * 64)))
         self.assertIn("the held-out tasks were picked from another editAt than the task set's", lr.held_out_problems(held, {**ts, "heldOut": {"editAt": "2026-11-02T00:00:00Z"}}))
 
+    def test_a_swap_the_reader_cannot_answer_without_doubt_is_never_a_held_out_task(self):
+        # v1 picked a liquidity deposit with a position NFT as tx-explain's "swap" (Base block 52953379, 21 Nov 2026).
+        chain = MadeChain([(["call"], 0), (["call"], 0), (["deposit"], 0), (["nft-swap"], 0), (["swap"], 0)] + [(["call"], 0)] * 3)
+        held = lr.pick_held_out(held_taskset(types=["swap"]), chain, now=0)
+        self.assertEqual([(p["type"], p["blockNumber"] - FIRST) for p in held["picks"]], [("swap", 2)])
+        self.assertEqual(held["skipped"], 2, "the deposit and the swap with an uncounted NFT log")
+        # The count of movements is checked only when nothing moved.
+        fields = lambda task: [c.get("field") for c in task["checks"] if "field" in c]
+        self.assertNotIn("movements", fields(held["tasks"][0]))
+        moved_nothing = lr.pick_held_out(held_taskset(types=["native-transfer"]), MadeChain(BLOCKS), now=0)["tasks"][0]
+        self.assertIn({"field": "movements", "length": 0}, moved_nothing["checks"])
+        # An answer that also names a movement the reader does not count still passes.
+        swap = held["tasks"][0]
+        answer = lr.reference_answer(*chain.txs[swap["txHash"]])
+        fuller = {**answer, "movements": answer["movements"] + [{"token": C, "from": A, "to": C, "amountRaw": "7"}]}
+        self.assertTrue(all(lr.check_holds(fuller, check) for check in swap["checks"]))
+
+    def test_a_promotion_needs_held_out_tasks_of_the_current_rule(self):
+        lift = self.promotable()
+        old = copy.deepcopy(lift)
+        old["heldOut"]["rule"] = "block-hash-v1"
+        self.assertEqual(lr.promotion_problems(old), ["the held-out tasks were picked by rule block-hash-v1, not block-hash-v2"])
+
     def test_a_type_the_chain_does_not_give_is_listed_and_too_few_tasks_is_a_problem(self):
         held = lr.pick_held_out(held_taskset(types=["transfer", "approve", "unknown"], max_scan=4), MadeChain(BLOCKS), now=0)
         self.assertEqual([p["type"] for p in held["picks"]], ["transfer"])
@@ -452,7 +481,7 @@ class HeldOut(unittest.TestCase):
         self.assertEqual(lift["heldOut"]["reviewedBy"], "632")
         self.assertEqual(lift["gap"], {"tuneMissed": 0, "heldOutMissed": 2})
         self.assertEqual([p["txHash"] for p in lift["heldOut"]["picks"]], [t["txHash"] for t in held["tasks"]])
-        self.assertEqual(lift["heldOut"]["rule"], "block-hash-v1")
+        self.assertEqual(lift["heldOut"]["rule"], "block-hash-v2")
         self.assertIsNone(lift["heldOut"]["previous"])
         self.assertEqual(lr.lift_block_problems(lift, SKILL_SHA, ts), [])
 

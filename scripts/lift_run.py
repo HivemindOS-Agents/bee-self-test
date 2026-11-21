@@ -58,15 +58,22 @@ HELD_OUT_MIN = 3
 HELD_OUT_TYPES = ("transfer", "native-transfer", "reverted", "approve", "swap")
 HELD_OUT_MAX_MOVEMENTS = 4
 HELD_OUT_MAX_SCAN = 400
+# block-hash-v2 (21 Nov 2026). v1, published the same day, picked for tx-explain a "swap" that was a liquidity deposit
+# with a position NFT: the chain reader calls any transaction that moves two tokens a swap, and it does not count an
+# NFT's Transfer log. v2 takes only what the reader can answer without doubt: no Transfer-shaped log it does not count,
+# and a swap only when the sender gave one token and got another. v1 also checked how many movements an answer lists;
+# that failed a fuller, correct answer, so v2 checks the count only when nothing moved (as the tune set does).
 HELD_OUT_RULE = {
-    "id": "block-hash-v1",
+    "id": "block-hash-v2",
     "text": (
         "Start at the first Base block whose timestamp is after editAt, the time of the skill's edit. In each block the one "
         "candidate is the transaction at index (the block's hash as an integer) modulo (the block's transaction count). "
         "For each needed type in order, scanning forward from the block after the previous pick, take the first candidate "
-        "whose chain-derived answer has that type and at most 4 token movements. A reverted transaction has the type "
-        "reverted; any other has its action. A block whose candidate does not fit is skipped and counted. A type not found "
-        "within maxScan blocks is listed as not found, and the next type starts where that scan began."
+        "whose chain-derived answer has that type and at most 4 token movements, and whose receipt has no Transfer log "
+        "the chain reader does not count (an NFT's). A reverted transaction has the type reverted; any other has its "
+        "action, and a swap fits only when the sender sent one token and received another. A block whose candidate does "
+        "not fit is skipped and counted. A type not found within maxScan blocks is listed as not found, and the next type "
+        "starts where that scan began."
     ),
 }
 CALIBRATION_MAX_DISAGREE = 1
@@ -338,6 +345,20 @@ def held_type(reference):
     return "reverted" if reference["status"] == "reverted" else reference["action"]
 
 
+def held_fits(kind, reference, receipt):
+    """Whether a candidate is a held-out task of this type: one the chain reader answers without doubt."""
+    if held_type(reference) != kind or len(reference["movements"]) > HELD_OUT_MAX_MOVEMENTS:
+        return False
+    if any((log.get("topics") or [None])[0] == TRANSFER and len(log["topics"]) != 3 for log in receipt.get("logs") or []):
+        return False  # a Transfer-shaped log the reader does not count: its answer would leave a movement out
+    if kind == "swap":
+        sender = reference["from"]
+        gave = {m["token"] for m in reference["movements"] if m["from"] == sender}
+        got = {m["token"] for m in reference["movements"] if m["to"] == sender}
+        return bool(gave) and bool(got - gave)
+    return True
+
+
 def checks_from_reference(reference):
     """A held-out task's checks, written from the chain's own answer by fixed rules (no hand in it)."""
     checks = [{"field": "status", "equals": reference["status"]}, {"field": "action", "oneOf": [reference["action"]]}]
@@ -347,7 +368,10 @@ def checks_from_reference(reference):
     if reference.get("to"):
         checks.append({"field": "to", "equalsAddress": reference["to"]})
     checks.append({"field": "nativeValueWei", "equals": reference["nativeValueWei"]})
-    checks.append({"field": "movements", "length": len(reference["movements"])})
+    # Each movement the chain shows must be in the answer. How many an answer lists is checked only when nothing moved:
+    # an answer that also names a movement the reader does not count is not wrong for it.
+    if not reference["movements"]:
+        checks.append({"field": "movements", "length": 0})
     checks += [{"movement": dict(m)} for m in reference["movements"]]
     approval = reference.get("unlimitedApproval")
     if approval:
@@ -388,7 +412,7 @@ def pick_held_out(ts, rpc, now=None):
             tx = txs[index]
             receipt = rpc("eth_getTransactionReceipt", [tx["hash"]])
             reference = reference_answer(tx, receipt) if receipt else None
-            if reference is None or held_type(reference) != kind or len(reference["movements"]) > HELD_OUT_MAX_MOVEMENTS:
+            if reference is None or not held_fits(kind, reference, receipt):
                 skipped += 1
                 continue
             found = (n, block, index, len(txs), tx, reference)
@@ -520,6 +544,8 @@ def promotion_problems(lift):
         problems.append("no held-out block")
     else:
         of = ((held.get("with") or {}).get("of")) or 0
+        if held.get("rule") != HELD_OUT_RULE["id"]:
+            problems.append(f"the held-out tasks were picked by rule {held.get('rule')}, not {HELD_OUT_RULE['id']}")
         if of < HELD_OUT_MIN:
             problems.append(f"{of} held-out tasks, fewer than {HELD_OUT_MIN}")
         after = held.get("afterBlock")

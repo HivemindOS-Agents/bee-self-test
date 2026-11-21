@@ -1,0 +1,530 @@
+{
+ "lift": {
+  "skillSha256": "eafd1ae43bdf5fcacc8c5c02bcb6f7848eb533c34bfeb3e7f2b06dbf9bf4df94",
+  "tasksetSha256": "659ec43f83afc7c116f99fdc46adfdfdfba87d8649c99fcf0cd9ca67de25d607",
+  "model": "meta/muse-ember",
+  "with": {
+   "passed": 3,
+   "failed": 1,
+   "incomplete": 1,
+   "of": 5
+  },
+  "without": {
+   "passed": 3,
+   "failed": 2,
+   "incomplete": 0,
+   "of": 5
+  },
+  "lift": null,
+  "state": "partial",
+  "runAt": "2026-11-21T05:24:50Z",
+  "report": null,
+  "reviewedBy": null,
+  "tune": {
+   "with": {
+    "passed": 3,
+    "failed": 1,
+    "incomplete": 1,
+    "of": 5
+   },
+   "without": {
+    "passed": 3,
+    "failed": 2,
+    "incomplete": 0,
+    "of": 5
+   }
+  },
+  "heldOut": {
+   "rule": "block-hash-v1",
+   "editAt": "2026-10-22T19:06:22Z",
+   "afterBlock": 52953318,
+   "heldOutSha256": "032bf6da4a7e9c72ea24362aecae5a0fe21921af234dc4d051ca05d7a2c95f8d",
+   "picks": [
+    {
+     "id": "held-transfer",
+     "type": "transfer",
+     "txHash": "0x355bac3b1fe1e3862157e30c7b528f01429dec7bb93e1a79cf47f4ed2a9640ef",
+     "blockNumber": 52953319,
+     "blockTime": "2026-10-22T19:06:25Z"
+    },
+    {
+     "id": "held-native-transfer",
+     "type": "native-transfer",
+     "txHash": "0x47a571d2f272372e7eb1dbecc5b6ba59693c8dfd1f43751ee05de031a483cba7",
+     "blockNumber": 52953339,
+     "blockTime": "2026-10-22T19:07:05Z"
+    },
+    {
+     "id": "held-reverted",
+     "type": "reverted",
+     "txHash": "0x630b761046bd941d8b08853daaacb49aaf5dc6e6c72b1744e9c40ba3fd4579bd",
+     "blockNumber": 52953360,
+     "blockTime": "2026-10-22T19:07:47Z"
+    },
+    {
+     "id": "held-approve",
+     "type": "approve",
+     "txHash": "0x6b9d96a90feabf4eee4674263c17886818d4812d60cec8cbad4248c11d6a513a",
+     "blockNumber": 52953374,
+     "blockTime": "2026-10-22T19:08:15Z"
+    },
+    {
+     "id": "held-swap",
+     "type": "swap",
+     "txHash": "0x7d69cd153a874ea3fbc25c23d2d024656b00f7bb10efa381dd5f049e493a2290",
+     "blockNumber": 52953379,
+     "blockTime": "2026-10-22T19:08:25Z"
+    }
+   ],
+   "notFound": [],
+   "with": {
+    "passed": 4,
+    "failed": 1,
+    "incomplete": 0,
+    "of": 5
+   },
+   "without": {
+    "passed": 4,
+    "failed": 0,
+    "incomplete": 1,
+    "of": 5
+   },
+   "previous": null,
+   "state": "partial",
+   "reviewedBy": null
+  },
+  "gap": {
+   "tuneMissed": 2,
+   "heldOutMissed": 1
+  },
+  "previousSkillSha256": null,
+  "calibration": {
+   "label": "proxy-uncalibrated",
+   "why": "the tasks have not been run through the agent runtime",
+   "proxySha256": "96b8d8f6b9ff4b170e1ed64864e096b3ccb7c8abd41dbf4abf606a7657d3cbb4"
+  }
+ },
+ "harness": {
+  "name": "bee-self-test scripts/lift_run.py",
+  "commit": "080833652aba722c0f01bd21adf1bba8a867cfdc"
+ },
+ "config": {
+  "model": "meta/muse-ember",
+  "attempts": 2,
+  "max_turns": 6,
+  "max_tokens": 3000,
+  "reasoning_effort": "low",
+  "rpc": "https://mainnet.base.org",
+  "maxCostUsd": 1.0,
+  "maxJudgeCalls": 0,
+  "notifications": "stubbed"
+ },
+ "spentUsd": 0.153263,
+ "judgeCalls": 0,
+ "results": {
+  "usdc-transfer": {
+   "with": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "transfer",
+     "method": "transfer",
+     "from": "0x740da33f3b179a5771df62f14f55cf8f4f0d25cc",
+     "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+     "nativeValueWei": "0",
+     "movements": [
+      {
+       "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+       "from": "0x740da33f3b179a5771df62f14f55cf8f4f0d25cc",
+       "to": "0x07249decebaa94c4038df109811296d5d7f10282",
+       "amountRaw": "36930000"
+      }
+     ],
+     "unlimitedApproval": null,
+     "summary": "Successful ERC-20 transfer call (selector 0xa9059cbb) on token contract 0x833589fcd6edb6e08f4c7c32d4f71b54bda02913: 0x740da33f3b179a5771df62f14f55cf8f4f0d25cc transferred 36930000 raw units to 0x07249decebaa94c4038df109811296d5d7f10282, confirmed by a Transfer log in the receipt. No native value was sent."
+    },
+    "turns": 2,
+    "notifications": 0
+   },
+   "without": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "transfer",
+     "method": "transfer",
+     "from": "0x740da33f3b179a5771df62f14f55cf8f4f0d25cc",
+     "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+     "nativeValueWei": "0",
+     "movements": [
+      {
+       "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+       "from": "0x740da33f3b179a5771df62f14f55cf8f4f0d25cc",
+       "to": "0x07249decebaa94c4038df109811296d5d7f10282",
+       "amountRaw": "36930000"
+      }
+     ],
+     "unlimitedApproval": null,
+     "summary": "Successful ERC-20 transfer call on token 0x833589fcd6edb6e08f4c7c32d4f71b54bda02913: 0x740da33f3b179a5771df62f14f55cf8f4f0d25cc transferred 36930000 raw units to 0x07249decebaa94c4038df109811296d5d7f10282, with 0 native value."
+    },
+    "turns": 2,
+    "notifications": 0
+   }
+  },
+  "native-transfer": {
+   "without": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "native-transfer",
+     "method": null,
+     "from": "0x42d0ef7c7deeabfabd5f33e528d7cf2e7fd7e9ae",
+     "to": "0x63df213cb017eb4a80cf4af595cdb8925489b63d",
+     "nativeValueWei": "720415337186",
+     "movements": [],
+     "unlimitedApproval": null,
+     "summary": "Successful native ETH transfer of 720415337186 wei from 0x42d0ef7c7deeabfabd5f33e528d7cf2e7fd7e9ae to 0x63df213cb017eb4a80cf4af595cdb8925489b63d with no input data and no logs."
+    },
+    "turns": 2,
+    "notifications": 0
+   },
+   "with": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "native-transfer",
+     "method": null,
+     "from": "0x42d0ef7c7deeabfabd5f33e528d7cf2e7fd7e9ae",
+     "to": "0x63df213cb017eb4a80cf4af595cdb8925489b63d",
+     "nativeValueWei": "720415337186",
+     "movements": [],
+     "unlimitedApproval": null,
+     "summary": "Successful native ETH transfer of 720415337186 wei from 0x42d0ef7c7deeabfabd5f33e528d7cf2e7fd7e9ae to 0x63df213cb017eb4a80cf4af595cdb8925489b63d in block 58720259, with empty input and no token movements or approvals."
+    },
+    "turns": 2,
+    "notifications": 0
+   }
+  },
+  "reverted-call": {
+   "with": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "reverted",
+     "action": "contract-call",
+     "method": null,
+     "from": "0xd1f24c0f230ddb1818ae26e1daedd770c2d227fc",
+     "to": "0x83d55acdc72027ed339d267eebaf9a41e47490d5",
+     "nativeValueWei": "0",
+     "movements": [],
+     "unlimitedApproval": null,
+     "summary": "Transaction 0x8c1d4071d8c9d962199ee066bf3076dfd7e87192a3580028f90423a6060cb9a7 on Base reverted (status 0x0) in block 0x378a003. It called contract 0x83d55acdc72027ed339d267eebaf9a41e47490d5 with selector 0x7eb64413 and 0 native value, used 42655 gas, and produced no logs. No token movements occurred and no state changed due to the revert."
+    },
+    "turns": 3,
+    "notifications": 0
+   },
+   "without": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "reverted",
+     "action": "contract-call",
+     "method": null,
+     "from": "0xd1f24c0f230ddb1818ae26e1daedd770c2d227fc",
+     "to": "0x83d55acdc72027ed339d267eebaf9a41e47490d5",
+     "nativeValueWei": "0",
+     "movements": [],
+     "unlimitedApproval": null,
+     "summary": "Transaction 0x8c1d4071d8c9d962199ee066bf3076dfd7e87192a3580028f90423a6060cb9a7 from 0xd1f24c0f230ddb1818ae26e1daedd770c2d227fc to 0x83d55acdc72027ed339d267eebaf9a41e47490d5 with 0 native value and selector 0x7eb64413 reverted (receipt status 0x0, gas used 0xa69f, no logs). Replaying the call returned execution reverted: AR34, so no token or native movements occurred."
+    },
+    "turns": 4,
+    "notifications": 0
+   }
+  },
+  "unlimited-approve": {
+   "without": {
+    "outcome": "fail",
+    "why": "1 of 6 checks failed",
+    "answer": {
+     "status": "success",
+     "action": "approve",
+     "method": "approve",
+     "from": "0xb1829f859c37292acb92bd1be255e8955fc6784e",
+     "to": "0xb200000000000000000000039c6467c6faec91a2",
+     "nativeValueWei": "0",
+     "movements": [],
+     "unlimitedApproval": {
+      "token": "0xb200000000000000000000039c6467c6faec91a2",
+      "spender": "0x0215199f691cd1cc86ce7bbf803a8b9d9e79eb2e7"
+     },
+     "summary": "Successful approve call to token 0xb200000000000000000000039c6467c6faec91a2: 0xb1829f859c37292acb92bd1be255e8955fc6784e granted spender 0x0215199f691cd1cc86ce7bbf803a8b9d9e79eb2e7 an unlimited allowance (max uint256), with 0 native value."
+    },
+    "turns": 4,
+    "notifications": 0
+   },
+   "with": {
+    "outcome": "fail",
+    "why": "1 of 6 checks failed",
+    "answer": {
+     "status": "success",
+     "action": "approve",
+     "method": "approve",
+     "from": "0xb1829f859c37292acb92bd1be255e8955fc6784e",
+     "to": "0xb200000000000000000000039c6467c6faec91a2",
+     "nativeValueWei": "0",
+     "movements": [],
+     "unlimitedApproval": {
+      "token": "0xb200000000000000000000039c6467c6faec91a2",
+      "spender": "0x0215199f691cd1cc86ce7bbf803a8b9d9e79eb2e7"
+     },
+     "summary": "Successful approve call on Base: 0xb1829f859c37292acb92bd1be255e8955fc6784e approved spender 0x0215199f691cd1cc86ce7bbf803a8b9d9e79eb2e7 for an unlimited amount (115792089237316195423570985008687907853269984665640564039457584007913129639935) of token 0xb200000000000000000000039c6467c6faec91a2. No native value transferred and no token transfers occurred."
+    },
+    "turns": 5,
+    "notifications": 1
+   }
+  },
+  "router-swap": {
+   "with": {
+    "outcome": "incomplete",
+    "why": "the answer was cut off at its limit",
+    "turns": 4,
+    "notifications": 0
+   },
+   "without": {
+    "outcome": "fail",
+    "why": "1 of 6 checks failed",
+    "answer": {
+     "status": "success",
+     "action": "swap",
+     "method": "execute",
+     "from": "0xb09a7cc562236f93c3f3a105729f2e2f9fe678a0",
+     "to": "0xd6145b2d3f379919e8cdeda7b97e37c4b2ca9c40",
+     "nativeValueWei": "0",
+     "movements": [
+      {
+       "token": "0xdcf5130274753c8050ab061b1a1dcbf583f5bfd0",
+       "from": "0xe8f16fbf4eafec04bcf0c06d768e7ba325f9d6de",
+       "to": "0xb09a7cc562236f93c3f3a105729f2e2f9fe678a0",
+       "amountRaw": "4500021843129925632"
+      },
+      {
+       "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+       "from": "0xb09a7cc562236f93c3f3a105729f2e2f9fe678a0",
+       "to": "0xe8f16fbf4eafec04bcf0c06d768e7ba325f9d6de",
+       "amountRaw": "81867112"
+      }
+     ],
+     "unlimitedApproval": null,
+     "summary": "Successful swap via Universal Router execute with no native value: 81867112 raw units of token 0x833589fcd6edb6e08f4c7c32d4f71b54bda02913 were transferred from the sender to 0xe8f16fbf4eafec04bcf0c06d768e7ba325f9d6de, and 4500021843129925632 raw units of token 0xdcf5130274753c8050ab061b1a1dcbf583f5bfd0 were transferred from 0xe8f16fbf4eafec04bcf0c06d768e7ba325f9d6de to the sender."
+    },
+    "turns": 5,
+    "notifications": 0
+   }
+  },
+  "held-transfer": {
+   "without": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "transfer",
+     "method": "transfer",
+     "from": "0x7352b4c395e0b4ffaed52ade251b48b680898b70",
+     "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+     "nativeValueWei": "0",
+     "movements": [
+      {
+       "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+       "from": "0x7352b4c395e0b4ffaed52ade251b48b680898b70",
+       "to": "0x30b55ad2c462d4a10aa06a816901b043d5ef6aa4",
+       "amountRaw": "32220000"
+      }
+     ],
+     "unlimitedApproval": null,
+     "summary": "Successful ERC-20 transfer call to token 0x833589fcd6edb6e08f4c7c32d4f71b54bda02913: 0x7352b4c395e0b4ffaed52ade251b48b680898b70 transferred 32220000 raw units to 0x30b55ad2c462d4a10aa06a816901b043d5ef6aa4, with 0 native value."
+    },
+    "turns": 2,
+    "notifications": 0
+   },
+   "with": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "transfer",
+     "method": "transfer",
+     "from": "0x7352b4c395e0b4ffaed52ade251b48b680898b70",
+     "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+     "nativeValueWei": "0",
+     "movements": [
+      {
+       "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+       "from": "0x7352b4c395e0b4ffaed52ade251b48b680898b70",
+       "to": "0x30b55ad2c462d4a10aa06a816901b043d5ef6aa4",
+       "amountRaw": "32220000"
+      }
+     ],
+     "unlimitedApproval": null,
+     "summary": "Successful ERC-20 transfer of 32220000 raw units (32.22 USDC at 6 decimals) of token 0x833589fcd6edb6e08f4c7c32d4f71b54bda02913 from 0x7352b4c395e0b4ffaed52ade251b48b680898b70 to 0x30b55ad2c462d4a10aa06a816901b043d5ef6aa4, with no native value transferred."
+    },
+    "turns": 2,
+    "notifications": 0
+   }
+  },
+  "held-native-transfer": {
+   "with": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "native-transfer",
+     "method": null,
+     "from": "0xbb2f33f73ccc2c74e3fb9bb8eb75241ac15337e0",
+     "to": "0xafcba5be543a2e77bf8f0ffd3e52beb54be20ff9",
+     "nativeValueWei": "395041428217",
+     "movements": [],
+     "unlimitedApproval": null,
+     "summary": "Successful native ETH transfer of 395041428217 wei from 0xbb2f33f73ccc2c74e3fb9bb8eb75241ac15337e0 to 0xafcba5be543a2e77bf8f0ffd3e52beb54be20ff9 with empty input and no token logs."
+    },
+    "turns": 2,
+    "notifications": 0
+   },
+   "without": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "native-transfer",
+     "method": null,
+     "from": "0xbb2f33f73ccc2c74e3fb9bb8eb75241ac15337e0",
+     "to": "0xafcba5be543a2e77bf8f0ffd3e52beb54be20ff9",
+     "nativeValueWei": "395041428217",
+     "movements": [],
+     "unlimitedApproval": null,
+     "summary": "Successful native transfer of 395041428217 wei from 0xbb2f33f73ccc2c74e3fb9bb8eb75241ac15337e0 to 0xafcba5be543a2e77bf8f0ffd3e52beb54be20ff9 with empty input and no logs."
+    },
+    "turns": 4,
+    "notifications": 0
+   }
+  },
+  "held-reverted": {
+   "without": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "reverted",
+     "action": "contract-call",
+     "method": null,
+     "from": "0x2e83c26b03bcb78422efc295d77f094c0e0fc5c4",
+     "to": "0x88ca55716aa4c1f8ecb9ba78c46da09c984faae9",
+     "nativeValueWei": "0",
+     "movements": [],
+     "unlimitedApproval": null,
+     "summary": "Transaction 0x630b761046bd941d8b08853daaacb49aaf5dc6e6c72b1744e9c40ba3fd4579bd on Base reverted (receipt status 0x0, gasUsed 0x2a405) with no logs. It was a contract call to 0x88ca55716aa4c1f8ecb9ba78c46da09c984faae9 with function selector 0x63fb0b96 and 0 native value, so no native or token movements occurred."
+    },
+    "turns": 3,
+    "notifications": 0
+   },
+   "with": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "reverted",
+     "action": "contract-call",
+     "method": null,
+     "from": "0x2e83c26b03bcb78422efc295d77f094c0e0fc5c4",
+     "to": "0x88ca55716aa4c1f8ecb9ba78c46da09c984faae9",
+     "nativeValueWei": "0",
+     "movements": [],
+     "unlimitedApproval": null,
+     "summary": "Transaction reverted on Base (status 0x0) with no logs and no token movements; no state changed. It called contract 0x88ca55716aa4c1f8ecb9ba78c46da09c984faae9 with selector 0x63fb0b96 and 0 native value, but the method name could not be determined from chain data."
+    },
+    "turns": 3,
+    "notifications": 0
+   }
+  },
+  "held-approve": {
+   "with": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "approve",
+     "method": "approve",
+     "from": "0xcd3c99be377da7bb0cf36a83d6aca281a182865b",
+     "to": "0x7a77aca6114026c5484e5b25c710026a0a76db07",
+     "nativeValueWei": "0",
+     "movements": [],
+     "unlimitedApproval": null,
+     "summary": "Successful approve call on token contract 0x7a77aca6114026c5484e5b25c710026a0a76db07: 0xcd3c99be377da7bb0cf36a83d6aca281a182865b approved spender 0xd8ba9d1a99fc21f0eca24e9b85737c28a194a4e2 for raw amount 0x13602a5e9dc73b34d9ba5fe, confirmed by an Approval log. No native value or token transfers occurred, and the approval is not unlimited."
+    },
+    "turns": 2,
+    "notifications": 0
+   },
+   "without": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "approve",
+     "method": "approve",
+     "from": "0xcd3c99be377da7bb0cf36a83d6aca281a182865b",
+     "to": "0x7a77aca6114026c5484e5b25c710026a0a76db07",
+     "nativeValueWei": "0",
+     "movements": [],
+     "unlimitedApproval": null,
+     "summary": "Successful ERC-20 approve call on token 0x7a77aca6114026c5484e5b25c710026a0a76db07: 0xcd3c99be377da7bb0cf36a83d6aca281a182865b approved spender 0xd8ba9d1a99fc21f0eca24e9b85737c28a194a4e2 for 374746741761744065177298430 raw units, with 0 native value."
+    },
+    "turns": 2,
+    "notifications": 0
+   }
+  },
+  "held-swap": {
+   "without": {
+    "outcome": "incomplete",
+    "why": "the answer was cut off at its limit",
+    "turns": 3,
+    "notifications": 0
+   },
+   "with": {
+    "outcome": "fail",
+    "why": "3 of 9 checks failed",
+    "answer": {
+     "status": "success",
+     "action": "swap",
+     "method": null,
+     "from": "0x07d260d551e63d280de17b56d8ac46aee0f80cd6",
+     "to": "0x2192bc3b4028acc1113f2cd9ac2cba70c36520db",
+     "nativeValueWei": "0",
+     "movements": [
+      {
+       "token": "0x4200000000000000000000000000000000000006",
+       "from": "0x2192bc3b4028acc1113f2cd9ac2cba70c36520db",
+       "to": "0x2dbe0e264c7c246e05c6614794899937f264cf7b",
+       "amountRaw": "22173051830255976717"
+      },
+      {
+       "token": "0xfde4c96c8593536e31f229ea8f37b2ada2699bb2",
+       "from": "0x2192bc3b4028acc1113f2cd9ac2cba70c36520db",
+       "to": "0x2dbe0e264c7c246e05c6614794899937f264cf7b",
+       "amountRaw": "42545128689"
+      },
+      {
+       "token": "0x4857db576ee0e45f10525ec59527bfd10beec60b",
+       "from": "0x2192bc3b4028acc1113f2cd9ac2cba70c36520db",
+       "to": "0x2f68e89ad5176d1fca1b4cac7265536a539807e7",
+       "amountRaw": "48578"
+      }
+     ],
+     "unlimitedApproval": null,
+     "summary": "Successful swap via contract 0x2192bc3b4028acc1113f2cd9ac2cba70c36520db with 0 native value. Contract transferred 22173051830255976717 units of 0x4200000000000000000000000000000000000006 and 42545128689 units of 0xfde4c96c8593536e31f229ea8f37b2ada2699bb2 to 0x2dbe0e264c7c246e05c6614794899937f264cf7b, and token 48578 of 0x4857db576ee0e45f10525ec59527bfd10beec60b to 0x2f68e89ad5176d1fca1b4cac7265536a539807e7. No unlimited approval was granted."
+    },
+    "turns": 5,
+    "notifications": 0
+   }
+  }
+ }
+}

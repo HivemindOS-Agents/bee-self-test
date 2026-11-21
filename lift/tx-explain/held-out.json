@@ -8,8 +8,8 @@
   "owner": "aeonfun"
  },
  "rule": {
-  "id": "block-hash-v1",
-  "text": "Start at the first Base block whose timestamp is after editAt, the time of the skill's edit. In each block the one candidate is the transaction at index (the block's hash as an integer) modulo (the block's transaction count). For each needed type in order, scanning forward from the block after the previous pick, take the first candidate whose chain-derived answer has that type and at most 4 token movements. A reverted transaction has the type reverted; any other has its action. A block whose candidate does not fit is skipped and counted. A type not found within maxScan blocks is listed as not found, and the next type starts where that scan began."
+  "id": "block-hash-v2",
+  "text": "Start at the first Base block whose timestamp is after editAt, the time of the skill's edit. In each block the one candidate is the transaction at index (the block's hash as an integer) modulo (the block's transaction count). For each needed type in order, scanning forward from the block after the previous pick, take the first candidate whose chain-derived answer has that type and at most 4 token movements, and whose receipt has no Transfer log the chain reader does not count (an NFT's). A reverted transaction has the type reverted; any other has its action, and a swap fits only when the sender sent one token and received another. A block whose candidate does not fit is skipped and counted. A type not found within maxScan blocks is listed as not found, and the next type starts where that scan began."
  },
  "editAt": "2026-10-22T19:06:22Z",
  "afterBlock": 52953318,
@@ -21,7 +21,7 @@
   "swap"
  ],
  "maxScan": 400,
- "pickedAt": "2026-11-21T05:16:37Z",
+ "pickedAt": "2026-11-21T05:33:50Z",
  "picks": [
   {
    "id": "held-transfer",
@@ -66,22 +66,22 @@
   {
    "id": "held-swap",
    "type": "swap",
-   "txHash": "0x7d69cd153a874ea3fbc25c23d2d024656b00f7bb10efa381dd5f049e493a2290",
-   "blockNumber": 52953379,
-   "blockHash": "0x07d6008b05f2c26f3f9ec905cecc134d10ba1a9f9aa7d996636c6336307defa8",
-   "blockTime": "2026-10-22T19:08:25Z",
-   "index": 65,
-   "of": 143
+   "txHash": "0x1d5b5a30ff3cc67568b5d3b01e59121381a4629c7cf9b5a88c99144a55861fa1",
+   "blockNumber": 52953390,
+   "blockHash": "0xf58c8e349dbed220d8de2ff27ca2be62486aee031701a22186984b944cf01cfc",
+   "blockTime": "2026-10-22T19:08:47Z",
+   "index": 331,
+   "of": 361
   }
  ],
- "skipped": 57,
+ "skipped": 68,
  "notFound": [],
  "tasks": [
   {
    "id": "held-transfer",
    "txHash": "0x355bac3b1fe1e3862157e30c7b528f01429dec7bb93e1a79cf47f4ed2a9640ef",
    "blockNumber": 52953319,
-   "about": "Held-out transfer: block 52953319, transaction 150 of 280, picked by block-hash-v1.",
+   "about": "Held-out transfer: block 52953319, transaction 150 of 280, picked by block-hash-v2.",
    "checks": [
     {
      "field": "status",
@@ -112,10 +112,6 @@
      "equals": "0"
     },
     {
-     "field": "movements",
-     "length": 1
-    },
-    {
      "movement": {
       "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
       "from": "0x7352b4c395e0b4ffaed52ade251b48b680898b70",
@@ -133,7 +129,7 @@
    "id": "held-native-transfer",
    "txHash": "0x47a571d2f272372e7eb1dbecc5b6ba59693c8dfd1f43751ee05de031a483cba7",
    "blockNumber": 52953339,
-   "about": "Held-out native-transfer: block 52953339, transaction 116 of 180, picked by block-hash-v1.",
+   "about": "Held-out native-transfer: block 52953339, transaction 116 of 180, picked by block-hash-v2.",
    "checks": [
     {
      "field": "status",
@@ -171,7 +167,7 @@
    "id": "held-reverted",
    "txHash": "0x630b761046bd941d8b08853daaacb49aaf5dc6e6c72b1744e9c40ba3fd4579bd",
    "blockNumber": 52953360,
-   "about": "Held-out reverted: block 52953360, transaction 87 of 174, picked by block-hash-v1.",
+   "about": "Held-out reverted: block 52953360, transaction 87 of 174, picked by block-hash-v2.",
    "checks": [
     {
      "field": "status",
@@ -209,7 +205,7 @@
    "id": "held-approve",
    "txHash": "0x6b9d96a90feabf4eee4674263c17886818d4812d60cec8cbad4248c11d6a513a",
    "blockNumber": 52953374,
-   "about": "Held-out approve: block 52953374, transaction 137 of 150, picked by block-hash-v1.",
+   "about": "Held-out approve: block 52953374, transaction 137 of 150, picked by block-hash-v2.",
    "checks": [
     {
      "field": "status",
@@ -251,9 +247,9 @@
   },
   {
    "id": "held-swap",
-   "txHash": "0x7d69cd153a874ea3fbc25c23d2d024656b00f7bb10efa381dd5f049e493a2290",
-   "blockNumber": 52953379,
-   "about": "Held-out swap: block 52953379, transaction 65 of 143, picked by block-hash-v1.",
+   "txHash": "0x1d5b5a30ff3cc67568b5d3b01e59121381a4629c7cf9b5a88c99144a55861fa1",
+   "blockNumber": 52953390,
+   "about": "Held-out swap: block 52953390, transaction 331 of 361, picked by block-hash-v2.",
    "checks": [
     {
      "field": "status",
@@ -267,34 +263,30 @@
     },
     {
      "field": "from",
-     "equalsAddress": "0x07d260d551e63d280de17b56d8ac46aee0f80cd6"
+     "equalsAddress": "0x7b42a330a13a8032a48fd4e6392f46d132104f5e"
     },
     {
      "field": "to",
-     "equalsAddress": "0x2192bc3b4028acc1113f2cd9ac2cba70c36520db"
+     "equalsAddress": "0x7b42a330a13a8032a48fd4e6392f46d132104f5e"
     },
     {
      "field": "nativeValueWei",
      "equals": "0"
     },
     {
-     "field": "movements",
-     "length": 2
-    },
-    {
      "movement": {
-      "token": "0x4200000000000000000000000000000000000006",
-      "from": "0x2192bc3b4028acc1113f2cd9ac2cba70c36520db",
-      "to": "0x2dbe0e264c7c246e05c6614794899937f264cf7b",
-      "amountRaw": "22173045305476935853"
+      "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "from": "0x422df9aa896e883c9cdcbad309c0785b7364a1cf",
+      "to": "0x7b42a330a13a8032a48fd4e6392f46d132104f5e",
+      "amountRaw": "7162432"
      }
     },
     {
      "movement": {
-      "token": "0xfde4c96c8593536e31f229ea8f37b2ada2699bb2",
-      "from": "0x2192bc3b4028acc1113f2cd9ac2cba70c36520db",
-      "to": "0x2dbe0e264c7c246e05c6614794899937f264cf7b",
-      "amountRaw": "42545112689"
+      "token": "0x3f5bf3edac59d650d8fdf9657a71f2f904a3a4ee",
+      "from": "0x7b42a330a13a8032a48fd4e6392f46d132104f5e",
+      "to": "0x422df9aa896e883c9cdcbad309c0785b7364a1cf",
+      "amountRaw": "9000000000000000000"
      }
     },
     {
@@ -310,5 +302,5 @@
  },
  "reviewedBy": null,
  "reviewedAt": null,
- "heldOutSha256": "032bf6da4a7e9c72ea24362aecae5a0fe21921af234dc4d051ca05d7a2c95f8d"
+ "heldOutSha256": "33ddc156b06e53fa86bdd58a6f3415d7b4003cf181608762a2a24044aa21d9e1"
 }

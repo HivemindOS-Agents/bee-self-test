@@ -204,7 +204,7 @@
   }
  ],
  "heldOut": {
-  "rule": "block-hash-v1",
+  "rule": "block-hash-v2",
   "editAt": "2026-10-22T19:06:22Z",
   "editAtFrom": "The committer time of aeonfun/aeon b2f58a34a724d5bbcd53c4b696be5664370ec2b2, the commit skillUrl pins. The skill file itself was last changed before it, on 2026-10-01.",
   "types": [

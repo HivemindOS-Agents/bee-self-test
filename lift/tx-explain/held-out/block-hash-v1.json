@@ -1,0 +1,314 @@
+{
+ "about": "HB-036 +: held-out tasks for this skill's lift. Picked by a fixed rule from Base blocks mined after the skill's edit, so its editor could not have seen them. Anyone can pick them again: scripts/lift_run.py --verify-held-out.",
+ "skill": "tx-explain",
+ "skillSha256": "eafd1ae43bdf5fcacc8c5c02bcb6f7848eb533c34bfeb3e7f2b06dbf9bf4df94",
+ "tasksetSha256": "659ec43f83afc7c116f99fdc46adfdfdfba87d8649c99fcf0cd9ca67de25d607",
+ "publisher": {
+  "source": "aeon",
+  "owner": "aeonfun"
+ },
+ "rule": {
+  "id": "block-hash-v1",
+  "text": "Start at the first Base block whose timestamp is after editAt, the time of the skill's edit. In each block the one candidate is the transaction at index (the block's hash as an integer) modulo (the block's transaction count). For each needed type in order, scanning forward from the block after the previous pick, take the first candidate whose chain-derived answer has that type and at most 4 token movements. A reverted transaction has the type reverted; any other has its action. A block whose candidate does not fit is skipped and counted. A type not found within maxScan blocks is listed as not found, and the next type starts where that scan began."
+ },
+ "editAt": "2026-10-22T19:06:22Z",
+ "afterBlock": 52953318,
+ "types": [
+  "transfer",
+  "native-transfer",
+  "reverted",
+  "approve",
+  "swap"
+ ],
+ "maxScan": 400,
+ "pickedAt": "2026-11-21T05:16:37Z",
+ "picks": [
+  {
+   "id": "held-transfer",
+   "type": "transfer",
+   "txHash": "0x355bac3b1fe1e3862157e30c7b528f01429dec7bb93e1a79cf47f4ed2a9640ef",
+   "blockNumber": 52953319,
+   "blockHash": "0xea615a680f3633a0797ee8f4810288d81a956110b2ba885062ad57d470f488ae",
+   "blockTime": "2026-10-22T19:06:25Z",
+   "index": 150,
+   "of": 280
+  },
+  {
+   "id": "held-native-transfer",
+   "type": "native-transfer",
+   "txHash": "0x47a571d2f272372e7eb1dbecc5b6ba59693c8dfd1f43751ee05de031a483cba7",
+   "blockNumber": 52953339,
+   "blockHash": "0x73b9adbbe685373b846f4b01cfbe73e8c5f93c25a5689d8a15c098e5abdb6874",
+   "blockTime": "2026-10-22T19:07:05Z",
+   "index": 116,
+   "of": 180
+  },
+  {
+   "id": "held-reverted",
+   "type": "reverted",
+   "txHash": "0x630b761046bd941d8b08853daaacb49aaf5dc6e6c72b1744e9c40ba3fd4579bd",
+   "blockNumber": 52953360,
+   "blockHash": "0xf66f82086e94f2ba08433a5b7d68b754e266309509e28e9ea8b4abeafb2d32a1",
+   "blockTime": "2026-10-22T19:07:47Z",
+   "index": 87,
+   "of": 174
+  },
+  {
+   "id": "held-approve",
+   "type": "approve",
+   "txHash": "0x6b9d96a90feabf4eee4674263c17886818d4812d60cec8cbad4248c11d6a513a",
+   "blockNumber": 52953374,
+   "blockHash": "0x9cc0a25e2598302aaa20ed42b5854ed88c0b8afd07bdaa33c6ff5746f4a76aa5",
+   "blockTime": "2026-10-22T19:08:15Z",
+   "index": 137,
+   "of": 150
+  },
+  {
+   "id": "held-swap",
+   "type": "swap",
+   "txHash": "0x7d69cd153a874ea3fbc25c23d2d024656b00f7bb10efa381dd5f049e493a2290",
+   "blockNumber": 52953379,
+   "blockHash": "0x07d6008b05f2c26f3f9ec905cecc134d10ba1a9f9aa7d996636c6336307defa8",
+   "blockTime": "2026-10-22T19:08:25Z",
+   "index": 65,
+   "of": 143
+  }
+ ],
+ "skipped": 57,
+ "notFound": [],
+ "tasks": [
+  {
+   "id": "held-transfer",
+   "txHash": "0x355bac3b1fe1e3862157e30c7b528f01429dec7bb93e1a79cf47f4ed2a9640ef",
+   "blockNumber": 52953319,
+   "about": "Held-out transfer: block 52953319, transaction 150 of 280, picked by block-hash-v1.",
+   "checks": [
+    {
+     "field": "status",
+     "equals": "success"
+    },
+    {
+     "field": "action",
+     "oneOf": [
+      "transfer"
+     ]
+    },
+    {
+     "field": "method",
+     "oneOf": [
+      "transfer"
+     ]
+    },
+    {
+     "field": "from",
+     "equalsAddress": "0x7352b4c395e0b4ffaed52ade251b48b680898b70"
+    },
+    {
+     "field": "to",
+     "equalsAddress": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+    },
+    {
+     "field": "nativeValueWei",
+     "equals": "0"
+    },
+    {
+     "field": "movements",
+     "length": 1
+    },
+    {
+     "movement": {
+      "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "from": "0x7352b4c395e0b4ffaed52ade251b48b680898b70",
+      "to": "0x30b55ad2c462d4a10aa06a816901b043d5ef6aa4",
+      "amountRaw": "32220000"
+     }
+    },
+    {
+     "field": "unlimitedApproval",
+     "isNull": true
+    }
+   ]
+  },
+  {
+   "id": "held-native-transfer",
+   "txHash": "0x47a571d2f272372e7eb1dbecc5b6ba59693c8dfd1f43751ee05de031a483cba7",
+   "blockNumber": 52953339,
+   "about": "Held-out native-transfer: block 52953339, transaction 116 of 180, picked by block-hash-v1.",
+   "checks": [
+    {
+     "field": "status",
+     "equals": "success"
+    },
+    {
+     "field": "action",
+     "oneOf": [
+      "native-transfer"
+     ]
+    },
+    {
+     "field": "from",
+     "equalsAddress": "0xbb2f33f73ccc2c74e3fb9bb8eb75241ac15337e0"
+    },
+    {
+     "field": "to",
+     "equalsAddress": "0xafcba5be543a2e77bf8f0ffd3e52beb54be20ff9"
+    },
+    {
+     "field": "nativeValueWei",
+     "equals": "395041428217"
+    },
+    {
+     "field": "movements",
+     "length": 0
+    },
+    {
+     "field": "unlimitedApproval",
+     "isNull": true
+    }
+   ]
+  },
+  {
+   "id": "held-reverted",
+   "txHash": "0x630b761046bd941d8b08853daaacb49aaf5dc6e6c72b1744e9c40ba3fd4579bd",
+   "blockNumber": 52953360,
+   "about": "Held-out reverted: block 52953360, transaction 87 of 174, picked by block-hash-v1.",
+   "checks": [
+    {
+     "field": "status",
+     "equals": "reverted"
+    },
+    {
+     "field": "action",
+     "oneOf": [
+      "contract-call"
+     ]
+    },
+    {
+     "field": "from",
+     "equalsAddress": "0x2e83c26b03bcb78422efc295d77f094c0e0fc5c4"
+    },
+    {
+     "field": "to",
+     "equalsAddress": "0x88ca55716aa4c1f8ecb9ba78c46da09c984faae9"
+    },
+    {
+     "field": "nativeValueWei",
+     "equals": "0"
+    },
+    {
+     "field": "movements",
+     "length": 0
+    },
+    {
+     "field": "unlimitedApproval",
+     "isNull": true
+    }
+   ]
+  },
+  {
+   "id": "held-approve",
+   "txHash": "0x6b9d96a90feabf4eee4674263c17886818d4812d60cec8cbad4248c11d6a513a",
+   "blockNumber": 52953374,
+   "about": "Held-out approve: block 52953374, transaction 137 of 150, picked by block-hash-v1.",
+   "checks": [
+    {
+     "field": "status",
+     "equals": "success"
+    },
+    {
+     "field": "action",
+     "oneOf": [
+      "approve"
+     ]
+    },
+    {
+     "field": "method",
+     "oneOf": [
+      "approve"
+     ]
+    },
+    {
+     "field": "from",
+     "equalsAddress": "0xcd3c99be377da7bb0cf36a83d6aca281a182865b"
+    },
+    {
+     "field": "to",
+     "equalsAddress": "0x7a77aca6114026c5484e5b25c710026a0a76db07"
+    },
+    {
+     "field": "nativeValueWei",
+     "equals": "0"
+    },
+    {
+     "field": "movements",
+     "length": 0
+    },
+    {
+     "field": "unlimitedApproval",
+     "isNull": true
+    }
+   ]
+  },
+  {
+   "id": "held-swap",
+   "txHash": "0x7d69cd153a874ea3fbc25c23d2d024656b00f7bb10efa381dd5f049e493a2290",
+   "blockNumber": 52953379,
+   "about": "Held-out swap: block 52953379, transaction 65 of 143, picked by block-hash-v1.",
+   "checks": [
+    {
+     "field": "status",
+     "equals": "success"
+    },
+    {
+     "field": "action",
+     "oneOf": [
+      "swap"
+     ]
+    },
+    {
+     "field": "from",
+     "equalsAddress": "0x07d260d551e63d280de17b56d8ac46aee0f80cd6"
+    },
+    {
+     "field": "to",
+     "equalsAddress": "0x2192bc3b4028acc1113f2cd9ac2cba70c36520db"
+    },
+    {
+     "field": "nativeValueWei",
+     "equals": "0"
+    },
+    {
+     "field": "movements",
+     "length": 2
+    },
+    {
+     "movement": {
+      "token": "0x4200000000000000000000000000000000000006",
+      "from": "0x2192bc3b4028acc1113f2cd9ac2cba70c36520db",
+      "to": "0x2dbe0e264c7c246e05c6614794899937f264cf7b",
+      "amountRaw": "22173045305476935853"
+     }
+    },
+    {
+     "movement": {
+      "token": "0xfde4c96c8593536e31f229ea8f37b2ada2699bb2",
+      "from": "0x2192bc3b4028acc1113f2cd9ac2cba70c36520db",
+      "to": "0x2dbe0e264c7c246e05c6614794899937f264cf7b",
+      "amountRaw": "42545112689"
+     }
+    },
+    {
+     "field": "unlimitedApproval",
+     "isNull": true
+    }
+   ]
+  }
+ ],
+ "writtenBy": {
+  "agent": "bee-self-test scripts/lift_run.py --pick-held-out",
+  "owner": "hivemindos"
+ },
+ "reviewedBy": null,
+ "reviewedAt": null,
+ "heldOutSha256": "032bf6da4a7e9c72ea24362aecae5a0fe21921af234dc4d051ca05d7a2c95f8d"
+}
