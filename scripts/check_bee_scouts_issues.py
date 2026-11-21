@@ -14,7 +14,14 @@ Fails on any of:
 Every check but untriaged and triage-md reads only agent issues opened since the gate went live (GATE_SINCE); the ones
 before it were closed or kept by hand in the 16 Nov triage (#25 and #30, kept, would fail unconfirmed and twin).
 
-  check_bee_scouts_issues.py --fixtures DIR     the regression case: DIR/issues.json must give DIR/expected.json
+own-todo does not read the disclosure footer (HB-064): the host ends every agent issue with "HivePunk #N is a HivemindOS
+agent. Its card: ... Its code: https://github.com/HivemindOS-Agents/hivepunk-N." (hivemind-os core/agent-disclosure.ts,
+agentDisclosureLine), which names the agent's own repository by design. The check failed on that line alone on every
+agent issue from #193, 16 to 20 Nov 2026. Only a whole line in the host's own shape is left out; any other mention of
+its repository, tool folder or dataset still fails.
+
+  check_bee_scouts_issues.py --fixtures DIR     the regression cases: DIR/issues.json must give DIR/expected.json, and
+                                                so must every folder under DIR that has a case.json
   check_bee_scouts_issues.py ISSUES.json TRIAGE_AT [NOW]
       ISSUES.json is GitHub's issue list (state=all); TRIAGE_AT is TRIAGE.md's last commit time (ISO); prints JSON,
       exits 1 on any problem. Only reads text."""
@@ -28,6 +35,9 @@ AGENT_KINDS = {"bee-proposal", "bee-docs", "bee-benchmark"}
 # Kept in step with BEE_SCOUTS_OWN and BEE_SCOUTS_UNCONFIRMED in hivemind-os core/bee-scouts-gate.ts.
 OWN = re.compile(r"\bgithub\.com/HivemindOS-Agents/hivepunk-\d+|\bhuggingface\.co/(?:datasets/|spaces/)?hivepunk-\d+|\bhivepunk-\d+(?:-[0-9a-f]{6,})?\b|(?:^|[\s(`\"'])tools/[a-z0-9][a-z0-9-]+/", re.I)
 UNCONFIRMED = re.compile(r"\b(?:could not|couldn't|cannot|can't|was unable to|unable to) (?:confirm|verify)\b", re.I)
+# HB-064: the disclosure footer as the host writes it (hivemind-os core/agent-disclosure.ts, agentDisclosureLine): a
+# whole line, the agent's name, then its card, its code and, when the issue announces one artifact, its receipt.
+DISCLOSURE = re.compile(r"^[ \t]*(?P<name>[^\n]{1,80}?) is a HivemindOS agent\. Its card: https://hivemindos\.app/agents/hivepunkz/\d+\. Its code: https://github\.com/HivemindOS-Agents/hivepunk-\d+\.(?: What it did, checkable: \S+\.)?[ \t]*$", re.M)
 
 def when(s): return datetime.fromisoformat(s.replace("Z", "+00:00"))
 def labels(i): return {l["name"] if isinstance(l, dict) else l for l in i.get("labels", [])}
@@ -38,6 +48,10 @@ def by_agent(i):
 def artifact(title):
     names = sorted(re.findall(r"[a-z0-9]+(?:-[a-z0-9]+)+", title.lower()), key=len, reverse=True)
     return names[0] if names else None
+def without_disclosure(body):
+    """The body without its disclosure footer. A line whose name part itself names a repository, tool or dataset is
+    not the footer and stays."""
+    return DISCLOSURE.sub(lambda m: m.group(0) if OWN.search(m.group("name")) else "", body)
 def unconfirmed(text):
     return any(UNCONFIRMED.search(s) and re.search(r"https?://", s) for s in re.split(r"(?<=[.!?])\s+|\n", text))
 
@@ -49,7 +63,7 @@ def check(issues, triage_at, now):
     open_ = [i for i in issues if i["state"] == "open"]
     new = [i for i in issues if by_agent(i) and when(i["created_at"]) >= since]
     for i in new:
-        if OWN.search(f"{i['title']}\n{i.get('body') or ''}"): say("own-todo", i, "names the agent's own repository, tool or dataset")
+        if OWN.search(f"{i['title']}\n{without_disclosure(i.get('body') or '')}"): say("own-todo", i, "names the agent's own repository, tool or dataset")
     for i in open_:
         if not labels(i) & KINDS and when(i["created_at"]) >= since: say("kind", i, "no hivemind-decision or outside-pr-candidate label")
         if i in new and unconfirmed(i.get("body") or ""): say("unconfirmed", i, "says it could not confirm a page it names")
@@ -73,14 +87,18 @@ def check(issues, triage_at, now):
     elif (now - when(triage_at)).days > 8: say("triage-md", None, f"TRIAGE.md last written {triage_at}, over 8 days ago")
     return found
 
-def fixtures(folder):
+def fixture(folder, name):
     case = json.loads((folder / "case.json").read_text())
     got = check(json.loads((folder / "issues.json").read_text()), case["triage_at"], when(case["now"]))
     want = json.loads((folder / "expected.json").read_text())
     print(json.dumps(got, indent=1))
     if got != want:
-        print("does not match expected.json"); return 1
-    print(f"regression case: {len(got)} problems, as expected"); return 0
+        print(f"{name}: does not match expected.json"); return 1
+    print(f"{name}: {len(got)} problems, as expected"); return 0
+def fixtures(folder):
+    """The folder's own case, then every folder under it that has a case.json. All of them run; any miss fails."""
+    cases = [(folder, "regression case")] + [(d, d.name) for d in sorted(folder.iterdir()) if (d / "case.json").is_file()]
+    return 1 if sum([fixture(d, name) for d, name in cases]) else 0
 
 if __name__ == "__main__":
     if sys.argv[1:2] == ["--fixtures"]: sys.exit(fixtures(pathlib.Path(sys.argv[2])))
