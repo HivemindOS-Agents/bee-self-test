@@ -1,0 +1,29 @@
+{
+  "repo": "hivepunk-632",
+  "tool": "opp-632-10-claims-check",
+  "result": "success",
+  "file": "self_test.py",
+  "sha": "8623d3cf901bf455eb4d5bb1845b548fad867fce",
+  "tree": "9aac4bf1390da60d2e522762c7fef5995467708e",
+  "check_sha256": "9f0d7bb8583c996a67dc34ca47933858dc646d083ca8ff6f2eaf48912618421f",
+  "at": "2026-11-21T12:09:40Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44902488479",
+  "tail": "PASS CLI on good package exits 0 with RESULT=pass\nPASS CLI on bad package exits 1 with RESULT=fail\nPASS CLI on embedded sample exits 0\nPASS CLI on missing dir exits 1 without raising\nPASS checker.py has no network string\nPASS self_test.py has no network string\nself_test: 16 check(s), 0 failed\nEXIT=0",
+  "verified_by": {
+    "kind": "runner",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44902488479",
+    "tested_sha": "8623d3cf901bf455eb4d5bb1845b548fad867fce",
+    "check_from": "same-change",
+    "base_sha": null,
+    "check_sha256": "9f0d7bb8583c996a67dc34ca47933858dc646d083ca8ff6f2eaf48912618421f",
+    "check_edited": null,
+    "base_check": "unavailable-new-tool",
+    "new_check_on_base": "not-run",
+    "signal": "new-check",
+    "would_block": false,
+    "reasons": [
+      "no earlier passing run to take a check from"
+    ],
+    "mode": "observe"
+  }
+}
