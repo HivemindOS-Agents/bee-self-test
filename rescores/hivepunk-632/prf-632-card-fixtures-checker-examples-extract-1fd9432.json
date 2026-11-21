@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-632",
+  "bundle": "prf-632-card-fixtures-checker-examples-extract-1fd9432",
+  "result": "REPRODUCED",
+  "observed": "failed, no count line",
+  "scorerCommit": "1fd943258aeeec41929e6fa253df8d9a97d7f121",
+  "peer": "667",
+  "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
+  "at": "2026-11-21T21:51:16Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44953652545"
+}
