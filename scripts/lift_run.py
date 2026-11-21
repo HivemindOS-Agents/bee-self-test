@@ -18,11 +18,28 @@ Sandbox: the model gets two tools, `base_rpc` (keyless, read-only JSON-RPC to on
 methods) and `notify` (stubbed in both arms: it records the call and sends nothing). No Hive secret is given to the
 model or its tools; the gateway key is read from an environment variable and sent only to the gateway endpoint.
 
+HB-036 "+" (20 Nov 2026): held-out tasks and a calibrated proxy, before any skill is tuned against lift.
+  - Held-out. Besides the fixed task set (the "tune" set), a run is judged on tasks the skill's editor could not have
+    seen: Base transactions from blocks mined after the edit, picked by a fixed rule on each block's hash (HELD_OUT_RULE).
+    Nothing is secret: the rule only picks tasks that cannot exist before the edit, anyone can pick them again
+    (--verify-held-out), and they are published with the result. The lift block carries `tune` and `heldOut` counts.
+  - Calibration. This harness is a prompt-level proxy, not the agent runtime. Until the same tune tasks have been run
+    once through the real runtime and the two agree on all but one task at most, the block is labelled
+    `proxy-uncalibrated` and is not a promote test. A record for another model or another proxy prompt does not count.
+  - Promotion (--check-promotion) fails with no held-out block, fewer than 3 held-out tasks, a held-out task from a
+    block not after the edit, a held-out count that drops against the previous skill on the same tasks, an unreviewed
+    or unfinished run, or a missing or failed calibration.
+
   python3 scripts/lift_run.py --check-taskset lift/tx-explain/tasks.json --skill-file SKILL.md
+  python3 scripts/lift_run.py --pick-held-out lift/tx-explain/tasks.json --out lift/tx-explain/held-out.json
+  python3 scripts/lift_run.py --verify-held-out lift/tx-explain/held-out.json --taskset lift/tx-explain/tasks.json
+  python3 scripts/lift_run.py --check-promotion LIFT.json                         # a promotion's lift block
+  python3 scripts/lift_run.py --audit lift/*/runs/*.json                          # report-only: what each record lacks
   python3 scripts/lift_run.py --verify-tasks lift/tx-explain/tasks.json          # re-derive each check from the chain
   python3 scripts/lift_run.py --taskset lift/tx-explain/tasks.json --skill-file SKILL.md --model <id> \\
       --endpoint <OpenAI-compatible chat completions URL> --max-cost-usd 1 --price-file prices.json \\
-      --max-judge-calls 0 --out lift/tx-explain/runs/<date>.json
+      --max-judge-calls 0 --out lift/tx-explain/runs/<date>.json \\
+      [--held-out lift/tx-explain/held-out.json] [--calibration lift/tx-explain/calibration.json] [--previous-skill-file OLD.md]
 
 Python 3.9+ standard library only."""
 import argparse, hashlib, json, os, re, sys, time, urllib.error, urllib.request
@@ -37,6 +54,22 @@ SELECTORS = {"0xa9059cbb": "transfer", "0x095ea7b3": "approve", "0x23b872dd": "t
              "0x7ff36ab5": "swapExactETHForTokens", "0x3593564c": "execute"}
 ACTIONS = ("native-transfer", "transfer", "approve", "swap", "contract-call", "unknown")
 STATES = ("complete", "partial", "incomplete", "unreviewed", "stale")
+HELD_OUT_MIN = 3
+HELD_OUT_TYPES = ("transfer", "native-transfer", "reverted", "approve", "swap")
+HELD_OUT_MAX_MOVEMENTS = 4
+HELD_OUT_MAX_SCAN = 400
+HELD_OUT_RULE = {
+    "id": "block-hash-v1",
+    "text": (
+        "Start at the first Base block whose timestamp is after editAt, the time of the skill's edit. In each block the one "
+        "candidate is the transaction at index (the block's hash as an integer) modulo (the block's transaction count). "
+        "For each needed type in order, scanning forward from the block after the previous pick, take the first candidate "
+        "whose chain-derived answer has that type and at most 4 token movements. A reverted transaction has the type "
+        "reverted; any other has its action. A block whose candidate does not fit is skipped and counted. A type not found "
+        "within maxScan blocks is listed as not found, and the next type starts where that scan began."
+    ),
+}
+CALIBRATION_MAX_DISAGREE = 1
 TX_HASH = re.compile(r"^0x[0-9a-f]{64}$")
 ADDRESS = re.compile(r"^0x[0-9a-f]{40}$")
 
@@ -271,6 +304,268 @@ def verify_tasks(ts, rpc=None):
     return problems
 
 
+# ---- Held-out tasks: picked from blocks mined after the skill's edit, by a fixed rule on each block's hash -----------
+
+def iso_seconds(text):
+    """An ISO time (2026-11-21T05:00:00Z) as unix seconds."""
+    import calendar
+    return calendar.timegm(time.strptime(str(text).replace("+00:00", "Z"), "%Y-%m-%dT%H:%M:%SZ"))
+
+
+def first_block_after(rpc, at_seconds):
+    """The number of the first block whose timestamp is after `at_seconds`. Base mines a block every 2 seconds, so the
+    guess is one step from the answer; the answer itself is read from the chain, never assumed."""
+    def stamp(n):
+        block = rpc("eth_getBlockByNumber", [hex(n), False])
+        return int(block["timestamp"], 16) if block else None
+    latest = rpc("eth_getBlockByNumber", ["latest", False])
+    top, top_at = int(latest["number"], 16), int(latest["timestamp"], 16)
+    if top_at <= at_seconds:
+        return None
+    n = max(1, top - (top_at - at_seconds) // 2)
+    for _ in range(64):
+        here, before = stamp(n), stamp(n - 1)
+        if here is None or before is None:
+            return None
+        if here > at_seconds >= before:
+            return n
+        n += max(1, (at_seconds - here) // 2 + 1) if here <= at_seconds else -max(1, (before - at_seconds) // 2 + 1)
+        n = max(1, min(n, top))
+    return None
+
+
+def held_type(reference):
+    return "reverted" if reference["status"] == "reverted" else reference["action"]
+
+
+def checks_from_reference(reference):
+    """A held-out task's checks, written from the chain's own answer by fixed rules (no hand in it)."""
+    checks = [{"field": "status", "equals": reference["status"]}, {"field": "action", "oneOf": [reference["action"]]}]
+    if reference.get("method"):
+        checks.append({"field": "method", "oneOf": [reference["method"]]})
+    checks.append({"field": "from", "equalsAddress": reference["from"]})
+    if reference.get("to"):
+        checks.append({"field": "to", "equalsAddress": reference["to"]})
+    checks.append({"field": "nativeValueWei", "equals": reference["nativeValueWei"]})
+    checks.append({"field": "movements", "length": len(reference["movements"])})
+    checks += [{"movement": dict(m)} for m in reference["movements"]]
+    approval = reference.get("unlimitedApproval")
+    if approval:
+        checks += [{"field": "unlimitedApproval.token", "equalsAddress": approval["token"]}, {"field": "unlimitedApproval.spender", "equalsAddress": approval["spender"]}]
+    else:
+        checks.append({"field": "unlimitedApproval", "isNull": True})
+    return checks
+
+
+def held_out_sha256(held):
+    return sha256_bytes(canonical({"skill": held.get("skill"), "skillSha256": held.get("skillSha256"), "rule": (held.get("rule") or {}).get("id"),
+                                   "editAt": held.get("editAt"), "afterBlock": held.get("afterBlock"), "tasks": held.get("tasks")}))
+
+
+def pick_held_out(ts, rpc, now=None):
+    """The held-out tasks the rule picks for a task set, read from the chain. The same call always picks the same tasks."""
+    cfg = ts.get("heldOut") or {}
+    edit_at = cfg.get("editAt")
+    if not edit_at:
+        raise ValueError("the task set has no heldOut.editAt (the time of the skill's edit)")
+    types = list(cfg.get("types") or HELD_OUT_TYPES)
+    max_scan = int(cfg.get("maxScan") or HELD_OUT_MAX_SCAN)
+    start = first_block_after(rpc, iso_seconds(edit_at))
+    if start is None:
+        raise ValueError("no block after editAt can be read yet")
+    cursor, picks, tasks, skipped, not_found = start, [], [], 0, []
+    for kind in types:
+        found = None
+        for n in range(cursor, cursor + max_scan):
+            block = rpc("eth_getBlockByNumber", [hex(n), True])
+            if not block:
+                break  # the chain has not mined this far yet
+            txs = block.get("transactions") or []
+            if not txs:
+                skipped += 1
+                continue
+            index = int(block["hash"], 16) % len(txs)
+            tx = txs[index]
+            receipt = rpc("eth_getTransactionReceipt", [tx["hash"]])
+            reference = reference_answer(tx, receipt) if receipt else None
+            if reference is None or held_type(reference) != kind or len(reference["movements"]) > HELD_OUT_MAX_MOVEMENTS:
+                skipped += 1
+                continue
+            found = (n, block, index, len(txs), tx, reference)
+            break
+        if not found:
+            not_found.append(kind)
+            continue
+        n, block, index, count, tx, reference = found
+        cursor = n + 1
+        picks.append({"id": f"held-{kind}", "type": kind, "txHash": tx["hash"].lower(), "blockNumber": n, "blockHash": block["hash"].lower(),
+                      "blockTime": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(int(block["timestamp"], 16))), "index": index, "of": count})
+        tasks.append({"id": f"held-{kind}", "txHash": tx["hash"].lower(), "blockNumber": n,
+                      "about": f"Held-out {kind}: block {n}, transaction {index} of {count}, picked by {HELD_OUT_RULE['id']}.", "checks": checks_from_reference(reference)})
+    held = {
+        "about": "HB-036 +: held-out tasks for this skill's lift. Picked by a fixed rule from Base blocks mined after the skill's edit, so its editor could not have seen them. Anyone can pick them again: scripts/lift_run.py --verify-held-out.",
+        "skill": ts.get("skill"), "skillSha256": ts.get("skillSha256"), "tasksetSha256": ts.get("tasksetSha256"), "publisher": ts.get("publisher"),
+        "rule": dict(HELD_OUT_RULE), "editAt": edit_at, "afterBlock": start, "types": types, "maxScan": max_scan,
+        "pickedAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now if now is not None else time.time())),
+        "picks": picks, "skipped": skipped, "notFound": not_found, "tasks": tasks,
+        "writtenBy": {"agent": "bee-self-test scripts/lift_run.py --pick-held-out", "owner": "hivemindos"}, "reviewedBy": None, "reviewedAt": None,
+    }
+    held["heldOutSha256"] = held_out_sha256(held)
+    return held
+
+
+def held_out_problems(held, ts=None):
+    """What is wrong with a held-out file by itself ([] when nothing): its shape, its hash, and every task after the edit."""
+    problems = []
+    if not isinstance(held, dict) or (held.get("rule") or {}).get("id") != HELD_OUT_RULE["id"]:
+        return ["not a held-out file of rule " + HELD_OUT_RULE["id"]]
+    tasks = held.get("tasks") if isinstance(held.get("tasks"), list) else []
+    picks = {p.get("id"): p for p in held.get("picks") or [] if isinstance(p, dict)}
+    if len(tasks) < HELD_OUT_MIN:
+        problems.append(f"{len(tasks)} held-out tasks, fewer than {HELD_OUT_MIN}")
+    try:
+        edit = iso_seconds(held.get("editAt"))
+    except Exception:
+        edit = None
+        problems.append("no readable editAt")
+    after = held.get("afterBlock")
+    for task in tasks:
+        tid = task.get("id")
+        pick = picks.get(tid) or {}
+        if not TX_HASH.match(str(task.get("txHash", ""))) or pick.get("txHash") != task.get("txHash"):
+            problems.append(f"{tid}: its transaction is not its pick's")
+        if not isinstance(after, int) or not isinstance(task.get("blockNumber"), int) or task["blockNumber"] < after:
+            problems.append(f"{tid}: block {task.get('blockNumber')} is not after the edit (first block after it: {after})")
+        try:
+            if edit is not None and iso_seconds(pick.get("blockTime")) <= edit:
+                problems.append(f"{tid}: its block was mined at or before the edit")
+        except Exception:
+            problems.append(f"{tid}: no readable block time")
+        for check in task.get("checks") or [{}]:
+            p = check_problem(check)
+            if p:
+                problems.append(f"{tid}: {p}")
+    if held.get("heldOutSha256") != held_out_sha256(held):
+        problems.append("heldOutSha256 does not match the held-out tasks")
+    if ts is not None:
+        if held.get("skillSha256") != ts.get("skillSha256"):
+            problems.append("the held-out tasks were picked for another version of the skill")
+        if held.get("editAt") != (ts.get("heldOut") or {}).get("editAt"):
+            problems.append("the held-out tasks were picked from another editAt than the task set's")
+        tune = {t.get("txHash") for t in ts.get("tasks") or []}
+        if any(t.get("txHash") in tune for t in tasks):
+            problems.append("a held-out task is also a tune task")
+    return problems
+
+
+def verify_held_out(held, ts, rpc):
+    """The file's own problems, then the rule run again on the chain: the same picks and the same checks, or it says so."""
+    problems = held_out_problems(held, ts)
+    again = pick_held_out({**ts, "heldOut": {"editAt": held.get("editAt"), "types": held.get("types"), "maxScan": held.get("maxScan")}}, rpc)
+    if again["afterBlock"] != held.get("afterBlock"):
+        problems.append(f"the first block after editAt is {again['afterBlock']}, not {held.get('afterBlock')}")
+    if [p["txHash"] for p in again["picks"]] != [p.get("txHash") for p in held.get("picks") or []]:
+        problems.append("the rule does not pick these transactions")
+    elif canonical(again["tasks"]) != canonical(held.get("tasks")):
+        problems.append("the rule picks these transactions, with other checks")
+    return problems
+
+
+# ---- Calibration: the proxy against the real agent runtime ---------------------------------------------------------
+
+def proxy_sha256():
+    """What the model is given in this harness, hashed: a runtime record made for another prompt or tool list does not count."""
+    return sha256_bytes(canonical({"system": SYSTEM, "tools": TOOLS}))
+
+
+def calibration_block(record, ts, results, model):
+    """The proxy-vs-runtime agreement on the tune tasks' with arm, per task. `record` is one run of the same tasks through
+    the real agent runtime: {"runtime", "model", "proxySha256", "tasksetSha256", "ranAt", "results": {task id: "pass" | "fail"}}."""
+    def uncalibrated(why):
+        return {"label": "proxy-uncalibrated", "why": why, "proxySha256": proxy_sha256()}
+    if not record:
+        return uncalibrated("the tasks have not been run through the agent runtime")
+    if record.get("model") != model:
+        return uncalibrated("the runtime record is for another model")
+    if record.get("proxySha256") != proxy_sha256():
+        return uncalibrated("the harness's prompt or tools changed since the runtime record")
+    if record.get("tasksetSha256") != ts.get("tasksetSha256"):
+        return uncalibrated("the runtime record is for another task set")
+    tasks, agree, disagree = {}, 0, 0
+    for task in ts["tasks"]:
+        proxy = ((results.get(task["id"]) or {}).get("with") or {}).get("outcome", "incomplete")
+        runtime = (record.get("results") or {}).get(task["id"])
+        if runtime not in ("pass", "fail") or proxy not in ("pass", "fail"):
+            return {**uncalibrated(f"{task['id']} has no pass or fail on both sides"), "runtime": record.get("runtime"), "ranAt": record.get("ranAt")}
+        tasks[task["id"]] = {"proxy": proxy, "runtime": runtime}
+        agree += proxy == runtime
+        disagree += proxy != runtime
+    out = {"label": "calibrated" if disagree <= CALIBRATION_MAX_DISAGREE else "proxy-uncalibrated", "agree": agree, "disagree": disagree, "of": len(ts["tasks"]),
+           "tasks": tasks, "runtime": record.get("runtime"), "ranAt": record.get("ranAt"), "proxySha256": proxy_sha256()}
+    if disagree > CALIBRATION_MAX_DISAGREE:
+        out["why"] = f"the proxy and the runtime disagree on {disagree} tasks"
+    return out
+
+
+# ---- A promotion's lift block: what must hold before a rewritten or new skill is promoted on it ----------------------
+
+def promotion_problems(lift):
+    """Why a lift block is not a promote test ([] when it is). A promotion is judged on held-out tasks too, against the
+    previous version of the skill on the same tasks, and only on a calibrated proxy."""
+    problems = []
+    if lift.get("state") != "complete":
+        problems.append(f"the run is {lift.get('state')}, not complete")
+    held = lift.get("heldOut")
+    if not isinstance(held, dict) or held.get("state") == "missing":
+        problems.append("no held-out block")
+    else:
+        of = ((held.get("with") or {}).get("of")) or 0
+        if of < HELD_OUT_MIN:
+            problems.append(f"{of} held-out tasks, fewer than {HELD_OUT_MIN}")
+        after = held.get("afterBlock")
+        for pick in held.get("picks") or []:
+            if not isinstance(after, int) or not isinstance(pick.get("blockNumber"), int) or pick["blockNumber"] < after:
+                problems.append(f"held-out task {pick.get('id')} is from block {pick.get('blockNumber')}, not after the edit")
+            else:
+                try:
+                    if iso_seconds(pick.get("blockTime")) <= iso_seconds(held.get("editAt")):
+                        problems.append(f"held-out task {pick.get('id')} was mined at or before the edit")
+                except Exception:
+                    problems.append(f"held-out task {pick.get('id')} has no readable block time")
+        if len(held.get("picks") or []) != of:
+            problems.append("the held-out picks are not the tasks that were run")
+        if held.get("state") != "complete":
+            problems.append(f"the held-out run is {held.get('state')}, not complete")
+        previous = held.get("previous")
+        if lift.get("previousSkillSha256"):
+            if not isinstance(previous, dict) or previous.get("skillSha256") != lift.get("previousSkillSha256"):
+                problems.append("the previous skill was not run on the held-out tasks")
+            elif previous.get("incomplete"):
+                problems.append("the previous skill's held-out run has incomplete tasks")
+            elif (held.get("with") or {}).get("passed", 0) < previous.get("passed", 0):
+                problems.append(f"the held-out count dropped: {held['with']['passed']} against the previous skill's {previous['passed']}, of {of}")
+    calibration = lift.get("calibration")
+    if not isinstance(calibration, dict):
+        problems.append("no calibration record")
+    elif calibration.get("label") != "calibrated":
+        problems.append(f"the proxy is not calibrated: {calibration.get('why') or calibration.get('label')}")
+    elif calibration.get("disagree", 99) > CALIBRATION_MAX_DISAGREE or calibration.get("proxySha256") != proxy_sha256():
+        problems.append("the calibration record does not back its label")
+    return problems
+
+
+def audit(lift):
+    """Report-only: what a published lift block lacks before it could be a promote test, in a few words each."""
+    lacks = []
+    if not isinstance(lift.get("heldOut"), dict) or lift["heldOut"].get("state") == "missing":
+        lacks.append("no held-out counts")
+    if not isinstance(lift.get("calibration"), dict):
+        lacks.append("no calibration label")
+    elif lift["calibration"].get("label") != "calibrated":
+        lacks.append("proxy-uncalibrated")
+    return lacks
+
+
 # ---- Budget: model spend (excludes the judge) and judge calls --------------------------------------------------------
 
 class Budget:
@@ -384,13 +679,40 @@ def run_arm(task, arm, skill_text, cfg, chat, rpc, budget, judge=None):
 
 # ---- The lift block (B6) -------------------------------------------------------------------------------------------
 
-def lift_block(ts, results, model, run_at, report, skill_sha, stopped=None):
-    """The registry's `lift` block from a run's results ({task id: {"with": arm, "without": arm}})."""
+def held_out_block(held, results, ts, previous_sha=None):
+    """The lift block's `heldOut`: the rule, the picks, and the counts of each arm on the held-out tasks."""
+    if not held:
+        return {"state": "missing"}
+    tasks = held.get("tasks") or []
+    def counts(arm):
+        outcomes = [((results.get(t["id"]) or {}).get(arm) or {}).get("outcome", "incomplete") for t in tasks]
+        return {"passed": outcomes.count("pass"), "failed": outcomes.count("fail"), "incomplete": outcomes.count("incomplete"), "of": len(tasks)}
+    with_, without = counts("with"), counts("without")
+    previous = {"skillSha256": previous_sha, **counts("previous")} if previous_sha else None
+    review = review_problem(held)
+    if held_out_problems(held, ts):
+        state = "invalid"
+    elif with_["incomplete"] or without["incomplete"] or (previous or {}).get("incomplete"):
+        state = "partial"
+    elif review:
+        state = "unreviewed"
+    else:
+        state = "complete"
+    return {"rule": (held.get("rule") or {}).get("id"), "editAt": held.get("editAt"), "afterBlock": held.get("afterBlock"), "heldOutSha256": held.get("heldOutSha256"),
+            "picks": [{k: p.get(k) for k in ("id", "type", "txHash", "blockNumber", "blockTime")} for p in held.get("picks") or []],
+            "notFound": held.get("notFound") or [], "with": with_, "without": without, "previous": previous, "state": state,
+            "reviewedBy": (held.get("reviewedBy") or {}).get("agent") if not review else None}
+
+
+def lift_block(ts, results, model, run_at, report, skill_sha, stopped=None, held=None, calibration=None, previous_sha=None):
+    """The registry's `lift` block from a run's results ({task id: {"with": arm, "without": arm}}). `with` and `without`
+    are the tune set's counts, as before; `tune` says so by name beside `heldOut` (HB-036 +)."""
     n = len(ts["tasks"])
     def arm_counts(arm):
         outcomes = [((results.get(t["id"]) or {}).get(arm) or {}).get("outcome", "incomplete") for t in ts["tasks"]]
         return {"passed": outcomes.count("pass"), "failed": outcomes.count("fail"), "incomplete": outcomes.count("incomplete"), "of": n}
     with_, without = arm_counts("with"), arm_counts("without")
+    held_block = held_out_block(held, results, ts, previous_sha)
     review = review_problem(ts)
     if skill_sha != ts.get("skillSha256"):
         state = "stale"
@@ -408,6 +730,13 @@ def lift_block(ts, results, model, run_at, report, skill_sha, stopped=None):
         "lift": with_["passed"] - without["passed"] if state == "complete" else None,
         "state": state, "runAt": run_at, "report": report,
         "reviewedBy": (ts.get("reviewedBy") or {}).get("agent") if not review else None,
+        # HB-036 +: the tune set and the held-out set side by side, as counts. `gap` is how many tasks the skill missed on
+        # each; with 3 to 5 tasks a difference of one is noise, not a trend.
+        "tune": {"with": with_, "without": without},
+        "heldOut": held_block,
+        "gap": None if held_block.get("state") in ("missing", "invalid") else {"tuneMissed": with_["of"] - with_["passed"], "heldOutMissed": held_block["with"]["of"] - held_block["with"]["passed"]},
+        "previousSkillSha256": previous_sha,
+        "calibration": calibration_block(calibration, ts, results, model),
         **({"stoppedBecause": stopped} if stopped else {}),
     }
 
@@ -426,6 +755,22 @@ def lift_block_problems(lift, current_skill_sha, ts=None):
         counts = lift.get(arm) or {}
         if lift.get("state") == "complete" and counts.get("incomplete"):
             problems.append(f"a complete run has incomplete tasks in its {arm} arm")
+    # HB-036 +: a block written by this harness names its tune and held-out counts and its calibration label, and a
+    # "calibrated" label needs the agreement that backs it.
+    if "tune" in lift or "heldOut" in lift or "calibration" in lift:
+        if (lift.get("tune") or {}).get("with") != lift.get("with") or (lift.get("tune") or {}).get("without") != lift.get("without"):
+            problems.append("the tune counts are not the run's counts")
+        held = lift.get("heldOut") if isinstance(lift.get("heldOut"), dict) else {}
+        if held.get("state") not in ("missing", "invalid", "partial", "unreviewed", "complete"):
+            problems.append(f"unknown held-out state {held.get('state')}")
+        for pick in held.get("picks") or []:
+            if not isinstance(held.get("afterBlock"), int) or not isinstance(pick.get("blockNumber"), int) or pick["blockNumber"] < held["afterBlock"]:
+                problems.append(f"held-out task {pick.get('id')} is from a block that is not after the edit")
+        calibration = lift.get("calibration") if isinstance(lift.get("calibration"), dict) else {}
+        if calibration.get("label") not in ("calibrated", "proxy-uncalibrated"):
+            problems.append("no calibration label")
+        elif calibration["label"] == "calibrated" and (calibration.get("disagree", 99) > CALIBRATION_MAX_DISAGREE or not calibration.get("tasks")):
+            problems.append("a calibrated label without the agreement that backs it")
     if ts is not None:
         review = review_problem(ts)
         if lift.get("state") == "complete" and review:
@@ -465,24 +810,33 @@ def gateway_chat(endpoint, key, timeout=90):
     return chat
 
 
-def run(ts, skill_text, cfg, chat, rpc, budget, judge=None, now=None, report=None):
-    """Both arms of every task; the order alternates per task so neither arm always goes first."""
+def run(ts, skill_text, cfg, chat, rpc, budget, judge=None, now=None, report=None, held=None, calibration=None, previous_skill_text=None):
+    """Both arms of every task; the order alternates per task so neither arm always goes first. With `held`, the held-out
+    tasks are run after the tune set, in the same way and inside the same budget; with `previous_skill_text` (a rewrite),
+    the previous version of the skill is run on the held-out tasks too, as the arm "previous"."""
     skill_sha = sha256_bytes(skill_text.encode())
+    previous_sha = sha256_bytes(previous_skill_text.encode()) if previous_skill_text is not None else None
     run_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now if now is not None else time.time()))
     results, stopped = {}, None
+    block = lambda why=None: lift_block(ts, results, cfg["model"], run_at, report, skill_sha, why, held, calibration, previous_sha)
     if skill_sha != ts.get("skillSha256"):
-        return lift_block(ts, results, cfg["model"], run_at, report, skill_sha, stopped="the skill file is not the pinned one"), results, budget
-    for index, task in enumerate(ts["tasks"]):
+        return block("the skill file is not the pinned one"), results, budget
+    held_tasks = [] if not held or held_out_problems(held, ts) else held.get("tasks") or []
+    for index, task in enumerate(list(ts["tasks"]) + held_tasks):
         results[task["id"]] = {}
-        for arm in (("with", "without") if index % 2 == 0 else ("without", "with")):
+        arms = ("with", "without") if index % 2 == 0 else ("without", "with")
+        if task in held_tasks and previous_skill_text is not None:
+            arms += ("previous",)
+        for arm in arms:
             try:
-                results[task["id"]][arm] = run_arm(task, arm, skill_text, cfg, chat, rpc, budget, judge)
+                # The previous skill is run exactly as the "with" arm is, with the older text in its place.
+                results[task["id"]][arm] = run_arm(task, "with" if arm == "previous" else arm, previous_skill_text if arm == "previous" else skill_text, cfg, chat, rpc, budget, judge)
             except Stop as why:
                 stopped = str(why)
                 break
         if stopped:
             break
-    return lift_block(ts, results, cfg["model"], run_at, report, skill_sha, stopped), results, budget
+    return block(stopped), results, budget
 
 
 def main(argv=None):
@@ -490,6 +844,13 @@ def main(argv=None):
     p.add_argument("--check-taskset", metavar="TASKS_JSON")
     p.add_argument("--verify-tasks", metavar="TASKS_JSON")
     p.add_argument("--check-lift", metavar="LIFT_JSON", help="the CI checks on a lift block, against --taskset and --skill-file")
+    p.add_argument("--pick-held-out", metavar="TASKS_JSON", help="pick the held-out tasks the rule gives for this task set, into --out")
+    p.add_argument("--verify-held-out", metavar="HELD_OUT_JSON", help="pick again from the chain and compare, against --taskset")
+    p.add_argument("--check-promotion", metavar="LIFT_JSON", help="whether a lift block is a promote test (HB-036 +)")
+    p.add_argument("--audit", nargs="+", metavar="RUN_JSON", help="report-only: what each recorded run lacks")
+    p.add_argument("--held-out", metavar="HELD_OUT_JSON", help="a run: also run these held-out tasks")
+    p.add_argument("--calibration", metavar="CALIBRATION_JSON", help="a run: the proxy-vs-runtime record for this task set and model")
+    p.add_argument("--previous-skill-file", help="a run of a rewritten skill: the version before it, run on the held-out tasks")
     p.add_argument("--taskset")
     p.add_argument("--skill-file")
     p.add_argument("--model", help="the explicit model id for both arms (no default)")
@@ -528,6 +889,38 @@ def main(argv=None):
         print(json.dumps({"problems": problems}, indent=1))
         return 1 if problems else 0
 
+    if a.pick_held_out:
+        if not a.out:
+            p.error("--pick-held-out needs --out")
+        ts = load_json(a.pick_held_out)
+        held = pick_held_out(ts, lambda method, params: rpc_call(a.rpc, method, params))
+        with open(a.out, "w", encoding="utf-8") as f:
+            json.dump(held, f, indent=1)
+            f.write("\n")
+        problems = held_out_problems(held, ts)
+        print(json.dumps({"picked": [f"{x['type']} {x['txHash']} block {x['blockNumber']}" for x in held["picks"]], "afterBlock": held["afterBlock"], "skipped": held["skipped"],
+                          "notFound": held["notFound"], "problems": problems}, indent=1))
+        return 1 if problems else 0
+    if a.verify_held_out:
+        if not a.taskset:
+            p.error("--verify-held-out needs --taskset")
+        held, ts = load_json(a.verify_held_out), load_json(a.taskset)
+        rpc = lambda method, params: rpc_call(a.rpc, method, params)
+        problems = verify_held_out(held, ts, rpc) + verify_tasks(held, rpc)
+        print(json.dumps({"verified": not problems, "tasks": len(held.get("tasks") or []), "review": review_problem(held) or "counts", "problems": problems}, indent=1))
+        return 1 if problems else 0
+    if a.check_promotion:
+        record = load_json(a.check_promotion)
+        problems = promotion_problems(record.get("lift") if isinstance(record.get("lift"), dict) else record)
+        print(json.dumps({"promote": not problems, "problems": problems}, indent=1))
+        return 1 if problems else 0
+    if a.audit:
+        for path in a.audit:
+            record = load_json(path)
+            lift = record.get("lift") if isinstance(record.get("lift"), dict) else record
+            print(json.dumps({"record": path, "skillSha256": str(lift.get("skillSha256"))[:12], "state": lift.get("state"), "lacks": audit(lift)}))
+        return 0
+
     # A run. Both budget flags are set together, and a cost cap needs prices to count against.
     if a.max_cost_usd is None or a.max_judge_calls is None:
         p.error("--max-cost-usd and --max-judge-calls are set together")
@@ -548,7 +941,11 @@ def main(argv=None):
     budget = Budget(a.max_cost_usd, load_json(a.price_file), a.model, a.max_judge_calls)
     cfg = {"model": a.model, "attempts": a.attempts, "max_turns": a.max_turns, "max_tokens": a.max_tokens,
            **({"reasoning_effort": a.reasoning_effort} if a.reasoning_effort else {})}
-    lift, results, budget = run(ts, skill_text, cfg, gateway_chat(a.endpoint, key), lambda method, params: rpc_call(a.rpc, method, params), budget, report=a.report)
+    held = load_json(a.held_out) if a.held_out else None
+    calibration = load_json(a.calibration) if a.calibration else None
+    previous = open(a.previous_skill_file, "rb").read().decode() if a.previous_skill_file else None
+    lift, results, budget = run(ts, skill_text, cfg, gateway_chat(a.endpoint, key), lambda method, params: rpc_call(a.rpc, method, params), budget, report=a.report,
+                                held=held, calibration=calibration, previous_skill_text=previous)
     record = {"lift": lift, "harness": {"name": "bee-self-test scripts/lift_run.py", "commit": os.environ.get("GITHUB_SHA") or None},
               "config": {**cfg, "rpc": a.rpc, "maxCostUsd": a.max_cost_usd, "maxJudgeCalls": a.max_judge_calls, "notifications": "stubbed"},
               "spentUsd": round(budget.spent, 6), "judgeCalls": budget.judge_calls,

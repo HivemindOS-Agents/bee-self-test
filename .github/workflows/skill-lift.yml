@@ -8,6 +8,11 @@
 # The run job is the only one that holds the gateway key, as an environment variable of its one step; the model's tools
 # get no key (a keyless read-only RPC and a stubbed notify). Model spend is host CI spend, capped by --max-cost-usd,
 # never an agent's wallet. The record job runs no model and no tool code, and writes lift/<skill>/runs/ only.
+#
+# HB-036 "+" (20 Nov 2026): when lift/<skill>/held-out.json exists, the check job picks its tasks again from the chain
+# (they must be the ones the block-hash rule gives after the skill's edit) and the run counts them beside the tune set.
+# Every run carries a calibration label; without lift/<skill>/calibration.json (the same tasks run once through the real
+# agent runtime) it is `proxy-uncalibrated`. A run dispatched with `promotion` fails unless it is a promote test.
 name: skill-lift
 on:
   workflow_dispatch:
@@ -37,6 +42,13 @@ on:
       reasoning_effort:
         description: "For a reasoning model: low, medium or high, the same in both arms (blank sends none)"
         default: ""
+      promotion:
+        description: "This run decides a promotion or a rewrite: fail unless it is a promote test (held-out tasks, no held-out drop, a calibrated proxy)"
+        type: boolean
+        default: false
+      previous_skill_url:
+        description: "A rewrite: the pinned raw URL of the skill's previous version, run on the held-out tasks too (blank for a first version)"
+        default: ""
 permissions: {}
 concurrency:
   group: skill-lift
@@ -44,7 +56,7 @@ concurrency:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     permissions:
       contents: read
     env:
@@ -61,6 +73,15 @@ jobs:
           [[ "$SKILL" =~ ^[a-z0-9][a-z0-9-]{0,60}$ ]] || { echo "Not a skill slug."; exit 2; }
           python3 scripts/lift_run.py --check-taskset "lift/$SKILL/tasks.json"
           python3 scripts/lift_run.py --verify-tasks "lift/$SKILL/tasks.json"
+      - name: The held-out tasks are the ones the rule picks after the skill's edit (HB-036 +)
+        run: |
+          set -eu
+          [[ "$SKILL" =~ ^[a-z0-9][a-z0-9-]{0,60}$ ]] || { echo "Not a skill slug."; exit 2; }
+          if [ -f "lift/$SKILL/held-out.json" ]; then
+            python3 scripts/lift_run.py --verify-held-out "lift/$SKILL/held-out.json" --taskset "lift/$SKILL/tasks.json"
+          else
+            echo "No held-out tasks for $SKILL: the run will say so, and it is no promote test."
+          fi
   run:
     needs: check
     runs-on: ubuntu-latest
@@ -75,6 +96,8 @@ jobs:
       MAX_JUDGE_CALLS: ${{ inputs.max_judge_calls }}
       ALLOW_UNREVIEWED: ${{ inputs.allow_unreviewed }}
       REASONING_EFFORT: ${{ inputs.reasoning_effort }}
+      PROMOTION: ${{ inputs.promotion }}
+      PREVIOUS_SKILL_URL: ${{ inputs.previous_skill_url }}
       ENDPOINT: ${{ vars.LIFT_ENDPOINT }}
       RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
     steps:
@@ -93,6 +116,10 @@ jobs:
           URL=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["skillUrl"])' "lift/$SKILL/tasks.json")
           [[ "$URL" =~ ^https://raw\.githubusercontent\.com/ ]] || { echo "The task set's skillUrl is not a pinned raw file."; exit 2; }
           curl -fsS -m 20 "$URL" -o "$RUNNER_TEMP/SKILL.md"
+          if [ -n "$PREVIOUS_SKILL_URL" ]; then
+            [[ "$PREVIOUS_SKILL_URL" =~ ^https://raw\.githubusercontent\.com/[A-Za-z0-9._/-]+$ ]] || { echo "The previous skill's URL is not a pinned raw file."; exit 2; }
+            curl -fsS -m 20 "$PREVIOUS_SKILL_URL" -o "$RUNNER_TEMP/PREVIOUS.md"
+          fi
       - name: Both arms, with and without the skill
         env:
           HIVEMINDOS_GATEWAY_KEY: ${{ secrets.HIVEMINDOS_GATEWAY_KEY }}
@@ -100,6 +127,10 @@ jobs:
           set -u
           EXTRA=""; [ "$ALLOW_UNREVIEWED" = "true" ] && EXTRA="--allow-unreviewed"
           case "$REASONING_EFFORT" in low|medium|high) EXTRA="$EXTRA --reasoning-effort $REASONING_EFFORT" ;; "") ;; *) echo "Not a reasoning effort."; exit 2 ;; esac
+          # HB-036 +: the held-out tasks, the proxy-vs-runtime record and the previous version, when each exists.
+          [ -f "lift/$SKILL/held-out.json" ] && EXTRA="$EXTRA --held-out lift/$SKILL/held-out.json"
+          [ -f "lift/$SKILL/calibration.json" ] && EXTRA="$EXTRA --calibration lift/$SKILL/calibration.json"
+          [ -f "$RUNNER_TEMP/PREVIOUS.md" ] && EXTRA="$EXTRA --previous-skill-file $RUNNER_TEMP/PREVIOUS.md"
           mkdir -p "$RUNNER_TEMP/out"
           python3 scripts/lift_run.py --taskset "lift/$SKILL/tasks.json" --skill-file "$RUNNER_TEMP/SKILL.md" \
             --model "$MODEL" --endpoint "$ENDPOINT" --key-env HIVEMINDOS_GATEWAY_KEY \
@@ -113,6 +144,12 @@ jobs:
           [ -f "$RUNNER_TEMP/out/run.json" ] || { echo "No run was written."; exit 1; }
           python3 -c 'import json,sys; json.dump(json.load(open(sys.argv[1]))["lift"], open(sys.argv[2], "w"))' "$RUNNER_TEMP/out/run.json" "$RUNNER_TEMP/out/lift.json"
           python3 scripts/lift_run.py --check-lift "$RUNNER_TEMP/out/lift.json" --taskset "lift/$SKILL/tasks.json" --skill-file "$RUNNER_TEMP/SKILL.md"
+      - name: A promotion run is a promote test, or this fails (HB-036 +)
+        if: always() && inputs.promotion
+        run: |
+          set -eu
+          [ -f "$RUNNER_TEMP/out/run.json" ] || { echo "No run was written."; exit 1; }
+          python3 scripts/lift_run.py --check-promotion "$RUNNER_TEMP/out/run.json"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

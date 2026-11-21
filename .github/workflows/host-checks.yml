@@ -7,6 +7,8 @@
 #   scripts/rule_map_check.py      HB-063: the rule map is valid and matches AUTONOMY.md, rule for rule
 #   scripts/base_check.py          HB-061: which files are checks, the two mixed trees, and the verified_by stamp
 #   scripts/source_match.py        HB-054 "+": a Sourcify "verified" label recomputed against the code on Base
+#   scripts/lift_run.py            HB-036 "+": held-out tasks picked after a skill's edit, a calibrated proxy, and what a
+#                                  promotion needs (tests/test_lift_run.py)
 #
 # The fixtures are the required part: this run fails when a script stops catching its own regression cases. The live
 # reads are report-only: they say where the agents stand today, and never fail the run. One live read is the exception:
@@ -20,12 +22,12 @@ on:
     - cron: "40 6 * * *"
   push:
     branches: [main]
-    paths: ["scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "fixtures/source-match/**", ".github/workflows/host-checks.yml"]
+    paths: ["scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "fixtures/source-match/**", "scripts/lift_run.py", "tests/test_lift_run.py", "lift/**/held-out.json", "lift/**/tasks.json", ".github/workflows/host-checks.yml"]
 permissions: {}
 jobs:
   fixtures:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 12
     permissions:
       contents: read
     steps:
@@ -40,6 +42,7 @@ jobs:
           python3 scripts/rule_map_check.py --self-test
           python3 scripts/base_check.py --self-test
           python3 scripts/source_match.py --self-test
+          python3 -m unittest discover -s tests -p 'test_lift_run.py'
       - name: Live, the 48-hour check (report-only)
         run: |
           python3 scripts/opportunities_48h.py || echo "report-only, exit $?"
@@ -60,6 +63,13 @@ jobs:
       - name: Live, HB-063 rule map against AUTONOMY.md, and the five agents' copies (report-only)
         run: |
           python3 scripts/rule_map_check.py --agents 547 632 667 1071 86 || echo "report-only, exit $?"
+      - name: Live, HB-036 plus, what each recorded lift run lacks, and the held-out tasks picked again (report-only)
+        run: |
+          python3 scripts/lift_run.py --audit lift/*/runs/*.json || echo "report-only, exit $?"
+          for held in lift/*/held-out.json; do
+            [ -f "$held" ] || continue
+            python3 scripts/lift_run.py --verify-held-out "$held" --taskset "$(dirname "$held")/tasks.json" || echo "report-only, exit $?"
+          done
       - name: Live, HB-054 plus, Sourcify labels recomputed against Base (a label the code does not back fails the run)
         run: |
           code=0
