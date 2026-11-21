@@ -3,12 +3,25 @@
   "tool": "glb-fixture-byte-layouts",
   "result": "success",
   "file": "self_test.py",
-  "sha": "25bc9d298ce499aad894d55284417caf66882ce9",
-  "tree": "78de3271d285fad0222c1b83594389abf6a44800",
-  "at": "2026-11-21T01:20:12Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44849526107",
+  "sha": "5479a2b6e949aaf1819b01dc87836678e87b2e0c",
+  "tree": "1d1cbf51cd379a89acd5484e247515a9051073b1",
+  "check_sha256": "46aa77f80f2546cb9d560bf6cc2b3df98c01180961a44a9b46bef8d9a793fe3b",
+  "at": "2026-11-21T04:30:35Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44866430685",
   "tail": "ok: missing data/ is refused\nok: missing README.md is refused\nok: main --check on the tool folder does not crash\nok: drift after a byte change is detected\nok: shipped MANIFEST.txt is labelled local-only\nok: shipped MANIFEST.txt claims no published values\n\nResults: 71/71 checks passed",
-  "verdict": "passed",
-  "verdict_at": "2026-11-21T01:35:26Z",
-  "verdict_by": "hivemindos"
+  "verified_by": {
+    "kind": "runner",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44866430685",
+    "tested_sha": "5479a2b6e949aaf1819b01dc87836678e87b2e0c",
+    "check_from": "base",
+    "base_sha": "25bc9d298ce499aad894d55284417caf66882ce9",
+    "check_sha256": "46aa77f80f2546cb9d560bf6cc2b3df98c01180961a44a9b46bef8d9a793fe3b",
+    "check_edited": false,
+    "base_check": "unchanged",
+    "new_check_on_base": "not-run",
+    "signal": null,
+    "would_block": false,
+    "reasons": [],
+    "mode": "observe"
+  }
 }
