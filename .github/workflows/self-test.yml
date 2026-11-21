@@ -87,8 +87,127 @@ jobs:
             } | cut -c1-200 | grep -v '^HIVE_SELF_TEST_END$' || true
             echo 'HIVE_SELF_TEST_END'
           } >> "$GITHUB_OUTPUT"
+  # HB-061 (20 Nov 2026 update, Part 6): the check that judges a change comes from the base. The agents service names
+  # the tool's last passing commit as `base`. When a check file (self_test.*, fixtures/, expected*) differs between that
+  # commit and now, the base check is run on the new code, and, if that fails, the edited check on the base code. Each
+  # mixed tree runs in its own job with no token, so nothing the tool's code does in one run can change another run's
+  # result, and each verdict is the job's result as GitHub reports it. Observe mode: the record's `result` is still the
+  # test job's alone; `verified_by` only says which check decided (scripts/base_check.py).
+  basis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    permissions: {}
+    env:
+      REPO: ${{ github.event.client_payload.repo }}
+      TOOL: ${{ github.event.client_payload.tool }}
+      BASE: ${{ github.event.client_payload.base }}
+    outputs:
+      base: ${{ steps.plan.outputs.base }}
+      plan: ${{ steps.plan.outputs.plan }}
+      edited: ${{ steps.plan.outputs.edited }}
+    steps:
+      - id: plan
+        name: Compare its check files with its last passing run's (no tool code is run)
+        run: |
+          set -eu
+          [[ "$REPO" =~ ^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$ ]] || { echo "Not a repository name."; exit 2; }
+          [[ "$TOOL" =~ ^[a-z0-9][a-z0-9-]{1,47}$ ]] || { echo "Not a tool name."; exit 2; }
+          if ! [[ "${BASE:-}" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "No base commit named: a first check, or a service that does not name one yet."
+            { echo "base="; echo "plan="; echo "edited=false"; } >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git clone --quiet --depth 1 "https://github.com/${GITHUB_REPOSITORY}.git" runner
+          git clone --quiet --depth 1 --filter=blob:none --sparse "https://github.com/${GITHUB_REPOSITORY_OWNER}/${REPO}.git" work
+          git -C work sparse-checkout set "tools/${TOOL}"
+          git init --quiet base
+          git -C base remote add origin "https://github.com/${GITHUB_REPOSITORY_OWNER}/${REPO}.git"
+          git -C base sparse-checkout set "tools/${TOOL}"
+          git -C base fetch --quiet --depth 1 --filter=blob:none origin "$BASE" && git -C base checkout --quiet FETCH_HEAD || echo "The base commit could not be fetched."
+          plan=$(python3 runner/scripts/base_check.py plan "work/tools/${TOOL}" "base/tools/${TOOL}")
+          echo "$plan"
+          edited=$(python3 -c 'import json,sys; print("true" if json.loads(sys.argv[1]).get("check_edited") else "false")' "$plan")
+          { echo "base=${BASE}"; echo "plan=${plan}"; echo "edited=${edited}"; } >> "$GITHUB_OUTPUT"
+  base:
+    needs: basis
+    if: needs.basis.outputs.edited == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    permissions: {}
+    env:
+      REPO: ${{ github.event.client_payload.repo }}
+      TOOL: ${{ github.event.client_payload.tool }}
+      BASE: ${{ needs.basis.outputs.base }}
+    outputs:
+      built: ${{ steps.build.outputs.built }}
+    steps:
+      - id: build
+        name: Put the base check on the new code (no tool code is run yet)
+        run: |
+          set -eu
+          [[ "$REPO" =~ ^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$ && "$TOOL" =~ ^[a-z0-9][a-z0-9-]{1,47}$ && "$BASE" =~ ^[0-9a-f]{40}$ ]] || exit 2
+          git clone --quiet --depth 1 "https://github.com/${GITHUB_REPOSITORY}.git" runner
+          git clone --quiet --depth 1 --filter=blob:none --sparse "https://github.com/${GITHUB_REPOSITORY_OWNER}/${REPO}.git" work
+          git -C work sparse-checkout set "tools/${TOOL}"
+          git init --quiet base
+          git -C base remote add origin "https://github.com/${GITHUB_REPOSITORY_OWNER}/${REPO}.git"
+          git -C base sparse-checkout set "tools/${TOOL}"
+          git -C base fetch --quiet --depth 1 --filter=blob:none origin "$BASE"
+          git -C base checkout --quiet FETCH_HEAD
+          python3 runner/scripts/base_check.py build base-check-on-new "work/tools/${TOOL}" "base/tools/${TOOL}" mixed
+          rm -rf runner work base
+          echo "built=true" >> "$GITHUB_OUTPUT"
+      - name: Compile its Python
+        timeout-minutes: 1
+        run: |
+          cd mixed
+          find . -name '*.py' -not -path '*/.*' -print0 | xargs -0 -r -n1 python3 -m py_compile
+      - name: Run the base check on the new code
+        timeout-minutes: 4
+        run: |
+          cd mixed
+          if [ -f self_test.py ]; then python3 self_test.py; elif [ -f self_test.mjs ]; then node self_test.mjs; elif [ -f self_test.sh ]; then bash self_test.sh; else echo "The base has no self-test file."; exit 2; fi
+  newbase:
+    needs: [basis, base]
+    if: always() && needs.basis.outputs.edited == 'true' && needs.base.result == 'failure' && needs.base.outputs.built == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    permissions: {}
+    env:
+      REPO: ${{ github.event.client_payload.repo }}
+      TOOL: ${{ github.event.client_payload.tool }}
+      BASE: ${{ needs.basis.outputs.base }}
+    outputs:
+      built: ${{ steps.build.outputs.built }}
+    steps:
+      - id: build
+        name: Put the edited check on the base code (no tool code is run yet)
+        run: |
+          set -eu
+          [[ "$REPO" =~ ^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$ && "$TOOL" =~ ^[a-z0-9][a-z0-9-]{1,47}$ && "$BASE" =~ ^[0-9a-f]{40}$ ]] || exit 2
+          git clone --quiet --depth 1 "https://github.com/${GITHUB_REPOSITORY}.git" runner
+          git clone --quiet --depth 1 --filter=blob:none --sparse "https://github.com/${GITHUB_REPOSITORY_OWNER}/${REPO}.git" work
+          git -C work sparse-checkout set "tools/${TOOL}"
+          git init --quiet base
+          git -C base remote add origin "https://github.com/${GITHUB_REPOSITORY_OWNER}/${REPO}.git"
+          git -C base sparse-checkout set "tools/${TOOL}"
+          git -C base fetch --quiet --depth 1 --filter=blob:none origin "$BASE"
+          git -C base checkout --quiet FETCH_HEAD
+          python3 runner/scripts/base_check.py build new-check-on-base "work/tools/${TOOL}" "base/tools/${TOOL}" mixed
+          rm -rf runner work base
+          echo "built=true" >> "$GITHUB_OUTPUT"
+      - name: Compile its Python
+        timeout-minutes: 1
+        run: |
+          cd mixed
+          find . -name '*.py' -not -path '*/.*' -print0 | xargs -0 -r -n1 python3 -m py_compile
+      - name: Run the edited check on the base code
+        timeout-minutes: 4
+        run: |
+          cd mixed
+          if [ -f self_test.py ]; then python3 self_test.py; elif [ -f self_test.mjs ]; then node self_test.mjs; elif [ -f self_test.sh ]; then bash self_test.sh; else echo "The change has no self-test file."; exit 2; fi
   record:
-    needs: test
+    needs: [test, basis, base, newbase]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 3
@@ -107,6 +226,11 @@ jobs:
           CHECK: ${{ needs.test.outputs.check }}
           TAIL: ${{ needs.test.outputs.tail }}
           RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          # HB-061: what the three base jobs observed. A mixed run counts only when its tree was built.
+          BASE: ${{ needs.basis.outputs.base }}
+          PLAN: ${{ needs.basis.outputs.plan }}
+          BASE_JOB: ${{ needs.base.outputs.built == 'true' && needs.base.result || (needs.base.result == 'skipped' && 'skipped' || 'not-built') }}
+          NEWBASE_JOB: ${{ needs.newbase.outputs.built == 'true' && needs.newbase.result || (needs.newbase.result == 'skipped' && 'skipped' || 'not-built') }}
         run: |
           set -eu
           [[ "$REPO" =~ ^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$ && "$TOOL" =~ ^[a-z0-9][a-z0-9-]{1,47}$ ]] || exit 0
@@ -117,6 +241,17 @@ jobs:
           record = {"repo": os.environ["REPO"], "tool": os.environ["TOOL"], "result": result, "file": os.environ["KIND"] or None,
                     "sha": os.environ["SHA"] or None, "tree": os.environ.get("TREE") or None, "check_sha256": os.environ.get("CHECK") or None, "at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "run": os.environ["RUN"], "tail": os.environ["TAIL"][:2600]}
+          # HB-061: how it was verified, and which check decided. Never a reason to lose the record itself.
+          try:
+              import sys
+              sys.path.insert(0, "scripts")
+              from base_check import stamp
+              plan = json.loads(os.environ.get("PLAN") or "null")
+              record["verified_by"] = stamp({"result": result, "run": record["run"], "tested_sha": record["sha"], "check_sha256": record["check_sha256"],
+                                             "base_sha": os.environ.get("BASE") or "", "plan": plan,
+                                             "base_job": os.environ.get("BASE_JOB") or "", "newbase_job": os.environ.get("NEWBASE_JOB") or ""})
+          except Exception as error:
+              record["verified_by"] = {"kind": "runner" if result == "success" else "none", "check_from": "none", "reasons": [f"the stamp could not be worked out: {type(error).__name__}"]}
           with open(f"results/{record['repo']}/{record['tool']}.json", "w") as out:
               json.dump(record, out, indent=2)
               out.write("\n")

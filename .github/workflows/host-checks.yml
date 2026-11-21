@@ -5,6 +5,7 @@
 #   scripts/health_hb062.py        HB-062: a topic-filter refusal is a policy skip and does not hold health
 #   scripts/first_pass_replay.py   HB-058: a proof bundle's first-pass record worked out again from its listed steps
 #   scripts/rule_map_check.py      HB-063: the rule map is valid and matches AUTONOMY.md, rule for rule
+#   scripts/base_check.py          HB-061: which files are checks, the two mixed trees, and the verified_by stamp
 #
 # The fixtures are the required part: this run fails when a script stops catching its own regression cases. The live
 # reads are report-only: they say where the agents stand today, and never fail the run. Everything is read from public
@@ -16,7 +17,7 @@ on:
     - cron: "40 6 * * *"
   push:
     branches: [main]
-    paths: ["scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", ".github/workflows/host-checks.yml"]
+    paths: ["scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", ".github/workflows/host-checks.yml"]
 permissions: {}
 jobs:
   fixtures:
@@ -34,6 +35,7 @@ jobs:
           python3 scripts/health_hb062.py --self-test
           python3 scripts/first_pass_replay.py --self-test
           python3 scripts/rule_map_check.py --self-test
+          python3 scripts/base_check.py --self-test
       - name: Live, the 48-hour check (report-only)
         run: |
           python3 scripts/opportunities_48h.py || echo "report-only, exit $?"
