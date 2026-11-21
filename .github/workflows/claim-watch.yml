@@ -4,7 +4,9 @@
 # against what is there, as canonical JSON lines, and watch/index.json with each day's sha256. This job holds the same
 # checks (scripts/claim_watch.py), runs their fixtures, and replays the newest day file: that the file is the bytes its
 # sha256 names, that no line says more of a finding than its number, that no sensitive outcome is public, and that each
-# row's target still gives that outcome (MATCH, CHANGED, GONE or UNABLE).
+# row's target still gives that outcome (MATCH, CHANGED, GONE or UNABLE). Records are read again from Base, the day's
+# registry sample is picked again from its seed, HivemindOS's own paid endpoints are asked again with no payment, and
+# each pinned skill's packages are looked up again; the Bazaar's sample is not picked again (its pages move).
 #
 # The fixtures are required. The replay is report-only: a source that moved since the file was written is CHANGED, and
 # that is the world, not a fault. Everything is read from public files with no token; nothing in any repository is run,
@@ -31,6 +33,9 @@ jobs:
       - name: Fixtures (required)
         run: python3 scripts/claim_watch.py --self-test
       - name: Replay the newest day file (report-only)
+        env:
+          # Only for the advisory family's queries to GitHub's public advisories (its rate limit). It writes nothing.
+          GH_TOKEN: ${{ github.token }}
         run: |
           set +e
           base="https://raw.githubusercontent.com/${GITHUB_REPOSITORY_OWNER}/bee-scouts/main/watch"

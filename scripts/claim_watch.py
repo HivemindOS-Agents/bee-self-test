@@ -20,6 +20,13 @@ The skill family, one row a pinned skill:
 and the named signals in its text (pipe_to_shell, remote_instructions, instruction_override, imperative_html_comment,
 invisible_chars). A signal on a line that is itself a warning is counted as <signal>_quoted_example, never as a signal.
 
+The three outward families: record (ERC-8004 registrations on Base: RESOLVES, RESOLVES_NO_SERVICES,
+PROFILE_KEYS_IN_JSON, NOT_JSON, URI_UNREACHABLE, EMPTY_URI, NOT_REGISTERED, NOT_READ), listing (x402 listings against the
+402 they answer: MATCH, PRICE_QUOTED, PRICE_DIFF, PAYTO_DIFF, NETWORK_DIFF, NO_402, UNREACHABLE, UNPARSEABLE) and advisory
+(the packages a pinned skill installs against GitHub's malware advisories: NO_HIT, ADVISORY_HIT, NOT_READ). HivemindOS's
+own targets have a row each; other parties' are counted ("target": "sample", one row an outcome with "count"), with the
+seed that picked them, so the same registry ids can be picked again: sample(seed, n, max) below is the host's own.
+
 A day file never holds a sensitive outcome (secret_exposed, auth_missing, exploitable, advisory_exposure): such a row
 is a finding, kept privately, and the file says only {"finding": N, "status": "reported, under review"}.
 
@@ -33,6 +40,7 @@ import json
 import re
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 
 UA = "HivemindOS-claim-watch/0.1 (read-only; one request per target per day; https://hivemindos.app)"
@@ -112,6 +120,9 @@ def day_file(date, rows, findings=(), own=lambda row: True):
 def protect(day, rows):
     blocked = []
     for row in rows:
+        if row.get("family") == "advisory" and row.get("outcome") == "ADVISORY_HIT":
+            blocked.append({"target": row["target"], "why": "it installs a package a published malware advisory names"})
+            continue
         if row.get("family") != "skill":
             continue
         live = [name for name in BLOCKING if (row.get("signals") or {}).get(name, 0) > 0]
@@ -120,6 +131,167 @@ def protect(day, rows):
         elif live:
             blocked.append({"target": row["target"], "why": f"a live {' and '.join(live)} signal"})
     return {"v": 1, "day": day, "mode": "observe", "wouldBlock": sorted(blocked, key=lambda b: b["target"])}
+
+
+# ---------------------------------------------------------------------------------------------- the outward families
+PROFILE_KEY = re.compile(r"^(context|endpoint\[.*\]|address\[.*\]|account\[.*\])$")
+PKG = re.compile(r"\b(npx(?:\s+-y)?|npm\s+(?:i|install)(?:\s+-g)?|pnpm\s+(?:add|dlx)|yarn\s+(?:add|dlx)|bunx|uvx|pipx\s+(?:run|install)|pip3?\s+install)\s+((?:@[\w.-]+/)?[\w.-]+)", re.I)
+V1_NETWORK = {"base": "eip155:8453", "base-sepolia": "eip155:84532"}
+REGISTRY = "0x8004A169FB4a3325136EB29fA0ceB6D2e539a432"
+RPC = "https://mainnet.base.org"
+OWN_AGENTS = ("86", "104", "547", "632", "667", "1071")
+USDC_BASE = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+
+
+def sample(seed, count, maximum):
+    """The host's sampler: FNV-1a 32 of the seed, then mulberry32. The same seed gives the same ids in both."""
+    h = 0x811C9DC5
+    for ch in seed:
+        h ^= ord(ch)
+        h = (h * 0x01000193) & 0xFFFFFFFF
+    state = [h]
+
+    def nxt():
+        state[0] = (state[0] + 0x6D2B79F5) & 0xFFFFFFFF
+        x = state[0]
+        x = ((x ^ (x >> 15)) * (x | 1)) & 0xFFFFFFFF
+        x ^= (x + (((x ^ (x >> 7)) * (x | 61)) & 0xFFFFFFFF)) & 0xFFFFFFFF
+        return ((x ^ (x >> 14)) & 0xFFFFFFFF) / 4294967296
+
+    out, tries = [], 0
+    while len(out) < count and tries < count * 20:
+        tries += 1
+        i = 1 + int(nxt() * maximum)
+        if i not in out:
+            out.append(i)
+    return out
+
+
+def check_record(target, registered, uri, body, own_file=None, not_read=False):
+    """body: (text, sha256) or None."""
+    row = {"family": "record", "target": target, "outcome": "NOT_REGISTERED"}
+    if not registered:
+        return row
+    if own_file:
+        row["uriIsItsFile"] = uri == own_file
+    if not uri.strip():
+        row["outcome"] = "EMPTY_URI"
+        return row
+    if not_read:
+        row["outcome"] = "NOT_READ"
+        return row
+    if body is None:
+        row["outcome"] = "URI_UNREACHABLE"
+        return row
+    try:
+        doc = json.loads(body[0])
+    except ValueError:
+        row["outcome"] = "NOT_JSON"
+        return row
+    if not isinstance(doc, dict):
+        row["outcome"] = "NOT_JSON"
+        return row
+    row["sha256"] = body[1]
+    keys = [k for k in doc if PROFILE_KEY.match(k)]
+    services = doc.get("services", doc.get("endpoints"))
+    row["services"] = len(services) if isinstance(services, list) else 0
+    if keys:
+        row["outcome"], row["keys"] = "PROFILE_KEYS_IN_JSON", keys[:10]
+    else:
+        row["outcome"] = "RESOLVES" if row["services"] else "RESOLVES_NO_SERVICES"
+    return row
+
+
+def data_uri(uri):
+    m = re.match(r"^data:application/json(;charset=[\w-]+)?(;base64)?,([\s\S]*)$", uri, re.I)
+    if not m:
+        return None
+    try:
+        import base64
+        import urllib.parse
+        return base64.b64decode(m.group(3)).decode("utf-8") if m.group(2) else urllib.parse.unquote(m.group(3))
+    except (ValueError, UnicodeDecodeError):
+        return None
+
+
+def record_url(uri):
+    u = uri.strip()
+    if re.match(r"^https://", u, re.I):
+        return u
+    m = re.match(r"^ipfs://(?:ipfs/)?([A-Za-z0-9]+)(/.*)?$", u)
+    return f"https://ipfs.io/ipfs/{m.group(1)}{m.group(2) or ''}" if m else None
+
+
+def accept(a):
+    a = a if isinstance(a, dict) else {}
+    network = str(a.get("network", "")).lower()
+    return {"network": V1_NETWORK.get(network, network), "payTo": str(a.get("payTo", "")).lower(), "asset": str(a.get("asset", "")).lower(),
+            "amount": str(a.get("amount") if a.get("amount") is not None else a.get("maxAmountRequired") if a.get("maxAmountRequired") is not None else "")}
+
+
+def parse_402(header, body):
+    import base64
+    doc = None
+    if header:
+        try:
+            doc = json.loads(base64.b64decode(header + "=" * (-len(header) % 4)).decode("utf-8"))
+        except (ValueError, UnicodeDecodeError):
+            doc = None
+    if doc is None and body:
+        try:
+            doc = json.loads(body)
+        except ValueError:
+            doc = None
+    accepts = doc.get("accepts") if isinstance(doc, dict) else None
+    return [accept(a) for a in accepts] if isinstance(accepts, list) else None
+
+
+def check_listing(target, listed, status, live, dynamic=False):
+    row = {"family": "listing", "target": target, "outcome": "UNREACHABLE"}
+    if status is None:
+        return row
+    if status != 402:
+        row["outcome"], row["status"] = "NO_402", status
+        return row
+    if live is None:
+        row["outcome"] = "UNPARSEABLE"
+        return row
+    for l in listed:
+        for v in live:
+            if (l["network"], l["payTo"], l["asset"]) == (v["network"], v["payTo"], v["asset"]):
+                row["outcome"] = "MATCH" if l["amount"] == v["amount"] else "PRICE_QUOTED" if dynamic else "PRICE_DIFF"
+                return row
+    row["outcome"] = "PAYTO_DIFF" if any(v["network"] == l["network"] for l in listed for v in live) else "NETWORK_DIFF"
+    return row
+
+
+def package_refs(text):
+    seen, out = set(), []
+    for m in PKG.finditer(text):
+        name = m.group(2).lower().rstrip(".")
+        if not name or name.startswith("-"):
+            continue
+        eco = "pip" if re.match(r"^(uvx|pipx|pip)", m.group(1), re.I) else "npm"
+        if (eco, name) not in seen:
+            seen.add((eco, name))
+            out.append({"ecosystem": eco, "name": name})
+    return out
+
+
+def advisory_row(target, refs, hits):
+    if hits is None:
+        return {"family": "advisory", "target": target, "outcome": "NOT_READ", "refs": len(refs)}
+    row = {"family": "advisory", "target": target, "outcome": "ADVISORY_HIT" if hits else "NO_HIT", "refs": len(refs)}
+    if hits:
+        row["hits"] = sorted(({"package": h["name"], "ecosystem": h["ecosystem"], "ghsa": h["ghsa"]} for h in hits), key=lambda h: h["package"])
+    return row
+
+
+def aggregate(family, rows, extra):
+    counts = {}
+    for row in rows:
+        counts[row["outcome"]] = counts.get(row["outcome"], 0) + 1
+    return [dict({"family": family, "target": "sample", "outcome": o, "count": n, "sampled": len(rows)}, **extra) for o, n in sorted(counts.items())]
 
 
 def get(url, limit=524288):
@@ -156,8 +328,11 @@ def replay(text, committed=None):
         if row.get("outcome") in SENSITIVE:
             problems.append(f"a sensitive outcome is public: {row.get('target')}")
             continue
-        if row.get("family") != "skill" or not row.get("url"):
-            verdicts.append((row.get("target"), "UNABLE", "not a family this replay reads"))
+        if row.get("family") != "skill":
+            verdicts.append(replay_outward(row, rows_of(text)))
+            continue
+        if not row.get("url"):
+            verdicts.append((row.get("target"), "UNABLE", "it names no address"))
             continue
         pinned, gone = get(row["url"])
         if pinned is None:
@@ -173,6 +348,145 @@ def replay(text, committed=None):
         else:
             verdicts.append((row["target"], "MATCH", row["outcome"]))
     return verdicts, problems
+
+
+# ------------------------------------------------------------------------------- reading the outward families again
+def rows_of(text):
+    return [json.loads(l) for l in text.splitlines() if l.strip() and "finding" not in json.loads(l)]
+
+
+def rpc_call(data):
+    """One eth_call to the registry: (ok, result) or (False, reverted)."""
+    body = json.dumps({"jsonrpc": "2.0", "id": 1, "method": "eth_call", "params": [{"to": REGISTRY, "data": data}, "latest"]}).encode()
+    try:
+        with urllib.request.urlopen(urllib.request.Request(RPC, data=body, headers={"content-type": "application/json", "User-Agent": UA}), timeout=20) as r:
+            answer = json.loads(r.read())
+    except (OSError, ValueError):
+        return False, False
+    if isinstance(answer.get("result"), str):
+        return True, answer["result"]
+    return False, "revert" in str((answer.get("error") or {}).get("message", "")).lower()
+
+
+def registration(agent_id):
+    """(registered, uri), or None when the chain did not answer."""
+    arg = hex(agent_id)[2:].rjust(64, "0")
+    ok, owner = rpc_call("0x6352211e" + arg)
+    if not ok:
+        return (False, "") if owner else None
+    ok, res = rpc_call("0xc87b56dd" + arg)
+    if not ok:
+        return (True, "") if res else None
+    raw = bytes.fromhex(res[2:])
+    if len(raw) < 64:
+        return True, ""
+    n = int.from_bytes(raw[32:64], "big")
+    return True, raw[64:64 + n].decode("utf-8", "replace")
+
+
+def read_body(url):
+    data, _ = get(url, 262144)
+    return (data.decode("utf-8", "replace"), hashlib.sha256(data).hexdigest()) if data else None
+
+
+def record_again(row):
+    agent = row["target"].split(":", 1)[1]
+    own_file = f"https://agents.hivemindos.app/agents/{agent}/registration.json"
+    agent_id = row.get("agentId")
+    if not agent_id:
+        return None
+    onchain = registration(int(agent_id))
+    if onchain is None:
+        return None
+    inline = data_uri(onchain[1])
+    body = (inline, hashlib.sha256(inline.encode()).hexdigest()) if inline is not None else (read_body(record_url(onchain[1])) if record_url(onchain[1]) else None)
+    return dict(check_record(row["target"], onchain[0], onchain[1], body, own_file), agentId=agent_id)
+
+
+def sample_again(seed, count, maximum):
+    used = {}
+    out = []
+    for i in sample(seed, count, maximum):
+        onchain = registration(i)
+        if onchain is None:
+            out.append({"outcome": "NOT_READ"})
+            continue
+        inline = data_uri(onchain[1]) if onchain[0] else None
+        url = record_url(onchain[1]) if onchain[0] and inline is None else None
+        host = urllib.parse.urlparse(url).hostname if url else None
+        allowed = bool(host) and used.get(host, 0) < (10 if host == "ipfs.io" else 1)
+        if allowed:
+            used[host] = used.get(host, 0) + 1
+        body = (inline, hashlib.sha256(inline.encode()).hexdigest()) if inline is not None else (read_body(url) if allowed else None)
+        out.append(check_record(str(i), onchain[0], onchain[1], body, not_read=bool(url) and not allowed))
+    return out
+
+
+def probe(url, method):
+    req = urllib.request.Request(url, data=b"{}" if method == "POST" else None, method=method, headers={"User-Agent": UA, "content-type": "application/json"})
+    try:
+        with urllib.request.urlopen(req, timeout=15) as r:
+            return r.status, None
+    except urllib.error.HTTPError as error:
+        if error.code != 402:
+            return error.code, None
+        return 402, parse_402(error.headers.get("payment-required"), error.read(65536).decode("utf-8", "replace"))
+    except (OSError, ValueError):
+        return None, None
+
+
+def advisories_of(pkg):
+    """The GHSA ids of published malware advisories that name this package, or None when the query failed."""
+    url = f"https://api.github.com/advisories?type=malware&ecosystem={pkg['ecosystem']}&affects={urllib.parse.quote(pkg['name'])}&per_page=10"
+    import os
+    headers = {"User-Agent": "bee-self-test", "Accept": "application/vnd.github+json", **({"Authorization": f"Bearer {os.environ['GH_TOKEN']}"} if os.environ.get("GH_TOKEN") else {})}
+    try:
+        with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=20) as r:
+            items = json.loads(r.read())
+    except (OSError, ValueError):
+        return None
+    return [a["ghsa_id"] for a in items if any(str((v.get("package") or {}).get("name", "")).lower() == pkg["name"] for v in a.get("vulnerabilities") or [])]
+
+
+def replay_outward(row, rows):
+    """A record, listing or advisory row read again: (target, verdict, why)."""
+    family, target = row.get("family"), row.get("target")
+    if family == "record" and target == "sample":
+        key = (row["seed"], row["sampled"], row["maxId"])
+        cache = replay_outward.__dict__.setdefault("samples", {})
+        if key not in cache:
+            cache[key] = sample_again(row["seed"], row["sampled"], row["maxId"])
+        now = sum(1 for r in cache[key] if r["outcome"] == row["outcome"])
+        return (f"sample:{row['outcome']}", "MATCH" if now == row["count"] else "CHANGED", f"{row['count']} then, {now} now")
+    if family == "record" and target.startswith("hivepunk:"):
+        now = record_again(row)
+        if now is None:
+            return (target, "UNABLE", "the chain did not answer, or the row names no Agent ID")
+        same = (now["outcome"], now.get("sha256"), now.get("uriIsItsFile")) == (row["outcome"], row.get("sha256"), row.get("uriIsItsFile"))
+        return (target, "MATCH" if same else "CHANGED", f"{row['outcome']} then, {now['outcome']} now")
+    if family == "listing" and target == "sample":
+        return (f"sample:{row['outcome']}", "UNABLE", "the Bazaar's pages move; the sample is not picked again")
+    if family == "listing" and target.startswith("hivemindos:"):
+        status, live = probe("https://agents.hivemindos.app" + target.split(":", 1)[1], "POST")
+        usdc = next((a for a in live or [] if a["network"] == "eip155:8453" and a["asset"] == USDC_BASE), None)
+        claimed = [{"network": "eip155:8453", "asset": USDC_BASE, "payTo": usdc["payTo"] if usdc else "", "amount": usdc["amount"] if usdc and row["outcome"] == "MATCH" else ""}]
+        now = check_listing(target, claimed, status, live) if row["outcome"] == "MATCH" else {"outcome": "UNABLE"}
+        if row["outcome"] != "MATCH":
+            return (target, "UNABLE", f"{row['outcome']}: the listed price is in its openapi.json, not in the row")
+        return (target, "MATCH" if now["outcome"] == "MATCH" and status == 402 else "CHANGED", f"{row['outcome']} then, {now['outcome']} now")
+    if family == "advisory":
+        skill = next((r for r in rows if r.get("family") == "skill" and r.get("target") == target and r.get("url")), None)
+        if not skill:
+            return (target, "UNABLE", "its skill row is not in this file")
+        data, _ = get(skill["url"])
+        if data is None:
+            return (target, "UNABLE", "its pinned skill could not be read")
+        refs = package_refs(data.decode("utf-8", "replace"))
+        found = [(p, advisories_of(p)) for p in refs]
+        hits = None if any(a is None for _, a in found) else [{"ecosystem": p["ecosystem"], "name": p["name"], "ghsa": g} for p, a in found for g in a]
+        now = advisory_row(target, refs, hits)
+        return (target, "MATCH" if (now["outcome"], now["refs"]) == (row["outcome"], row.get("refs")) else "CHANGED", f"{row['outcome']} then, {now['outcome']} now")
+    return (target, "UNABLE", "not a family this replay reads")
 
 
 def self_test():
@@ -244,7 +558,46 @@ def self_test():
     _, problems = replay('{"day":"2026-11-21","finding":7,"status":"reported, under review","target":"https://x.example"}\n{"day":"2026-11-21","family":"record","outcome":"auth_missing","target":"y"}\n')
     if len(problems) != 2:
         bad.append(f"replay problems: got {problems}")
-    total = 19 + 2 + 4 + 2 + 1 + 1
+    # The outward families, against the host's own fixtures (hivemind-os core/agent-claim-watch.ts, its test).
+    own = "https://agents.hivemindos.app/agents/547/registration.json"
+    body = lambda value: (value if isinstance(value, str) else json.dumps(value), a)
+    for name, got, want in [
+        ("sample, the host's ids", sample("erc8004:base:2026-11-22", 8, 1250000), [729918, 1099129, 479787, 497714, 63921, 729530, 196714, 775387]),
+        ("sample, the Bazaar's offset", sample("bazaar:2026-11-22", 3, 39823), [14805, 17214, 25278]),
+        ("sample never repeats", len(set(sample("x", 50, 60))), 50),
+        ("not registered", check_record("t", False, "", None)["outcome"], "NOT_REGISTERED"),
+        ("empty", check_record("t", True, " ", None)["outcome"], "EMPTY_URI"),
+        ("not read", check_record("t", True, "https://x", None, not_read=True)["outcome"], "NOT_READ"),
+        ("unreachable", check_record("t", True, "https://x", None)["outcome"], "URI_UNREACHABLE"),
+        ("not json", check_record("t", True, "https://x", body("<html>"))["outcome"], "NOT_JSON"),
+        ("a list is not a registration", check_record("t", True, "https://x", body([1]))["outcome"], "NOT_JSON"),
+        ("profile keys", check_record("t", True, "https://x", body({"endpoint[0]": "x", "context": "y"}))["keys"], ["endpoint[0]", "context"]),
+        ("no services", check_record("t", True, "https://x", body({"name": "a"}))["outcome"], "RESOLVES_NO_SERVICES"),
+        ("resolves, its own file", {k: check_record("t", True, own, body({"services": [{}]}), own)[k] for k in ("outcome", "uriIsItsFile", "services")}, {"outcome": "RESOLVES", "uriIsItsFile": True, "services": 1}),
+        ("ipfs through a gateway", record_url("ipfs://bafy123/agent.json"), "https://ipfs.io/ipfs/bafy123/agent.json"),
+        ("http is not read", record_url("http://x.example/a.json"), None),
+        ("a data uri", data_uri("data:application/json;base64,eyJuYW1lIjoiYSJ9"), '{"name":"a"}'),
+        ("a v1 402 reads the same", accept({"network": "base", "payTo": "0xAB", "asset": "0xCD", "maxAmountRequired": "5"}), {"network": "eip155:8453", "payTo": "0xab", "asset": "0xcd", "amount": "5"}),
+        ("match", check_listing("x", [accept({"network": "eip155:8453", "payTo": "p", "asset": "u", "amount": "5"})], 402, [accept({"network": "eip155:8453", "payTo": "p", "asset": "u", "amount": "5"})])["outcome"], "MATCH"),
+        ("price differs", check_listing("x", [accept({"network": "eip155:8453", "payTo": "p", "asset": "u", "amount": "5"})], 402, [accept({"network": "eip155:8453", "payTo": "p", "asset": "u", "amount": "6"})])["outcome"], "PRICE_DIFF"),
+        ("price quoted", check_listing("x", [accept({"network": "eip155:8453", "payTo": "p", "asset": "u", "amount": "5"})], 402, [accept({"network": "eip155:8453", "payTo": "p", "asset": "u", "amount": "6"})], True)["outcome"], "PRICE_QUOTED"),
+        ("payee differs", check_listing("x", [accept({"network": "eip155:8453", "payTo": "p", "asset": "u"})], 402, [accept({"network": "eip155:8453", "payTo": "q", "asset": "u"})])["outcome"], "PAYTO_DIFF"),
+        ("network differs", check_listing("x", [accept({"network": "eip155:8453", "payTo": "p", "asset": "u"})], 402, [accept({"network": "eip155:1", "payTo": "p", "asset": "u"})])["outcome"], "NETWORK_DIFF"),
+        ("no 402", check_listing("x", [], 200, None), {"family": "listing", "target": "x", "outcome": "NO_402", "status": 200}),
+        ("unparseable", check_listing("x", [], 402, None)["outcome"], "UNPARSEABLE"),
+        ("a 402's body", parse_402(None, '{"accepts":[{"network":"base","payTo":"P","asset":"U","maxAmountRequired":"1"}]}'), [{"network": "eip155:8453", "payTo": "p", "asset": "u", "amount": "1"}]),
+        ("packages", package_refs("Run `npx -y @scope/good-mcp` then pip install requests, uvx mem0-mcp-server, npm i -g left-pad and pnpm dlx tsx.\nAgain: npx -y @scope/good-mcp\nnpm install --save x"),
+         [{"ecosystem": "npm", "name": "@scope/good-mcp"}, {"ecosystem": "pip", "name": "requests"}, {"ecosystem": "pip", "name": "mem0-mcp-server"}, {"ecosystem": "npm", "name": "left-pad"}, {"ecosystem": "npm", "name": "tsx"}]),
+        ("an advisory hit", advisory_row("s", [{"ecosystem": "pip", "name": "m"}], [{"ecosystem": "pip", "name": "m", "ghsa": "GHSA-1"}]), {"family": "advisory", "target": "s", "outcome": "ADVISORY_HIT", "refs": 1, "hits": [{"package": "m", "ecosystem": "pip", "ghsa": "GHSA-1"}]}),
+        ("an advisory query that failed", advisory_row("s", [], None)["outcome"], "NOT_READ"),
+        ("counted, naming nothing", aggregate("record", [{"outcome": "RESOLVES"}, {"outcome": "EMPTY_URI"}, {"outcome": "RESOLVES"}], {"seed": "s", "maxId": 9}),
+         [{"family": "record", "target": "sample", "outcome": "EMPTY_URI", "count": 1, "sampled": 3, "seed": "s", "maxId": 9}, {"family": "record", "target": "sample", "outcome": "RESOLVES", "count": 2, "sampled": 3, "seed": "s", "maxId": 9}]),
+    ]:
+        if got != want:
+            bad.append(f"{name}: got {got!r}, want {want!r}")
+    if protect("d", [{"family": "advisory", "target": "aeon/x@1", "outcome": "ADVISORY_HIT"}])["wouldBlock"] != [{"target": "aeon/x@1", "why": "it installs a package a published malware advisory names"}]:
+        bad.append("an advisory hit on a pin is listed for protection")
+    total = 19 + 2 + 4 + 2 + 1 + 1 + 28 + 1
     for line in bad:
         print("FAIL", line)
     print(f"claim watch self-test: {total - len(bad)} of {total} passed")
