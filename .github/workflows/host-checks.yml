@@ -10,6 +10,8 @@
 #   scripts/source_match.py        HB-054 "+": a Sourcify "verified" label recomputed against the code on Base
 #   scripts/lift_run.py            HB-036 "+": held-out tasks picked after a skill's edit, a calibrated proxy, and what a
 #                                  promotion needs (tests/test_lift_run.py)
+#   scripts/rule_stops.py          HB-063: what followed each stop on a rule within 24 hours: a re-attempt, a note that
+#                                  claims the stopped folder, or files committed under it
 #   scripts/repair_receipts.py     HB-065: a repair that ended has a valid receipt in its agent's repository, never
 #                                  edited; an escalation names its receiver within 24 hours; an open step repair's
 #                                  counters follow LESSONS.md; every LESSONS failure names its one bucket
@@ -26,7 +28,7 @@ on:
     - cron: "40 6 * * *"
   push:
     branches: [main]
-    paths: ["scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "scripts/repair_receipts.py", "fixtures/source-match/**", "scripts/lift_run.py", "tests/test_lift_run.py", "lift/**/held-out.json", "lift/**/tasks.json", ".github/workflows/host-checks.yml"]
+    paths: ["scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "scripts/repair_receipts.py", "scripts/rule_stops.py", "fixtures/source-match/**", "scripts/lift_run.py", "tests/test_lift_run.py", "lift/**/held-out.json", "lift/**/tasks.json", ".github/workflows/host-checks.yml"]
 permissions: {}
 jobs:
   fixtures:
@@ -47,6 +49,7 @@ jobs:
           python3 scripts/base_check.py --self-test
           python3 scripts/source_match.py --self-test
           python3 scripts/repair_receipts.py --self-test
+          python3 scripts/rule_stops.py --self-test
           python3 -m unittest discover -s tests -p 'test_lift_run.py'
       - name: Live, the 48-hour check (report-only)
         run: |
@@ -61,6 +64,12 @@ jobs:
             git clone --quiet --filter=blob:none --no-checkout --shallow-since=2026-11-17 "https://github.com/${GITHUB_REPOSITORY_OWNER}/hivepunk-${n}.git" "$RUNNER_TEMP/history/hivepunk-${n}" || echo "could not read hivepunk-${n}"
           done
           python3 scripts/opportunities_hb060.py --linker "$RUNNER_TEMP"/history/hivepunk-* || echo "report-only, exit $?"
+      - name: Live, HB-063 what followed each stop on a rule, from each agent repository's history (report-only)
+        run: |
+          python3 scripts/rule_stops.py "$RUNNER_TEMP"/history/hivepunk-* || echo "report-only, exit $?"
+      - name: Live, HB-061 the stamps on the kept runner records, and how many would block (observe mode, report-only)
+        run: |
+          python3 scripts/base_check.py stamps results || echo "report-only, exit $?"
       - name: Live, HB-062 health (report-only)
         run: |
           python3 scripts/health_hb062.py || echo "report-only, exit $?"

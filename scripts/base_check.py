@@ -13,6 +13,8 @@ reports it, never anything the tool printed (self-test.yml).
     python3 scripts/base_check.py build base-check-on-new NEW_DIR BASE_DIR OUT_DIR
     python3 scripts/base_check.py build new-check-on-base NEW_DIR BASE_DIR OUT_DIR
     python3 scripts/base_check.py stamp FACTS.json                # the verified_by stamp for the record (JSON)
+    python3 scripts/base_check.py stamps RESULTS_DIR              # the stamps on the kept records, counted (JSON):
+                                                                  # how many would block, in observe mode
     python3 scripts/base_check.py --self-test
 
 Check files: self_test.py, self_test.mjs, self_test.sh, anything under fixtures/, and any file named expected*.
@@ -168,9 +170,38 @@ def stamp(facts):
     return out
 
 
+def stamps(records):
+    """The stamps on runner records, counted: how many carry one, by kind and by where the check came from, and every
+    pass that would block (observe mode: it blocked nothing). `records`: (name, record) pairs."""
+    out = {"records": 0, "stamped": 0, "byKind": {}, "byCheckFrom": {}, "wouldBlock": []}
+    for name, record in records:
+        out["records"] += 1
+        v = record.get("verified_by") if isinstance(record, dict) else None
+        if not isinstance(v, dict):
+            continue
+        out["stamped"] += 1
+        out["byKind"][str(v.get("kind"))] = out["byKind"].get(str(v.get("kind")), 0) + 1
+        out["byCheckFrom"][str(v.get("check_from"))] = out["byCheckFrom"].get(str(v.get("check_from")), 0) + 1
+        if v.get("would_block") is True:
+            out["wouldBlock"].append({"record": name, "run": v.get("run"), "signal": v.get("signal"), "reasons": v.get("reasons") or []})
+    return out
+
+
 def main(argv):
     if "--self-test" in argv:
         return self_test()
+    if len(argv) == 2 and argv[0] == "stamps":
+        found = []
+        for folder, _, names in sorted(os.walk(argv[1])):
+            for name in sorted(names):
+                if name.endswith(".json"):
+                    try:
+                        with open(os.path.join(folder, name)) as f:
+                            found.append((os.path.relpath(os.path.join(folder, name), argv[1]), json.load(f)))
+                    except (OSError, ValueError):
+                        pass
+        print(json.dumps(stamps(found), indent=2))
+        return 0
     if len(argv) >= 2 and argv[0] == "plan":
         print(json.dumps(plan(argv[1], argv[2] if len(argv) > 2 else None)))
         return 0
@@ -266,6 +297,12 @@ def self_test():
     assert s(result="success", base_sha="b" * 40, plan={"base_available": False})["reasons"] == ["the base tree could not be read"]; n += 1
     st = s(result="success", base_sha="b" * 40, plan=same)
     assert (st["run"], st["tested_sha"], st["base_sha"], st["check_sha256"], st["mode"], st["check_edited"]) == ("https://x/runs/1", "a" * 40, "b" * 40, "c" * 64, "observe", False); n += 1
+    # The stamps counted: a record with none, a pass on the base check, a failed run, and a pass that would block.
+    counted = stamps([("a/x.json", {"result": "success"}), ("a/y.json", {"verified_by": {"kind": "runner", "check_from": "base", "would_block": False}}),
+                      ("b/z.json", {"verified_by": {"kind": "none", "check_from": "none", "would_block": False}}),
+                      ("b/w.json", {"verified_by": {"kind": "runner", "check_from": "same-change", "would_block": True, "run": "https://x/runs/2", "signal": "loosened", "reasons": ["r"]}}), ("c/bad.json", [])])
+    assert counted == {"records": 5, "stamped": 3, "byKind": {"runner": 2, "none": 1}, "byCheckFrom": {"base": 1, "none": 1, "same-change": 1},
+                       "wouldBlock": [{"record": "b/w.json", "run": "https://x/runs/2", "signal": "loosened", "reasons": ["r"]}]}; n += 1
     print(f"self-test: {n}/{n} PASS")
     return 0
 
