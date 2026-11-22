@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-1071",
+  "bundle": "prf-1071-wizz-air-se-sas-number-check-1fb1d9c",
+  "result": "REPRODUCED",
+  "observed": "passed, 17/17",
+  "scorerCommit": "1fb1d9ca4b82e5bfe6630a55b85b843b55cfab25",
+  "peer": "667",
+  "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
+  "at": "2026-11-22T09:08:57Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45006095844"
+}
