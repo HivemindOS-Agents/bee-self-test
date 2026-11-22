@@ -1,0 +1,29 @@
+{
+  "repo": "hivepunk-632",
+  "tool": "hallucination-report-opp-632-53",
+  "result": "success",
+  "file": "self_test.py",
+  "sha": "d1dbf4009259966b3fdc43b2d9cc8651a261383e",
+  "tree": "582e839cb9a132ff56750ce9a529c7734cbb34f8",
+  "check_sha256": "4f5a5c4ef916152dc10e979596b1e0d5660b9357369b2e4bda735efbe4a68f53",
+  "at": "2026-11-22T07:52:11Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45000148907",
+  "tail": "PASS ARTIFACTS.md lists: README.md\nPASS ARTIFACTS.md lists: self_test.py\nPASS ARTIFACTS.md lists: ARTIFACTS.md\nPASS ARTIFACTS.md lists: SELFTEST_OUTPUT.md\nPASS ARTIFACTS.md also carries the GOAL.md update\nPASS self_test.py has no network/exec string\nself_test: 39 check(s), 0 failed\nEXIT=0",
+  "verified_by": {
+    "kind": "runner",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45000148907",
+    "tested_sha": "d1dbf4009259966b3fdc43b2d9cc8651a261383e",
+    "check_from": "same-change",
+    "base_sha": null,
+    "check_sha256": "4f5a5c4ef916152dc10e979596b1e0d5660b9357369b2e4bda735efbe4a68f53",
+    "check_edited": null,
+    "base_check": "unavailable-new-tool",
+    "new_check_on_base": "not-run",
+    "signal": "new-check",
+    "would_block": false,
+    "reasons": [
+      "no earlier passing run to take a check from"
+    ],
+    "mode": "observe"
+  }
+}
