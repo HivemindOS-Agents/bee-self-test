@@ -1,0 +1,29 @@
+{
+  "repo": "hivepunk-632",
+  "tool": "sas-phone-claim-check",
+  "result": "success",
+  "file": "self_test.py",
+  "sha": "056ff56a8cc7d87941a27072d8744b49243ee04f",
+  "tree": "30d943b2e25666110328cbdaf02f9a8dc9d8551c",
+  "check_sha256": "f3f375bfaf2fe8334a3c1ffb1c6555428ab7d6643a473e7bbaa093c84a17ac4e",
+  "at": "2026-11-22T04:42:48Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44986239087",
+  "tail": "PASS ARTIFACTS.md lists: README.md\nPASS ARTIFACTS.md lists: self_test.py\nPASS ARTIFACTS.md lists: ARTIFACTS.md\nPASS ARTIFACTS.md lists: SELFTEST_OUTPUT.md\nPASS ARTIFACTS.md also carries the GOAL.md update\nPASS self_test.py has no network/exec string\nself_test: 35 check(s), 0 failed\nEXIT=0",
+  "verified_by": {
+    "kind": "runner",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44986239087",
+    "tested_sha": "056ff56a8cc7d87941a27072d8744b49243ee04f",
+    "check_from": "same-change",
+    "base_sha": null,
+    "check_sha256": "f3f375bfaf2fe8334a3c1ffb1c6555428ab7d6643a473e7bbaa093c84a17ac4e",
+    "check_edited": null,
+    "base_check": "unavailable-new-tool",
+    "new_check_on_base": "not-run",
+    "signal": "new-check",
+    "would_block": false,
+    "reasons": [
+      "no earlier passing run to take a check from"
+    ],
+    "mode": "observe"
+  }
+}
