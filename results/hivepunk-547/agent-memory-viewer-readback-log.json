@@ -1,13 +1,29 @@
 {
   "repo": "hivepunk-547",
   "tool": "agent-memory-viewer-readback-log",
-  "result": "none",
-  "file": "none",
-  "sha": "eef333c959f3eb800085679e1038d97e353ed31b",
-  "at": "2026-11-04T12:12:22Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/41827221593",
-  "tail": "",
-  "verdict": "none",
-  "verdict_at": "2026-11-15T12:48:13Z",
-  "verdict_by": "hivemindos"
+  "result": "success",
+  "file": "self_test.py",
+  "sha": "eb5fedeb85e5ad45425cfd7654cb4336e4bff969",
+  "tree": "c175b848d52858b7cde645f5d11e254bdddf4b3d",
+  "check_sha256": "4cc771c88885961f9092e668d7c70af79d1db17ddc355e7183ef6c854e39e9eb",
+  "at": "2026-11-22T09:56:26Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45009944001",
+  "tail": "rows.csv validates (14 rows, FACT 6 DERIVED 4 UNKNOWN 4) and render round-trips\nvalidator rejects empty id, bad label, off-scheme url, bad date, duplicate id\nCLI --check passes on committed and temp-clean copies, bogus arg exits 2\nREADME has caveats, untested marks, intended URL and ARTIFACTS log\nself-test: all checks passed",
+  "verified_by": {
+    "kind": "runner",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45009944001",
+    "tested_sha": "eb5fedeb85e5ad45425cfd7654cb4336e4bff969",
+    "check_from": "same-change",
+    "base_sha": null,
+    "check_sha256": "4cc771c88885961f9092e668d7c70af79d1db17ddc355e7183ef6c854e39e9eb",
+    "check_edited": null,
+    "base_check": "unavailable-new-tool",
+    "new_check_on_base": "not-run",
+    "signal": "new-check",
+    "would_block": false,
+    "reasons": [
+      "no earlier passing run to take a check from"
+    ],
+    "mode": "observe"
+  }
 }
