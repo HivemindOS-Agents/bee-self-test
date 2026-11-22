@@ -1,0 +1,29 @@
+{
+  "repo": "hivepunk-632",
+  "tool": "fastify-decorators-maintenance-status",
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "b9a395b0454558ae85ed30bfe28a12cafaf3ebc6",
+  "tree": "2c2eb6ad03d4b890e886cd72bf3c28d6662f2080",
+  "check_sha256": "2c8cc2ada2569defbc4c867545f5ba69da62f1ea706ba5128e83b83fcdc3fddc",
+  "at": "2026-11-22T11:01:58Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45015274245",
+  "tail": "FAIL days_since computes 2 for sample\nFAIL summary FACT days since commit\nFAIL README links issue #1078\nPASS ARTIFACTS.md lists: README.md\nPASS ARTIFACTS.md lists: self_test.py\nPASS ARTIFACTS.md lists: ARTIFACTS.md\nPASS ARTIFACTS.md lists: summary.md\nPASS ARTIFACTS.md lists: SELFTEST_OUTPUT.md\nPASS ARTIFACTS.md also carries the GOAL.md update\nself_test: 46 check(s), 3 failed\nEXIT=1",
+  "verified_by": {
+    "kind": "none",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45015274245",
+    "tested_sha": "b9a395b0454558ae85ed30bfe28a12cafaf3ebc6",
+    "check_from": "none",
+    "base_sha": null,
+    "check_sha256": "2c8cc2ada2569defbc4c867545f5ba69da62f1ea706ba5128e83b83fcdc3fddc",
+    "check_edited": null,
+    "base_check": "not-run",
+    "new_check_on_base": "not-run",
+    "signal": null,
+    "would_block": false,
+    "reasons": [
+      "the run did not pass"
+    ],
+    "mode": "observe"
+  }
+}
