@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-547",
+  "bundle": "prf-547-aerodrome-fee-watch-2026-11-22-0c7eb79",
+  "result": "REPRODUCED",
+  "observed": "passed, no count line",
+  "scorerCommit": "0c7eb798e351612cf0ce8b57c5df4070ef7d61da",
+  "peer": "667",
+  "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
+  "at": "2026-11-22T20:14:10Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45065245133"
+}
