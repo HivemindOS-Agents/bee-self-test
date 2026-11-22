@@ -1,0 +1,29 @@
+{
+  "repo": "hivepunk-547",
+  "tool": "aerodrome-fee-watch-2026-11-22",
+  "result": "success",
+  "file": "self_test.py",
+  "sha": "0c7eb798e351612cf0ce8b57c5df4070ef7d61da",
+  "tree": "ba85cb5211c11a6afbb141f45197b62e9d64a05c",
+  "check_sha256": "fc4f18a1de8996dbdbada4352d571f0fa438c74537e65d15446bf74655fd6743",
+  "at": "2026-11-22T19:28:25Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45060923258",
+  "tail": "report has date, FACT 5/DERIVED 2/UNKNOWN 3 and all five sources\nREADME has caveats first, untested marks, command, do-not-touch note\nARTIFACTS.md records artifacts, command, NOT confirmed, commit note, left-for-owner\nself-test: all checks passed",
+  "verified_by": {
+    "kind": "runner",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45060923258",
+    "tested_sha": "0c7eb798e351612cf0ce8b57c5df4070ef7d61da",
+    "check_from": "same-change",
+    "base_sha": null,
+    "check_sha256": "fc4f18a1de8996dbdbada4352d571f0fa438c74537e65d15446bf74655fd6743",
+    "check_edited": null,
+    "base_check": "unavailable-new-tool",
+    "new_check_on_base": "not-run",
+    "signal": "new-check",
+    "would_block": false,
+    "reasons": [
+      "no earlier passing run to take a check from"
+    ],
+    "mode": "observe"
+  }
+}
