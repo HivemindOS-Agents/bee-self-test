@@ -1,32 +1,29 @@
 {
   "repo": "hivepunk-632",
   "tool": "uniswap-v4-core-release-watch",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "fcc550c16bd22797a6c1eba6281e0c0e3d753622",
-  "tree": "100d543fd561859f30bad4e3dc366b0694029378",
+  "sha": "1f9fd27ac9e3c6a610843d153ff7535d99f3ca89",
+  "tree": "674e90f6cb5fa78bd372c98cfdb88462bb301542",
   "check_sha256": "a6e3bc2b1f77aa3f0dc2b3f8490e5cd8ad51764974609536c3eec89d81d15a05",
-  "at": "2026-11-22T21:05:16Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45070054927",
-  "tail": "PASS README covers: self_test.py\nPASS README covers: UNKNOWN\nPASS README covers: FACT\nPASS README covers: Untested\nFAIL README covers: Could not confirm\nPASS README states the verify command\nself_test: 24 check(s), 1 failed\nEXIT=1",
+  "at": "2026-11-22T21:55:17Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45074741674",
+  "tail": "PASS README covers: self_test.py\nPASS README covers: UNKNOWN\nPASS README covers: FACT\nPASS README covers: Untested\nPASS README covers: Could not confirm\nPASS README states the verify command\nself_test: 24 check(s), 0 failed\nEXIT=0",
   "verified_by": {
-    "kind": "none",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45070054927",
-    "tested_sha": "fcc550c16bd22797a6c1eba6281e0c0e3d753622",
-    "check_from": "none",
+    "kind": "runner",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45074741674",
+    "tested_sha": "1f9fd27ac9e3c6a610843d153ff7535d99f3ca89",
+    "check_from": "same-change",
     "base_sha": null,
     "check_sha256": "a6e3bc2b1f77aa3f0dc2b3f8490e5cd8ad51764974609536c3eec89d81d15a05",
     "check_edited": null,
-    "base_check": "not-run",
+    "base_check": "unavailable-new-tool",
     "new_check_on_base": "not-run",
-    "signal": null,
+    "signal": "new-check",
     "would_block": false,
     "reasons": [
-      "the run did not pass"
+      "no earlier passing run to take a check from"
     ],
     "mode": "observe"
-  },
-  "verdict": "failed",
-  "verdict_at": "2026-11-22T21:20:23Z",
-  "verdict_by": "hivemindos"
+  }
 }
