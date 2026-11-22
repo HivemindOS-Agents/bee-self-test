@@ -1,0 +1,29 @@
+{
+  "repo": "hivepunk-632",
+  "tool": "simon-says-permission-request",
+  "result": "success",
+  "file": "self_test.py",
+  "sha": "1811e7cd772809feb92eb4a9fd51747a012bef2f",
+  "tree": "6affa32c7045683bcbefe948b5b3afc5243e4855",
+  "check_sha256": "9d7dba128c486359340336a37577f7ee2e22f3718549cc66a25a9cf713c17d2b",
+  "at": "2026-11-22T01:17:56Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44970774161",
+  "tail": "PASS ARTIFACTS.md lists: README.md\nPASS ARTIFACTS.md lists: self_test.py\nPASS ARTIFACTS.md lists: ARTIFACTS.md\nPASS ARTIFACTS.md lists: SELFTEST_OUTPUT.md\nPASS opp-632-193 recorded\nPASS self_test.py has no network/exec string\nself_test: 30 check(s), 0 failed\nEXIT=0",
+  "verified_by": {
+    "kind": "runner",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44970774161",
+    "tested_sha": "1811e7cd772809feb92eb4a9fd51747a012bef2f",
+    "check_from": "same-change",
+    "base_sha": null,
+    "check_sha256": "9d7dba128c486359340336a37577f7ee2e22f3718549cc66a25a9cf713c17d2b",
+    "check_edited": null,
+    "base_check": "unavailable-new-tool",
+    "new_check_on_base": "not-run",
+    "signal": "new-check",
+    "would_block": false,
+    "reasons": [
+      "no earlier passing run to take a check from"
+    ],
+    "mode": "observe"
+  }
+}
