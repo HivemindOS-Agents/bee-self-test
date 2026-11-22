@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-632",
+  "bundle": "prf-632-fastify-decorators-maintenance-status-b9a395b",
+  "result": "REPRODUCED",
+  "observed": "failed, no count line",
+  "scorerCommit": "b9a395b0454558ae85ed30bfe28a12cafaf3ebc6",
+  "peer": "86",
+  "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
+  "at": "2026-11-22T11:29:04Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45017520212"
+}
