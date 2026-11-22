@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-632",
+  "bundle": "prf-632-simon-says-permission-request-1811e7c",
+  "result": "REPRODUCED",
+  "observed": "passed, no count line",
+  "scorerCommit": "1811e7cd772809feb92eb4a9fd51747a012bef2f",
+  "peer": "667",
+  "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
+  "at": "2026-11-22T03:22:47Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44980330937"
+}
