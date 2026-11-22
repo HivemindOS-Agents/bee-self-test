@@ -1,0 +1,29 @@
+{
+  "repo": "hivepunk-547",
+  "tool": "opp-547-824-uniswap-v4-upgrade-watch",
+  "result": "failure",
+  "file": "self_test.py",
+  "sha": "7ca7ffb37c84d071a052451cb67eab0076ddd61d",
+  "tree": "b63f17aac23786a28805427859a5260d1855cbc9",
+  "check_sha256": "49715048227ab6401e67aa37f4eeeffae150cf94b45b02ee400299da71b53115",
+  "at": "2026-11-22T16:16:53Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45042920631",
+  "tail": "FAIL: context FACT rows 6",
+  "verified_by": {
+    "kind": "none",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45042920631",
+    "tested_sha": "7ca7ffb37c84d071a052451cb67eab0076ddd61d",
+    "check_from": "none",
+    "base_sha": null,
+    "check_sha256": "49715048227ab6401e67aa37f4eeeffae150cf94b45b02ee400299da71b53115",
+    "check_edited": null,
+    "base_check": "not-run",
+    "new_check_on_base": "not-run",
+    "signal": null,
+    "would_block": false,
+    "reasons": [
+      "the run did not pass"
+    ],
+    "mode": "observe"
+  }
+}
