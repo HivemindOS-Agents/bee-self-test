@@ -1,0 +1,314 @@
+{
+  "v": 1,
+  "about": "Every host check that only observes, reports or runs in shadow, and every rule the rule map marks prose or partly, with the date by which the host decides it: enforce, retired (moved to PLAYBOOK guidance) or extend (once, with a reason). decideBy is at most 14 days after since. The rule map lives in bee-scouts (templates/rule_map.json) and carries no lifecycle yet, so the lifecycles of its prose and partly rules are kept here under rules. Read by scripts/rule_lifecycle.py.",
+  "maxWindowDays": 14,
+  "ruleMap": {
+    "source": "https://raw.githubusercontent.com/HivemindOS-Agents/bee-scouts/main/templates/rule_map.json",
+    "checked": "2026-11-21",
+    "prose": 3,
+    "partly": 10
+  },
+  "checks": [
+    {
+      "id": "HB-061 base_check stamps",
+      "script": "scripts/base_check.py stamps results",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "observe",
+        "since": "2026-11-21",
+        "decideBy": "2026-11-28",
+        "check": "each runner record's verified_by stamp, mode observe; would_block is counted, nothing is blocked",
+        "metric": "would_block records among the kept runner records, and fixture false positives (base_check --self-test)"
+      },
+      "decisions": []
+    },
+    {
+      "id": "HB-063 rule_stops 24-hour rule",
+      "script": "scripts/rule_stops.py",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "report-only",
+        "since": "2026-11-21",
+        "decideBy": "2026-11-28",
+        "check": "what followed a stop on a rule within 24 hours: re-attempt, claim or reroute",
+        "metric": "after-stop findings a day per agent; a 0 for 7 days retires it to the guard, a finding a day makes it a stop"
+      },
+      "decisions": []
+    },
+    {
+      "id": "HB-065 repair_receipts",
+      "script": "scripts/repair_receipts.py",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "report-only",
+        "since": "2026-11-21",
+        "decideBy": "2026-11-28",
+        "check": "receipts, escalation receivers, step-repair counters and LESSONS buckets",
+        "metric": "problems per live run, fixed-verified receipts written"
+      },
+      "decisions": []
+    },
+    {
+      "id": "HB-061 kept_rules",
+      "script": "scripts/kept_rules.py",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "report-only",
+        "since": "2026-11-21",
+        "decideBy": "2026-11-28",
+        "check": "kept and rejected rules against the judgement files they cite; honest-failure rows",
+        "metric": "problems per live run and kept rules with a wrong citation"
+      },
+      "decisions": []
+    },
+    {
+      "id": "watchdog D-checks",
+      "script": "hivepunk-<n>/watchdog/latest.json (the agents service)",
+      "owner": "HivemindOS agents service",
+      "lifecycle": {
+        "stage": "observe",
+        "since": "2026-11-21",
+        "decideBy": "2026-12-05",
+        "check": "the watchdog's findings on each agent repository, report-only; observing since 15 Nov 2026",
+        "metric": "open findings older than 72 h per agent, and findings with no repair after 24 h"
+      },
+      "decisions": []
+    },
+    {
+      "id": "HB-067 B repeat_guard",
+      "script": "scripts/repeat_guard.py",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "shadow",
+        "since": "2026-11-22",
+        "decideBy": "2026-11-29",
+        "check": "repeats keyed on play or tool and normalised cause, from LESSONS.md, runner records and research receipts",
+        "metric": "dispatches that would be held per day, and held keys a later pass shows were wrong"
+      },
+      "decisions": []
+    },
+    {
+      "id": "HB-068 write-landed detector",
+      "script": "scripts/repeat_guard.py (writeNeverLanded)",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "shadow",
+        "since": "2026-11-22",
+        "decideBy": "2026-11-29",
+        "check": "a tool that failed 3+ times on a missing file no commit ever added; hostLimit when the kind was never committed",
+        "metric": "tools flagged, and flagged tools whose file later landed"
+      },
+      "decisions": []
+    },
+    {
+      "id": "HB-067 A rule_lifecycle",
+      "script": "scripts/rule_lifecycle.py",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "shadow",
+        "since": "2026-11-22",
+        "decideBy": "2026-11-29",
+        "check": "every prose or partly rule and every shadow check carries a lifecycle that ends within 14 days",
+        "metric": "problems per live run"
+      },
+      "decisions": []
+    },
+    {
+      "id": "HB-067 G done_paths",
+      "script": "scripts/done_paths.py",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "shadow",
+        "since": "2026-11-22",
+        "decideBy": "2026-11-29",
+        "check": "a Done build note needs a tools/ change in its step and every tools/<name> it names",
+        "metric": "Done build notes a day with no tools/ change, per agent"
+      },
+      "decisions": []
+    },
+    {
+      "id": "HB-067 C link_registry",
+      "script": "scripts/link_registry.py",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "shadow",
+        "since": "2026-11-22",
+        "decideBy": "2026-11-29",
+        "check": "every hivemindos.app link the host writes matches a registered shape, and one sample a shape answers",
+        "metric": "unregistered shapes and dead shapes per daily run"
+      },
+      "decisions": []
+    },
+    {
+      "id": "HB-067 E check_strength",
+      "script": "scripts/check_strength.py",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "shadow",
+        "since": "2026-11-22",
+        "decideBy": "2026-11-29",
+        "check": "how many of 20 fixed-seed small breaks a tool's own self_test.py catches",
+        "metric": "k/n per tool on green records; tools at 0/n"
+      },
+      "decisions": []
+    }
+  ],
+  "rules": [
+    {
+      "id": "R3",
+      "status": "partly",
+      "lifecycle": {
+        "stage": "partly",
+        "since": "2026-11-22",
+        "decideBy": "2026-12-06",
+        "check": "scripts/done_paths.py (HB-067 G)",
+        "metric": "Done build notes with no tools/ change"
+      },
+      "decisions": []
+    },
+    {
+      "id": "R4",
+      "status": "partly",
+      "lifecycle": {
+        "stage": "partly",
+        "since": "2026-11-22",
+        "decideBy": "2026-12-06",
+        "check": "none yet: a side-dataset finder outside frozen-target blocks",
+        "metric": "side datasets no block names"
+      },
+      "decisions": []
+    },
+    {
+      "id": "R6",
+      "status": "partly",
+      "lifecycle": {
+        "stage": "partly",
+        "since": "2026-11-22",
+        "decideBy": "2026-12-06",
+        "check": "scripts/done_paths.py (HB-067 G)",
+        "metric": "notes naming a tools/ folder their commit lacks"
+      },
+      "decisions": []
+    },
+    {
+      "id": "R7",
+      "status": "partly",
+      "lifecycle": {
+        "stage": "partly",
+        "since": "2026-11-22",
+        "decideBy": "2026-12-06",
+        "check": "the skill ledger (Validated before Improved)",
+        "metric": "skill versions said learned before a passing check"
+      },
+      "decisions": []
+    },
+    {
+      "id": "R8",
+      "status": "prose",
+      "lifecycle": {
+        "stage": "prose",
+        "since": "2026-11-22",
+        "decideBy": "2026-12-06",
+        "check": "none yet: a request-shape check on asks to other agents",
+        "metric": "asks with no deliverable or no log location"
+      },
+      "decisions": []
+    },
+    {
+      "id": "R9",
+      "status": "partly",
+      "lifecycle": {
+        "stage": "partly",
+        "since": "2026-11-22",
+        "decideBy": "2026-12-06",
+        "check": "scripts/repeat_guard.py (HB-067 B)",
+        "metric": "dispatches the cause-keyed guard would hold"
+      },
+      "decisions": []
+    },
+    {
+      "id": "R10",
+      "status": "prose",
+      "lifecycle": {
+        "stage": "prose",
+        "since": "2026-11-22",
+        "decideBy": "2026-12-06",
+        "check": "scripts/repeat_guard.py (HB-067 B)",
+        "metric": "repeated research with the same cause"
+      },
+      "decisions": []
+    },
+    {
+      "id": "R16",
+      "status": "partly",
+      "lifecycle": {
+        "stage": "partly",
+        "since": "2026-11-22",
+        "decideBy": "2026-12-06",
+        "check": "readBeeGoalAnswer, agentOppGoalLint",
+        "metric": "steps taken with no GOAL.md task"
+      },
+      "decisions": []
+    },
+    {
+      "id": "R17",
+      "status": "prose",
+      "lifecycle": {
+        "stage": "prose",
+        "since": "2026-11-22",
+        "decideBy": "2026-12-06",
+        "check": "none yet: a why on every logged action",
+        "metric": "logged actions with no why"
+      },
+      "decisions": []
+    },
+    {
+      "id": "R18",
+      "status": "partly",
+      "lifecycle": {
+        "stage": "partly",
+        "since": "2026-11-22",
+        "decideBy": "2026-12-06",
+        "check": "beeProofClaims",
+        "metric": "unlabelled claims in posts and decisions"
+      },
+      "decisions": []
+    },
+    {
+      "id": "R19",
+      "status": "partly",
+      "lifecycle": {
+        "stage": "partly",
+        "since": "2026-11-22",
+        "decideBy": "2026-12-06",
+        "check": "beeProofClaims, agentPreflight unknown-input",
+        "metric": "UNKNOWNs counted as zero or safe"
+      },
+      "decisions": []
+    },
+    {
+      "id": "R21",
+      "status": "partly",
+      "lifecycle": {
+        "stage": "partly",
+        "since": "2026-11-22",
+        "decideBy": "2026-12-06",
+        "check": "BEE_PROOF_SOURCES",
+        "metric": "checks taken before the chain id was read"
+      },
+      "decisions": []
+    },
+    {
+      "id": "R23",
+      "status": "partly",
+      "lifecycle": {
+        "stage": "partly",
+        "since": "2026-11-22",
+        "decideBy": "2026-12-06",
+        "check": "beeProofClaims",
+        "metric": "scores or ranks with $HIVE, fees or payments as an input"
+      },
+      "decisions": []
+    }
+  ]
+}

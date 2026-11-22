@@ -28,7 +28,8 @@ A health file must:
   H1  name a receiver on every ESCALATED repair within 24 hours of its escalation
   H2  keep an open step repair's counters moving: no LESSONS failure of that play more than 20 minutes newer than
       its lastObservedAt. A failure the file lists under `policySkips` (HB-062), or whose line went to `skip`,
-      `policy_skip` or `stopped_on_rule`, is not a failed attempt and is not counted here either.
+      `policy_skip` or `stopped_on_rule`, is not a failed attempt and is not counted here either; nor is a funds pause
+      or a host limit (labels.py), which are said on their own line per agent instead.
 
 LESSONS.md, once the host writes them: every failure line ends "Went to: <bucket>", one of the eight buckets.
 `unrouted` lines are listed, since a line no bucket took has no owner.
@@ -45,6 +46,9 @@ import re
 import subprocess
 import sys
 import urllib.request
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import labels  # noqa: E402
 
 RAW = "https://raw.githubusercontent.com/HivemindOS-Agents/bee-scouts/main/health/{n}.json"
 CLOSE_KINDS = ("fixed-verified", "outcome-verified", "outcome-unverified", "administrative")
@@ -144,7 +148,7 @@ def health_problems(health, failures, now):
     p = []
     skipped = [(s.get("play") or str(s.get("repair", "")).split("-s-", 1)[-1], ts(s["at"])) for s in health.get("policySkips") or [] if s.get("at")]
     def counted(f):
-        if f.get("bucket") in ("skip", "policy_skip", "stopped_on_rule"):
+        if f.get("bucket") in ("skip", "policy_skip", "stopped_on_rule") or not labels.counts_as_failure(f.get("line") or f.get("reason") or ""):
             return False
         return not any(play == f["play"] and abs((f["at"] - at).total_seconds()) <= 1800 for play, at in skipped)
     failures = [f for f in failures if counted(f)]
@@ -159,6 +163,13 @@ def health_problems(health, failures, now):
             if newer:
                 p.append(f"H2 {r['id']}: counters stand at {last.strftime('%Y-%m-%d %H:%M')} UTC while LESSONS has {len(newer)} later failure(s) of that play")
     return p
+
+
+def lesson_view(health, failures, now):
+    """The failure lines as the counter check reads them: a funds pause ("paused: needs funding") and a host limit
+    ("blocked: host limit") are not failures, are left out of the count and H2, and are each said on a line of their own."""
+    counted, funds, host = labels.split(failures, text=lambda f: f["line"])
+    return {"failures": len(counted), "problems": health_problems(health, failures, now), "paused": labels.paused_line(funds, health), "blocked": labels.blocked_line(host)}
 
 
 def watchdog_intake(findings, repairs, now):
@@ -199,14 +210,12 @@ def read_live(n):
         return json.load(response)
 
 
-def check_agent(repo, now):
-    """One agent's clone: its receipts and rechecks, its LESSONS lines, its health file (live) and its watchdog."""
-    n = re.sub(r"^hivepunk-", "", os.path.basename(os.path.normpath(repo)))
-    report = {"agent": n, "receipts": 0, "byCloseKind": {k: 0 for k in CLOSE_KINDS}, "rechecks": {"held": 0, "recurred": 0, "due": 0},
-              "lessons": {"lines": 0, "byBucket": {}, "unrouted": []}, "problems": [], "watchdog": {"noRepair": [], "contradictions": []}}
+def read_receipts(repo, now, report):
+    """Its repairs/ folder. This check owns the receipts (<repair>--e<k>.json) and their rechecks; an honest-failure row
+    (<repair>--e<k>.honest-failure.json) is kept_rules.py's, and is left to it."""
     folder, receipts = os.path.join(repo, "repairs"), {}
     for name in sorted(os.listdir(folder)) if os.path.isdir(folder) else []:
-        if not name.endswith(".json") or name.endswith(".recheck.json"):
+        if not name.endswith(".json") or name.endswith((".recheck.json", ".honest-failure.json")):
             continue
         r = json.load(open(os.path.join(folder, name)))
         receipts[name[:-5]] = r
@@ -226,6 +235,15 @@ def check_agent(repo, now):
         c = json.load(open(os.path.join(folder, name)))
         report["rechecks"][c.get("verdict")] = report["rechecks"].get(c.get("verdict"), 0) + 1
         report["problems"] += [f"{name}: {p}" for p in recheck_problems(c, receipts.get(name[:-len(".recheck.json")]))]
+    return report
+
+
+def check_agent(repo, now):
+    """One agent's clone: its receipts and rechecks, its LESSONS lines, its health file (live) and its watchdog."""
+    n = re.sub(r"^hivepunk-", "", os.path.basename(os.path.normpath(repo)))
+    report = {"agent": n, "receipts": 0, "byCloseKind": {k: 0 for k in CLOSE_KINDS}, "rechecks": {"held": 0, "recurred": 0, "due": 0},
+              "lessons": {"lines": 0, "byBucket": {}, "unrouted": []}, "problems": [], "watchdog": {"noRepair": [], "contradictions": []}}
+    read_receipts(repo, now, report)
     failures = []
     if os.path.exists(os.path.join(repo, "LESSONS.md")):
         failures = lessons(open(os.path.join(repo, "LESSONS.md"), encoding="utf-8").read())
@@ -236,8 +254,11 @@ def check_agent(repo, now):
         report["lessons"]["unrouted"] = [f["line"][:140] for f in failures if f["bucket"] == "unrouted"][:10]
         report["problems"] += [f"LESSONS.md: {p}" for p in lesson_problems(failures)]
     health = read_live(n)
-    report["health"] = {"status": health.get("status"), "at": health.get("at")}
-    report["problems"] += health_problems(health, failures, now)
+    report["health"] = {"status": health.get("status"), "at": health.get("at"), "funding": labels.funding_state(health)}
+    view = lesson_view(health, failures, now)
+    report["lessons"]["counted"] = view["failures"]
+    report["paused"], report["blocked"] = view["paused"], view["blocked"]
+    report["problems"] += view["problems"]
     latest = os.path.join(repo, "watchdog", "latest.json")
     if os.path.exists(latest):
         to_open, contradictions = watchdog_intake(json.load(open(latest)).get("findings"), health.get("repairs"), now)
@@ -364,7 +385,17 @@ def self_test():
     to_open, contradictions = watchdog_intake(findings, repairs, now)
     if [x.split(":")[0] for x in to_open] != ["wd-632-D17-b"] or [x.split(":")[0] for x in contradictions] != ["wd-632-D22-a"]:
         bad.append(f"watchdog intake: got {to_open} and {contradictions}")
-    total = len(cases) + 6 + 5 + 1 + 3
+    # One owner per file kind (HB-067 D): a repairs/ folder with a receipt, its recheck and an honest-failure row is one
+    # receipt and no problem here; the honest-failure row is kept_rules.py's, and it finds no problem in it either.
+    one_of_each = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "fixtures", "repair-receipts", "one-of-each")
+    got = read_receipts(one_of_each, ts("2026-11-22T09:00:00Z"), {"receipts": 0, "byCloseKind": {}, "rechecks": {"held": 0, "recurred": 0, "due": 0}, "problems": []})
+    if (got["receipts"], got["problems"], got["rechecks"]["held"]) != (1, [], 1):
+        bad.append(f"one file of each kind: got {got['receipts']} receipt(s), {got['problems']}")
+    import kept_rules
+    rows = [n for n in os.listdir(os.path.join(one_of_each, "repairs")) if n.endswith(".honest-failure.json")]
+    if len(rows) != 1 or kept_rules.honest_failure_problems(json.load(open(os.path.join(one_of_each, "repairs", rows[0])))):
+        bad.append("the honest-failure row is kept_rules.py's, and valid there")
+    total = len(cases) + 6 + 5 + 1 + 3 + 2
     for line in bad:
         print("FAIL", line)
     print(f"repair receipts self-test: {total - len(bad)} of {total} passed")
@@ -386,6 +417,7 @@ if __name__ == "__main__":
             unread += 1
             print(f"could not read {repo}: {error}", file=sys.stderr)
     print(json.dumps({"at": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "agents": reports}, indent=2))
+    labels.print_lines(reports)
     problems = sum(len(r["problems"]) for r in reports)
     print(f"repair receipts: {sum(r['receipts'] for r in reports)} receipts, {problems} problems in {len(reports)} agents", file=sys.stderr)
     sys.exit(2 if unread else 1 if problems else 0)

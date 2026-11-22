@@ -22,7 +22,8 @@ Whether two agents have different holders is the chain's to say and is not read 
 confirming agent is the same agent.
 
 An honest-failure row (repairs/<repair-id>--e<k>.honest-failure.json) must: say `verified_by: none`; list at least 3
-rounds, each with a run and a cause; and carry the sha256 of its own JSON without that field.
+rounds, each with a run and a cause; and carry the sha256 of its own JSON without that field. A row whose rounds were
+all funds refusals or all host limits (labels.py) is not counted as an honest failure and is said on its own line.
 
 Exit 0 when nothing is wrong, 1 when something is, 2 when a file could not be read.
 """
@@ -32,6 +33,9 @@ import os
 import re
 import sys
 import urllib.request
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import labels  # noqa: E402
 
 RUNS = 2
 ROUNDS = 3
@@ -130,6 +134,14 @@ def honest_failure_problems(row):
     if hashlib.sha256(json.dumps(body, separators=(",", ":"), ensure_ascii=False).encode()).hexdigest() != row.get("sha256"):
         p.append("its sha256 is not the hash of its own JSON")
     return p
+
+
+def honest_view(rows):
+    """The honest-failure rows that count: a row whose rounds were all funds refusals or all host limits (labels.py)
+    is not the agent's failure, and is said on its own line instead."""
+    counted, funds, host = labels.split(rows)
+    first = lambda r: min((x.get("at") for x in r.get("rounds") or [] if x.get("at")), default=None)
+    return {"honestFailures": counted, "paused": labels.paused_line(funds, at=first), "blocked": labels.blocked_line(host, at=first)}
 
 
 def fetcher():
@@ -233,20 +245,23 @@ if __name__ == "__main__":
             lines = kept_section(text)
             problems = [f"{line[:90]}: {p}" for line in lines for p in kept_line_problems(line, n, fetch)]
             waiting = re.search(r"^Candidates waiting: .*$", text, re.M)
-            rows = []
+            raw = []
             folder = os.path.join(repo, "repairs")
             for name in sorted(os.listdir(folder)) if os.path.isdir(folder) else []:
                 if name.endswith(".honest-failure.json"):
                     row = json.load(open(os.path.join(folder, name)))
-                    rows.append({"file": name, "rounds": len(row.get("rounds") or []), "change": row.get("change")})
+                    raw.append(dict(row, file=name))
                     problems += [f"{name}: {p}" for p in honest_failure_problems(row)]
+            view = honest_view(raw)
+            rows = [{"file": r["file"], "rounds": len(r.get("rounds") or []), "change": r.get("change")} for r in view["honestFailures"]]
         except (OSError, ValueError) as error:
             unread += 1
             print(f"could not read {repo}: {error}", file=sys.stderr)
             continue
         total += len(problems)
         report.append({"agent": n, "section": HEADING in text, "kept": sum(1 for l in lines if l.startswith("- Kept:")), "rejected": sum(1 for l in lines if l.startswith("- Rejected:")),
-                       "waiting": waiting.group(0) if waiting else None, "honestFailures": rows, "problems": problems})
+                       "waiting": waiting.group(0) if waiting else None, "honestFailures": rows, "problems": problems, "paused": view["paused"], "blocked": view["blocked"]})
     print(json.dumps({"agents": report}, indent=2))
+    labels.print_lines(report)
     print(f"kept rules: {sum(r['kept'] for r in report)} kept, {sum(r['rejected'] for r in report)} rejected, {sum(len(r['honestFailures']) for r in report)} honest-failure rows, {total} problems", file=sys.stderr)
     sys.exit(2 if unread else 1 if total else 0)

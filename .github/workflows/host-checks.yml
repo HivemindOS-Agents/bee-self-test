@@ -17,13 +17,32 @@
 #                                  claims the stopped folder, or files committed under it
 #   scripts/repair_receipts.py     HB-065: a repair that ended has a valid receipt in its agent's repository, never
 #                                  edited; an escalation names its receiver within 24 hours; an open step repair's
-#                                  counters follow LESSONS.md; every LESSONS failure names its one bucket
+#                                  counters follow LESSONS.md; every LESSONS failure names its one bucket. An
+#                                  honest-failure row is kept_rules.py's, not a receipt (HB-067 D, one owner a file kind)
+#   scripts/labels.py              22 Nov update, sections 3 and 4: "paused: needs funding" and "blocked: host limit",
+#                                  recognised in one place; every reader above and below leaves both out of its failure
+#                                  counts and repeat flags and says each on its own line per agent (its contract test
+#                                  runs one of each through every reader)
+#   scripts/repeat_guard.py        HB-067 B: a repeat is keyed on the play or tool and its normalised cause, not the
+#                                  commit, in LESSONS.md, the runner's records and research receipts; the 3rd try on one
+#                                  cause would be held. HB-068: a tool that failed 3 times on a missing file no commit
+#                                  ever added is the host's limit (shadow)
+#   scripts/rule_lifecycle.py      HB-067 A: every prose or partly rule and every check in shadow.json has a decide-by
+#                                  date at most 14 days out, and an agent's preflight logs have not gone quiet (shadow)
+#   scripts/done_paths.py          HB-067 G: a build step's note headed Done changed something under tools/ and names
+#                                  only tools/ folders that exist (shadow)
+#   scripts/link_registry.py       HB-067 C: every hivemindos.app link in the agents' repositories is a shape in
+#                                  link_registry.json, and one sample a shape answers (shadow)
+#   scripts/check_strength.py      HB-067 E: how many of 20 small fixed-seed breaks of a tool's code its own self-test
+#                                  catches; run in a job of its own with no token, on three of 547's tools (report-only)
 #
 # The fixtures are the required part: this run fails when a script stops catching its own regression cases. The live
 # reads are report-only: they say where the agents stand today, and never fail the run. One live read is the exception:
 # a Sourcify label that the code on Base does not back, on a contract HivemindOS names or a coin its market calls
 # verified, fails the run (a contract that is unlisted or could not be recomputed does not). Everything is read from
 # public files and public endpoints with no token; nothing in an agent repository is run, and this job writes nothing.
+# The one exception is check_strength, which runs three of agent 547's own self-tests: it runs them in a job of its
+# own, with no permissions and no token, each inside a temp copy of the tool's folder.
 name: host-checks
 on:
   workflow_dispatch:
@@ -31,16 +50,18 @@ on:
     - cron: "40 6 * * *"
   push:
     branches: [main]
-    paths: ["scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "scripts/repair_receipts.py", "scripts/rule_stops.py", "scripts/kept_rules.py", "fixtures/source-match/**", "scripts/lift_run.py", "tests/test_lift_run.py", "lift/**/held-out.json", "lift/**/tasks.json", ".github/workflows/host-checks.yml"]
+    paths: ["scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "scripts/repair_receipts.py", "scripts/rule_stops.py", "scripts/kept_rules.py", "scripts/labels.py", "scripts/git_history.py", "scripts/repeat_guard.py", "scripts/rule_lifecycle.py", "scripts/done_paths.py", "scripts/link_registry.py", "scripts/check_strength.py", "shadow.json", "link_registry.json", "fixtures/repair-receipts/**", "fixtures/repeat-guard/**", "fixtures/done-paths/**", "fixtures/link-registry/**", "fixtures/check-strength/**", "fixtures/source-match/**", "scripts/lift_run.py", "tests/test_lift_run.py", "lift/**/held-out.json", "lift/**/tasks.json", ".github/workflows/host-checks.yml"]
 permissions: {}
 jobs:
   fixtures:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 25
     permissions:
       contents: read
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Fixtures (required)
         run: |
           set -eu
@@ -54,6 +75,12 @@ jobs:
           python3 scripts/repair_receipts.py --self-test
           python3 scripts/rule_stops.py --self-test
           python3 scripts/kept_rules.py --self-test
+          python3 scripts/labels.py --self-test
+          python3 scripts/repeat_guard.py --self-test
+          python3 scripts/rule_lifecycle.py --self-test
+          python3 scripts/done_paths.py --self-test
+          python3 scripts/link_registry.py --self-test
+          python3 scripts/check_strength.py --self-test
           python3 -m unittest discover -s tests -p 'test_lift_run.py'
       - name: Live, the 48-hour check (report-only)
         run: |
@@ -99,6 +126,21 @@ jobs:
       - name: Live, HB-063 rule map against AUTONOMY.md, and the five agents' copies (report-only)
         run: |
           python3 scripts/rule_map_check.py --agents 547 632 667 1071 86 || echo "report-only, exit $?"
+      - name: Live, HB-067 B and HB-068 repeats keyed on their cause, and writes that never landed, from each agent repository's whole history (shadow, report-only)
+        run: |
+          for d in "$RUNNER_TEMP"/history/hivepunk-*; do
+            git -C "$d" fetch --quiet --unshallow --filter=blob:none origin || echo "could not read all of $d's history"
+          done
+          python3 scripts/repeat_guard.py --since 2026-11-14 "$RUNNER_TEMP"/history/hivepunk-* || echo "report-only, exit $?"
+      - name: Live, HB-067 G Done build notes against what their step committed (shadow, report-only)
+        run: |
+          python3 scripts/done_paths.py --since 2026-11-14 "$RUNNER_TEMP"/history/hivepunk-* || echo "report-only, exit $?"
+      - name: Live, HB-067 A every prose rule and shadow check has a decide-by date, and preflight logs go on (shadow, report-only)
+        run: |
+          python3 scripts/rule_lifecycle.py "$RUNNER_TEMP"/history/hivepunk-* || echo "report-only, exit $?"
+      - name: Live, HB-067 C every hivemindos.app link is a registered shape that answers (shadow, report-only)
+        run: |
+          python3 scripts/link_registry.py "$RUNNER_TEMP"/history/hivepunk-* || echo "report-only, exit $?"
       - name: Live, HB-036 plus, what each recorded lift run lacks, and the held-out tasks picked again (report-only)
         run: |
           python3 scripts/lift_run.py --audit lift/*/runs/*.json || echo "report-only, exit $?"
@@ -112,3 +154,14 @@ jobs:
           python3 scripts/source_match.py || code=$?
           if [ "$code" = "2" ]; then echo "a Sourcify label is not backed by the code on Base"; exit 1; fi
           echo "exit $code (1 is report-only, something unlisted or not recomputable)"
+  check-strength:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions: {}
+    steps:
+      - name: Live, HB-067 E how many small breaks three of 547's tools' self-tests catch (no token, report-only)
+        run: |
+          git clone --quiet --filter=blob:none "https://github.com/${GITHUB_REPOSITORY}.git" checks && git -C checks checkout --quiet "$GITHUB_SHA"
+          git clone --quiet --depth 1 --filter=blob:none --sparse "https://github.com/${GITHUB_REPOSITORY_OWNER}/hivepunk-547.git" "$RUNNER_TEMP/hivepunk-547" \
+            && git -C "$RUNNER_TEMP/hivepunk-547" sparse-checkout set tools/dataset-manifest-check tools/hf-publish-check tools/csv-schema-check || echo "could not read hivepunk-547"
+          python3 checks/scripts/check_strength.py "$RUNNER_TEMP"/hivepunk-547/tools/dataset-manifest-check "$RUNNER_TEMP"/hivepunk-547/tools/hf-publish-check "$RUNNER_TEMP"/hivepunk-547/tools/csv-schema-check || echo "report-only, exit $?"

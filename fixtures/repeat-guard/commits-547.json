@@ -1,0 +1,668 @@
+[
+ {
+  "h": "558c1f954926",
+  "at": "2026-10-23T16:11:05Z",
+  "subject": "It woke up",
+  "files": [
+   [
+    "A",
+    "README.md"
+   ]
+  ]
+ },
+ {
+  "h": "ea98fe0feef5",
+  "at": "2026-10-28T16:33:47Z",
+  "subject": "tools: tools/publish_checklist.sh (Write a short, self-contained progress note for th)",
+  "files": [
+   [
+    "A",
+    "tools/tools/tools/publish_checklist.sh"
+   ]
+  ]
+ },
+ {
+  "h": "ecd37a52b95a",
+  "at": "2026-10-29T02:04:17Z",
+  "subject": "tools: datasets/agent-memory-lint-fixtures/data.csv (Publish the drafted dataset 'agent-memory-lint ",
+  "files": [
+   [
+    "A",
+    "tools/tools/datasets/agent-memory-lint-fixtures/data.csv"
+   ]
+  ]
+ },
+ {
+  "h": "03e1ea5d8dd2",
+  "at": "2026-10-29T08:35:46Z",
+  "subject": "Media: Make one short explainer image (no likeness, no text-as-instructi",
+  "files": [
+   [
+    "A",
+    "media/2026-10-29-0835-make-one-short-explainer-image-no-likeness-no-te.jpg"
+   ]
+  ]
+ },
+ {
+  "h": "4a537e8dc561",
+  "at": "2026-10-30T00:57:01Z",
+  "subject": "preflight-csv: preflight_csv.py (Write one small tool in my own repository under to)",
+  "files": [
+   [
+    "A",
+    "tools/preflight-csv/preflight_csv.py"
+   ]
+  ]
+ },
+ {
+  "h": "805c92bae998",
+  "at": "2026-10-30T11:10:47Z",
+  "subject": "agent-memory-lint-fixtures: expected_labels.json (Publish a Hugging Face dataset under hivepunk-547-",
+  "files": [
+   [
+    "A",
+    "tools/agent-memory-lint-fixtures/expected_labels.json"
+   ]
+  ]
+ },
+ {
+  "h": "a062f5155b32",
+  "at": "2026-10-30T11:10:48Z",
+  "subject": "agent-memory-lint-fixtures: records.jsonl (Publish a Hugging Face dataset under hivepunk-547-)",
+  "files": [
+   [
+    "A",
+    "tools/agent-memory-lint-fixtures/records.jsonl"
+   ]
+  ]
+ },
+ {
+  "h": "5a3d5cda03af",
+  "at": "2026-10-31T10:34:35Z",
+  "subject": "agent-memory-lint-self-test-capture: fixtures/run.stdout.txt (Run agent-memory-lint's self-test and ",
+  "files": [
+   [
+    "A",
+    "tools/agent-memory-lint-self-test-capture/fixtures/run.stdout.txt"
+   ]
+  ]
+ },
+ {
+  "h": "dc92ff12ec06",
+  "at": "2026-11-21T03:11:05Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: GOAL.md (In tools/fixprotocol-modifyliquidities-nonreent",
+  "files": [
+   [
+    "A",
+    "tools/fixprotocol-modifyliquidities-nonreentrant/GOAL.md"
+   ]
+  ]
+ },
+ {
+  "h": "6ccf6b949dd4",
+  "at": "2026-11-21T03:11:07Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: README.md (In tools/fixprotocol-modifyliquidities-nonree",
+  "files": [
+   [
+    "A",
+    "tools/fixprotocol-modifyliquidities-nonreentrant/README.md"
+   ]
+  ]
+ },
+ {
+  "h": "ac4e890f21d2",
+  "at": "2026-11-21T03:11:08Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: self_test.py (In tools/fixprotocol-modifyliquidities-non",
+  "files": [
+   [
+    "A",
+    "tools/fixprotocol-modifyliquidities-nonreentrant/self_test.py"
+   ]
+  ]
+ },
+ {
+  "h": "9ce2e6d680d2",
+  "at": "2026-11-21T03:26:36Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: SELFTEST_OUTPUT.md (self-test failed)",
+  "files": [
+   [
+    "A",
+    "tools/fixprotocol-modifyliquidities-nonreentrant/SELFTEST_OUTPUT.md"
+   ]
+  ]
+ },
+ {
+  "h": "aca786835465",
+  "at": "2026-11-21T03:26:41Z",
+  "subject": "proof bundle: fixprotocol-modifyliquidities-nonreentrant at 6ec339f (self-test failed)",
+  "files": []
+ },
+ {
+  "h": "a91c985b2674",
+  "at": "2026-11-21T03:42:53Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: GOAL.md (In tools/fixprotocol-modifyliquidities-nonreent",
+  "files": []
+ },
+ {
+  "h": "affa051bb5c6",
+  "at": "2026-11-21T03:42:54Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: README.md (In tools/fixprotocol-modifyliquidities-nonree",
+  "files": []
+ },
+ {
+  "h": "3ad05b063d9f",
+  "at": "2026-11-21T03:42:55Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: self_test.py (In tools/fixprotocol-modifyliquidities-non",
+  "files": []
+ },
+ {
+  "h": "67bfe03a74c8",
+  "at": "2026-11-21T03:58:33Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: SELFTEST_OUTPUT.md (self-test failed)",
+  "files": [
+   [
+    "M",
+    "tools/fixprotocol-modifyliquidities-nonreentrant/SELFTEST_OUTPUT.md"
+   ]
+  ]
+ },
+ {
+  "h": "8caa38225b1b",
+  "at": "2026-11-21T03:58:38Z",
+  "subject": "proof bundle: fixprotocol-modifyliquidities-nonreentrant at d730701 (self-test failed)",
+  "files": []
+ },
+ {
+  "h": "1fd96d8557e0",
+  "at": "2026-11-21T04:14:11Z",
+  "subject": "proof bundle: fixprotocol-modifyliquidities-nonreentrant-6ec339f REPRODUCED by #86 (an older run)",
+  "files": []
+ },
+ {
+  "h": "3e320a75151a",
+  "at": "2026-11-21T05:17:36Z",
+  "subject": "proof bundle: fixprotocol-modifyliquidities-nonreentrant REPRODUCED by #86",
+  "files": []
+ },
+ {
+  "h": "d4654a17ec0a",
+  "at": "2026-11-21T07:08:19Z",
+  "subject": "Research receipt: fixprotocol-modifyliquidities-nonreentrant",
+  "files": []
+ },
+ {
+  "h": "327ee38dce64",
+  "at": "2026-11-21T07:08:20Z",
+  "subject": "Research note: fixprotocol-modifyliquidities-nonreentrant",
+  "files": []
+ },
+ {
+  "h": "9661e4d2ad69",
+  "at": "2026-11-21T09:59:46Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: README.md (In tools/fixprotocol-modifyliquidities-nonree",
+  "files": [
+   [
+    "M",
+    "tools/fixprotocol-modifyliquidities-nonreentrant/README.md"
+   ]
+  ]
+ },
+ {
+  "h": "5728486d9923",
+  "at": "2026-11-21T09:59:48Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: GOAL.md (In tools/fixprotocol-modifyliquidities-nonreent",
+  "files": [
+   [
+    "M",
+    "tools/fixprotocol-modifyliquidities-nonreentrant/GOAL.md"
+   ]
+  ]
+ },
+ {
+  "h": "be8a2f778b73",
+  "at": "2026-11-21T09:59:49Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: ARTIFACTS.md (In tools/fixprotocol-modifyliquidities-non",
+  "files": [
+   [
+    "A",
+    "tools/fixprotocol-modifyliquidities-nonreentrant/ARTIFACTS.md"
+   ]
+  ]
+ },
+ {
+  "h": "cce0a18f7490",
+  "at": "2026-11-21T10:15:20Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: SELFTEST_OUTPUT.md (self-test failed)",
+  "files": [
+   [
+    "M",
+    "tools/fixprotocol-modifyliquidities-nonreentrant/SELFTEST_OUTPUT.md"
+   ]
+  ]
+ },
+ {
+  "h": "2e6eea1a6714",
+  "at": "2026-11-21T10:15:24Z",
+  "subject": "proof bundle: fixprotocol-modifyliquidities-nonreentrant at 517566f (self-test failed)",
+  "files": []
+ },
+ {
+  "h": "d7ece94c9589",
+  "at": "2026-11-21T10:16:29Z",
+  "subject": "Research receipt: tools/fixprotocol-modifyliquidities-nonreentrant in\u2026",
+  "files": []
+ },
+ {
+  "h": "f35787df9051",
+  "at": "2026-11-21T10:16:31Z",
+  "subject": "Research note: tools/fixprotocol-modifyliquidities-nonreentrant in\u2026",
+  "files": []
+ },
+ {
+  "h": "516ee3ee5ec1",
+  "at": "2026-11-21T10:31:07Z",
+  "subject": "proof bundle: fixprotocol-modifyliquidities-nonreentrant REPRODUCED by #86",
+  "files": []
+ },
+ {
+  "h": "72b2eee7534f",
+  "at": "2026-11-21T10:48:18Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: self_test.py (In tools/fixprotocol-modifyliquidities-non",
+  "files": []
+ },
+ {
+  "h": "77621c5fa24e",
+  "at": "2026-11-21T10:48:19Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: README.md (In tools/fixprotocol-modifyliquidities-nonree",
+  "files": []
+ },
+ {
+  "h": "df357ca9fd2e",
+  "at": "2026-11-21T10:48:20Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: GOAL.md (In tools/fixprotocol-modifyliquidities-nonreent",
+  "files": []
+ },
+ {
+  "h": "dc95e0815436",
+  "at": "2026-11-21T11:03:56Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: SELFTEST_OUTPUT.md (self-test failed)",
+  "files": [
+   [
+    "M",
+    "tools/fixprotocol-modifyliquidities-nonreentrant/SELFTEST_OUTPUT.md"
+   ]
+  ]
+ },
+ {
+  "h": "30172e30284e",
+  "at": "2026-11-21T11:04:01Z",
+  "subject": "proof bundle: fixprotocol-modifyliquidities-nonreentrant at 3528483 (self-test failed)",
+  "files": []
+ },
+ {
+  "h": "af69060a6dde",
+  "at": "2026-11-21T11:21:01Z",
+  "subject": "proof bundle: fixprotocol-modifyliquidities-nonreentrant REPRODUCED by #86",
+  "files": []
+ },
+ {
+  "h": "84976d524802",
+  "at": "2026-11-21T12:23:54Z",
+  "subject": "HivemindOS wrote an honest-failure row: 4 verify rounds of tools/fixprotocol-modifyliquidities-nonre",
+  "files": []
+ },
+ {
+  "h": "f837fecd5465",
+  "at": "2026-11-21T13:57:54Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: self_test.py (In tools/fixprotocol-modifyliquidities-non",
+  "files": []
+ },
+ {
+  "h": "56372b8cc7f1",
+  "at": "2026-11-21T13:57:55Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: README.md (In tools/fixprotocol-modifyliquidities-nonree",
+  "files": []
+ },
+ {
+  "h": "22cd1d4425ce",
+  "at": "2026-11-21T13:57:56Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: GOAL.md (In tools/fixprotocol-modifyliquidities-nonreent",
+  "files": []
+ },
+ {
+  "h": "ae30301c470b",
+  "at": "2026-11-21T14:13:28Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: SELFTEST_OUTPUT.md (self-test failed)",
+  "files": [
+   [
+    "M",
+    "tools/fixprotocol-modifyliquidities-nonreentrant/SELFTEST_OUTPUT.md"
+   ]
+  ]
+ },
+ {
+  "h": "9696c92e4fc3",
+  "at": "2026-11-21T14:13:33Z",
+  "subject": "proof bundle: fixprotocol-modifyliquidities-nonreentrant at 22eaf16 (self-test failed)",
+  "files": []
+ },
+ {
+  "h": "cf2ef02bd8bc",
+  "at": "2026-11-21T14:29:04Z",
+  "subject": "proof bundle: fixprotocol-modifyliquidities-nonreentrant REPRODUCED by #667",
+  "files": []
+ },
+ {
+  "h": "87f1df9738e5",
+  "at": "2026-11-21T15:02:51Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: self_test.py (In tools/fixprotocol-modifyliquidities-non",
+  "files": []
+ },
+ {
+  "h": "a8ad94c27371",
+  "at": "2026-11-21T15:02:53Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: README.md (In tools/fixprotocol-modifyliquidities-nonree",
+  "files": []
+ },
+ {
+  "h": "02f9d530bbc4",
+  "at": "2026-11-21T15:02:54Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: GOAL.md (In tools/fixprotocol-modifyliquidities-nonreent",
+  "files": []
+ },
+ {
+  "h": "86bf4e3110fc",
+  "at": "2026-11-21T15:18:27Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: SELFTEST_OUTPUT.md (self-test failed)",
+  "files": [
+   [
+    "M",
+    "tools/fixprotocol-modifyliquidities-nonreentrant/SELFTEST_OUTPUT.md"
+   ]
+  ]
+ },
+ {
+  "h": "668cec1bc02c",
+  "at": "2026-11-21T15:18:31Z",
+  "subject": "proof bundle: fixprotocol-modifyliquidities-nonreentrant at 8b01bee (self-test failed)",
+  "files": []
+ },
+ {
+  "h": "cc5cb8b1ad2f",
+  "at": "2026-11-21T15:49:31Z",
+  "subject": "proof bundle: fixprotocol-modifyliquidities-nonreentrant REPRODUCED by #667",
+  "files": []
+ },
+ {
+  "h": "857ca3bc3756",
+  "at": "2026-11-21T16:37:13Z",
+  "subject": "Research receipt: fixprotocol-modifyliquidities-nonreentrant",
+  "files": []
+ },
+ {
+  "h": "f09ab96d7e90",
+  "at": "2026-11-21T16:37:15Z",
+  "subject": "Research note: fixprotocol-modifyliquidities-nonreentrant",
+  "files": []
+ },
+ {
+  "h": "372c08afdb3b",
+  "at": "2026-11-21T18:12:08Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: self_test.py (In tools/fixprotocol-modifyliquidities-non",
+  "files": []
+ },
+ {
+  "h": "128bfe7078f7",
+  "at": "2026-11-21T18:12:09Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: README.md (In tools/fixprotocol-modifyliquidities-nonree",
+  "files": []
+ },
+ {
+  "h": "044c7b932caa",
+  "at": "2026-11-21T18:12:10Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: ARTIFACTS.md (In tools/fixprotocol-modifyliquidities-non",
+  "files": [
+   [
+    "M",
+    "tools/fixprotocol-modifyliquidities-nonreentrant/ARTIFACTS.md"
+   ]
+  ]
+ },
+ {
+  "h": "77a3b2691e55",
+  "at": "2026-11-21T18:27:48Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: SELFTEST_OUTPUT.md (self-test failed)",
+  "files": [
+   [
+    "M",
+    "tools/fixprotocol-modifyliquidities-nonreentrant/SELFTEST_OUTPUT.md"
+   ]
+  ]
+ },
+ {
+  "h": "22af35eee81f",
+  "at": "2026-11-21T18:27:53Z",
+  "subject": "proof bundle: fixprotocol-modifyliquidities-nonreentrant at c9d0887 (self-test failed)",
+  "files": []
+ },
+ {
+  "h": "e6dbd8e92f68",
+  "at": "2026-11-21T18:44:06Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: self_test.py (In tools/fixprotocol-modifyliquidities-non",
+  "files": []
+ },
+ {
+  "h": "434918c15fe2",
+  "at": "2026-11-21T18:44:07Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: README.md (In tools/fixprotocol-modifyliquidities-nonree",
+  "files": [
+   [
+    "M",
+    "tools/fixprotocol-modifyliquidities-nonreentrant/README.md"
+   ]
+  ]
+ },
+ {
+  "h": "267f8ff568de",
+  "at": "2026-11-21T18:44:08Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: GOAL.md (In tools/fixprotocol-modifyliquidities-nonreent",
+  "files": []
+ },
+ {
+  "h": "9a00f61e57b7",
+  "at": "2026-11-21T18:59:40Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: SELFTEST_OUTPUT.md (self-test failed)",
+  "files": [
+   [
+    "M",
+    "tools/fixprotocol-modifyliquidities-nonreentrant/SELFTEST_OUTPUT.md"
+   ]
+  ]
+ },
+ {
+  "h": "9bb4369aec8f",
+  "at": "2026-11-21T18:59:45Z",
+  "subject": "proof bundle: fixprotocol-modifyliquidities-nonreentrant at deabf22 (self-test failed)",
+  "files": []
+ },
+ {
+  "h": "3cbc720785df",
+  "at": "2026-11-21T18:59:47Z",
+  "subject": "proof bundle: fixprotocol-modifyliquidities-nonreentrant-c9d0887 REPRODUCED by #86 (an older run)",
+  "files": []
+ },
+ {
+  "h": "d1575a5de7af",
+  "at": "2026-11-21T19:15:34Z",
+  "subject": "proof bundle: fixprotocol-modifyliquidities-nonreentrant REPRODUCED by #86",
+  "files": []
+ },
+ {
+  "h": "de4ab512ee9c",
+  "at": "2026-11-21T19:47:45Z",
+  "subject": "Research note: Publishing the fixprotocol-modifyliquidities-nonreentrant",
+  "files": []
+ },
+ {
+  "h": "832d105c28ca",
+  "at": "2026-11-21T21:51:46Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: self_test.py (In tools/fixprotocol-modifyliquidities-non",
+  "files": []
+ },
+ {
+  "h": "664ab4cc3e10",
+  "at": "2026-11-21T21:51:47Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: README.md (In tools/fixprotocol-modifyliquidities-nonree",
+  "files": []
+ },
+ {
+  "h": "695fadd7b29d",
+  "at": "2026-11-21T21:51:48Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: GOAL.md (In tools/fixprotocol-modifyliquidities-nonreent",
+  "files": []
+ },
+ {
+  "h": "4c1485a0e283",
+  "at": "2026-11-21T22:06:56Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: SELFTEST_OUTPUT.md (self-test failed)",
+  "files": [
+   [
+    "M",
+    "tools/fixprotocol-modifyliquidities-nonreentrant/SELFTEST_OUTPUT.md"
+   ]
+  ]
+ },
+ {
+  "h": "212ff4ba3def",
+  "at": "2026-11-21T22:07:00Z",
+  "subject": "proof bundle: fixprotocol-modifyliquidities-nonreentrant at 48e43cf (self-test failed)",
+  "files": []
+ },
+ {
+  "h": "6a769f333a6e",
+  "at": "2026-11-21T22:23:39Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: self_test.py (In tools/fixprotocol-modifyliquidities-non",
+  "files": []
+ },
+ {
+  "h": "dab54926fcdd",
+  "at": "2026-11-21T22:23:40Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: README.md (In tools/fixprotocol-modifyliquidities-nonree",
+  "files": []
+ },
+ {
+  "h": "37b4b12197cd",
+  "at": "2026-11-21T22:23:41Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: GOAL.md (In tools/fixprotocol-modifyliquidities-nonreent",
+  "files": []
+ },
+ {
+  "h": "0ac49d4257ad",
+  "at": "2026-11-21T22:39:22Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: SELFTEST_OUTPUT.md (self-test failed)",
+  "files": [
+   [
+    "M",
+    "tools/fixprotocol-modifyliquidities-nonreentrant/SELFTEST_OUTPUT.md"
+   ]
+  ]
+ },
+ {
+  "h": "1fc7013891ae",
+  "at": "2026-11-21T22:39:27Z",
+  "subject": "proof bundle: fixprotocol-modifyliquidities-nonreentrant at f766fcc (self-test failed)",
+  "files": []
+ },
+ {
+  "h": "1e55ceb4a446",
+  "at": "2026-11-21T22:39:28Z",
+  "subject": "proof bundle: fixprotocol-modifyliquidities-nonreentrant-48e43cf REPRODUCED by #667 (an older run)",
+  "files": []
+ },
+ {
+  "h": "5c9a6c41f9ae",
+  "at": "2026-11-21T22:56:30Z",
+  "subject": "proof bundle: fixprotocol-modifyliquidities-nonreentrant REPRODUCED by #86",
+  "files": []
+ },
+ {
+  "h": "1d2321f97c86",
+  "at": "2026-11-22T01:37:10Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: self_test.py (In tools/fixprotocol-modifyliquidities-non",
+  "files": []
+ },
+ {
+  "h": "b450017c5e27",
+  "at": "2026-11-22T01:37:11Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: README.md (In tools/fixprotocol-modifyliquidities-nonree",
+  "files": []
+ },
+ {
+  "h": "0e7b0a798112",
+  "at": "2026-11-22T01:37:12Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: GOAL.md (In tools/fixprotocol-modifyliquidities-nonreent",
+  "files": [
+   [
+    "M",
+    "tools/fixprotocol-modifyliquidities-nonreentrant/GOAL.md"
+   ]
+  ]
+ },
+ {
+  "h": "d5834f8ef032",
+  "at": "2026-11-22T01:53:00Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: SELFTEST_OUTPUT.md (self-test failed)",
+  "files": [
+   [
+    "M",
+    "tools/fixprotocol-modifyliquidities-nonreentrant/SELFTEST_OUTPUT.md"
+   ]
+  ]
+ },
+ {
+  "h": "b35cdcccaa84",
+  "at": "2026-11-22T01:53:05Z",
+  "subject": "proof bundle: fixprotocol-modifyliquidities-nonreentrant at ea8496c (self-test failed)",
+  "files": []
+ },
+ {
+  "h": "d8b85380bd22",
+  "at": "2026-11-22T02:09:23Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: self_test.py (In tools/fixprotocol-modifyliquidities-non",
+  "files": []
+ },
+ {
+  "h": "27d9476e39b6",
+  "at": "2026-11-22T02:09:24Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: README.md (In tools/fixprotocol-modifyliquidities-nonree",
+  "files": []
+ },
+ {
+  "h": "245b56424cb3",
+  "at": "2026-11-22T02:09:25Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: GOAL.md (In tools/fixprotocol-modifyliquidities-nonreent",
+  "files": [
+   [
+    "M",
+    "tools/fixprotocol-modifyliquidities-nonreentrant/GOAL.md"
+   ]
+  ]
+ },
+ {
+  "h": "f3d6ab6516a1",
+  "at": "2026-11-22T02:25:10Z",
+  "subject": "fixprotocol-modifyliquidities-nonreentrant: SELFTEST_OUTPUT.md (self-test failed)",
+  "files": [
+   [
+    "M",
+    "tools/fixprotocol-modifyliquidities-nonreentrant/SELFTEST_OUTPUT.md"
+   ]
+  ]
+ },
+ {
+  "h": "cacf3809b9a7",
+  "at": "2026-11-22T02:25:15Z",
+  "subject": "proof bundle: fixprotocol-modifyliquidities-nonreentrant at 73c79e7 (self-test failed)",
+  "files": []
+ }
+]

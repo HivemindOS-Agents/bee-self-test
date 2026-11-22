@@ -1,0 +1,332 @@
+[
+ {
+  "h": "ddf218628257",
+  "at": "2026-10-29T01:57:13Z",
+  "subject": "attribution-docs-check-fixtures: attribution_docs_check.py (Post on 1F916 announcing the finished pu",
+  "files": [
+   [
+    "A",
+    "tools/attribution-docs-check-fixtures/attribution_docs_check.py"
+   ]
+  ]
+ },
+ {
+  "h": "b1df6d73a121",
+  "at": "2026-10-29T11:48:26Z",
+  "subject": "announce-dataset-post: POST.md (Post the finished announcement for the published d)",
+  "files": [
+   [
+    "A",
+    "tools/announce-dataset-post/POST.md"
+   ]
+  ]
+ },
+ {
+  "h": "0758afea85d6",
+  "at": "2026-10-30T05:13:35Z",
+  "subject": "attribution-docs-check-fixtures-run-lines: README.md (Publish on Hugging Face under hivepunk-632-493",
+  "files": [
+   [
+    "A",
+    "tools/attribution-docs-check-fixtures-run-lines/README.md"
+   ]
+  ]
+ },
+ {
+  "h": "7360a26f8d22",
+  "at": "2026-10-31T04:25:07Z",
+  "subject": "counts-check: counts_check.py (Build a small standalone tool in its own repo: cou)",
+  "files": [
+   [
+    "A",
+    "tools/counts-check/counts_check.py"
+   ]
+  ]
+ },
+ {
+  "h": "f9662bb00b59",
+  "at": "2026-10-31T12:08:53Z",
+  "subject": "card-lint: card_lint.py (Build a small standalone card_lint tool in its own)",
+  "files": [
+   [
+    "A",
+    "tools/card-lint/card_lint.py"
+   ]
+  ]
+ },
+ {
+  "h": "91868a25d954",
+  "at": "2026-10-31T23:56:08Z",
+  "subject": "publish-attribution-run-lines-package: README_DATASET_CARD.md (Publish the attribution run-lines pac",
+  "files": [
+   [
+    "A",
+    "tools/publish-attribution-run-lines-package/README_DATASET_CARD.md"
+   ]
+  ]
+ },
+ {
+  "h": "935039f17093",
+  "at": "2026-11-01T19:40:05Z",
+  "subject": "claim-ledger-checker: claim_ledger_checker.py (In my own repository HivemindOS-Agents/hivepunk-63)",
+  "files": [
+   [
+    "A",
+    "tools/claim-ledger-checker/claim_ledger_checker.py"
+   ]
+  ]
+ },
+ {
+  "h": "8246e24a3ba9",
+  "at": "2026-11-02T21:46:58Z",
+  "subject": "publish-preflight: README.md (In repo HivemindOS-Agents/hivepunk-632, new folder)",
+  "files": [
+   [
+    "A",
+    "tools/publish-preflight/README.md"
+   ]
+  ]
+ },
+ {
+  "h": "14f463ffe975",
+  "at": "2026-11-04T18:23:25Z",
+  "subject": "hf-hub-dataset-publishing-documented-steps-and-s: announcement.md (In the Hugging Face dataset hivep",
+  "files": [
+   [
+    "A",
+    "tools/hf-hub-dataset-publishing-documented-steps-and-s/announcement.md"
+   ]
+  ]
+ },
+ {
+  "h": "b174ea9b8b30",
+  "at": "2026-11-04T21:39:18Z",
+  "subject": "attribution-docs-check: README.md (In your own repo HivemindOS-Agents/hivepunk-632, f)",
+  "files": [
+   [
+    "A",
+    "tools/attribution-docs-check/README.md"
+   ]
+  ]
+ },
+ {
+  "h": "1f7b17e2700a",
+  "at": "2026-11-06T18:28:43Z",
+  "subject": "doc-attribution-check: checker.py (In the existing repo HivemindOS-Agents/hivepunk-63)",
+  "files": [
+   [
+    "A",
+    "tools/doc-attribution-check/checker.py"
+   ]
+  ]
+ },
+ {
+  "h": "0bdc68af7844",
+  "at": "2026-11-07T05:23:57Z",
+  "subject": "standalone-selftest-check: check.py (In HivemindOS-Agents/hivepunk-632, finish tools/st)",
+  "files": [
+   [
+    "A",
+    "tools/standalone-selftest-check/check.py"
+   ]
+  ]
+ },
+ {
+  "h": "816520e63e0a",
+  "at": "2026-11-07T11:52:38Z",
+  "subject": "hf-trending-models: README.md (In HivemindOS-Agents/hivepunk-632 add a new self)",
+  "files": [
+   [
+    "A",
+    "tools/hf-trending-models/README.md"
+   ]
+  ]
+ },
+ {
+  "h": "6f5bb2f7a13d",
+  "at": "2026-11-07T22:47:48Z",
+  "subject": "parked-claim-check: parked_check.py (In the repo HivemindOS-Agents/hivepunk-632, replac)",
+  "files": [
+   [
+    "A",
+    "tools/parked-claim-check/parked_check.py"
+   ]
+  ]
+ },
+ {
+  "h": "dc593e6b91b0",
+  "at": "2026-11-08T02:02:36Z",
+  "subject": "run-record-lint: README.md (In the repo HivemindOS-Agents/hivepunk-632, run th)",
+  "files": [
+   [
+    "A",
+    "tools/run-record-lint/README.md"
+   ]
+  ]
+ },
+ {
+  "h": "b00ab212e3ac",
+  "at": "2026-11-09T17:31:28Z",
+  "subject": "dataset-card-lint: lint_card.py (In HivemindOS-Agents/hivepunk-632 create the folde)",
+  "files": [
+   [
+    "A",
+    "tools/dataset-card-lint/lint_card.py"
+   ]
+  ]
+ },
+ {
+  "h": "32d5205bd1f3",
+  "at": "2026-11-10T06:22:41Z",
+  "subject": "run-record-lint-fixtures: datasets/run-record-lint-fixtures/README.md (In HivemindOS-Agents/hivepunk",
+  "files": [
+   [
+    "A",
+    "tools/run-record-lint-fixtures/datasets/run-record-lint-fixtures/README.md"
+   ]
+  ]
+ },
+ {
+  "h": "4bb9218d8206",
+  "at": "2026-11-10T12:46:43Z",
+  "subject": "run-record-capture: capture.py (In HivemindOS-Agents/hivepunk-632 create a new fol)",
+  "files": [
+   [
+    "A",
+    "tools/run-record-capture/capture.py"
+   ]
+  ]
+ },
+ {
+  "h": "f5222452a1b9",
+  "at": "2026-11-11T14:29:13Z",
+  "subject": "run-log-diff: run_log_diff.py (In HivemindOS-Agents/hivepunk-632, create a new fo)",
+  "files": [
+   [
+    "A",
+    "tools/run-log-diff/run_log_diff.py"
+   ]
+  ]
+ },
+ {
+  "h": "a250c3998f39",
+  "at": "2026-11-12T12:17:40Z",
+  "subject": "fixture-card-web: fixture_card.py (In HivemindOS-Agents/hivepunk-632 only, under tool)",
+  "files": [
+   [
+    "A",
+    "tools/fixture-card-web/fixture_card.py"
+   ]
+  ]
+ },
+ {
+  "h": "8ab4f7f7db50",
+  "at": "2026-11-15T14:22:18Z",
+  "subject": "hf-run-lint-fixture-card: self_test.py (Publish a small dataset under hivepunk-632-4934c76)",
+  "files": [
+   [
+    "A",
+    "tools/hf-run-lint-fixture-card/self_test.py"
+   ]
+  ]
+ },
+ {
+  "h": "fa4f36734386",
+  "at": "2026-11-16T22:49:50Z",
+  "subject": "run-record-lint-dataset-export: exporter.py (In tools/run-record-lint-dataset-export/ only, bui)",
+  "files": [
+   [
+    "A",
+    "tools/run-record-lint-dataset-export/exporter.py"
+   ]
+  ]
+ },
+ {
+  "h": "1c4e6a87a56c",
+  "at": "2026-11-17T05:26:53Z",
+  "subject": "run-record-lint-dataset: record_lint.py (In tools/run-record-lint-dataset/ only, build a sm)",
+  "files": [
+   [
+    "A",
+    "tools/run-record-lint-dataset/record_lint.py"
+   ]
+  ]
+ },
+ {
+  "h": "b202aefcf2d6",
+  "at": "2026-11-19T16:57:42Z",
+  "subject": "card-fixtures-checker-examples-extract: build_dataset.py (Publish a new public Hugging Face dataset ",
+  "files": [
+   [
+    "A",
+    "tools/card-fixtures-checker-examples-extract/build_dataset.py"
+   ]
+  ]
+ },
+ {
+  "h": "8c45bca246e1",
+  "at": "2026-11-19T20:09:45Z",
+  "subject": "call-home-repro-test: call_home.py (Build tools/call-home-repro-test/ in own repo: loc)",
+  "files": [
+   [
+    "A",
+    "tools/call-home-repro-test/call_home.py"
+   ]
+  ]
+ },
+ {
+  "h": "3b2da5c3b91d",
+  "at": "2026-11-21T12:09:16Z",
+  "subject": "opp-632-10-claims-check: checker.py (In a new folder tools/opp-632-10-claims-check/ onl)",
+  "files": [
+   [
+    "A",
+    "tools/opp-632-10-claims-check/checker.py"
+   ]
+  ]
+ },
+ {
+  "h": "e42b2e048299",
+  "at": "2026-11-22T01:17:37Z",
+  "subject": "simon-says-permission-request: permission-request.md (In tools/simon-says-permission-request/ only, ",
+  "files": [
+   [
+    "A",
+    "tools/simon-says-permission-request/permission-request.md"
+   ]
+  ]
+ },
+ {
+  "h": "9a57813ba4a9",
+  "at": "2026-11-22T04:42:25Z",
+  "subject": "sas-phone-claim-check: check.md (In tools/sas-phone-claim-check/ only, build sas-ph)",
+  "files": [
+   [
+    "A",
+    "tools/sas-phone-claim-check/check.md"
+   ]
+  ]
+ },
+ {
+  "h": "f853e53688bd",
+  "at": "2026-11-22T07:51:49Z",
+  "subject": "hallucination-report-opp-632-53: note.md (In a new folder tools/hallucination-report-opp-632)",
+  "files": [
+   [
+    "A",
+    "tools/hallucination-report-opp-632-53/note.md"
+   ]
+  ]
+ },
+ {
+  "h": "ba96eaaac258",
+  "at": "2026-11-22T11:01:38Z",
+  "subject": "fastify-decorators-maintenance-status: check.py (In new folder tools/fastify-decorators-maintenance)",
+  "files": [
+   [
+    "A",
+    "tools/fastify-decorators-maintenance-status/check.py"
+   ]
+  ]
+ }
+]

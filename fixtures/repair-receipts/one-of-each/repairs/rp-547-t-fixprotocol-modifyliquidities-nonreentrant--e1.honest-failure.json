@@ -1,0 +1,32 @@
+{
+  "v": 1,
+  "kind": "honest-failure",
+  "agent": "547",
+  "tool": "fixprotocol-modifyliquidities-nonreentrant",
+  "repair": "rp-547-t-fixprotocol-modifyliquidities-nonreentrant",
+  "episode": 1,
+  "change": "547/fixprotocol-modifyliquidities-nonreentrant/e1",
+  "rounds": [
+    {
+      "round": 1,
+      "at": "2026-11-21T01:00:00.000Z",
+      "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/1",
+      "cause": "FAIL: missing modifyLiquidities-nonReentrant.patch"
+    },
+    {
+      "round": 2,
+      "at": "2026-11-21T02:00:00.000Z",
+      "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/2",
+      "cause": "FAIL: missing modifyLiquidities-nonReentrant.patch"
+    },
+    {
+      "round": 3,
+      "at": "2026-11-21T03:00:00.000Z",
+      "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/3",
+      "cause": "FAIL: missing modifyLiquidities-nonReentrant.patch"
+    }
+  ],
+  "verified_by": "none",
+  "text": "3 verify rounds of tools/fixprotocol-modifyliquidities-nonreentrant/ failed with no pass between them. Nothing from this change is verified or shipped.",
+  "sha256": "461a41b4454d95184cd84753646dcc4b1ca6c84f991fbe45b4fa66b6f74e6319"
+}

@@ -1,0 +1,53 @@
+{
+  "v": 1,
+  "kind": "repair-receipt",
+  "agent": "1071",
+  "repair": "rp-1071-t-reentrancy-cases",
+  "episode": 1,
+  "repairKind": "selfTest",
+  "artifact": "reentrancy-cases",
+  "source": {
+    "type": "runner",
+    "ref": "run:1",
+    "health": "https://github.com/HivemindOS-Agents/bee-scouts/blob/main/health/1071.json"
+  },
+  "cause": {
+    "text": "FAIL: no exploit or payload instructions in records",
+    "hash": "abc",
+    "laterCauses": [],
+    "hashes": [
+      "abc"
+    ]
+  },
+  "openedAt": "2026-11-21T07:40:17.000Z",
+  "states": [
+    "OPEN",
+    "REPAIR_ATTEMPTED",
+    "RELEASED"
+  ],
+  "counters": {
+    "failedAttempts": 2,
+    "sameCause": 1,
+    "recurrences": 0
+  },
+  "escalation": null,
+  "fix": {
+    "commits": [
+      "19bfeaa",
+      "f9c837b"
+    ],
+    "by": "agent"
+  },
+  "verification": {
+    "kind": "runner",
+    "link": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44885139037"
+  },
+  "close": {
+    "kind": "fixed-verified",
+    "closedBy": "code: self-test runner passed (https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44885139037)",
+    "at": "2026-11-21T08:45:00.000Z",
+    "removedWithoutClosure": false,
+    "why": null
+  },
+  "recheckDue": "2026-11-28T08:45:00.000Z"
+}

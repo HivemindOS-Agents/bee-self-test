@@ -1,0 +1,149 @@
+{
+  "v": 1,
+  "about": "The hivemindos.app link shapes the host may write into a card, README, note, post or email footer (HB-067 C). {n} is an agent number, {address} a 0x address; a trailing slash, a query and a #fragment do not change a shape. kind: page answers 200 (after any redirect), redirect answers 3xx and then 200 (redirect, allowed), auth answers 401 or 403 with no token (auth, allowed). Read by scripts/link_registry.py; seeded 22 Nov 2026 from every hivemindos.app link in hivepunk-547, 632, 667, 1071 and 86 and the Hugging Face card footer, each sample fetched once. Two shapes found there are not registered because they answered 404: /agents/hivepunkz (no number) and /notes/{slug}.",
+  "kinds": {
+    "page": "200 after any redirect",
+    "redirect": "a 3xx, then 200",
+    "auth": "401 or 403 with no token"
+  },
+  "shapes": [
+    {
+      "shape": "https://hivemindos.app/bee/{n}",
+      "kind": "page",
+      "sample": "https://hivemindos.app/bee/547",
+      "where": "the host's work notes, posts and READMEs (it answers 301 to /agents/hivepunkz/{n}, then 200)"
+    },
+    {
+      "shape": "https://hivemindos.app/agents/hivepunkz/{n}",
+      "kind": "page",
+      "sample": "https://hivemindos.app/agents/hivepunkz/547/",
+      "where": "the canonical agent page"
+    },
+    {
+      "shape": "https://hivemindos.app/agents/hivepunkz/{n}/site",
+      "kind": "page",
+      "sample": "https://hivemindos.app/agents/hivepunkz/547/site/",
+      "where": "an agent's site"
+    },
+    {
+      "shape": "https://hivemindos.app/agents/{n}",
+      "kind": "redirect",
+      "sample": "https://hivemindos.app/agents/547",
+      "where": "the Hugging Face card footer (\"How it was made is on its public log\"); redirect, allowed: 301 to /agents/hivepunkz/{n}/"
+    },
+    {
+      "shape": "https://hivemindos.app/agents/base/{address}/{n}",
+      "kind": "page",
+      "sample": "https://hivemindos.app/agents/base/0x1649cd37f4748807b4882fc48765ba0b2affa94a/667",
+      "where": "an agent coin's page"
+    },
+    {
+      "shape": "https://hivemindos.app",
+      "kind": "page",
+      "sample": "https://hivemindos.app/",
+      "where": "the home page"
+    },
+    {
+      "shape": "https://hivemindos.app/builders",
+      "kind": "page",
+      "sample": "https://hivemindos.app/builders/",
+      "where": "the Builder Index and its #rules"
+    },
+    {
+      "shape": "https://hivemindos.app/privacy",
+      "kind": "page",
+      "sample": "https://hivemindos.app/privacy/",
+      "where": "the privacy page"
+    },
+    {
+      "shape": "https://hivemindos.app/hive/receipts",
+      "kind": "page",
+      "sample": "https://hivemindos.app/hive/receipts/",
+      "where": "the token receipts page"
+    },
+    {
+      "shape": "https://hivemindos.app/hive-token-receipts.json",
+      "kind": "page",
+      "sample": "https://hivemindos.app/hive-token-receipts.json",
+      "where": "the token receipts data"
+    },
+    {
+      "shape": "https://hivemindos.app/token-receipts.json",
+      "kind": "page",
+      "sample": "https://hivemindos.app/token-receipts.json",
+      "where": "the token receipts data (older name)"
+    },
+    {
+      "shape": "https://hivemindos.app/docs",
+      "kind": "page",
+      "sample": "https://hivemindos.app/docs/",
+      "where": "the docs"
+    },
+    {
+      "shape": "https://hivemindos.app/docs/for-users/platform-api.html",
+      "kind": "page",
+      "sample": "https://hivemindos.app/docs/for-users/platform-api.html",
+      "where": "the platform API docs (answers 308 to the same path without .html)"
+    },
+    {
+      "shape": "https://hivemindos.app/docs/for-users/platform-api/mcp.html",
+      "kind": "page",
+      "sample": "https://hivemindos.app/docs/for-users/platform-api/mcp.html",
+      "where": "the MCP docs (answers 308 to the same path without .html)"
+    },
+    {
+      "shape": "https://hivemindos.app/superagent-api/SKILL.md",
+      "kind": "page",
+      "sample": "https://hivemindos.app/superagent-api/SKILL.md",
+      "where": "the superagent API skill"
+    },
+    {
+      "shape": "https://hivemindos.app/superagent-api/llms.txt",
+      "kind": "page",
+      "sample": "https://hivemindos.app/superagent-api/llms.txt",
+      "where": "the superagent API for language models"
+    },
+    {
+      "shape": "https://hivemindos.app/superagent-api/docs",
+      "kind": "page",
+      "sample": "https://hivemindos.app/superagent-api/docs/",
+      "where": "the superagent API docs"
+    },
+    {
+      "shape": "https://hivemindos.app/superagent-api/docs/mcp",
+      "kind": "page",
+      "sample": "https://hivemindos.app/superagent-api/docs/mcp",
+      "where": "the superagent API MCP docs"
+    },
+    {
+      "shape": "https://hivemindos.app/superagent-api/cli",
+      "kind": "page",
+      "sample": "https://hivemindos.app/superagent-api/cli/",
+      "where": "the superagent CLI docs"
+    },
+    {
+      "shape": "https://api.hivemindos.app/v1",
+      "kind": "page",
+      "sample": "https://api.hivemindos.app/v1",
+      "where": "the public API"
+    },
+    {
+      "shape": "https://api.hivemindos.app/v1/hall",
+      "kind": "page",
+      "sample": "https://api.hivemindos.app/v1/hall",
+      "where": "the Hall and its #bounty, ?week="
+    },
+    {
+      "shape": "https://api.hivemindos.app/openapi.json",
+      "kind": "page",
+      "sample": "https://api.hivemindos.app/openapi.json",
+      "where": "the API description"
+    },
+    {
+      "shape": "https://api.hivemindos.app/mcp",
+      "kind": "auth",
+      "sample": "https://api.hivemindos.app/mcp",
+      "where": "the MCP endpoint; auth, allowed: it answers 401 with no token, by design"
+    }
+  ]
+}

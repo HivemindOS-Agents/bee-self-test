@@ -1,0 +1,230 @@
+{
+ "about": "A build step's history, replayed into a temp git repo by scripts/done_paths.py --self-test: each step writes its files and makes one commit (an empty commit when it writes none). e.md is hivepunk-632's work note of 23:46 UTC 20 Nov 2026 (690a8bf), as written.",
+ "steps": [
+  {
+   "at": "2026-11-20T00:00:00Z",
+   "subject": "x: self_test.py",
+   "write": {
+    "tools/x/self_test.py": "print('ok')\n",
+    "tools/attribution-docs-check-fixtures/README.md": "# a\n"
+   }
+  },
+  {
+   "at": "2026-11-20T01:00:00Z",
+   "subject": "y: checker.py (In tools/y)",
+   "write": {
+    "tools/y/checker.py": "x = 1\n"
+   }
+  },
+  {
+   "at": "2026-11-20T01:00:05Z",
+   "subject": "Work note: Built y",
+   "write": {
+    "work/a.md": "# Built y\n\n**Done**\n\n2026-11-20 00:00 UTC, spent $0.01 on Build a small tool in its own repository\n\nBuilt tools/y/checker.py and its self-test.\n"
+   }
+  },
+  {
+   "at": "2026-11-20T02:00:00Z",
+   "subject": "Work note: Rebuilt x",
+   "write": {
+    "work/b.md": "# Rebuilt x\n\n**Done**\n\n2026-11-20 00:00 UTC, spent $0.01 on Build a small tool in its own repository\n\nRebuilt tools/x with a new check.\n"
+   }
+  },
+  {
+   "at": "2026-11-20T03:00:00Z",
+   "subject": "x: fix.patch (In tools/x)"
+  },
+  {
+   "at": "2026-11-20T03:00:05Z",
+   "subject": "Work note: Added missing patch",
+   "write": {
+    "work/c.md": "# Added missing fix.patch\n\n**Done**\n\n2026-11-20 00:00 UTC, spent $0.01 on Build a small tool in its own repository\n\nAdds exactly that missing file to tools/x/.\n"
+   }
+  },
+  {
+   "at": "2026-11-20T04:00:00Z",
+   "subject": "w: a.py (In tools/w)",
+   "write": {
+    "tools/w/a.py": "a = 1\n"
+   }
+  },
+  {
+   "at": "2026-11-20T04:00:05Z",
+   "subject": "Work note: Built card-fixtures-checker",
+   "write": {
+    "work/d.md": "# Built card-fixtures-checker\n\n**Done**\n\n2026-11-20 00:00 UTC, spent $0.01 on Build a small tool in its own repository\n\nBuilt tools/card-fixtures-checker as a folder-alone bundle.\n"
+   }
+  },
+  {
+   "at": "2026-11-20T05:00:00Z",
+   "subject": "Work note: Rebuilt card-fixtures-checker folder-alone",
+   "write": {
+    "work/e.md": "@note-632-2346.md"
+   }
+  },
+  {
+   "at": "2026-11-20T06:00:00Z",
+   "subject": "Work note: draft",
+   "write": {
+    "work/f.md": "# Draft in its note only, no file changed\n\n**Done**\n\n2026-11-20 00:00 UTC, spent $0.01 on Build a small tool in its own repository\n\nIt wrote the patch in this note; nothing was committed.\n"
+   }
+  },
+  {
+   "at": "2026-11-20T07:00:00Z",
+   "subject": "Work note: research",
+   "write": {
+    "work/g.md": "# Published a research note on tools/nowhere\n\n**Done**\n\n2026-11-20 00:00 UTC, spent $0.01 on Research a token, protocol or project\n\nA research step.\n"
+   }
+  },
+  {
+   "at": "2026-11-20T08:00:00Z",
+   "subject": "x: fix.py (In tools/x)",
+   "write": {
+    "tools/x/fix.py": "y = 2\n"
+   }
+  },
+  {
+   "at": "2026-11-20T09:00:00Z",
+   "subject": "Work note: Fixed x",
+   "write": {
+    "work/h.md": "# Fixed x\n\n**Done**\n\n2026-11-20 00:00 UTC, spent $0.01 on Build a small tool in its own repository\n\nFixed tools/x.\n"
+   }
+  },
+  {
+   "at": "2026-11-20T10:00:00Z",
+   "subject": "x: SELFTEST_OUTPUT.md (self-test failed)",
+   "write": {
+    "tools/x/SELFTEST_OUTPUT.md": "EXIT=1\n"
+   }
+  },
+  {
+   "at": "2026-11-20T10:00:01Z",
+   "subject": "HivemindOS linked tools/x/ to opp-1",
+   "write": {
+    "tools/x/README.md": "# x\n"
+   }
+  },
+  {
+   "at": "2026-11-20T10:00:05Z",
+   "subject": "Work note: Fixed x again",
+   "write": {
+    "work/i.md": "# Fixed x again\n\n**Done**\n\n2026-11-20 00:00 UTC, spent $0.01 on Build a small tool in its own repository\n\nFixed tools/x.\n"
+   }
+  },
+  {
+   "at": "2026-11-20T11:00:00Z",
+   "subject": "x: g.py (In tools/x)",
+   "write": {
+    "tools/x/g.py": "g = 3\n"
+   }
+  },
+  {
+   "at": "2026-11-20T11:00:05Z",
+   "subject": "Work note: Added g",
+   "write": {
+    "work/j1.md": "# Added g to x\n\n**Done**\n\n2026-11-20 00:00 UTC, spent $0.01 on Build a small tool in its own repository\n\nAdded tools/x/g.py.\n"
+   }
+  },
+  {
+   "at": "2026-11-20T11:00:10Z",
+   "subject": "Work note: Added g again",
+   "write": {
+    "work/j2.md": "# Added g to x again\n\n**Done**\n\n2026-11-20 00:00 UTC, spent $0.01 on Build a small tool in its own repository\n\nAdded tools/x/g.py.\n"
+   }
+  }
+ ],
+ "cases": [
+  {
+   "name": "a step that changed tools/y/ and names tools/y",
+   "note": "a.md"
+  },
+  {
+   "name": "a step with no commit at all",
+   "note": "b.md"
+  },
+  {
+   "name": "a step whose one commit is empty",
+   "note": "c.md"
+  },
+  {
+   "name": "a note naming a folder that is not there",
+   "note": "d.md"
+  },
+  {
+   "name": "632's 23:46 UTC 20 Nov note, as written",
+   "note": "e.md"
+  },
+  {
+   "name": "titled a draft and still headed Done",
+   "note": "f.md"
+  },
+  {
+   "name": "a research note headed Done is not a build note",
+   "note": "g.md"
+  },
+  {
+   "name": "a tool commit more than 30 minutes before the note",
+   "note": "h.md"
+  },
+  {
+   "name": "only the host's SELFTEST_OUTPUT.md and a host link commit",
+   "note": "i.md"
+  },
+  {
+   "name": "a step with its own tool commit",
+   "note": "j1.md"
+  },
+  {
+   "name": "the tool commit belongs to the step before",
+   "note": "j2.md"
+  }
+ ],
+ "want": [
+  [
+   "b.md",
+   "done-without-tool-commit",
+   null
+  ],
+  [
+   "c.md",
+   "done-without-tool-commit",
+   null
+  ],
+  [
+   "d.md",
+   "done-without-folder",
+   "tools/card-fixtures-checker"
+  ],
+  [
+   "e.md",
+   "done-without-tool-commit",
+   null
+  ],
+  [
+   "e.md",
+   "done-without-folder",
+   "tools/card-fixtures-checker"
+  ],
+  [
+   "f.md",
+   "done-without-tool-commit",
+   null
+  ],
+  [
+   "h.md",
+   "done-without-tool-commit",
+   null
+  ],
+  [
+   "i.md",
+   "done-without-tool-commit",
+   null
+  ],
+  [
+   "j2.md",
+   "done-without-tool-commit",
+   null
+  ]
+ ],
+ "doneBuildNotes": 10
+}

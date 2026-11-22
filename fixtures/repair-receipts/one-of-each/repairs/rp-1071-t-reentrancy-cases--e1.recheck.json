@@ -1,0 +1,15 @@
+{
+  "v": 1,
+  "kind": "repair-recheck",
+  "repair": "rp-1071-t-reentrancy-cases",
+  "episode": 1,
+  "receiptCloseAt": "2026-11-21T08:45:00.000Z",
+  "window": [
+    "2026-11-21T08:45:00.000Z",
+    "2026-11-28T08:45:00.000Z"
+  ],
+  "sameCause": 0,
+  "otherCauses": 1,
+  "verdict": "held",
+  "firstRecurrence": null
+}

@@ -12,6 +12,9 @@ within 24 hours:
   claim       a later work note that is not a stop and whose title names the stopped folder
   reroute     a file committed under the stopped folder after the stop (the folder exists after all)
 
+A stop for a funds pause or a host limit (labels.py) is the holder's or the host's, not the agent's: it is not
+counted, and each is said on its own line per agent.
+
 Read-only and keyless. Nothing in an agent repository is run.
 
     python3 scripts/rule_stops.py --self-test          # the fixtures only, no network
@@ -25,6 +28,9 @@ import os
 import re
 import subprocess
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import labels  # noqa: E402
 
 WINDOW_HOURS = 24
 STOP_NOTE = re.compile(r"^work/\d{4}-\d\d-\d\d-\d{4}-stopped-on-")
@@ -78,6 +84,14 @@ def after_stops(stops, notes, adds):
             found.append({"kind": "reroute", "stop": stop["path"], "at": added[0]["at"].strftime("%Y-%m-%dT%H:%M:%SZ"), "what": f"{len(added)} file(s) added under {stop['folder']}/, first {added[0]['path']}",
                           "within24h": added[0]["at"] <= until})
     return found
+
+
+def stop_view(stops, notes, adds):
+    """A stop for a funds pause or a host limit (labels.py) is not the agent's: it is left out before a re-attempt is
+    counted, and said on its own line."""
+    counted, funds, host = labels.split(stops)
+    return {"counted": counted, "findings": after_stops(counted, notes, adds), "paused": labels.paused_line(funds, at=lambda s: s["at"]),
+            "blocked": labels.blocked_line(host, at=lambda s: s["at"])}
 
 
 def git(repo, *args):
@@ -177,10 +191,12 @@ if __name__ == "__main__":
             unread += 1
             print(f"could not read {repo}: {error}", file=sys.stderr)
             continue
-        found = after_stops(stops, notes, adds)
+        view = stop_view(stops, notes, adds)
+        found = view["findings"]
         total += len(found) + len(bad)
-        report.append({"agent": n, "notes": len(notes), "stops": [{"at": s["at"].strftime("%Y-%m-%dT%H:%M:%SZ"), "rule": s["rule"], "folder": s["folder"], "note": s["path"]} for s in stops],
-                       "afterStop": found, "noteProblems": bad})
+        report.append({"agent": n, "notes": len(notes), "stops": [{"at": s["at"].strftime("%Y-%m-%dT%H:%M:%SZ"), "rule": s["rule"], "folder": s["folder"], "note": s["path"]} for s in view["counted"]],
+                       "afterStop": found, "noteProblems": bad, "paused": view["paused"], "blocked": view["blocked"]})
     print(json.dumps({"window_hours": WINDOW_HOURS, "agents": report}, indent=2))
+    labels.print_lines(report)
     print(f"rule stops: {sum(len(r['stops']) for r in report)} stops in {len(report)} agents, {total} findings", file=sys.stderr)
     sys.exit(2 if unread else 1 if total else 0)
