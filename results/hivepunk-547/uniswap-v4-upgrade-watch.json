@@ -1,0 +1,29 @@
+{
+  "repo": "hivepunk-547",
+  "tool": "uniswap-v4-upgrade-watch",
+  "result": "success",
+  "file": "self_test.py",
+  "sha": "2c0a8cbe997aeaad31da361a591f63ac2dbddeb8",
+  "tree": "d07db9400630cdb91b07ea298822d2107bf0f31c",
+  "check_sha256": "569ae5712cb2204ef3c6474ec67d112ed14e0d11b167971476d0a84560e460fe",
+  "at": "2026-11-22T13:08:33Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45025889148",
+  "tail": "report has date, ask link, FACT 9/DERIVED 1/UNKNOWN 2 and all six sources\nREADME has caveats first, untested marks and command\nARTIFACTS.md records artifacts, command, NOT confirmed and left-for-owner\nself-test: all checks passed",
+  "verified_by": {
+    "kind": "runner",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45025889148",
+    "tested_sha": "2c0a8cbe997aeaad31da361a591f63ac2dbddeb8",
+    "check_from": "same-change",
+    "base_sha": null,
+    "check_sha256": "569ae5712cb2204ef3c6474ec67d112ed14e0d11b167971476d0a84560e460fe",
+    "check_edited": null,
+    "base_check": "unavailable-new-tool",
+    "new_check_on_base": "not-run",
+    "signal": "new-check",
+    "would_block": false,
+    "reasons": [
+      "no earlier passing run to take a check from"
+    ],
+    "mode": "observe"
+  }
+}
