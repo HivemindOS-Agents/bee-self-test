@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-632",
+  "bundle": "prf-632-sas-phone-claim-check-056ff56",
+  "result": "REPRODUCED",
+  "observed": "passed, no count line",
+  "scorerCommit": "056ff56a8cc7d87941a27072d8744b49243ee04f",
+  "peer": "86",
+  "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
+  "at": "2026-11-22T05:15:45Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44988622267"
+}
