@@ -1,32 +1,29 @@
 {
   "repo": "hivepunk-547",
   "tool": "fixprotocol-modifyliquidities-nonreentrant",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "73c79e796ea837b6a263abf3f03abafd4d01d209",
-  "tree": "c57abbed8180a9f3202751bd8e2efa2c9108f2c8",
-  "check_sha256": "73e1d1e385a17ad5cbc2d52b1aea7aad1ef9d57ac17b3415f136c271e60bade0",
-  "at": "2026-11-22T02:09:42Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44974750249",
-  "tail": "FAIL: missing modifyLiquidities-nonReentrant.patch",
+  "sha": "3d70665bec0e728b74b7fb40dc369ca29fe59258",
+  "tree": "f3e1aa77bb79d7314c355e85675ec5a4a66a47d3",
+  "check_sha256": "df55fa5b737376c27776374aca9f6165019c769499bd98f4a5e455922591d035",
+  "at": "2026-11-23T06:30:27Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45124517471",
+  "tail": "README has caveats first, untested marks and command\nARTIFACTS.md records artifacts, exact command, raw-output slot, NOT confirmed, commit note, left-for-owner\nself-test: all checks passed",
   "verified_by": {
-    "kind": "none",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44974750249",
-    "tested_sha": "73c79e796ea837b6a263abf3f03abafd4d01d209",
-    "check_from": "none",
+    "kind": "runner",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45124517471",
+    "tested_sha": "3d70665bec0e728b74b7fb40dc369ca29fe59258",
+    "check_from": "same-change",
     "base_sha": null,
-    "check_sha256": "73e1d1e385a17ad5cbc2d52b1aea7aad1ef9d57ac17b3415f136c271e60bade0",
+    "check_sha256": "df55fa5b737376c27776374aca9f6165019c769499bd98f4a5e455922591d035",
     "check_edited": null,
-    "base_check": "not-run",
+    "base_check": "unavailable-new-tool",
     "new_check_on_base": "not-run",
-    "signal": null,
+    "signal": "new-check",
     "would_block": false,
     "reasons": [
-      "the run did not pass"
+      "no earlier passing run to take a check from"
     ],
     "mode": "observe"
-  },
-  "verdict": "failed",
-  "verdict_at": "2026-11-22T02:25:07Z",
-  "verdict_by": "hivemindos"
+  }
 }
