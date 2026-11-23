@@ -151,6 +151,32 @@
         "metric": "k/n per tool on green records; tools at 0/n"
       },
       "decisions": []
+    },
+    {
+      "id": "L52 compile_sweep",
+      "script": "scripts/compile_sweep.py",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "report-only",
+        "since": "2026-11-23",
+        "decideBy": "2026-11-30",
+        "check": "every Python file under tools/ in the five agent repositories compiles at HEAD, frozen tools included; compile() only, nothing is run",
+        "metric": "broken files per run; 0 on the decide-by date makes it a failing step"
+      },
+      "decisions": []
+    },
+    {
+      "id": "HB-074 workflow_age",
+      "script": "scripts/workflow_age.py",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "report-only",
+        "since": "2026-11-23",
+        "decideBy": "2026-11-30",
+        "check": "every workflow with a schedule ran within its period plus a 12-hour grace, by the Actions API; a workflow with no schedule is not checked",
+        "metric": "late and late_never_ran schedules per run"
+      },
+      "decisions": []
     }
   ],
   "rules": [

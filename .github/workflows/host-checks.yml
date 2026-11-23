@@ -50,7 +50,7 @@ on:
     - cron: "40 6 * * *"
   push:
     branches: [main]
-    paths: ["scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "scripts/repair_receipts.py", "scripts/rule_stops.py", "scripts/kept_rules.py", "scripts/labels.py", "scripts/git_history.py", "scripts/repeat_guard.py", "scripts/rule_lifecycle.py", "scripts/done_paths.py", "scripts/link_registry.py", "scripts/check_strength.py", "shadow.json", "link_registry.json", "fixtures/repair-receipts/**", "fixtures/repeat-guard/**", "fixtures/done-paths/**", "fixtures/link-registry/**", "fixtures/check-strength/**", "fixtures/source-match/**", "scripts/lift_run.py", "tests/test_lift_run.py", "lift/**/held-out.json", "lift/**/tasks.json", ".github/workflows/host-checks.yml"]
+    paths: ["scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "scripts/repair_receipts.py", "scripts/rule_stops.py", "scripts/kept_rules.py", "scripts/labels.py", "scripts/git_history.py", "scripts/repeat_guard.py", "scripts/rule_lifecycle.py", "scripts/done_paths.py", "scripts/link_registry.py", "scripts/check_strength.py", "scripts/compile_sweep.py", "scripts/workflow_age.py", "shadow.json", "link_registry.json", "fixtures/repair-receipts/**", "fixtures/repeat-guard/**", "fixtures/done-paths/**", "fixtures/link-registry/**", "fixtures/check-strength/**", "fixtures/source-match/**", "scripts/lift_run.py", "tests/test_lift_run.py", "lift/**/held-out.json", "lift/**/tasks.json", ".github/workflows/host-checks.yml"]
 permissions: {}
 jobs:
   fixtures:
@@ -58,6 +58,7 @@ jobs:
     timeout-minutes: 25
     permissions:
       contents: read
+      actions: read
     steps:
       - uses: actions/checkout@v4
         with:
@@ -81,6 +82,8 @@ jobs:
           python3 scripts/done_paths.py --self-test
           python3 scripts/link_registry.py --self-test
           python3 scripts/check_strength.py --self-test
+          python3 scripts/compile_sweep.py --self-test
+          python3 scripts/workflow_age.py --self-test
           python3 -m unittest discover -s tests -p 'test_lift_run.py'
       - name: Live, the 48-hour check (report-only)
         run: |
@@ -132,6 +135,14 @@ jobs:
             git -C "$d" fetch --quiet --unshallow --filter=blob:none origin || echo "could not read all of $d's history"
           done
           python3 scripts/repeat_guard.py --since 2026-11-14 "$RUNNER_TEMP"/history/hivepunk-* || echo "report-only, exit $?"
+      - name: Live, HB-074 every scheduled workflow ran within its period plus a grace (report-only until its decide-by date)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/workflow_age.py "$GITHUB_REPOSITORY" .github/workflows || echo "report-only, exit $?"
+      - name: Live, L52 every Python file under tools/ compiles, frozen tools included (report-only until its decide-by date)
+        run: |
+          python3 scripts/compile_sweep.py "$RUNNER_TEMP"/history/hivepunk-* || echo "report-only, exit $?"
       - name: Live, HB-067 G Done build notes against what their step committed (shadow, report-only)
         run: |
           python3 scripts/done_paths.py --since 2026-11-14 "$RUNNER_TEMP"/history/hivepunk-* || echo "report-only, exit $?"
