@@ -10,6 +10,8 @@ is never a score. This file holds the same checks and replays a day file from th
     python3 scripts/claim_watch.py --replay DAYFILE [SHA256]
                                                            # re-read every row's target and say MATCH, CHANGED, GONE or
                                                            # UNABLE; with SHA256, also that the file is those bytes
+    python3 scripts/claim_watch.py --coverage DAYFILE      # HB-083 s0: fails when over a tenth of the record sample was
+                                                           # not read with no host slowed and time left
 
 The skill family, one row a pinned skill:
   PIN_OK                    its bytes are the pinned sha256, and its source serves the same bytes now
@@ -40,6 +42,7 @@ import hashlib
 import json
 import re
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -429,10 +432,58 @@ def read_body_or_slowed(url):
     return (data.decode("utf-8", "replace"), hashlib.sha256(data).hexdigest()) if data else None
 
 
-def sample_again(seed, count, maximum):
-    """The Worker's budget: one read a host (ipfs.io 10); none more of a host that answered 429; none at all after
-    three 429s in a row."""
-    used, slowed_hosts, slowed = {}, set(), 0
+HOST_READS = 40          # HB-083 s0: core AGENT_CLAIM_HOST_READS in the agents Worker
+HOST_GAP_SEC = 1.0       # AGENT_CLAIM_HOST_GAP_MS
+READS_SEC = 8 * 60       # AGENT_CLAIM_READS_MS; the replay job's timeout is 10 minutes
+NOT_READ_MOST = 0.1      # AGENT_CLAIM_NOT_READ_MOST
+
+
+class ReadBudget:
+    """The Worker's budget for a sample's file reads. `host_cap`: the cap the day was run under, from its row's hostCap;
+    None for a day from before 24 Nov 2026 (one read a host, ipfs.io 10, no pacing), so an old day replays as it ran."""
+
+    def __init__(self, host_cap, now=time.monotonic, sleep=time.sleep):
+        self.cap, self.now, self.sleep = host_cap, now, sleep
+        self.used, self.last, self.slowed_hosts, self.slowed, self.started, self.ran_out = {}, {}, set(), 0, now(), False
+
+    def take(self, host):
+        most = self.cap if self.cap is not None else (10 if host == "ipfs.io" else 1)
+        if not host or self.slowed >= 3 or host in self.slowed_hosts or self.used.get(host, 0) >= most:
+            return False
+        if self.cap is not None and self.now() - self.started >= READS_SEC:
+            self.ran_out = True
+            return False
+        if self.cap is not None and host in self.last:
+            gap = self.last[host] + HOST_GAP_SEC - self.now()
+            if gap > 0:
+                self.sleep(gap)
+        self.used[host] = self.used.get(host, 0) + 1
+        self.last[host] = self.now()
+        return True
+
+    def answered(self, host, was_slowed):
+        if was_slowed:
+            self.slowed += 1
+            self.slowed_hosts.add(host)
+        else:
+            self.slowed = 0
+
+
+def coverage_problems(rows):
+    """HB-083 s0: over a tenth of the record sample not read, with no host asking to slow down and time left."""
+    sample_rows = [r for r in rows if r.get("family") == "record" and r.get("target") == "sample"]
+    if not sample_rows or not sample_rows[0].get("sampled"):
+        return []
+    first, not_read = sample_rows[0], sum(r.get("count", 0) for r in sample_rows if r.get("outcome") == "NOT_READ")
+    if not_read / first["sampled"] <= NOT_READ_MOST or first.get("slowedHosts") or first.get("readsRanOut"):
+        return []
+    share = int(not_read / first["sampled"] * 100 + 0.5)
+    return [f"record sample: {not_read} of {first['sampled']} not read ({share}%), with no host slowed and time left"]
+
+
+def sample_again(seed, count, maximum, host_cap=None):
+    """The Worker's read budget (ReadBudget), under the cap the day was run with."""
+    budget = ReadBudget(host_cap)
     out = []
     for i in sample(seed, count, maximum):
         onchain = registration(i)
@@ -442,16 +493,10 @@ def sample_again(seed, count, maximum):
         inline = data_uri(onchain[1]) if onchain[0] else None
         url = record_url(onchain[1]) if onchain[0] and inline is None else None
         host = (urllib.parse.urlparse(url).hostname or "").lower() if url else ""
-        allowed = bool(host) and slowed < 3 and host not in slowed_hosts and used.get(host, 0) < (10 if host == "ipfs.io" else 1)
-        if allowed:
-            used[host] = used.get(host, 0) + 1
+        allowed = budget.take(host)
         read = (inline, hashlib.sha256(inline.encode()).hexdigest()) if inline is not None else (read_body_or_slowed(url) if allowed else None)
         if allowed:
-            if read == "slowed":
-                slowed += 1
-                slowed_hosts.add(host)
-            else:
-                slowed = 0
+            budget.answered(host, read == "slowed")
         out.append(check_record(str(i), onchain[0], onchain[1], None if read == "slowed" else read, not_read=(bool(url) and not allowed) or read == "slowed"))
     return out
 
@@ -486,10 +531,10 @@ def replay_outward(row, rows):
     """A record, listing or advisory row read again: (target, verdict, why)."""
     family, target = row.get("family"), row.get("target")
     if family == "record" and target == "sample":
-        key = (row["seed"], row["sampled"], row["maxId"])
+        key = (row["seed"], row["sampled"], row["maxId"], row.get("hostCap"))
         cache = replay_outward.__dict__.setdefault("samples", {})
         if key not in cache:
-            cache[key] = sample_again(row["seed"], row["sampled"], row["maxId"])
+            cache[key] = sample_again(row["seed"], row["sampled"], row["maxId"], row.get("hostCap"))
         now = sum(1 for r in cache[key] if r["outcome"] == row["outcome"])
         return (f"sample:{row['outcome']}", "MATCH" if now == row["count"] else "CHANGED", f"{row['count']} then, {now} now")
     if family == "record" and target.startswith("hivepunk:"):
@@ -521,6 +566,39 @@ def replay_outward(row, rows):
         now = advisory_row(target, refs, hits)
         return (target, "MATCH" if (now["outcome"], now["refs"]) == (row["outcome"], row.get("refs")) else "CHANGED", f"{row['outcome']} then, {now['outcome']} now")
     return (target, "UNABLE", "not a family this replay reads")
+
+
+READ_BUDGET_CASES = 7
+
+
+def read_budget_problems():
+    """HB-083 s0, offline: the budget's rules on a fake clock, and the coverage guard on 23 Nov's real row."""
+    bad, clock, slept = [], [0.0], []
+    def sleep(seconds):
+        slept.append(seconds)
+        clock[0] += seconds
+    b = ReadBudget(40, lambda: clock[0], sleep)
+    if not all(b.take("central.example") for _ in range(40)) or b.take("central.example"):
+        bad.append("forty reads of a host and no forty-first")
+    if len(slept) != 39 or any(s > HOST_GAP_SEC for s in slept):
+        bad.append(f"one read a second a host: {len(slept)} gaps")
+    b = ReadBudget(40, lambda: clock[0], sleep)
+    b.take("a.example"); b.answered("a.example", True)
+    if b.take("a.example") or not b.take("b.example"):
+        bad.append("a host that answered 429 is read no more, and others still are")
+    b2 = ReadBudget(40, lambda: clock[0], sleep)
+    clock[0] += READS_SEC
+    if b2.take("c.example") or not b2.ran_out:
+        bad.append("no new read after eight minutes, and it says so")
+    old = ReadBudget(None, lambda: clock[0], sleep)
+    if not old.take("x.example") or old.take("x.example") or not all(old.take("ipfs.io") for _ in range(10)) or old.take("ipfs.io"):
+        bad.append("a day from before the change replays under its old cap")
+    real = {"count": 37, "distinctHosts": 3, "family": "record", "filesRead": 3, "largestHostShare": 0.9, "maxId": 1250000, "outcome": "NOT_READ", "sampled": 40, "seed": "erc8004:base:2026-11-23", "target": "sample"}
+    if coverage_problems([real]) != ["record sample: 37 of 40 not read (93%), with no host slowed and time left"]:
+        bad.append(f"23 Nov's row is red: {coverage_problems([real])}")
+    if coverage_problems([{**real, "count": 4}]) or coverage_problems([{**real, "slowedHosts": 1}]) or coverage_problems([{**real, "readsRanOut": 1}]):
+        bad.append("10%, a slowed host or spent time is not a coverage failure")
+    return bad
 
 
 def self_test():
@@ -635,6 +713,8 @@ def self_test():
     total = 19 + 2 + 4 + 2 + 1 + 1 + 29 + 1
     for line in bad:
         print("FAIL", line)
+    bad += read_budget_problems()
+    total += READ_BUDGET_CASES
     print(f"claim watch self-test: {total - len(bad)} of {total} passed")
     return 1 if bad else 0
 
@@ -652,6 +732,15 @@ if __name__ == "__main__":
         sys.stdout.write(text)
         print(json.dumps({"day": day, "rows": len(rows), "sha256": digest, "protect": protect(day, rows)}), file=sys.stderr)
         sys.exit(0)
+    if args[:1] == ["--coverage"] and len(args) == 2:
+        try:
+            rows = [json.loads(line) for line in open(args[1], encoding="utf-8") if line.strip()]
+        except (OSError, ValueError) as error:
+            print(f"could not read {args[1]}: {error}", file=sys.stderr)
+            sys.exit(2)
+        found = coverage_problems(rows)
+        print("\n".join(found) or "coverage: nothing unread without a reason")
+        sys.exit(1 if found else 0)
     if args[:1] == ["--replay"] and len(args) in (2, 3):
         try:
             text = open(args[1], encoding="utf-8").read()

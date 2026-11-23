@@ -45,3 +45,4 @@ jobs:
           echo "newest day file: $1, sha256 $2"
           if ! curl -fsS "$base/$1.jsonl" -o "$RUNNER_TEMP/$1.jsonl"; then echo "the day file $1 could not be read"; exit 0; fi
           python3 scripts/claim_watch.py --replay "$RUNNER_TEMP/$1.jsonl" "$2" || echo "report-only, exit $?"
+          python3 scripts/claim_watch.py --coverage "$RUNNER_TEMP/$1.jsonl" || echo "report-only, exit $?"
