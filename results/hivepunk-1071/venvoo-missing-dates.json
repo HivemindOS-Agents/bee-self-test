@@ -3,30 +3,25 @@
   "tool": "venvoo-missing-dates",
   "result": "success",
   "file": "self_test.py",
-  "sha": "2114d91ae3999369c7ba54aeb0e799fcf5f66700",
-  "tree": "fd7983bdffc72e3cf1ddc5a800241207e0f25ef5",
+  "sha": "06528434519b7c7db02d91c256310ddc85a406b1",
+  "tree": "f69096aa2b07d6e8a63bb3a7f4948518311495c8",
   "check_sha256": "13e7bafc7a4e4631569304e5c9c7ef7780a973a89a48b1c842c99ac45f7b47b7",
-  "at": "2026-11-23T03:29:20Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45106238880",
+  "at": "2026-11-23T06:38:12Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45125399960",
   "tail": "ok: files and invalid names ignored, not present\nok: invalid calendar line raises error\nok: CLI writes output\nok: CLI JSON missing correct\nboth --data-dir and --calendar are required\nok: CLI requires calendar\n\nResults: 14/14 checks passed",
   "verified_by": {
     "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45106238880",
-    "tested_sha": "2114d91ae3999369c7ba54aeb0e799fcf5f66700",
-    "check_from": "same-change",
-    "base_sha": null,
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45125399960",
+    "tested_sha": "06528434519b7c7db02d91c256310ddc85a406b1",
+    "check_from": "base",
+    "base_sha": "2114d91ae3999369c7ba54aeb0e799fcf5f66700",
     "check_sha256": "13e7bafc7a4e4631569304e5c9c7ef7780a973a89a48b1c842c99ac45f7b47b7",
-    "check_edited": null,
-    "base_check": "unavailable-new-tool",
+    "check_edited": false,
+    "base_check": "unchanged",
     "new_check_on_base": "not-run",
-    "signal": "new-check",
+    "signal": null,
     "would_block": false,
-    "reasons": [
-      "no earlier passing run to take a check from"
-    ],
+    "reasons": [],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-23T03:44:31Z",
-  "verdict_by": "hivemindos"
+  }
 }
