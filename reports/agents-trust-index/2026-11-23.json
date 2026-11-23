@@ -1,0 +1,755 @@
+{
+  "schema": "hive.agents-trust-index.v1",
+  "date": "2026-11-23",
+  "startedAt": "2026-11-23T15:14:48Z",
+  "fixture": {
+    "path": "fixtures/bazaar-intents/bazaar-intents.json",
+    "sha256": "55e8df2ba83d75d47d8a4cf953dcf7e7f2315d07f6925acef215803461d8ccd6",
+    "intents": 20
+  },
+  "hiveHosts": [
+    "api.hivemindos.app",
+    "hivemindos-paid-agent-gateway.hivemindos.workers.dev"
+  ],
+  "paid": false,
+  "complete": true,
+  "finishedAt": "2026-11-23T15:17:23Z",
+  "inspect": {
+    "url": "https://api.agents-trust.com/inspect",
+    "view": "compact",
+    "paymentHeader": false
+  },
+  "counts": {
+    "listed": 57,
+    "indexed": 40,
+    "notIndexed": 17,
+    "notRead": 0
+  },
+  "control": {
+    "url": "https://api.hivemindos.app/v1/x402/bazaar-control/never-listed",
+    "host": "api.hivemindos.app",
+    "status": "not-indexed",
+    "httpStatus": 404,
+    "quote": null,
+    "fetchedAt": "2026-11-23T15:17:22Z",
+    "requestId": "01a208fb-b386-761f-98ba-b90430b68ab8",
+    "ok": true
+  },
+  "flags": [],
+  "rows": [
+    {
+      "url": "https://api.hivemindos.app/v1/x402/accounts",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "50000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:15:02Z",
+      "requestId": "01a208f9-8faa-7cd9-a920-3e71bccd681d"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/hive-research/analyses.create",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "9900",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:15:03Z",
+      "requestId": "01a208f9-9545-702c-a6c6-a464ad3662cc"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/leadgen-data/leads.discover",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:15:05Z",
+      "requestId": "01a208f9-9a30-7cd6-ba36-cffddfc90fcb"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/leadgen-data/leads.enrich",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:15:06Z",
+      "requestId": "01a208f9-9ec4-7983-b856-d6f2d76a190e"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/leadgen-data/leads.nearby",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:15:07Z",
+      "requestId": "01a208f9-a2a2-7813-abba-4ef497997eab"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/media-studio/generations.create",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:15:08Z",
+      "requestId": "01a208f9-a775-70c5-9f67-ba45f524fbfb"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/miroshark/runs.create",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "12000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:15:09Z",
+      "requestId": "01a208f9-ab4c-713a-8215-677b8c94dfa5"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/onchain-intelligence/exchanges.flows",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "2000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:15:10Z",
+      "requestId": "01a208f9-afd9-7dda-9fee-10dccec63ec2"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/onchain-intelligence/markets.scout",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:15:11Z",
+      "requestId": "01a208f9-b414-7d6f-ad08-2708ac1713ba"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/onchain-intelligence/perps.brief",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:15:12Z",
+      "requestId": "01a208f9-b829-7285-821b-6ee27b7e98ff"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/onchain-intelligence/predictionMarkets.market",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:15:14Z",
+      "requestId": "01a208f9-bce5-7191-bb92-38608ba923ed"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/onchain-intelligence/predictionMarkets.search",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:15:15Z",
+      "requestId": "01a208f9-c1c8-7cc7-acab-168b4fdbc5a6"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/onchain-intelligence/predictionMarkets.wallet",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:15:16Z",
+      "requestId": "01a208f9-c6c0-737c-a851-53108b57d4f7"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/onchain-intelligence/tokens.brief",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:15:17Z",
+      "requestId": "01a208f9-ca94-7c3b-a39c-1b5753e9bf2e"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/onchain-intelligence/tokens.discover",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:15:18Z",
+      "requestId": "01a208f9-cf0f-7196-b85c-ade8ee6aad1c"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/onchain-intelligence/tokens.flows",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:15:19Z",
+      "requestId": "01a208f9-d306-750b-8e5e-9da603c80735"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/onchain-intelligence/tokens.transfers",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:15:20Z",
+      "requestId": "01a208f9-d735-77a1-9843-643f6c7a842e"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/onchain-intelligence/wallets.brief",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:15:21Z",
+      "requestId": "01a208f9-db0b-7f62-bace-ab9ebb3dbc14"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/onchain-intelligence/wallets.defiPositions",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:15:22Z",
+      "requestId": "01a208f9-df15-7516-8713-b9bacd761d11"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/onchain-intelligence/wallets.related",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "2000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:15:23Z",
+      "requestId": "01a208f9-e28e-7e6c-823c-95b31a601d2b"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/onchain-intelligence/wallets.tokenPnl",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:16:02Z",
+      "requestId": "01a208fa-7ba8-7024-8a81-592b80dd136c"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/photo-keyworder/photos.analyze",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:16:04Z",
+      "requestId": "01a208fa-804c-7072-beab-279b8b57fe98"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/reddit-voc/runs.create",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "9900",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:16:05Z",
+      "requestId": "01a208fa-84f1-7db5-b6bc-18fe6f695ef6"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/svg-studio/svgs.animate",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "7800",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:16:06Z",
+      "requestId": "01a208fa-8990-7342-a801-e0d9f4b1ed98"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/svg-studio/svgs.edit",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "7800",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:16:07Z",
+      "requestId": "01a208fa-8db5-7f31-ba6a-6dcc23363dae"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/svg-studio/svgs.generate",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "3000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:16:09Z",
+      "requestId": "01a208fa-93d2-73ae-be87-b55484ead3a0"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/svg-studio/svgs.vectorize",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "2500",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:16:10Z",
+      "requestId": "01a208fa-9742-7615-9c97-34a340543a88"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/swarm/runs.create",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "15000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:16:10Z",
+      "requestId": "01a208fa-9acb-7242-8ef7-cc7ba3a8d927"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/testnet-faucet/claims.create",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:16:11Z",
+      "requestId": "01a208fa-9ea9-7cde-84a9-7ca5291aac39"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/token-autopsy/reports.create",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "9900",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:16:13Z",
+      "requestId": "01a208fa-a4db-797c-8cfa-16cc5f8e7baf"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/wallet-risk/snapshots.create",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "9900",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:16:14Z",
+      "requestId": "01a208fa-a85a-7620-845b-faac57181bce"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/web-data/news.recent",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:16:15Z",
+      "requestId": "01a208fa-ac29-7473-83f9-e41e506e362a"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/web-data/research.papers",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:16:17Z",
+      "requestId": "01a208fa-b2be-7718-a024-312e04fde3db"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/web-data/search.results",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:16:17Z",
+      "requestId": "01a208fa-b663-7fce-93cb-1ed55b43168b"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/web-data/web.news",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:16:18Z",
+      "requestId": "01a208fa-ba5c-7241-86a4-d8a45b7a0f31"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/web-data/web.search",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:16:19Z",
+      "requestId": "01a208fa-bddf-7fc4-8d6e-118587b847ca"
+    },
+    {
+      "url": "https://api.hivemindos.app/v1/x402/x-studio/runs.create",
+      "host": "api.hivemindos.app",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "9900",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:16:20Z",
+      "requestId": "01a208fa-c1bf-7108-850d-09aeeaaf5386"
+    },
+    {
+      "url": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/miroshark/x402/run",
+      "host": "hivemindos-paid-agent-gateway.hivemindos.workers.dev",
+      "status": "not-indexed",
+      "httpStatus": 404,
+      "quote": null,
+      "fetchedAt": "2026-11-23T15:16:21Z",
+      "requestId": "01a208fa-c5ab-7fa7-b6f3-050e9fa1e629"
+    },
+    {
+      "url": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/paid-agents/default/chat/completions",
+      "host": "hivemindos-paid-agent-gateway.hivemindos.workers.dev",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1227",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:16:23Z",
+      "requestId": "01a208fa-cba1-76ac-bae6-dd7df2f6d6f5"
+    },
+    {
+      "url": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/paid-agents/default/credits/top-up",
+      "host": "hivemindos-paid-agent-gateway.hivemindos.workers.dev",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "50000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:16:24Z",
+      "requestId": "01a208fa-cf5f-74bd-8cb7-7a0bdb8ca8d1"
+    },
+    {
+      "url": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/catalog",
+      "host": "hivemindos-paid-agent-gateway.hivemindos.workers.dev",
+      "status": "indexed",
+      "httpStatus": 402,
+      "quote": {
+        "network": "eip155:8453",
+        "amount": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397"
+      },
+      "fetchedAt": "2026-11-23T15:17:03Z",
+      "requestId": "01a208fb-6837-73eb-9dea-5eeaf6a30d53"
+    },
+    {
+      "url": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/distill/runs",
+      "host": "hivemindos-paid-agent-gateway.hivemindos.workers.dev",
+      "status": "not-indexed",
+      "httpStatus": 404,
+      "quote": null,
+      "fetchedAt": "2026-11-23T15:17:04Z",
+      "requestId": "01a208fb-6cba-761f-a98d-374953ee46d9"
+    },
+    {
+      "url": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/engagement-audit/runs",
+      "host": "hivemindos-paid-agent-gateway.hivemindos.workers.dev",
+      "status": "not-indexed",
+      "httpStatus": 404,
+      "quote": null,
+      "fetchedAt": "2026-11-23T15:17:05Z",
+      "requestId": "01a208fb-70f5-7aee-94a0-bec64be03abd"
+    },
+    {
+      "url": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/hive-research/runs",
+      "host": "hivemindos-paid-agent-gateway.hivemindos.workers.dev",
+      "status": "not-indexed",
+      "httpStatus": 404,
+      "quote": null,
+      "fetchedAt": "2026-11-23T15:17:06Z",
+      "requestId": "01a208fb-7540-7241-94e1-32a2e5e2b867"
+    },
+    {
+      "url": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/image-generator/generations",
+      "host": "hivemindos-paid-agent-gateway.hivemindos.workers.dev",
+      "status": "not-indexed",
+      "httpStatus": 404,
+      "quote": null,
+      "fetchedAt": "2026-11-23T15:17:07Z",
+      "requestId": "01a208fb-792f-7754-bdf4-ee1536354327"
+    },
+    {
+      "url": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/photo-keyworder/analyses",
+      "host": "hivemindos-paid-agent-gateway.hivemindos.workers.dev",
+      "status": "not-indexed",
+      "httpStatus": 404,
+      "quote": null,
+      "fetchedAt": "2026-11-23T15:17:09Z",
+      "requestId": "01a208fb-8041-77e5-88c8-9c8caf117075"
+    },
+    {
+      "url": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/private-send/reservations",
+      "host": "hivemindos-paid-agent-gateway.hivemindos.workers.dev",
+      "status": "not-indexed",
+      "httpStatus": 404,
+      "quote": null,
+      "fetchedAt": "2026-11-23T15:17:10Z",
+      "requestId": "01a208fb-8474-7dd2-9465-2ae09232d032"
+    },
+    {
+      "url": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/reddit-voc/runs",
+      "host": "hivemindos-paid-agent-gateway.hivemindos.workers.dev",
+      "status": "not-indexed",
+      "httpStatus": 404,
+      "quote": null,
+      "fetchedAt": "2026-11-23T15:17:11Z",
+      "requestId": "01a208fb-88af-737c-ae9a-e0dcbf5a3c2b"
+    },
+    {
+      "url": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/style-skill-maker/runs",
+      "host": "hivemindos-paid-agent-gateway.hivemindos.workers.dev",
+      "status": "not-indexed",
+      "httpStatus": 404,
+      "quote": null,
+      "fetchedAt": "2026-11-23T15:17:12Z",
+      "requestId": "01a208fb-8c52-7dcc-a8fa-ab2f6b84d929"
+    },
+    {
+      "url": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/swarm-quick/runs",
+      "host": "hivemindos-paid-agent-gateway.hivemindos.workers.dev",
+      "status": "not-indexed",
+      "httpStatus": 404,
+      "quote": null,
+      "fetchedAt": "2026-11-23T15:17:13Z",
+      "requestId": "01a208fb-905f-77b8-a24b-19c133f1b275"
+    },
+    {
+      "url": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/swarm-theater/runs",
+      "host": "hivemindos-paid-agent-gateway.hivemindos.workers.dev",
+      "status": "not-indexed",
+      "httpStatus": 404,
+      "quote": null,
+      "fetchedAt": "2026-11-23T15:17:14Z",
+      "requestId": "01a208fb-9450-79e2-b6da-5bd87dc8421c"
+    },
+    {
+      "url": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/testnet-faucet/claims",
+      "host": "hivemindos-paid-agent-gateway.hivemindos.workers.dev",
+      "status": "not-indexed",
+      "httpStatus": 404,
+      "quote": null,
+      "fetchedAt": "2026-11-23T15:17:15Z",
+      "requestId": "01a208fb-97fc-76b8-b71d-3e7c4d81c1f5"
+    },
+    {
+      "url": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/token-autopsy/runs",
+      "host": "hivemindos-paid-agent-gateway.hivemindos.workers.dev",
+      "status": "not-indexed",
+      "httpStatus": 404,
+      "quote": null,
+      "fetchedAt": "2026-11-23T15:17:17Z",
+      "requestId": "01a208fb-a046-7989-b3cb-48460c043c17"
+    },
+    {
+      "url": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/video-generator/generations",
+      "host": "hivemindos-paid-agent-gateway.hivemindos.workers.dev",
+      "status": "not-indexed",
+      "httpStatus": 404,
+      "quote": null,
+      "fetchedAt": "2026-11-23T15:17:18Z",
+      "requestId": "01a208fb-a425-7e13-933a-7ce7dc09376e"
+    },
+    {
+      "url": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/voice-bank/runs",
+      "host": "hivemindos-paid-agent-gateway.hivemindos.workers.dev",
+      "status": "not-indexed",
+      "httpStatus": 404,
+      "quote": null,
+      "fetchedAt": "2026-11-23T15:17:19Z",
+      "requestId": "01a208fb-a846-7902-a382-14244fd2e64c"
+    },
+    {
+      "url": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/wallet-risk/runs",
+      "host": "hivemindos-paid-agent-gateway.hivemindos.workers.dev",
+      "status": "not-indexed",
+      "httpStatus": 404,
+      "quote": null,
+      "fetchedAt": "2026-11-23T15:17:20Z",
+      "requestId": "01a208fb-abeb-795a-92cb-ddacce389d9f"
+    },
+    {
+      "url": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/x402/x-transcript/runs",
+      "host": "hivemindos-paid-agent-gateway.hivemindos.workers.dev",
+      "status": "not-indexed",
+      "httpStatus": 404,
+      "quote": null,
+      "fetchedAt": "2026-11-23T15:17:21Z",
+      "requestId": "01a208fb-afa9-735b-8578-00d6252b1a53"
+    }
+  ],
+  "previous": "2026-11-16"
+}
