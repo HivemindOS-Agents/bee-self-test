@@ -1,32 +1,29 @@
 {
   "repo": "hivepunk-547",
   "tool": "opp-547-824-uniswap-v4-upgrade-watch",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "7ca7ffb37c84d071a052451cb67eab0076ddd61d",
-  "tree": "b63f17aac23786a28805427859a5260d1855cbc9",
-  "check_sha256": "49715048227ab6401e67aa37f4eeeffae150cf94b45b02ee400299da71b53115",
-  "at": "2026-11-22T16:16:53Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45042920631",
-  "tail": "FAIL: context FACT rows 6",
+  "sha": "57f98673d1958f7eb9faaf9b9d92ff15990e0db9",
+  "tree": "d8b0d962d514889070a67d953100ba66383b9f63",
+  "check_sha256": "698c926d41448948faaa853948b9fae0d32d3ccf69b6016e0040129a91899e88",
+  "at": "2026-11-23T00:13:12Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45087438705",
+  "tail": "tracker has both asks, FACT 3/DERIVED 1/UNKNOWN 2 context, UNKNOWN child honesty, sources\nREADME has caveats first, untested marks, command, do-not-touch note\nARTIFACTS.md records artifacts, command, NOT confirmed, commit note, left-for-owner\nself-test: all checks passed",
   "verified_by": {
-    "kind": "none",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45042920631",
-    "tested_sha": "7ca7ffb37c84d071a052451cb67eab0076ddd61d",
-    "check_from": "none",
+    "kind": "runner",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45087438705",
+    "tested_sha": "57f98673d1958f7eb9faaf9b9d92ff15990e0db9",
+    "check_from": "same-change",
     "base_sha": null,
-    "check_sha256": "49715048227ab6401e67aa37f4eeeffae150cf94b45b02ee400299da71b53115",
+    "check_sha256": "698c926d41448948faaa853948b9fae0d32d3ccf69b6016e0040129a91899e88",
     "check_edited": null,
-    "base_check": "not-run",
+    "base_check": "unavailable-new-tool",
     "new_check_on_base": "not-run",
-    "signal": null,
+    "signal": "new-check",
     "would_block": false,
     "reasons": [
-      "the run did not pass"
+      "no earlier passing run to take a check from"
     ],
     "mode": "observe"
-  },
-  "verdict": "failed",
-  "verdict_at": "2026-11-22T16:32:35Z",
-  "verdict_by": "hivemindos"
+  }
 }
