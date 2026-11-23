@@ -3,30 +3,25 @@
   "tool": "uniswap-v4-core-release-watch",
   "result": "success",
   "file": "self_test.py",
-  "sha": "945735f5accd292e15ec55ac67ace04b97e0e893",
-  "tree": "54a547f4b588c6e9419b4a74f1a0bf45491ed820",
+  "sha": "b332ec5ab5b59f93a0f2d8f849a59a512e29e2be",
+  "tree": "c59c8dd0a882f01502331469b5b578ad9c2e70fe",
   "check_sha256": "1e692f829566acc964216d11f567ae812a2ba5f969a0437535c9ed6291475dc2",
-  "at": "2026-11-23T07:50:46Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45134012642",
+  "at": "2026-11-23T11:00:07Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45161085623",
   "tail": "PASS README covers: self_test.py\nPASS README covers: UNKNOWN\nPASS README covers: FACT\nPASS README covers: Untested\nPASS README covers: Could not confirm\nPASS README states the verify command\nself_test: 66 check(s), 0 failed\nEXIT=0",
   "verified_by": {
     "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45134012642",
-    "tested_sha": "945735f5accd292e15ec55ac67ace04b97e0e893",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45161085623",
+    "tested_sha": "b332ec5ab5b59f93a0f2d8f849a59a512e29e2be",
     "check_from": "base",
-    "base_sha": "1f9fd27ac9e3c6a610843d153ff7535d99f3ca89",
+    "base_sha": "945735f5accd292e15ec55ac67ace04b97e0e893",
     "check_sha256": "1e692f829566acc964216d11f567ae812a2ba5f969a0437535c9ed6291475dc2",
-    "check_edited": true,
-    "base_check": "passed",
+    "check_edited": false,
+    "base_check": "unchanged",
     "new_check_on_base": "not-run",
     "signal": null,
     "would_block": false,
-    "reasons": [
-      "a check file changed, and the base check passes on the new code"
-    ],
+    "reasons": [],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-23T08:06:07Z",
-  "verdict_by": "hivemindos"
+  }
 }
