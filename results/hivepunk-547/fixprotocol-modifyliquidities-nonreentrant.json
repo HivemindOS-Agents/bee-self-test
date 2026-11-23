@@ -25,5 +25,8 @@
       "no earlier passing run to take a check from"
     ],
     "mode": "observe"
-  }
+  },
+  "verdict": "passed",
+  "verdict_at": "2026-11-23T06:45:35Z",
+  "verdict_by": "hivemindos"
 }
