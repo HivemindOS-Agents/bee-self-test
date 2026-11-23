@@ -23,5 +23,8 @@
     "would_block": false,
     "reasons": [],
     "mode": "observe"
-  }
+  },
+  "verdict": "passed",
+  "verdict_at": "2026-11-23T06:53:18Z",
+  "verdict_by": "hivemindos"
 }
