@@ -3,30 +3,27 @@
   "tool": "uniswap-v4-core-release-watch",
   "result": "success",
   "file": "self_test.py",
-  "sha": "34f1abe902b1a53d80ff27280a5f56dff435043a",
-  "tree": "f30775dfd19fa947732ffbb651d772d1f1608596",
-  "check_sha256": "20f2e871f4eb62ae4467c6d245fd4e155b99a39d57e57f62a25741bcb47be6ac",
-  "at": "2026-11-23T20:27:51Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45259560906",
-  "tail": "Latest Uniswap/v4-core release tag: UNKNOWN (not fetched) [UNKNOWN]\nPublished date: UNKNOWN (not fetched) [UNKNOWN]\nSource: https://api.github.com/repos/Uniswap/v4-core/releases/latest\nHeadline numbers: asset_count=None, total_asset_downloads=None (both UNKNOWN until fetched; never read as zero).\nStatus: DRAFT ONLY - do not post automatically; a person decides.\nPASS renderer --draft-only main returns 0\nself_test: 84 check(s), 0 failed\nEXIT=0",
+  "sha": "13f51c1e965f9ccc9052d057054e2e8729b23d35",
+  "tree": "1abd8566c7d7b493bd7e0b96f2e5af8a16cde4d9",
+  "check_sha256": "fa563de51c0a15795eaca01f4cb91646425053823cc289673f049848cfdf1b35",
+  "at": "2026-11-23T23:36:43Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45290256691",
+  "tail": "Latest Uniswap/v4-core release tag: UNKNOWN (not fetched) [UNKNOWN]\nPublished date: UNKNOWN (not fetched) [UNKNOWN]\nSource: https://api.github.com/repos/Uniswap/v4-core/releases/latest\nHeadline numbers: asset_count=None, total_asset_downloads=None (both UNKNOWN until fetched; never read as zero).\nStatus: DRAFT ONLY - do not post automatically; a person decides.\nPASS renderer --draft-only main returns 0\nself_test: 89 check(s), 0 failed\nEXIT=0",
   "verified_by": {
     "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45259560906",
-    "tested_sha": "34f1abe902b1a53d80ff27280a5f56dff435043a",
-    "check_from": "base",
-    "base_sha": "b332ec5ab5b59f93a0f2d8f849a59a512e29e2be",
-    "check_sha256": "20f2e871f4eb62ae4467c6d245fd4e155b99a39d57e57f62a25741bcb47be6ac",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45290256691",
+    "tested_sha": "13f51c1e965f9ccc9052d057054e2e8729b23d35",
+    "check_from": "same-change",
+    "base_sha": "34f1abe902b1a53d80ff27280a5f56dff435043a",
+    "check_sha256": "fa563de51c0a15795eaca01f4cb91646425053823cc289673f049848cfdf1b35",
     "check_edited": true,
-    "base_check": "passed",
-    "new_check_on_base": "not-run",
-    "signal": null,
-    "would_block": false,
+    "base_check": "failed",
+    "new_check_on_base": "failed",
+    "signal": "behavior-changed",
+    "would_block": true,
     "reasons": [
-      "a check file changed, and the base check passes on the new code"
+      "the base check fails on the new code, and the edited check fails the base code"
     ],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-23T20:42:54Z",
-  "verdict_by": "hivemindos"
+  }
 }
