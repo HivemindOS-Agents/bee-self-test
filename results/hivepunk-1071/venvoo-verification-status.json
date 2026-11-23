@@ -1,0 +1,29 @@
+{
+  "repo": "hivepunk-1071",
+  "tool": "venvoo-verification-status",
+  "result": "success",
+  "file": "self_test.py",
+  "sha": "7a9b0eab7f7e2b9b92ada4bd7358b274a8a7cc57",
+  "tree": "fca1a0d53fce271638e4ade377321788ea89cf50",
+  "check_sha256": "705a93fd882be2fe1fb9c184f84caa47c4f0685a2c07ef7907312bf42f949cee",
+  "at": "2026-11-23T14:03:27Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45190067683",
+  "tail": "ok: sample records runner pass on record\nok: sample does not claim push\nok: sample does not claim fetch-check\nok: sample does not claim GOAL hash\nok: CLI writes output\nok: CLI verdict WAIT for sample\n\nResults: 12/12 checks passed",
+  "verified_by": {
+    "kind": "runner",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45190067683",
+    "tested_sha": "7a9b0eab7f7e2b9b92ada4bd7358b274a8a7cc57",
+    "check_from": "same-change",
+    "base_sha": null,
+    "check_sha256": "705a93fd882be2fe1fb9c184f84caa47c4f0685a2c07ef7907312bf42f949cee",
+    "check_edited": null,
+    "base_check": "unavailable-new-tool",
+    "new_check_on_base": "not-run",
+    "signal": "new-check",
+    "would_block": false,
+    "reasons": [
+      "no earlier passing run to take a check from"
+    ],
+    "mode": "observe"
+  }
+}
