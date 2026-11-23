@@ -3,18 +3,18 @@
   "tool": "wizz-air-se-sas-number-check",
   "result": "success",
   "file": "self_test.py",
-  "sha": "d0dfca0b4612863a83560ee09f84184981199f7f",
-  "tree": "f813853e90af98fc815b8ab299eddc30a94cf74d",
+  "sha": "fdae79a89cdcbc4f713f187eb12692a138063718",
+  "tree": "136ac630b23a3ab40a70c0bac83a650a5eecab2b",
   "check_sha256": "ff1904ff87638bd58c3c7a62010cb8ce282abefb47f36a1601c82edc9f9da76a",
-  "at": "2026-11-22T15:04:24Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45036231769",
+  "at": "2026-11-23T00:20:43Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45088185598",
   "tail": "ok: SAS software -> UNKNOWN, not MATCH\nok: full evidence, equal number -> MATCH\nok: full evidence, differing number -> MISMATCH\nok: unknown airline -> UNKNOWN\nok: CLI writes output\nok: CLI verdict correct\n\nResults: 17/17 checks passed",
   "verified_by": {
     "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45036231769",
-    "tested_sha": "d0dfca0b4612863a83560ee09f84184981199f7f",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45088185598",
+    "tested_sha": "fdae79a89cdcbc4f713f187eb12692a138063718",
     "check_from": "base",
-    "base_sha": "7da945784453c966608a93752ab59d5537b462b8",
+    "base_sha": "d0dfca0b4612863a83560ee09f84184981199f7f",
     "check_sha256": "ff1904ff87638bd58c3c7a62010cb8ce282abefb47f36a1601c82edc9f9da76a",
     "check_edited": false,
     "base_check": "unchanged",
@@ -23,8 +23,5 @@
     "would_block": false,
     "reasons": [],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-22T15:19:40Z",
-  "verdict_by": "hivemindos"
+  }
 }
