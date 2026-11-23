@@ -3,28 +3,27 @@
   "tool": "venvoo-missing-dates",
   "result": "success",
   "file": "self_test.py",
-  "sha": "9e96ff1c0c48b0f54eb88fad135bcb6ab0ad6e5b",
-  "tree": "95dac6293871a95dba4d07d258dc2ce4f9b5106b",
-  "check_sha256": "13e7bafc7a4e4631569304e5c9c7ef7780a973a89a48b1c842c99ac45f7b47b7",
-  "at": "2026-11-23T08:45:23Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45141144637",
+  "sha": "38c36249bf250722f042f44c28c9e95c3f86d8de",
+  "tree": "8ab75a13b2974f30f17aed100ce32101327fbde3",
+  "check_sha256": "da0644916605043e7d71c9187a203dc2c62eabb19e7b9a3526cad9b207ecd152",
+  "at": "2026-11-23T10:54:07Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45160199680",
   "tail": "ok: files and invalid names ignored, not present\nok: invalid calendar line raises error\nok: CLI writes output\nok: CLI JSON missing correct\nboth --data-dir and --calendar are required\nok: CLI requires calendar\n\nResults: 14/14 checks passed",
   "verified_by": {
     "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45141144637",
-    "tested_sha": "9e96ff1c0c48b0f54eb88fad135bcb6ab0ad6e5b",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45160199680",
+    "tested_sha": "38c36249bf250722f042f44c28c9e95c3f86d8de",
     "check_from": "base",
-    "base_sha": "06528434519b7c7db02d91c256310ddc85a406b1",
-    "check_sha256": "13e7bafc7a4e4631569304e5c9c7ef7780a973a89a48b1c842c99ac45f7b47b7",
-    "check_edited": false,
-    "base_check": "unchanged",
+    "base_sha": "9e96ff1c0c48b0f54eb88fad135bcb6ab0ad6e5b",
+    "check_sha256": "da0644916605043e7d71c9187a203dc2c62eabb19e7b9a3526cad9b207ecd152",
+    "check_edited": true,
+    "base_check": "passed",
     "new_check_on_base": "not-run",
     "signal": null,
     "would_block": false,
-    "reasons": [],
+    "reasons": [
+      "a check file changed, and the base check passes on the new code"
+    ],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-23T09:00:40Z",
-  "verdict_by": "hivemindos"
+  }
 }
