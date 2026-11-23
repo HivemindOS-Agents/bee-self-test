@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-1071",
+  "bundle": "prf-1071-venvoo-missing-dates-0652843",
+  "result": "REPRODUCED",
+  "observed": "passed, 14/14",
+  "scorerCommit": "06528434519b7c7db02d91c256310ddc85a406b1",
+  "peer": "86",
+  "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
+  "at": "2026-11-23T07:15:50Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45129786989"
+}
