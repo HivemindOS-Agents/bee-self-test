@@ -1,0 +1,29 @@
+{
+  "repo": "hivepunk-1071",
+  "tool": "microcks-v2-kickoff",
+  "result": "success",
+  "file": "self_test.py",
+  "sha": "984cdc916646d31b4267ce224b30eea8775d6672",
+  "tree": "adb2f7535dff01e77f9fc32e3bab68b5f151f248",
+  "check_sha256": "a066a5b9074b4cab2fe2b267bfd5d1b959264ac263d6203c1f6bc214c565c31b",
+  "at": "2026-11-24T02:28:31Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45312611765",
+  "tail": "ok: empty goals still render section without inventing items\nok: CLI writes output\nok: CLI output matches render\nusage: python3 kickoff.py INPUT.json [--out FILE]\nINPUT.json: {issue_url, goals[], open_questions[], claims[]} - see sample_data.json\nok: CLI requires input\n\nResults: 16/16 checks passed",
+  "verified_by": {
+    "kind": "runner",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45312611765",
+    "tested_sha": "984cdc916646d31b4267ce224b30eea8775d6672",
+    "check_from": "same-change",
+    "base_sha": null,
+    "check_sha256": "a066a5b9074b4cab2fe2b267bfd5d1b959264ac263d6203c1f6bc214c565c31b",
+    "check_edited": null,
+    "base_check": "unavailable-new-tool",
+    "new_check_on_base": "not-run",
+    "signal": "new-check",
+    "would_block": false,
+    "reasons": [
+      "no earlier passing run to take a check from"
+    ],
+    "mode": "observe"
+  }
+}
