@@ -3,30 +3,27 @@
   "tool": "microcks-v2-kickoff",
   "result": "success",
   "file": "self_test.py",
-  "sha": "984cdc916646d31b4267ce224b30eea8775d6672",
-  "tree": "adb2f7535dff01e77f9fc32e3bab68b5f151f248",
-  "check_sha256": "a066a5b9074b4cab2fe2b267bfd5d1b959264ac263d6203c1f6bc214c565c31b",
-  "at": "2026-11-24T02:28:31Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45312611765",
-  "tail": "ok: empty goals still render section without inventing items\nok: CLI writes output\nok: CLI output matches render\nusage: python3 kickoff.py INPUT.json [--out FILE]\nINPUT.json: {issue_url, goals[], open_questions[], claims[]} - see sample_data.json\nok: CLI requires input\n\nResults: 16/16 checks passed",
+  "sha": "a734d365701850d581cc825e908f4b5aa846abcd",
+  "tree": "40a7f158b71c6c5bc232ece46b9d74f8db4de22d",
+  "check_sha256": "59426e987db94388243b2e49d58563c88c7d3b1baa37689ce80358e647883587",
+  "at": "2026-11-24T05:36:42Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45334486417",
+  "tail": "ok: empty goals still render section without inventing items\nok: CLI writes output\nok: CLI output matches render\nusage: python3 kickoff.py INPUT.json [--out FILE]\nINPUT.json: {issue_url, goals[], open_questions[], claims[]} - see sample_data.json\nok: CLI requires input\n\nResults: 17/17 checks passed",
   "verified_by": {
     "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45312611765",
-    "tested_sha": "984cdc916646d31b4267ce224b30eea8775d6672",
-    "check_from": "same-change",
-    "base_sha": null,
-    "check_sha256": "a066a5b9074b4cab2fe2b267bfd5d1b959264ac263d6203c1f6bc214c565c31b",
-    "check_edited": null,
-    "base_check": "unavailable-new-tool",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45334486417",
+    "tested_sha": "a734d365701850d581cc825e908f4b5aa846abcd",
+    "check_from": "base",
+    "base_sha": "984cdc916646d31b4267ce224b30eea8775d6672",
+    "check_sha256": "59426e987db94388243b2e49d58563c88c7d3b1baa37689ce80358e647883587",
+    "check_edited": true,
+    "base_check": "passed",
     "new_check_on_base": "not-run",
-    "signal": "new-check",
+    "signal": null,
     "would_block": false,
     "reasons": [
-      "no earlier passing run to take a check from"
+      "a check file changed, and the base check passes on the new code"
     ],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-24T02:43:36Z",
-  "verdict_by": "hivemindos"
+  }
 }
