@@ -3,30 +3,27 @@
   "tool": "uniswap-v4-core-release-watch",
   "result": "success",
   "file": "self_test.py",
-  "sha": "af3d170234e98fe34b944ba71db190232f9fd59f",
-  "tree": "86d9a49def054419c5b5e29dcaeaeb8de4b54827",
-  "check_sha256": "3e50d57c056b0f023cd0cf5857fcf9f709cc38c8c4607c4713a6ebf90465a254",
-  "at": "2026-11-24T03:01:37Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45316520494",
-  "tail": "PASS dataset_card.md covers: DERIVED\nPASS dataset_card.md covers: UNKNOWN\nPASS dataset_card.md covers: never zero/safe\nPASS dataset_card.md covers: Could not confirm\nPASS dataset_card.md covers: Untested\nPASS dataset_card.md states export command\nself_test: 113 check(s), 0 failed\nEXIT=0",
+  "sha": "de10b617678542a79f2cbff5f6ac3e02e3ebae2c",
+  "tree": "309f3d2b2fc1b1e2c1070fec4312af1cd86664a6",
+  "check_sha256": "b9c3171789016f35ba68a04d02e625a1b0ae2344f9d6ca89f8eb9d0f265d8cdc",
+  "at": "2026-11-24T06:24:21Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45340131816",
+  "tail": "PASS dataset_card.md covers: DERIVED\nPASS dataset_card.md covers: UNKNOWN\nPASS dataset_card.md covers: never zero/safe\nPASS dataset_card.md covers: Could not confirm\nPASS dataset_card.md covers: Untested\nPASS dataset_card.md states export command\nself_test: 130 check(s), 0 failed\nEXIT=0",
   "verified_by": {
     "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45316520494",
-    "tested_sha": "af3d170234e98fe34b944ba71db190232f9fd59f",
-    "check_from": "base",
-    "base_sha": "13f51c1e965f9ccc9052d057054e2e8729b23d35",
-    "check_sha256": "3e50d57c056b0f023cd0cf5857fcf9f709cc38c8c4607c4713a6ebf90465a254",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45340131816",
+    "tested_sha": "de10b617678542a79f2cbff5f6ac3e02e3ebae2c",
+    "check_from": "same-change",
+    "base_sha": "af3d170234e98fe34b944ba71db190232f9fd59f",
+    "check_sha256": "b9c3171789016f35ba68a04d02e625a1b0ae2344f9d6ca89f8eb9d0f265d8cdc",
     "check_edited": true,
-    "base_check": "passed",
-    "new_check_on_base": "not-run",
-    "signal": null,
-    "would_block": false,
+    "base_check": "failed",
+    "new_check_on_base": "failed",
+    "signal": "behavior-changed",
+    "would_block": true,
     "reasons": [
-      "a check file changed, and the base check passes on the new code"
+      "the base check fails on the new code, and the edited check fails the base code"
     ],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-24T03:16:38Z",
-  "verdict_by": "hivemindos"
+  }
 }
