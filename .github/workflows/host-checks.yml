@@ -36,10 +36,15 @@
 #   scripts/check_strength.py      HB-067 E: how many of 20 small fixed-seed breaks of a tool's code its own self-test
 #                                  catches; run in a job of its own with no token, on three of 547's tools (report-only)
 #
-# The fixtures are the required part: this run fails when a script stops catching its own regression cases. The live
-# reads are report-only: they say where the agents stand today, and never fail the run. One live read is the exception:
-# a Sourcify label that the code on Base does not back, on a contract HivemindOS names or a coin its market calls
-# verified, fails the run (a contract that is unlisted or could not be recomputed does not). Everything is read from
+# The fixtures are the required part: this run fails when a script stops catching its own regression cases, and
+# tests/test_security_inputs.py runs every security reader on empty, comma-only, unparseable and absent inputs (HB-136,
+# HB-137, HB-138). The live reads are report-only: they say where the agents stand today, and never fail the run, with
+# three exceptions (HB-140). A Sourcify label that the code on Base does not back, on a contract HivemindOS names or a
+# coin its market calls verified, fails the run (a contract that is unlisted or could not be recomputed does not). The
+# rule map check fails the run on any mismatch or STOP. The repair receipt check fails the run on a STOP (an empty,
+# unparseable or absent receipt, health or watchdog file, exit 2, or an agent that could not be cloned); its problems
+# stay report-only until HB-065's decide-by date in shadow.json. Those two record what failed in stops.txt and the last
+# step fails the run, so every later live read still says where the agents stand. Everything is read from
 # public files and public endpoints with no token; nothing in an agent repository is run, and this job writes nothing.
 # The one exception is check_strength, which runs three of agent 547's own self-tests: it runs them in a job of its
 # own, with no permissions and no token, each inside a temp copy of the tool's folder.
@@ -50,7 +55,7 @@ on:
     - cron: "40 6 * * *"
   push:
     branches: [main]
-    paths: ["scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "scripts/repair_receipts.py", "scripts/rule_stops.py", "scripts/kept_rules.py", "scripts/labels.py", "scripts/git_history.py", "scripts/repeat_guard.py", "scripts/rule_lifecycle.py", "scripts/done_paths.py", "scripts/link_registry.py", "scripts/check_strength.py", "scripts/compile_sweep.py", "scripts/workflow_age.py", "shadow.json", "link_registry.json", "fixtures/repair-receipts/**", "fixtures/repeat-guard/**", "fixtures/done-paths/**", "fixtures/link-registry/**", "fixtures/check-strength/**", "fixtures/source-match/**", "scripts/lift_run.py", "tests/test_lift_run.py", "lift/**/held-out.json", "lift/**/tasks.json", ".github/workflows/host-checks.yml"]
+    paths: ["scripts/security_input.py", "scripts/claim_watch.py", "scripts/check_skill_files.py", "tests/test_security_inputs.py", "fixtures/rule-map/**", "fixtures/claim-watch/**", "fixtures/skill-files/**", "scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "scripts/repair_receipts.py", "scripts/rule_stops.py", "scripts/kept_rules.py", "scripts/labels.py", "scripts/git_history.py", "scripts/repeat_guard.py", "scripts/rule_lifecycle.py", "scripts/done_paths.py", "scripts/link_registry.py", "scripts/check_strength.py", "scripts/compile_sweep.py", "scripts/workflow_age.py", "shadow.json", "link_registry.json", "fixtures/repair-receipts/**", "fixtures/repeat-guard/**", "fixtures/done-paths/**", "fixtures/link-registry/**", "fixtures/check-strength/**", "fixtures/source-match/**", "scripts/lift_run.py", "tests/test_lift_run.py", "lift/**/held-out.json", "lift/**/tasks.json", ".github/workflows/host-checks.yml"]
 permissions: {}
 jobs:
   fixtures:
@@ -63,9 +68,12 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - run: python3 -m pip install --quiet pyyaml==6.0.2
       - name: Fixtures (required)
         run: |
           set -eu
+          python3 scripts/security_input.py --self-test
+          python3 -m unittest discover -s tests -p 'test_security_inputs.py'
           python3 scripts/opportunities_48h.py --self-test
           python3 scripts/opportunities_hb060.py --self-test
           python3 scripts/health_hb062.py --self-test
@@ -115,20 +123,24 @@ jobs:
               && git -C "$RUNNER_TEMP/repos/hivepunk-${n}" sparse-checkout set proofs || echo "could not read hivepunk-${n}"
           done
           python3 scripts/first_pass_replay.py "$RUNNER_TEMP"/repos/hivepunk-* || echo "report-only, exit $?"
-      - name: Live, HB-065 repair receipts, escalation receivers and where failures went (report-only)
+      - name: Live, HB-065 repair receipts, escalation receivers and where failures went (a STOP fails the run; problems report-only until 2026-11-28)
         run: |
           mkdir -p "$RUNNER_TEMP/receipts"
           for n in 547 632 667 1071 86; do
             git clone --quiet --filter=blob:none --sparse "https://github.com/${GITHUB_REPOSITORY_OWNER}/hivepunk-${n}.git" "$RUNNER_TEMP/receipts/hivepunk-${n}" \
-              && git -C "$RUNNER_TEMP/receipts/hivepunk-${n}" sparse-checkout set repairs watchdog || echo "could not read hivepunk-${n}"
+              && git -C "$RUNNER_TEMP/receipts/hivepunk-${n}" sparse-checkout set repairs watchdog \
+              || echo "HB-065 repair receipts: STOP empty_security_setting: hivepunk-${n} could not be cloned" | tee -a "$RUNNER_TEMP/stops.txt"
           done
-          python3 scripts/repair_receipts.py "$RUNNER_TEMP"/receipts/hivepunk-* || echo "report-only, exit $?"
+          code=0
+          python3 scripts/repair_receipts.py "$RUNNER_TEMP"/receipts/hivepunk-* || code=$?
+          if [ "$code" = "2" ]; then echo "HB-065 repair receipts: a file stopped the run (exit 2, STOP lines above)" >> "$RUNNER_TEMP/stops.txt"; fi
+          echo "exit $code (2 fails the run at its last step; 1 is report-only until HB-065's decide-by date, 2026-11-28 in shadow.json)"
       - name: Live, HB-061 kept rules against the judgement files they cite, and honest-failure rows (report-only)
         run: |
           python3 scripts/kept_rules.py "$RUNNER_TEMP"/receipts/hivepunk-* || echo "report-only, exit $?"
-      - name: Live, HB-063 rule map against AUTONOMY.md, and the five agents' copies (report-only)
+      - name: Live, HB-063 rule map against AUTONOMY.md both ways, and the five agents' copies (fails the run at its last step)
         run: |
-          python3 scripts/rule_map_check.py --agents 547 632 667 1071 86 || echo "report-only, exit $?"
+          python3 scripts/rule_map_check.py --agents 547 632 667 1071 86 || echo "HB-063 rule map: exit $? (1 a mismatch, 2 a STOP)" | tee -a "$RUNNER_TEMP/stops.txt"
       - name: Live, HB-067 B and HB-068 repeats keyed on their cause, and writes that never landed, from each agent repository's whole history (shadow, report-only)
         run: |
           for d in "$RUNNER_TEMP"/history/hivepunk-*; do
@@ -165,6 +177,11 @@ jobs:
           python3 scripts/source_match.py || code=$?
           if [ "$code" = "2" ]; then echo "a Sourcify label is not backed by the code on Base"; exit 1; fi
           echo "exit $code (1 is report-only, something unlisted or not recomputable)"
+      - name: The security steps above that stopped or did not match fail the run (HB-140)
+        if: ${{ !cancelled() }}
+        run: |
+          if [ -s "$RUNNER_TEMP/stops.txt" ]; then cat "$RUNNER_TEMP/stops.txt"; exit 1; fi
+          echo "the rule map matched, and no receipt, health or watchdog file stopped the run"
   check-strength:
     runs-on: ubuntu-latest
     timeout-minutes: 15

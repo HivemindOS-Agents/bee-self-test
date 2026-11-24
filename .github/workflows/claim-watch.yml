@@ -8,9 +8,12 @@
 # registry sample is picked again from its seed, HivemindOS's own paid endpoints are asked again with no payment, and
 # each pinned skill's packages are looked up again; the Bazaar's sample is not picked again (its pages move).
 #
-# The fixtures are required. The replay is report-only: a source that moved since the file was written is CHANGED, and
-# that is the world, not a fault. Everything is read from public files with no token; nothing in any repository is run,
-# and this job writes nothing.
+# The fixtures are required. A STOP fails the run (HB-136, HB-140): an index or day file that is absent, empty or does
+# not parse, a day file that is not the bytes its sha256 names or says a finding or a sensitive outcome in public (exit
+# 2), and the coverage check on the newest day. The replay's other verdicts are report-only: a source that moved since
+# the file was written is CHANGED, and the Bazaar's sample is UNABLE every day by design; that is the world, not a
+# fault. Everything is read from public files with no token; nothing in any repository is run, and this job writes
+# nothing.
 name: claim-watch
 on:
   workflow_dispatch:
@@ -18,7 +21,7 @@ on:
     - cron: "10 7 * * *"
   push:
     branches: [main]
-    paths: ["scripts/claim_watch.py", ".github/workflows/claim-watch.yml"]
+    paths: ["scripts/claim_watch.py", "scripts/security_input.py", "tests/test_security_inputs.py", "fixtures/claim-watch/**", ".github/workflows/claim-watch.yml"]
 permissions: {}
 jobs:
   replay:
@@ -31,18 +34,26 @@ jobs:
         with:
           persist-credentials: false
       - name: Fixtures (required)
-        run: python3 scripts/claim_watch.py --self-test
-      - name: Replay the newest day file (report-only)
+        run: |
+          set -eu
+          python3 scripts/claim_watch.py --self-test
+          python3 scripts/security_input.py --self-test
+          python3 -m unittest discover -s tests -p 'test_security_inputs.py' -k ClaimWatch
+      - name: Replay the newest day file (a STOP and the coverage check fail the run; other verdicts report-only)
         env:
           # Only for the advisory family's queries to GitHub's public advisories (its rate limit). It writes nothing.
           GH_TOKEN: ${{ github.token }}
         run: |
           set +e
           base="https://raw.githubusercontent.com/${GITHUB_REPOSITORY_OWNER}/bee-scouts/main/watch"
-          if ! curl -fsS "$base/index.json" -o "$RUNNER_TEMP/index.json"; then echo "no day file is published yet"; exit 0; fi
-          newest=$(python3 -c 'import json,sys; d=json.load(open(sys.argv[1]))["days"][0]; print(d["day"], d["sha256"])' "$RUNNER_TEMP/index.json")
+          # Day files are published every day since 21 Nov 2026: an index or day file that cannot be read is a STOP.
+          if ! curl -fsS "$base/index.json" -o "$RUNNER_TEMP/index.json"; then echo "STOP empty_security_setting: watch/index.json: absent: could not be read"; exit 2; fi
+          newest=$(python3 scripts/claim_watch.py --newest "$RUNNER_TEMP/index.json") || exit 2
           set -- $newest
           echo "newest day file: $1, sha256 $2"
-          if ! curl -fsS "$base/$1.jsonl" -o "$RUNNER_TEMP/$1.jsonl"; then echo "the day file $1 could not be read"; exit 0; fi
-          python3 scripts/claim_watch.py --replay "$RUNNER_TEMP/$1.jsonl" "$2" || echo "report-only, exit $?"
-          python3 scripts/claim_watch.py --coverage "$RUNNER_TEMP/$1.jsonl" || echo "report-only, exit $?"
+          if ! curl -fsS "$base/$1.jsonl" -o "$RUNNER_TEMP/$1.jsonl"; then echo "STOP empty_security_setting: watch/$1.jsonl: absent: could not be read"; exit 2; fi
+          code=0
+          python3 scripts/claim_watch.py --replay "$RUNNER_TEMP/$1.jsonl" "$2" || code=$?
+          if [ "$code" = "2" ]; then exit 2; fi
+          echo "replay exit $code (1 is report-only: CHANGED, GONE or UNABLE is the world moving, not a fault)"
+          python3 scripts/claim_watch.py --coverage "$RUNNER_TEMP/$1.jsonl" || exit $?

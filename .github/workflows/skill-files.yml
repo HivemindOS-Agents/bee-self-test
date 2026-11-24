@@ -2,7 +2,9 @@
 # GitHub and an agent's skill loader read it, and records the result in results/skill-files.json (Based Elnen,
 # 2026-11-12, living spec L46: 17 pinned-copy files failed with "mapping values are not allowed in this context").
 # The regression case runs first: fixtures/skill-files/broken/SKILL.md, the shape that failed, must be caught, and the
-# quoted form the agents service writes since 2026-11-13 must pass; if the check stops catching it, this fails.
+# quoted form the agents service writes since 2026-11-13 must pass; if the check stops catching it, this fails. Zero is
+# not clean (HB-138): a skills/<slug>/ folder with no SKILL.md is a bad file, a scan root holding no skill folder stops
+# the run (exit 2) with nothing recorded, and an agent repository that could not be cloned fails the fetch.
 #
 # Nothing in an agent repository is run: its SKILL.md files are only read and parsed (yaml.safe_load). The scan job
 # has read access only; the record job writes results/ and runs no repository content.
@@ -13,7 +15,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["scripts/check_skill_files.py", "fixtures/skill-files/**", ".github/workflows/skill-files.yml"]
+    paths: ["scripts/check_skill_files.py", "scripts/security_input.py", "tests/test_security_inputs.py", "fixtures/skill-files/**", ".github/workflows/skill-files.yml"]
 permissions: {}
 jobs:
   scan:
@@ -27,7 +29,10 @@ jobs:
       - uses: actions/checkout@v4
       - run: python3 -m pip install --quiet pyyaml==6.0.2
       - name: The regression case
-        run: python3 scripts/check_skill_files.py --fixtures fixtures/skill-files
+        run: |
+          set -eu
+          python3 scripts/check_skill_files.py --fixtures fixtures/skill-files
+          python3 -m unittest discover -s tests -p 'test_security_inputs.py' -k SkillFiles
       - name: Fetch every agent repository's skills/
         env:
           GH_TOKEN: ${{ github.token }}
@@ -37,8 +42,9 @@ jobs:
           gh api --paginate "orgs/${GITHUB_REPOSITORY_OWNER}/repos?per_page=100" --jq '.[] | select(.archived | not) | .name' \
             | grep -E '^(hivepunk|agent)-[A-Za-z0-9._-]{1,90}$' | while read -r repo; do
             git clone --quiet --depth 1 --filter=blob:none --sparse "https://github.com/${GITHUB_REPOSITORY_OWNER}/${repo}.git" "$RUNNER_TEMP/repos/${repo}" \
-              && git -C "$RUNNER_TEMP/repos/${repo}" sparse-checkout set skills || echo "could not read ${repo}"
+              && git -C "$RUNNER_TEMP/repos/${repo}" sparse-checkout set skills || echo "${repo}" >> "$RUNNER_TEMP/unread.txt"
           done
+          if [ -s "$RUNNER_TEMP/unread.txt" ]; then echo "STOP empty_security_setting: could not be cloned: $(tr '\n' ' ' < "$RUNNER_TEMP/unread.txt")"; exit 2; fi
       - id: scan
         name: Read every SKILL.md
         run: |
@@ -46,7 +52,10 @@ jobs:
           python3 scripts/check_skill_files.py "$RUNNER_TEMP/repos" > "$RUNNER_TEMP/report.json"
           status=$?
           cat "$RUNNER_TEMP/report.json"
-          { echo 'report<<HIVE_SKILL_FILES_END'; head -c 60000 "$RUNNER_TEMP/report.json"; echo; echo 'HIVE_SKILL_FILES_END'; } >> "$GITHUB_OUTPUT"
+          # A STOP prints no report, so nothing is recorded as "0 read, 0 bad".
+          if [ -s "$RUNNER_TEMP/report.json" ]; then
+            { echo 'report<<HIVE_SKILL_FILES_END'; head -c 60000 "$RUNNER_TEMP/report.json"; echo; echo 'HIVE_SKILL_FILES_END'; } >> "$GITHUB_OUTPUT"
+          fi
           exit $status
   record:
     needs: scan
