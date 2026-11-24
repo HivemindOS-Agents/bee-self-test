@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-547",
+  "bundle": "prf-547-uniswap-v4-upgrade-watch-f8e7905",
+  "result": "REPRODUCED",
+  "observed": "passed, no count line",
+  "scorerCommit": "f8e79056398e49d605f40546d311d3f8cc11fd73",
+  "peer": "86",
+  "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
+  "at": "2026-11-24T14:33:01Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45415283879"
+}
