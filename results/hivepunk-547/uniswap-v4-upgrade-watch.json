@@ -3,30 +3,27 @@
   "tool": "uniswap-v4-upgrade-watch",
   "result": "success",
   "file": "self_test.py",
-  "sha": "788c562bedb53fd3d7e1d541bc8b61dc5b8893b2",
-  "tree": "fc78c83ae0889c01b8cd2cc76394344b83a5f110",
-  "check_sha256": "3cc7b22c89905aceebd30ee984842007ed8e3f1de8031fece964d173585a6320",
-  "at": "2026-11-23T21:51:24Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45273816551",
+  "sha": "90d20f59f0374dd8a6fad9bf10501139f7ea6fe4",
+  "tree": "284a4b5b883b0f69a4a67b5de3754294626678f5",
+  "check_sha256": "8ad1cb9b6d5f2027edb5d4c9d67f8b0c9a484c0a7b1dbda74e2c4c394d49e355",
+  "at": "2026-11-24T07:21:00Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45347241694",
   "tail": "seed_row.json: verified UNKNOWN, unverified v4.0.0/2025-01-23 separate, sources present\nREADME has caveats first, untested marks, command, UNKNOWN honesty\nARTIFACTS.md records artifacts, command, verification slot, NOT confirmed, commit note, left-for-owner\nself-test: all checks passed",
   "verified_by": {
     "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45273816551",
-    "tested_sha": "788c562bedb53fd3d7e1d541bc8b61dc5b8893b2",
-    "check_from": "base",
-    "base_sha": "4e167a2efdbad5c2855599450d40d5544f2a5468",
-    "check_sha256": "3cc7b22c89905aceebd30ee984842007ed8e3f1de8031fece964d173585a6320",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45347241694",
+    "tested_sha": "90d20f59f0374dd8a6fad9bf10501139f7ea6fe4",
+    "check_from": "same-change",
+    "base_sha": "788c562bedb53fd3d7e1d541bc8b61dc5b8893b2",
+    "check_sha256": "8ad1cb9b6d5f2027edb5d4c9d67f8b0c9a484c0a7b1dbda74e2c4c394d49e355",
     "check_edited": true,
-    "base_check": "passed",
-    "new_check_on_base": "not-run",
-    "signal": null,
-    "would_block": false,
+    "base_check": "failed",
+    "new_check_on_base": "failed",
+    "signal": "behavior-changed",
+    "would_block": true,
     "reasons": [
-      "a check file changed, and the base check passes on the new code"
+      "the base check fails on the new code, and the edited check fails the base code"
     ],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-23T22:06:26Z",
-  "verdict_by": "hivemindos"
+  }
 }
