@@ -3,18 +3,18 @@
   "tool": "uniswap-v4-upgrade-watch",
   "result": "success",
   "file": "self_test.py",
-  "sha": "9458c731d3e24e6bfc25c894f5c095dfe00bb6a5",
-  "tree": "bd15ebeffb07f5db93b34caabbc9174ad8fb5e68",
+  "sha": "f8e79056398e49d605f40546d311d3f8cc11fd73",
+  "tree": "b8b782a576fa6b70e75f4ded1449627101f368be",
   "check_sha256": "8ad1cb9b6d5f2027edb5d4c9d67f8b0c9a484c0a7b1dbda74e2c4c394d49e355",
-  "at": "2026-11-24T10:33:13Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45375829031",
+  "at": "2026-11-24T13:43:28Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45406337469",
   "tail": "seed_row.json: verified UNKNOWN, unverified v4.0.0/2025-01-23 separate, sources present\nREADME has caveats first, untested marks, command, UNKNOWN honesty\nARTIFACTS.md records artifacts, command, verification slot, NOT confirmed, commit note, left-for-owner\nself-test: all checks passed",
   "verified_by": {
     "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45375829031",
-    "tested_sha": "9458c731d3e24e6bfc25c894f5c095dfe00bb6a5",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45406337469",
+    "tested_sha": "f8e79056398e49d605f40546d311d3f8cc11fd73",
     "check_from": "base",
-    "base_sha": "90d20f59f0374dd8a6fad9bf10501139f7ea6fe4",
+    "base_sha": "9458c731d3e24e6bfc25c894f5c095dfe00bb6a5",
     "check_sha256": "8ad1cb9b6d5f2027edb5d4c9d67f8b0c9a484c0a7b1dbda74e2c4c394d49e355",
     "check_edited": false,
     "base_check": "unchanged",
@@ -23,8 +23,5 @@
     "would_block": false,
     "reasons": [],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-24T10:48:33Z",
-  "verdict_by": "hivemindos"
+  }
 }
