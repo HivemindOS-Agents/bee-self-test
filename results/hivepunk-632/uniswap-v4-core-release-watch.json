@@ -3,19 +3,19 @@
   "tool": "uniswap-v4-core-release-watch",
   "result": "success",
   "file": "self_test.py",
-  "sha": "d30e749f3a3a647e2fb2073120540ca51a0a9ef9",
-  "tree": "927316ff9f14153a6634c4d56fb4105dd30ed15c",
-  "check_sha256": "bf9d8087bcb0eef427468790f3e82704a972650c19977125b97e4ccc20af3652",
-  "at": "2026-11-24T09:30:49Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45365852692",
-  "tail": "PASS dataset_card.md covers: Could not confirm\nPASS dataset_card.md covers: Untested\nPASS dataset_card.md states export command\nPASS dataset_card.md gives the Hugging Face dataset URL\nPASS dataset_card.md shows load_dataset example\nPASS dataset_card.md names the exported rows file\nself_test: 140 check(s), 0 failed\nEXIT=0",
+  "sha": "e4e7b15995220476b248e9ac3bae6998833bb0e6",
+  "tree": "60bd39a5e66e68e42f008522ecf0021bf7c4ef47",
+  "check_sha256": "78b926b16e82fa2cf392d3a15a31377f29b8663909506f40ad39f52f4476b96b",
+  "at": "2026-11-24T12:38:39Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45395432082",
+  "tail": "PASS dataset_rows.jsonl labels and UNKNOWN=null (never 0)\nPASS dataset_card.md source https://github.com/Uniswap/v4-core cited\nPASS dataset_card.md verify command present: python3 verify.py\npublish_check: 0 problem(s)\nEXIT=0\nPASS publish_check main with args returns 0\nself_test: 91 check(s), 0 failed\nEXIT=0",
   "verified_by": {
     "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45365852692",
-    "tested_sha": "d30e749f3a3a647e2fb2073120540ca51a0a9ef9",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45395432082",
+    "tested_sha": "e4e7b15995220476b248e9ac3bae6998833bb0e6",
     "check_from": "base",
-    "base_sha": "de10b617678542a79f2cbff5f6ac3e02e3ebae2c",
-    "check_sha256": "bf9d8087bcb0eef427468790f3e82704a972650c19977125b97e4ccc20af3652",
+    "base_sha": "d30e749f3a3a647e2fb2073120540ca51a0a9ef9",
+    "check_sha256": "78b926b16e82fa2cf392d3a15a31377f29b8663909506f40ad39f52f4476b96b",
     "check_edited": true,
     "base_check": "passed",
     "new_check_on_base": "not-run",
@@ -25,8 +25,5 @@
       "a check file changed, and the base check passes on the new code"
     ],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-24T09:46:01Z",
-  "verdict_by": "hivemindos"
+  }
 }
