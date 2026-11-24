@@ -3,30 +3,27 @@
   "tool": "uniswap-v4-core-release-watch",
   "result": "success",
   "file": "self_test.py",
-  "sha": "13f51c1e965f9ccc9052d057054e2e8729b23d35",
-  "tree": "1abd8566c7d7b493bd7e0b96f2e5af8a16cde4d9",
-  "check_sha256": "fa563de51c0a15795eaca01f4cb91646425053823cc289673f049848cfdf1b35",
-  "at": "2026-11-23T23:36:43Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45290256691",
-  "tail": "Latest Uniswap/v4-core release tag: UNKNOWN (not fetched) [UNKNOWN]\nPublished date: UNKNOWN (not fetched) [UNKNOWN]\nSource: https://api.github.com/repos/Uniswap/v4-core/releases/latest\nHeadline numbers: asset_count=None, total_asset_downloads=None (both UNKNOWN until fetched; never read as zero).\nStatus: DRAFT ONLY - do not post automatically; a person decides.\nPASS renderer --draft-only main returns 0\nself_test: 89 check(s), 0 failed\nEXIT=0",
+  "sha": "af3d170234e98fe34b944ba71db190232f9fd59f",
+  "tree": "86d9a49def054419c5b5e29dcaeaeb8de4b54827",
+  "check_sha256": "3e50d57c056b0f023cd0cf5857fcf9f709cc38c8c4607c4713a6ebf90465a254",
+  "at": "2026-11-24T03:01:37Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45316520494",
+  "tail": "PASS dataset_card.md covers: DERIVED\nPASS dataset_card.md covers: UNKNOWN\nPASS dataset_card.md covers: never zero/safe\nPASS dataset_card.md covers: Could not confirm\nPASS dataset_card.md covers: Untested\nPASS dataset_card.md states export command\nself_test: 113 check(s), 0 failed\nEXIT=0",
   "verified_by": {
     "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45290256691",
-    "tested_sha": "13f51c1e965f9ccc9052d057054e2e8729b23d35",
-    "check_from": "same-change",
-    "base_sha": "34f1abe902b1a53d80ff27280a5f56dff435043a",
-    "check_sha256": "fa563de51c0a15795eaca01f4cb91646425053823cc289673f049848cfdf1b35",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45316520494",
+    "tested_sha": "af3d170234e98fe34b944ba71db190232f9fd59f",
+    "check_from": "base",
+    "base_sha": "13f51c1e965f9ccc9052d057054e2e8729b23d35",
+    "check_sha256": "3e50d57c056b0f023cd0cf5857fcf9f709cc38c8c4607c4713a6ebf90465a254",
     "check_edited": true,
-    "base_check": "failed",
-    "new_check_on_base": "failed",
-    "signal": "behavior-changed",
-    "would_block": true,
+    "base_check": "passed",
+    "new_check_on_base": "not-run",
+    "signal": null,
+    "would_block": false,
     "reasons": [
-      "the base check fails on the new code, and the edited check fails the base code"
+      "a check file changed, and the base check passes on the new code"
     ],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-23T23:51:33Z",
-  "verdict_by": "hivemindos"
+  }
 }
