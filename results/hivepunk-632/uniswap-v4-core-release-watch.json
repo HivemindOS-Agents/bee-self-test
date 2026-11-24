@@ -1,32 +1,29 @@
 {
   "repo": "hivepunk-632",
   "tool": "uniswap-v4-core-release-watch",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "85c0b78bd4405e55d171fedc4427ebac4b97ca03",
-  "tree": "abd899cc564bb8e61d8736f81ed1298fc8d532d0",
-  "check_sha256": "b0155885f82aad23dc9ea42e941b0801df55df88b5b908e82a8f06afde3045ba",
-  "at": "2026-11-24T15:48:35Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45429707927",
-  "tail": "PASS dataset_rows.jsonl labels and UNKNOWN=null (never 0)\nPASS dataset_card.md source https://github.com/Uniswap/v4-core cited\nPASS dataset_card.md verify command present: python3 verify.py\npublish_check: 0 problem(s)\nEXIT=0\nPASS publish_check main with args returns 0\nself_test: 102 check(s), 0 failed\nEXIT=0",
+  "sha": "13f50a5aa3050b6dc60b60a398cf279a321fd615",
+  "tree": "9228a269c5ff690fa3f37ca9cc92d58cb2fc29e4",
+  "check_sha256": "1be81387f4966d8c43de0b9321168ff865c51caa859bb77e66804b14abf207dc",
+  "at": "2026-11-24T22:08:28Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45497974097",
+  "tail": "FAIL check_row accepts a filled FACT row: [\"field days_since has no FACT/UNKNOWN label (got 'DERIVED')\"]\nPASS publish_check rejects UNKNOWN non-null value\nPASS publish_check rejects empty rows\nPASS publish_check accepts committed dataset_card.md\nPASS publish_check rejects card missing source repo\nPASS publish_check rejects card missing verify command\nPASS publish_check rejects empty card\nself_test: 105 check(s), 1 failed\nEXIT=1",
   "verified_by": {
-    "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45429707927",
-    "tested_sha": "85c0b78bd4405e55d171fedc4427ebac4b97ca03",
-    "check_from": "base",
-    "base_sha": "e4e7b15995220476b248e9ac3bae6998833bb0e6",
-    "check_sha256": "b0155885f82aad23dc9ea42e941b0801df55df88b5b908e82a8f06afde3045ba",
+    "kind": "none",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45497974097",
+    "tested_sha": "13f50a5aa3050b6dc60b60a398cf279a321fd615",
+    "check_from": "none",
+    "base_sha": "85c0b78bd4405e55d171fedc4427ebac4b97ca03",
+    "check_sha256": "1be81387f4966d8c43de0b9321168ff865c51caa859bb77e66804b14abf207dc",
     "check_edited": true,
-    "base_check": "passed",
+    "base_check": "not-run",
     "new_check_on_base": "not-run",
     "signal": null,
     "would_block": false,
     "reasons": [
-      "a check file changed, and the base check passes on the new code"
+      "the run did not pass"
     ],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-24T16:03:33Z",
-  "verdict_by": "hivemindos"
+  }
 }
