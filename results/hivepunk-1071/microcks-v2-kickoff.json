@@ -3,30 +3,25 @@
   "tool": "microcks-v2-kickoff",
   "result": "success",
   "file": "self_test.py",
-  "sha": "51fcc26aadab954ff1b82f05b429f7900bb52db7",
-  "tree": "e26b1f239022aaac9e7b92116fa3b70d4cfed82c",
+  "sha": "fe1ff2b5436ba3477e4bf6bd78ef171dd1aeeda5",
+  "tree": "8d24b1fa50d52cdab7013ae7438e9f26d0282108",
   "check_sha256": "83b98f4b78e9324e57f432ecd1d49025e487415f50f08ba85e0c0f96339f633e",
-  "at": "2026-11-24T08:43:39Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45358578138",
+  "at": "2026-11-24T11:52:50Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45388184137",
   "tail": "ok: empty goals still render section without inventing items\nok: CLI writes output\nok: CLI output matches render\nusage: python3 kickoff.py INPUT.json [--out FILE]\nINPUT.json: {issue_url, goals[], open_questions[], claims[]} - see sample_data.json\nok: CLI requires input\n\nResults: 19/19 checks passed",
   "verified_by": {
     "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45358578138",
-    "tested_sha": "51fcc26aadab954ff1b82f05b429f7900bb52db7",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45388184137",
+    "tested_sha": "fe1ff2b5436ba3477e4bf6bd78ef171dd1aeeda5",
     "check_from": "base",
-    "base_sha": "a734d365701850d581cc825e908f4b5aa846abcd",
+    "base_sha": "51fcc26aadab954ff1b82f05b429f7900bb52db7",
     "check_sha256": "83b98f4b78e9324e57f432ecd1d49025e487415f50f08ba85e0c0f96339f633e",
-    "check_edited": true,
-    "base_check": "passed",
+    "check_edited": false,
+    "base_check": "unchanged",
     "new_check_on_base": "not-run",
     "signal": null,
     "would_block": false,
-    "reasons": [
-      "a check file changed, and the base check passes on the new code"
-    ],
+    "reasons": [],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-24T08:58:30Z",
-  "verdict_by": "hivemindos"
+  }
 }
