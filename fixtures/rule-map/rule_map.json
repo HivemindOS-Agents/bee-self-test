@@ -1,0 +1,52 @@
+{
+  "v": 1,
+  "checked": "2026-11-21",
+  "counts": {
+    "coded": 4,
+    "partly": 1,
+    "prose": 1
+  },
+  "rules": [
+    {
+      "id": "R1",
+      "text": "Only a clean public artifact counts.",
+      "status": "coded",
+      "check": "beeFrozenState",
+      "evidence": "A target counts only when its page answers with every file."
+    },
+    {
+      "id": "R2",
+      "text": "Finish before new.",
+      "status": "partly",
+      "check": "the finish gate",
+      "evidence": "A plan for other work is refused while a repair is open."
+    },
+    {
+      "id": "R3",
+      "text": "Every action carries a why.",
+      "status": "prose",
+      "evidence": "A step with no why is not refused."
+    },
+    {
+      "id": "preflight:deny",
+      "text": "A call on the never list is stopped.",
+      "status": "coded",
+      "check": "agentPreflight",
+      "evidence": "Checked in code before the call goes out."
+    },
+    {
+      "id": "preflight:repo-scope",
+      "text": "Its own writes go only to tools/<tool>/.",
+      "status": "coded",
+      "check": "agentPreflight",
+      "evidence": "Checked in code before the call goes out."
+    },
+    {
+      "id": "guard:sibling-folder",
+      "text": "A new version is a commit to its own folder.",
+      "status": "coded",
+      "check": "agentOppSiblingOf",
+      "evidence": "Refused before anything is written."
+    }
+  ]
+}

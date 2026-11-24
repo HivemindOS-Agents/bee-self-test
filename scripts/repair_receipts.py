@@ -9,6 +9,7 @@ nothing in an agent repository is run.
     python3 scripts/repair_receipts.py --self-test          # the fixtures only, no network
     python3 scripts/repair_receipts.py DIR...               # clones of hivepunk-<n> (their repairs/, LESSONS.md and
                                                             # watchdog/ are read; health/<n>.json is read live)
+    python3 scripts/repair_receipts.py DIR... --health HDIR # the same, with health/<n>.json read from HDIR/<n>.json
 
 A receipt must:
   R1  say how it ended as one of fixed-verified, outcome-verified, outcome-unverified, administrative
@@ -37,7 +38,15 @@ LESSONS.md, once the host writes them: every failure line ends "Went to: <bucket
 The watchdog (report-only, as the watchdog is): a finding with severity "repair" older than 24 hours whose subject
 has no repair, and a D22 finding (a claimed file not committed) on a tool whose repair is RELEASED.
 
-Exit 0 when nothing is wrong, 1 when something is, 2 when a file could not be read.
+Every file read here is a security setting (HB-136, HB-138; scripts/security_input.py). A receipt, recheck, health
+file or watchdog/latest.json that is empty, only commas or whitespace, or does not parse to its shape STOPs with
+empty_security_setting or unparseable_security_setting; so does a latest.json with no `findings` key, a health file
+with no `repairs` list, and an absent latest.json or health file, which have no default. A STOP names its file and the
+rest of that agent's report is kept, with the file under `stops`. Two inputs have a documented default when absent,
+and say `default_used` and list themselves under `unread`: repairs/ (the host writes a receipt only when a repair
+ends) and LESSONS.md (above: "once the host writes them").
+
+Exit 0 when nothing is wrong, 1 when something is, 2 when a file stopped the run or could not be read.
 """
 import datetime
 import json
@@ -49,6 +58,7 @@ import urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import labels  # noqa: E402
+import security_input as si  # noqa: E402
 
 RAW = "https://raw.githubusercontent.com/HivemindOS-Agents/bee-scouts/main/health/{n}.json"
 CLOSE_KINDS = ("fixed-verified", "outcome-verified", "outcome-unverified", "administrative")
@@ -205,19 +215,71 @@ def commits_of(repo, path):
         return None
 
 
-def read_live(n):
-    with urllib.request.urlopen(urllib.request.Request(RAW.format(n=n), headers={"User-Agent": "bee-self-test"}), timeout=30) as response:
-        return json.load(response)
+def read_health(n, health_dir=None):
+    """bee-scouts/health/<n>.json, live or from a local folder. It has no default: absent or unread is a STOP."""
+    source = f"health/{n}.json"
+    if health_dir:
+        health = si.read_json(os.path.join(health_dir, f"{n}.json"), source)
+    else:
+        try:
+            with urllib.request.urlopen(urllib.request.Request(RAW.format(n=n), headers={"User-Agent": "bee-self-test"}), timeout=30) as response:
+                text = response.read().decode("utf-8", "replace")
+        except (OSError, ValueError) as error:
+            raise si.Stop(si.EMPTY, source, f"absent: could not be fetched ({error})")
+        health = si.parse_json(source, text)
+    repairs = si.field(source, health, "repairs", list, nonempty=False)
+    for key, rows in (("repairs", repairs), ("policySkips", health.get("policySkips") or [])):
+        if not isinstance(rows, list) or not all(isinstance(r, dict) for r in rows):
+            raise si.Stop(si.UNPARSEABLE, source, f"`{key}` is not a list of objects")
+    return health
+
+
+def read_watchdog(repo):
+    """watchdog/latest.json's findings. No default: an absent file or a missing `findings` key is a STOP, never
+    "no findings"; an empty list is the watchdog saying it found nothing."""
+    source = "watchdog/latest.json"
+    findings = si.field(source, si.read_json(os.path.join(repo, "watchdog", "latest.json"), source), "findings", list, nonempty=False)
+    if not all(isinstance(f, dict) for f in findings):
+        raise si.Stop(si.UNPARSEABLE, source, "a finding is not an object")
+    return findings
+
+
+def read_record(folder, name, kind):
+    """One receipt or recheck: a JSON object whose parts the checks read are objects."""
+    source = f"repairs/{name}"
+    r = si.read_json(os.path.join(folder, name), source)
+    parts = ("close", "verification", "fix") if kind == "receipt" else ()
+    for key in parts:
+        if key in r and not isinstance(r[key], dict):
+            raise si.Stop(si.UNPARSEABLE, source, f"`{key}` is not an object")
+    for key in ("source", "escalation") if kind == "receipt" else ():
+        if r.get(key) is not None and not isinstance(r[key], dict):
+            raise si.Stop(si.UNPARSEABLE, source, f"`{key}` is not an object")
+    return r
+
+
+def stopped(report, stop):
+    """A STOP said with its agent, and kept in that agent's report; the rest of the report goes on."""
+    print(f"hivepunk-{report.get('agent', '?')}: {stop.line()}", file=sys.stderr)
+    report.setdefault("stops", []).append(stop.as_dict())
 
 
 def read_receipts(repo, now, report):
     """Its repairs/ folder. This check owns the receipts (<repair>--e<k>.json) and their rechecks; an honest-failure row
     (<repair>--e<k>.honest-failure.json) is kept_rules.py's, and is left to it."""
     folder, receipts = os.path.join(repo, "repairs"), {}
-    for name in sorted(os.listdir(folder)) if os.path.isdir(folder) else []:
+    if not os.path.isdir(folder):
+        report.setdefault("unread", []).append("repairs/")
+        si.default_used(f"{os.path.basename(os.path.normpath(repo))} repairs/", "absent: no repair of this agent has ended, so no receipt is written yet")
+        return report
+    for name in sorted(os.listdir(folder)):
         if not name.endswith(".json") or name.endswith((".recheck.json", ".honest-failure.json")):
             continue
-        r = json.load(open(os.path.join(folder, name)))
+        try:
+            r = read_record(folder, name, "receipt")
+        except si.Stop as stop:
+            stopped(report, stop)
+            continue
         receipts[name[:-5]] = r
         report["receipts"] += 1
         report["byCloseKind"][r.get("close", {}).get("kind")] = report["byCloseKind"].get(r.get("close", {}).get("kind"), 0) + 1
@@ -229,39 +291,62 @@ def read_receipts(repo, now, report):
             report["problems"].append(f"{name}: R8 written {written} times; a receipt is never edited")
         if "recheckDue" in r and ts(r["recheckDue"]) <= now and not os.path.exists(os.path.join(folder, name[:-5] + ".recheck.json")):
             report["rechecks"]["due"] += 1
-    for name in sorted(os.listdir(folder)) if os.path.isdir(folder) else []:
+    for name in sorted(os.listdir(folder)):
         if not name.endswith(".recheck.json"):
             continue
-        c = json.load(open(os.path.join(folder, name)))
+        try:
+            c = read_record(folder, name, "recheck")
+        except si.Stop as stop:
+            stopped(report, stop)
+            continue
         report["rechecks"][c.get("verdict")] = report["rechecks"].get(c.get("verdict"), 0) + 1
         report["problems"] += [f"{name}: {p}" for p in recheck_problems(c, receipts.get(name[:-len(".recheck.json")]))]
     return report
 
 
-def check_agent(repo, now):
-    """One agent's clone: its receipts and rechecks, its LESSONS lines, its health file (live) and its watchdog."""
+def check_agent(repo, now, health_dir=None):
+    """One agent's clone: its receipts and rechecks, its LESSONS lines, its health file (live, or from health_dir) and its
+    watchdog. A file that STOPs is listed under `stops` and the rest of the report is still worked out."""
     n = re.sub(r"^hivepunk-", "", os.path.basename(os.path.normpath(repo)))
     report = {"agent": n, "receipts": 0, "byCloseKind": {k: 0 for k in CLOSE_KINDS}, "rechecks": {"held": 0, "recurred": 0, "due": 0},
-              "lessons": {"lines": 0, "byBucket": {}, "unrouted": []}, "problems": [], "watchdog": {"noRepair": [], "contradictions": []}}
+              "lessons": {"lines": 0, "byBucket": {}, "unrouted": []}, "problems": [], "watchdog": {"noRepair": [], "contradictions": []},
+              "stops": [], "unread": []}
     read_receipts(repo, now, report)
-    failures = []
-    if os.path.exists(os.path.join(repo, "LESSONS.md")):
-        failures = lessons(open(os.path.join(repo, "LESSONS.md"), encoding="utf-8").read())
+    failures, text, path = [], None, os.path.join(repo, "LESSONS.md")
+    if not os.path.exists(path):
+        report["unread"].append("LESSONS.md")
+        si.default_used(f"{os.path.basename(os.path.normpath(repo))} LESSONS.md", "absent: the host has written no LESSONS.md yet")
+    else:
+        try:
+            text = si.read_text(path, "LESSONS.md")
+        except si.Stop as stop:
+            stopped(report, stop)
+    if text is not None:
+        failures = lessons(text)
         report["lessons"]["lines"] = len(failures)
         for f in failures:
             if f["bucket"]:
                 report["lessons"]["byBucket"][f["bucket"]] = report["lessons"]["byBucket"].get(f["bucket"], 0) + 1
         report["lessons"]["unrouted"] = [f["line"][:140] for f in failures if f["bucket"] == "unrouted"][:10]
         report["problems"] += [f"LESSONS.md: {p}" for p in lesson_problems(failures)]
-    health = read_live(n)
-    report["health"] = {"status": health.get("status"), "at": health.get("at"), "funding": labels.funding_state(health)}
-    view = lesson_view(health, failures, now)
-    report["lessons"]["counted"] = view["failures"]
-    report["paused"], report["blocked"] = view["paused"], view["blocked"]
-    report["problems"] += view["problems"]
-    latest = os.path.join(repo, "watchdog", "latest.json")
-    if os.path.exists(latest):
-        to_open, contradictions = watchdog_intake(json.load(open(latest)).get("findings"), health.get("repairs"), now)
+    try:
+        health = read_health(n, health_dir)
+    except si.Stop as stop:
+        stopped(report, stop)
+        health = None
+    if health is not None:
+        report["health"] = {"status": health.get("status"), "at": health.get("at"), "funding": labels.funding_state(health)}
+        view = lesson_view(health, failures, now)
+        report["lessons"]["counted"] = view["failures"]
+        report["paused"], report["blocked"] = view["paused"], view["blocked"]
+        report["problems"] += view["problems"]
+    try:
+        findings = read_watchdog(repo)
+    except si.Stop as stop:
+        stopped(report, stop)
+        findings = None
+    if findings is not None and health is not None:
+        to_open, contradictions = watchdog_intake(findings, health.get("repairs"), now)
         report["watchdog"] = {"noRepair": to_open, "contradictions": contradictions}
     return report
 
@@ -405,19 +490,29 @@ def self_test():
 if __name__ == "__main__":
     if sys.argv[1:2] == ["--self-test"]:
         sys.exit(self_test())
-    if not sys.argv[1:]:
+    args, health_dir = sys.argv[1:], None
+    if "--health" in args:
+        at = args.index("--health")
+        if at + 1 >= len(args):
+            print(si.Stop(si.EMPTY, "--health", "names no folder").line(), file=sys.stderr)
+            sys.exit(si.EXIT_STOP)
+        health_dir = args[at + 1]
+        args = args[:at] + args[at + 2:]
+    if not args:
         print(__doc__)
         sys.exit(2)
     now = datetime.datetime.now(datetime.timezone.utc)
     reports, unread = [], 0
-    for repo in sys.argv[1:]:
+    for repo in args:
         try:
-            reports.append(check_agent(repo, now))
-        except (OSError, ValueError, KeyError) as error:
+            reports.append(check_agent(repo, now, health_dir))
+        except (OSError, ValueError, KeyError, AttributeError, TypeError) as error:
+            # A file whose inner shape is wrong beyond what read_* checks: still a named reason, never a traceback.
             unread += 1
-            print(f"could not read {repo}: {error}", file=sys.stderr)
+            si.stop_line(si.Stop(si.UNPARSEABLE, repo, f"{type(error).__name__}: {error}"))
     print(json.dumps({"at": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "agents": reports}, indent=2))
     labels.print_lines(reports)
     problems = sum(len(r["problems"]) for r in reports)
-    print(f"repair receipts: {sum(r['receipts'] for r in reports)} receipts, {problems} problems in {len(reports)} agents", file=sys.stderr)
-    sys.exit(2 if unread else 1 if problems else 0)
+    stops = sum(len(r["stops"]) for r in reports)
+    print(f"repair receipts: {sum(r['receipts'] for r in reports)} receipts, {problems} problems, {stops} stops in {len(reports)} agents", file=sys.stderr)
+    sys.exit(si.EXIT_STOP if unread or stops else 1 if problems else 0)

@@ -12,6 +12,7 @@ is never a score. This file holds the same checks and replays a day file from th
                                                            # UNABLE; with SHA256, also that the file is those bytes
     python3 scripts/claim_watch.py --coverage DAYFILE      # HB-083 s0: fails when over a tenth of the record sample was
                                                            # not read with no host slowed and time left
+    python3 scripts/claim_watch.py --newest INDEX.json     # the newest day in watch/index.json: "<day> <sha256>"
 
 The skill family, one row a pinned skill:
   PIN_OK                    its bytes are the pinned sha256, and its source serves the same bytes now
@@ -36,10 +37,19 @@ is a finding, kept privately, and the file says only {"finding": N, "status": "r
 A replay of an older day can honestly say CHANGED for a row whose source moved since: PIN_OK and
 PIN_OK_UPSTREAM_CHANGED are both "the pin holds", and the replay says which one changed.
 
-Exit 0 when everything matches, 1 when something does not, 2 when it could not be read.
+Every input is a security setting (HB-136, HB-138; scripts/security_input.py), and none has a default. A registry with
+no `skills` key or zero pinned skills, a pin with no version, url or sha256, an empty day file, a line that is not a
+JSON object or names no family, target or outcome, a coverage check with no record sample to measure, and an index with
+no day each STOP with empty_security_setting or unparseable_security_setting, exit 2, never a traceback and never a pass
+on nothing read.
+
+Exit 0 when everything matches, 1 when something does not (a source that moved since is the world, not a fault), 2 when
+an input stopped the run or the day file itself breaks a rule: its sha256, a finding that says more than its number, or
+a sensitive outcome made public.
 """
 import hashlib
 import json
+import os
 import re
 import sys
 import time
@@ -60,6 +70,9 @@ LINE_SIGNALS = (
 DEFENSIVE = re.compile(r"(treat|is|are) (it |them |this )?(as )?(untrusted|data)|\bas (untrusted )?data\b|[\"“]ignore|never (execute|follow|treat)|that's an attack|skip it|e\.g\.|for example|looks like", re.I)
 BLOCKING = ("remote_instructions", "pipe_to_shell")
 PINNED_RAW = re.compile(r"^(https://raw\.githubusercontent\.com/[^/]+/[^/]+/)[0-9a-f]{40}(/.+)$")
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import security_input as si  # noqa: E402
 
 
 def skill_signals(text):
@@ -135,6 +148,57 @@ def protect(day, rows):
         elif live:
             blocked.append({"target": row["target"], "why": f"a live {' and '.join(live)} signal"})
     return {"v": 1, "day": day, "mode": "observe", "wouldBlock": sorted(blocked, key=lambda b: b["target"])}
+
+
+# ------------------------------------------------------------------------------------- the inputs, read fail-closed
+def read_registry(path):
+    """A skills registry's pins: at least one, each with a version, a url and a sha256 (HB-138: zero is not clean)."""
+    registry = si.read_json(path)
+    skills = si.field(path, registry, "skills", list)
+    for i, entry in enumerate(skills):
+        if not isinstance(entry, dict):
+            raise si.Stop(si.UNPARSEABLE, path, f"skills[{i}] is not an object")
+        for key in ("version", "url", "sha256"):
+            if not isinstance(entry.get(key), str) or not entry[key].strip():
+                raise si.Stop(si.UNPARSEABLE, path, f"skills[{i}] has no {key}")
+    return skills
+
+
+def day_rows(source, text):
+    """A day file's lines, every one checked for the fields a replay reads before anything is read again."""
+    rows = si.parse_jsonl(source, text)
+    for n, row in enumerate(rows, 1):
+        if "finding" in row:
+            continue
+        for key in ("family", "target", "outcome"):
+            if not isinstance(row.get(key), str) or not row[key]:
+                raise si.Stop(si.UNPARSEABLE, source, f"row {n} names no {key}")
+        if row["family"] == "record" and row["target"] == "sample":
+            for key, kind in (("seed", str), ("sampled", int), ("maxId", int), ("count", int)):
+                if not isinstance(row.get(key), kind) or isinstance(row.get(key), bool):
+                    raise si.Stop(si.UNPARSEABLE, source, f"row {n}, a record sample, has no {key}")
+    return rows
+
+
+def read_day(path):
+    text = si.read_text(path)
+    return text, day_rows(path, text)
+
+
+def coverage_input(source, rows):
+    """HB-138: a coverage check needs the record sample it measures; a day with none measured nothing."""
+    if not any(r.get("family") == "record" and r.get("target") == "sample" and r.get("sampled") for r in rows):
+        raise si.Stop(si.EMPTY, source, "no record sample row with a sampled count: nothing to measure")
+
+
+def newest(path):
+    """watch/index.json's newest day and its sha256."""
+    days = si.field(path, si.read_json(path), "days", list)
+    first = days[0]
+    if not isinstance(first, dict) or not re.fullmatch(r"\d{4}-\d\d-\d\d", str(first.get("day", ""))) \
+            or not re.fullmatch(r"[0-9a-f]{64}", str(first.get("sha256", ""))):
+        raise si.Stop(si.UNPARSEABLE, path, "its newest day names no day or no sha256")
+    return first["day"], first["sha256"]
 
 
 # ---------------------------------------------------------------------------------------------- the outward families
@@ -710,7 +774,24 @@ def self_test():
             bad.append(f"{name}: got {got!r}, want {want!r}")
     if protect("d", [{"family": "advisory", "target": "aeon/x@1", "outcome": "ADVISORY_HIT"}])["wouldBlock"] != [{"target": "aeon/x@1", "why": "it installs a package a published malware advisory names"}]:
         bad.append("an advisory hit on a pin is listed for protection")
-    total = 19 + 2 + 4 + 2 + 1 + 1 + 29 + 1
+    # HB-136 and HB-138: inputs that stop, offline. An empty day, a row with no outcome, a sample with no seed, and a day
+    # with no record sample for coverage to measure.
+    sample_row = '{"count":1,"day":"d","family":"record","maxId":9,"outcome":"RESOLVES","sampled":1,"seed":"s","target":"sample"}'
+    for name, fn, reason in [
+        ("an empty day", lambda: day_rows("d", ""), si.EMPTY),
+        ("a row with no outcome", lambda: day_rows("d", '{"family":"skill","target":"x"}\n'), si.UNPARSEABLE),
+        ("a sample with no seed", lambda: day_rows("d", sample_row.replace('"seed":"s",', "") + "\n"), si.UNPARSEABLE),
+        ("coverage with no record sample", lambda: coverage_input("d", day_rows("d", '{"family":"skill","outcome":"PIN_OK","target":"x"}\n')), si.EMPTY),
+        ("a good sample row", lambda: coverage_input("d", day_rows("d", sample_row + "\n")), None),
+    ]:
+        try:
+            fn()
+            if reason:
+                bad.append(f"{name}: no STOP")
+        except si.Stop as stop:
+            if stop.reason != reason:
+                bad.append(f"{name}: {stop.reason}, want {reason}")
+    total = 19 + 2 + 4 + 2 + 1 + 1 + 29 + 1 + 5
     for line in bad:
         print("FAIL", line)
     bad += read_budget_problems()
@@ -723,9 +804,21 @@ if __name__ == "__main__":
     args = sys.argv[1:]
     if args[:1] == ["--self-test"]:
         sys.exit(self_test())
+    def stopped(stop):
+        print(stop.line(), file=sys.stderr)
+        sys.exit(si.EXIT_STOP)
+    if args[:1] == ["--newest"] and len(args) == 2:
+        try:
+            print(*newest(args[1]))
+        except si.Stop as stop:
+            stopped(stop)
+        sys.exit(0)
     if args[:1] == ["--run"] and len(args) == 2:
-        registry = json.load(open(args[1]))
-        rows = [read_skill(entry) for entry in registry.get("skills", [])]
+        try:
+            skills = read_registry(args[1])
+        except si.Stop as stop:
+            stopped(stop)
+        rows = [read_skill(entry) for entry in skills]
         import datetime
         day = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
         text, digest = day_file(day, rows)
@@ -734,25 +827,26 @@ if __name__ == "__main__":
         sys.exit(0)
     if args[:1] == ["--coverage"] and len(args) == 2:
         try:
-            rows = [json.loads(line) for line in open(args[1], encoding="utf-8") if line.strip()]
-        except (OSError, ValueError) as error:
-            print(f"could not read {args[1]}: {error}", file=sys.stderr)
-            sys.exit(2)
+            _, rows = read_day(args[1])
+            coverage_input(args[1], rows)
+        except si.Stop as stop:
+            stopped(stop)
         found = coverage_problems(rows)
         print("\n".join(found) or "coverage: nothing unread without a reason")
         sys.exit(1 if found else 0)
     if args[:1] == ["--replay"] and len(args) in (2, 3):
         try:
-            text = open(args[1], encoding="utf-8").read()
-        except OSError as error:
-            print(f"could not read {args[1]}: {error}", file=sys.stderr)
-            sys.exit(2)
+            text, _ = read_day(args[1])
+        except si.Stop as stop:
+            stopped(stop)
         verdicts, problems = replay(text, args[2] if len(args) == 3 else None)
         counts = {}
         for _, verdict, _ in verdicts:
             counts[verdict] = counts.get(verdict, 0) + 1
         print(json.dumps({"file": args[1], "sha256": hashlib.sha256(text.encode()).hexdigest(), "rows": len(verdicts), "verdicts": counts,
                           "notMatch": [{"target": t, "verdict": v, "why": w} for t, v, w in verdicts if v != "MATCH"], "problems": problems}, indent=2))
-        sys.exit(1 if problems or any(v != "MATCH" for _, v, _ in verdicts) else 0)
+        for problem in problems:
+            print(f"STOP the day file breaks a rule: {args[1]}: {problem}", file=sys.stderr)
+        sys.exit(si.EXIT_STOP if problems else 1 if any(v != "MATCH" for _, v, _ in verdicts) else 0)
     print(__doc__)
     sys.exit(2)

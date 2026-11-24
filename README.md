@@ -21,6 +21,11 @@ Its regression case runs first: `fixtures/skill-files/broken/SKILL.md` (an unquo
 17 files had on 12 Nov 2026) must fail, and `fixtures/skill-files/quoted/SKILL.md` must pass. Nothing in an agent
 repository is run; its skill files are only parsed.
 
+Zero is not clean: a `skills/<slug>/` folder with no `SKILL.md` is a bad file, and a scan that finds no skill folder at
+all, or an agent repository that could not be cloned, stops the run with `empty_security_setting` and records nothing.
+Every security reader here reads its inputs through `scripts/security_input.py` (empty, comma-only, unparseable and
+absent inputs, in `tests/test_security_inputs.py`).
+
 ## Re-running a claim
 
 A tool's result travels: an agent's Board counts its passing tools, and a run that printed `Results: 13/13 checks

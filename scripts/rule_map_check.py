@@ -14,13 +14,24 @@ What is checked:
   2. A coded or partly entry names a check and says what it does; a prose entry names no check.
   3. AUTONOMY.md's numbered rules are R1..Rn in the map, each with the same text, none missing and none extra: a rule
      added to AUTONOMY.md with no entry fails here.
-  4. Every line of AUTONOMY.md's "Checked before every call" list is a coded `preflight:<id>` entry with the same words.
+  4. Every line of AUTONOMY.md's "Checked before every call" list is a coded `preflight:<id>` entry with the same words,
+     and every `preflight:<id>` entry in the map is a line of that list (HB-137): a line taken out of AUTONOMY.md, such
+     as its deny line, fails here.
   5. The map's `counts` are its entries counted.
+
+The map and AUTONOMY.md are security settings (HB-136, scripts/security_input.py): an empty one, one that does not parse
+or has the wrong shape, AUTONOMY.md with no numbered rules, and a "Checked before every call" section that is missing
+or lists nothing each STOP with empty_security_setting or unparseable_security_setting, exit 2, never a traceback.
+Neither has a default.
 """
 import json
+import os
 import re
 import sys
 import urllib.request
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import security_input as si  # noqa: E402
 
 RAW = "https://raw.githubusercontent.com/HivemindOS-Agents/{repo}/main/{path}"
 STATUSES = ("coded", "partly", "prose")
@@ -43,6 +54,39 @@ def autonomy_rules(markdown):
             if m:
                 checks[m.group(1)] = m.group(2).strip()
     return rules, checks
+
+
+def checked_section(markdown):
+    """The "Checked before every call" section's lines, or None when AUTONOMY.md has no such section."""
+    lines, section = None, None
+    for line in markdown.splitlines():
+        head = re.match(r"^##\s+(.*)$", line)
+        if head:
+            section = head.group(1).strip().lower()
+            if section == "checked before every call" and lines is None:
+                lines = []
+            continue
+        if section == "checked before every call":
+            lines.append(line)
+    return lines
+
+
+def validate(rule_map, markdown, map_source="rule_map.json", md_source="AUTONOMY.md"):
+    """HB-136: what makes the map or AUTONOMY.md unreadable as a security setting. Raises si.Stop."""
+    if not isinstance(rule_map, dict):
+        raise si.Stop(si.UNPARSEABLE, map_source, f"not an object but {type(rule_map).__name__}")
+    entries = si.field(map_source, rule_map, "rules", list)
+    for i, entry in enumerate(entries):
+        if not isinstance(entry, dict):
+            raise si.Stop(si.UNPARSEABLE, map_source, f"rules[{i}] is not an object but {type(entry).__name__}")
+    si.check_text(md_source, markdown)
+    rules, checks = autonomy_rules(markdown)
+    if not rules:
+        raise si.Stop(si.UNPARSEABLE, md_source, "no numbered rule under a \"## Rules\" heading")
+    if checked_section(markdown) is None:
+        raise si.Stop(si.EMPTY, md_source, "no \"Checked before every call\" section")
+    if not checks:
+        raise si.Stop(si.EMPTY, md_source, "its \"Checked before every call\" section lists nothing")
 
 
 def problems(rule_map, markdown):
@@ -89,6 +133,9 @@ def problems(rule_map, markdown):
             out.append(f"preflight:{cid}: checked before every call and not in the map")
         elif entry.get("status") != "coded" or (entry.get("text") or "").strip() != words:
             out.append(f"preflight:{cid}: not coded, or its words are not AUTONOMY.md's")
+    for rid in seen:
+        if rid.startswith("preflight:") and rid.split(":", 1)[1] not in checks:
+            out.append(f"{rid}: in the map and not in AUTONOMY.md's \"Checked before every call\"")
     counted = {s: sum(1 for r in entries if r.get("status") == s) for s in STATUSES}
     if rule_map.get("counts") != counted:
         out.append(f"counts say {rule_map.get('counts')} and the entries count {counted}")
@@ -98,6 +145,14 @@ def problems(rule_map, markdown):
 def fetch(repo, path):
     with urllib.request.urlopen(urllib.request.Request(RAW.format(repo=repo, path=path), headers={"user-agent": "bee-self-test-rule-map"}), timeout=20) as r:
         return r.read().decode("utf-8", "replace")
+
+
+def fetched(source, repo, path):
+    """A live file; one that could not be fetched is absent, and has no default."""
+    try:
+        return fetch(repo, path)
+    except Exception as error:  # noqa: BLE001 - any failure to fetch is the same STOP
+        raise si.Stop(si.EMPTY, source, f"absent: could not be fetched ({error})")
 
 
 def summary(rule_map):
@@ -116,13 +171,17 @@ def main(argv):
         argv = argv[:at]
     try:
         if len(argv) >= 2:
-            map_text, markdown = open(argv[0]).read(), open(argv[1]).read()
+            map_source, md_source = argv[0], argv[1]
+            map_text, markdown = si.read_text(argv[0]), si.read_text(argv[1])
         else:
-            map_text, markdown = fetch("bee-scouts", "templates/rule_map.json"), fetch("bee-scouts", "templates/AUTONOMY.md")
-        rule_map = json.loads(map_text)
-    except Exception as error:  # an unreadable file is a fail, said as such
-        print(f"HB-063 rule map: FAIL: could not read the map or AUTONOMY.md: {error}")
-        return 1
+            map_source, md_source = "bee-scouts templates/rule_map.json", "bee-scouts templates/AUTONOMY.md"
+            map_text, markdown = fetched(map_source, "bee-scouts", "templates/rule_map.json"), fetched(md_source, "bee-scouts", "templates/AUTONOMY.md")
+        rule_map = si.parse_json(map_source, map_text, want=None)
+        validate(rule_map, markdown, map_source, md_source)
+    except si.Stop as stop:
+        print(stop.line())
+        print("HB-063 rule map: STOP")
+        return si.EXIT_STOP
     found = problems(rule_map, markdown)
     for n in agents:
         try:
@@ -175,8 +234,22 @@ def self_test():
     assert broken(lambda m: None, md.replace("3. Every action carries a why.\n", "")) == ["R3: in the map and not in AUTONOMY.md"]
     assert broken(lambda m: None, md + "- text-unsafe: A post holding a secret is not sent.\n") == ["preflight:text-unsafe: checked before every call and not in the map"]
     assert problems({"rules": []}, md) == ["the map has no rules"]
+    # HB-137: the other direction. A checked line taken out of AUTONOMY.md while the map keeps its entry.
+    assert broken(lambda m: None, md.replace("- deny: A call on the never list is stopped.\n", "")) == ['preflight:deny: in the map and not in AUTONOMY.md\'s "Checked before every call"']
+    # HB-136: what stops instead of reading as a pass or a traceback.
+    stops = []
+    for name, m, text in [("a list", [1], md), ("an entry not an object", {"rules": [1]}, md), ("no rules key", {"v": 1}, md),
+                          ("empty AUTONOMY.md", good(), " ,\n"), ("no numbered rule", good(), "# x\n"),
+                          ("no checked section", good(), md.split("## Checked")[0]), ("an empty checked section", good(), md.split("- deny")[0])]:
+        try:
+            validate(m, text)
+            stops.append(f"{name}: no STOP")
+        except si.Stop as stop:
+            stops.append(stop.reason)
+    assert stops == [si.UNPARSEABLE, si.UNPARSEABLE, si.EMPTY, si.EMPTY, si.UNPARSEABLE, si.EMPTY, si.EMPTY], stops
+    validate(good(), md)
     assert summary(good()) == {"entries": 6, "autonomyRules": 3, "coded": [1], "partly": [2], "prose": [3], "checked": "2026-11-21"}
-    print(f"self-test: {len(cases) + 6}/{len(cases) + 6} PASS")
+    print(f"self-test: {len(cases) + 9}/{len(cases) + 9} PASS")
     return 0
 
 
