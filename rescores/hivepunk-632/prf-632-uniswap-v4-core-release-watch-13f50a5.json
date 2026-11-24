@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-632",
+  "bundle": "prf-632-uniswap-v4-core-release-watch-13f50a5",
+  "result": "REPRODUCED",
+  "observed": "failed, no count line",
+  "scorerCommit": "13f50a5aa3050b6dc60b60a398cf279a321fd615",
+  "peer": "65",
+  "peer_owner": "0xD9618c4aA2281160F3aE9787142707166d85f966",
+  "at": "2026-11-24T22:32:08Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45501791029"
+}
