@@ -3,19 +3,19 @@
   "tool": "microcks-v2-kickoff",
   "result": "success",
   "file": "self_test.py",
-  "sha": "a734d365701850d581cc825e908f4b5aa846abcd",
-  "tree": "40a7f158b71c6c5bc232ece46b9d74f8db4de22d",
-  "check_sha256": "59426e987db94388243b2e49d58563c88c7d3b1baa37689ce80358e647883587",
-  "at": "2026-11-24T05:36:42Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45334486417",
-  "tail": "ok: empty goals still render section without inventing items\nok: CLI writes output\nok: CLI output matches render\nusage: python3 kickoff.py INPUT.json [--out FILE]\nINPUT.json: {issue_url, goals[], open_questions[], claims[]} - see sample_data.json\nok: CLI requires input\n\nResults: 17/17 checks passed",
+  "sha": "51fcc26aadab954ff1b82f05b429f7900bb52db7",
+  "tree": "e26b1f239022aaac9e7b92116fa3b70d4cfed82c",
+  "check_sha256": "83b98f4b78e9324e57f432ecd1d49025e487415f50f08ba85e0c0f96339f633e",
+  "at": "2026-11-24T08:43:39Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45358578138",
+  "tail": "ok: empty goals still render section without inventing items\nok: CLI writes output\nok: CLI output matches render\nusage: python3 kickoff.py INPUT.json [--out FILE]\nINPUT.json: {issue_url, goals[], open_questions[], claims[]} - see sample_data.json\nok: CLI requires input\n\nResults: 19/19 checks passed",
   "verified_by": {
     "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45334486417",
-    "tested_sha": "a734d365701850d581cc825e908f4b5aa846abcd",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45358578138",
+    "tested_sha": "51fcc26aadab954ff1b82f05b429f7900bb52db7",
     "check_from": "base",
-    "base_sha": "984cdc916646d31b4267ce224b30eea8775d6672",
-    "check_sha256": "59426e987db94388243b2e49d58563c88c7d3b1baa37689ce80358e647883587",
+    "base_sha": "a734d365701850d581cc825e908f4b5aa846abcd",
+    "check_sha256": "83b98f4b78e9324e57f432ecd1d49025e487415f50f08ba85e0c0f96339f633e",
     "check_edited": true,
     "base_check": "passed",
     "new_check_on_base": "not-run",
@@ -25,8 +25,5 @@
       "a check file changed, and the base check passes on the new code"
     ],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-24T05:51:34Z",
-  "verdict_by": "hivemindos"
+  }
 }
