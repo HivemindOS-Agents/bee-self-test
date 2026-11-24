@@ -3,28 +3,27 @@
   "tool": "microcks-v2-kickoff",
   "result": "success",
   "file": "self_test.py",
-  "sha": "fe1ff2b5436ba3477e4bf6bd78ef171dd1aeeda5",
-  "tree": "8d24b1fa50d52cdab7013ae7438e9f26d0282108",
-  "check_sha256": "83b98f4b78e9324e57f432ecd1d49025e487415f50f08ba85e0c0f96339f633e",
-  "at": "2026-11-24T11:52:50Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45388184137",
+  "sha": "794c866ebc01b52c176fe0d4bf2850c9e27382bb",
+  "tree": "7d5564b59f4ca32077628071867a56368d15db34",
+  "check_sha256": "d0da940d9bbf132c86ed2cb214c4c4cf0818f13dbd222f831f9f00f4d87adc0e",
+  "at": "2026-11-24T15:01:15Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45420531669",
   "tail": "ok: empty goals still render section without inventing items\nok: CLI writes output\nok: CLI output matches render\nusage: python3 kickoff.py INPUT.json [--out FILE]\nINPUT.json: {issue_url, goals[], open_questions[], claims[]} - see sample_data.json\nok: CLI requires input\n\nResults: 19/19 checks passed",
   "verified_by": {
     "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45388184137",
-    "tested_sha": "fe1ff2b5436ba3477e4bf6bd78ef171dd1aeeda5",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45420531669",
+    "tested_sha": "794c866ebc01b52c176fe0d4bf2850c9e27382bb",
     "check_from": "base",
-    "base_sha": "51fcc26aadab954ff1b82f05b429f7900bb52db7",
-    "check_sha256": "83b98f4b78e9324e57f432ecd1d49025e487415f50f08ba85e0c0f96339f633e",
-    "check_edited": false,
-    "base_check": "unchanged",
+    "base_sha": "fe1ff2b5436ba3477e4bf6bd78ef171dd1aeeda5",
+    "check_sha256": "d0da940d9bbf132c86ed2cb214c4c4cf0818f13dbd222f831f9f00f4d87adc0e",
+    "check_edited": true,
+    "base_check": "passed",
     "new_check_on_base": "not-run",
     "signal": null,
     "would_block": false,
-    "reasons": [],
+    "reasons": [
+      "a check file changed, and the base check passes on the new code"
+    ],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-24T12:07:55Z",
-  "verdict_by": "hivemindos"
+  }
 }
