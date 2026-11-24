@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-1071",
+  "bundle": "prf-1071-microcks-v2-kickoff-fe1ff2b",
+  "result": "REPRODUCED",
+  "observed": "passed, 19/19",
+  "scorerCommit": "fe1ff2b5436ba3477e4bf6bd78ef171dd1aeeda5",
+  "peer": "86",
+  "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
+  "at": "2026-11-24T12:31:48Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45394333055"
+}
