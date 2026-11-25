@@ -1,32 +1,29 @@
 {
   "repo": "hivepunk-547",
   "tool": "uniswap-v4-upgrade-watch",
-  "result": "failure",
+  "result": "success",
   "file": "self_test.py",
-  "sha": "64c13bb28530f16bd393772874b27b68d99e5dd5",
-  "tree": "bba7b4a636e17e4e81985dd512c28aa5abbecddb",
+  "sha": "b1dd6e378afd962a16d835b25bce397255d94e8e",
+  "tree": "800c8c20f68a471db31a6c3c26e42ebeef02cd9a",
   "check_sha256": "ea1e23c5a4ba40e1089522c43bf3c1b4b5a2874e6ac9d25e2089519afb7b979c",
-  "at": "2026-11-24T23:22:09Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45509303509",
-  "tail": "FAIL: ARTIFACTS raw stdout lines include verified\nseed_row.json: verified v4.0.0/2025-01-23T19:00:03Z, release_id 196495150, prerelease/draft false, sources present\nREADME has caveats first, untested marks, command, verified values, HF namespace",
+  "at": "2026-11-25T00:12:27Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45516186270",
+  "tail": "seed_row.json: verified v4.0.0/2025-01-23T19:00:03Z, release_id 196495150, prerelease/draft false, sources present\nREADME has caveats first, untested marks, command, verified values, HF namespace\nARTIFACTS.md records artifacts, command, verification slot, NOT confirmed, commit note, left-for-owner\nself-test: all checks passed",
   "verified_by": {
-    "kind": "none",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45509303509",
-    "tested_sha": "64c13bb28530f16bd393772874b27b68d99e5dd5",
-    "check_from": "none",
+    "kind": "runner",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45516186270",
+    "tested_sha": "b1dd6e378afd962a16d835b25bce397255d94e8e",
+    "check_from": "same-change",
     "base_sha": "f8e79056398e49d605f40546d311d3f8cc11fd73",
     "check_sha256": "ea1e23c5a4ba40e1089522c43bf3c1b4b5a2874e6ac9d25e2089519afb7b979c",
     "check_edited": true,
-    "base_check": "not-run",
-    "new_check_on_base": "not-run",
-    "signal": null,
-    "would_block": false,
+    "base_check": "failed",
+    "new_check_on_base": "failed",
+    "signal": "behavior-changed",
+    "would_block": true,
     "reasons": [
-      "the run did not pass"
+      "the base check fails on the new code, and the edited check fails the base code"
     ],
     "mode": "observe"
-  },
-  "verdict": "failed",
-  "verdict_at": "2026-11-24T23:37:18Z",
-  "verdict_by": "hivemindos"
+  }
 }
