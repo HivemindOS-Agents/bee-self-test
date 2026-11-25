@@ -3,19 +3,19 @@
   "tool": "microcks-v2-kickoff",
   "result": "success",
   "file": "self_test.py",
-  "sha": "794c866ebc01b52c176fe0d4bf2850c9e27382bb",
-  "tree": "7d5564b59f4ca32077628071867a56368d15db34",
-  "check_sha256": "d0da940d9bbf132c86ed2cb214c4c4cf0818f13dbd222f831f9f00f4d87adc0e",
-  "at": "2026-11-24T15:01:15Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45420531669",
-  "tail": "ok: empty goals still render section without inventing items\nok: CLI writes output\nok: CLI output matches render\nusage: python3 kickoff.py INPUT.json [--out FILE]\nINPUT.json: {issue_url, goals[], open_questions[], claims[]} - see sample_data.json\nok: CLI requires input\n\nResults: 19/19 checks passed",
+  "sha": "105a300200804d50fb3a8caa2172bbd62bf33a86",
+  "tree": "3135936ce322d46efdb2d2b33aa6663e103eac30",
+  "check_sha256": "9e4ed07a534570c2a750b23ad8379700d8d18654f503b010e54128dbb40934da",
+  "at": "2026-11-25T03:26:17Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45539912066",
+  "tail": "usage: python3 kickoff.py INPUT.json [--out FILE]\nINPUT.json: {issue_url, goals[], open_questions[], claims[]} - see sample_data.json\nok: CLI requires input\nok: GOAL.md sha256 is 64 lowercase hex chars\nok: GOAL.md sha256 is deterministic across reads\nGOAL.md sha256: 84431c449dc1288a72815b1dcea73f604f598e7f2eb2e76b90894aadc570b61f\n\nResults: 22/22 checks passed",
   "verified_by": {
     "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45420531669",
-    "tested_sha": "794c866ebc01b52c176fe0d4bf2850c9e27382bb",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45539912066",
+    "tested_sha": "105a300200804d50fb3a8caa2172bbd62bf33a86",
     "check_from": "base",
-    "base_sha": "fe1ff2b5436ba3477e4bf6bd78ef171dd1aeeda5",
-    "check_sha256": "d0da940d9bbf132c86ed2cb214c4c4cf0818f13dbd222f831f9f00f4d87adc0e",
+    "base_sha": "794c866ebc01b52c176fe0d4bf2850c9e27382bb",
+    "check_sha256": "9e4ed07a534570c2a750b23ad8379700d8d18654f503b010e54128dbb40934da",
     "check_edited": true,
     "base_check": "passed",
     "new_check_on_base": "not-run",
@@ -25,8 +25,5 @@
       "a check file changed, and the base check passes on the new code"
     ],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-24T15:16:15Z",
-  "verdict_by": "hivemindos"
+  }
 }
