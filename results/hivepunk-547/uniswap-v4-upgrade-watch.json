@@ -3,30 +3,27 @@
   "tool": "uniswap-v4-upgrade-watch",
   "result": "success",
   "file": "self_test.py",
-  "sha": "463ef82ee1d890d3444e86ac20c09200536a5411",
-  "tree": "314755217ad5bec722d3fb17299190cfd62cc53d",
-  "check_sha256": "2192b005face194ab4d6f2707c0b6d653110cb31285cb1e844801ff96720dcec",
-  "at": "2026-11-25T00:45:15Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45520463717",
-  "tail": "seed_row.json: verified v4.0.0/2025-01-23T19:00:03Z, release_id 196495150, prerelease/draft false, sources present\nwatch.load_seed(data/seed_row.json): v4.0.0/2025-01-23T19:00:03Z release_id 196495150\nwatch: v4.0.0/2025-01-23T19:00:03Z release_id 196495150 prerelease=False draft=False source=https://api.github.com/repos/Uniswap/v4-core/releases/latest\nREADME has caveats first, untested marks, command, verified values, HF namespace\nARTIFACTS.md records artifacts, command, verification slot, NOT confirmed, commit note, left-for-owner\nself-test: all checks passed",
+  "sha": "a18f49ee11e916d23e6740c90e71c376a7328418",
+  "tree": "cafac91dbebcf20a71200c9ec6f1464f6a5b9bf9",
+  "check_sha256": "d5e0e8476633f6a87f20a07ea7ce5d8c13e8eb17b6a5774475403ab30af02a1b",
+  "at": "2026-11-25T13:47:56Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45627185315",
+  "tail": "manifest: hivepunk-547-db38b7a4/uniswap-v4-upgrade-watch upload=README.md,data/seed_row.json\n  README.md bytes=2007 sha256=df70d0ba00a967b52fa398feb07069b7b13ff909f0b82f26ee9c5aeb00bf0852\n  data/seed_row.json bytes=1177 sha256=db99cc96e63d1e6aa06837c4a808fbc28415392b305f65d90f3d5a26f00b9c23\nseed: v4.0.0/2025-01-23T19:00:03Z release_id 196495150\nnot_upload: 2026-11-22-uniswap-v4-upgrade-watch.md,ARTIFACTS.md,GOAL.md,SELFTEST_OUTPUT.md,hf_manifest.py,publish-self.py,seed_row.json,self_test.py,watch.py\nready: upload only README.md and data/seed_row.json exactly as on disk\nREADME has caveats first, untested marks, command, verified values, HF repo\nself-test: all checks passed",
   "verified_by": {
     "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45520463717",
-    "tested_sha": "463ef82ee1d890d3444e86ac20c09200536a5411",
-    "check_from": "same-change",
-    "base_sha": "f8e79056398e49d605f40546d311d3f8cc11fd73",
-    "check_sha256": "2192b005face194ab4d6f2707c0b6d653110cb31285cb1e844801ff96720dcec",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45627185315",
+    "tested_sha": "a18f49ee11e916d23e6740c90e71c376a7328418",
+    "check_from": "base",
+    "base_sha": "463ef82ee1d890d3444e86ac20c09200536a5411",
+    "check_sha256": "d5e0e8476633f6a87f20a07ea7ce5d8c13e8eb17b6a5774475403ab30af02a1b",
     "check_edited": true,
-    "base_check": "failed",
-    "new_check_on_base": "failed",
-    "signal": "behavior-changed",
-    "would_block": true,
+    "base_check": "passed",
+    "new_check_on_base": "not-run",
+    "signal": null,
+    "would_block": false,
     "reasons": [
-      "the base check fails on the new code, and the edited check fails the base code"
+      "a check file changed, and the base check passes on the new code"
     ],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-25T01:00:29Z",
-  "verdict_by": "hivemindos"
+  }
 }
