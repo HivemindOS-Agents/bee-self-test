@@ -15,6 +15,16 @@ EMPTY, UNPARSEABLE, DEFAULT_USED = "empty_security_setting", "unparseable_securi
 # The four states of one input. None is absent: the file is not written at all.
 STATES = {"empty": "", "commas": " ,, \n,\t\n", "unparseable": "{not json\n", "absent": None}
 WANT = {"empty": EMPTY, "commas": EMPTY, "unparseable": UNPARSEABLE, "absent": EMPTY}
+# Row 41r2: every security key a reader takes with security_input.field() names the test that runs it missing or
+# empty. `python3 scripts/security_input.py --keys scripts tests/test_security_inputs.py` (required in host-checks)
+# fails on a key read here and not mapped, so a new key cannot land without its empty-state fixture.
+EMPTY_STATE = {
+    "days": "ClaimWatch.test_newest_day_from_the_index",
+    "findings": "RepairReceipts.test_latest_without_findings_stops",
+    "repairs": "RepairReceipts.test_health_without_repairs_stops",
+    "rules": "RuleMap.test_map_with_no_rules_stops",
+    "skills": "ClaimWatch.test_zero_pinned_skills_is_not_clean",
+}
 
 
 def run(*args, cwd=ROOT):
@@ -69,6 +79,13 @@ class RuleMap(Base):
             with self.subTest(name=name):
                 path = self.put("map.json", text)
                 self.assertStops(run("scripts/rule_map_check.py", path, FIX / "rule-map/AUTONOMY.md"), UNPARSEABLE, "map.json")
+
+    def test_map_with_no_rules_stops(self):
+        """Row 41r2: the `rules` key missing, null or an empty list is not a map with nothing to check."""
+        for name, doc in [("missing", {"counts": {}}), ("null", {"rules": None, "counts": {}}), ("empty", {"rules": [], "counts": {}})]:
+            with self.subTest(name=name):
+                path = self.put(f"map-{name}.json", json.dumps(doc))
+                self.assertStops(run("scripts/rule_map_check.py", path, FIX / "rule-map/AUTONOMY.md"), EMPTY, "rules")
 
     def test_the_fixture_pair_passes(self):
         code, out, err = run("scripts/rule_map_check.py", FIX / "rule-map/rule_map.json", FIX / "rule-map/AUTONOMY.md")
@@ -218,6 +235,16 @@ class RepairReceipts(Base):
                 result = run("scripts/repair_receipts.py", repo, "--health", self.tmp / "health")
                 self.assertStops(result, WANT[state], "547.json")
                 self.assertEqual(self.report(result[1])["lessons"]["lines"], 1)
+
+    def test_health_without_repairs_stops(self):
+        """Row 41r2: a health file with no `repairs` key (or null) is not "no repairs"; an empty list is."""
+        for name, doc in [("missing", {"agent": "547", "status": "ok"}), ("null", {"agent": "547", "status": "ok", "repairs": None})]:
+            with self.subTest(name=name):
+                shutil.rmtree(self.tmp, ignore_errors=True); self.tmp.mkdir()
+                repo = self.agent(health=json.dumps(doc))
+                result = run("scripts/repair_receipts.py", repo, "--health", self.tmp / "health")
+                self.assertStops(result, EMPTY, "repairs")
+                self.assertEqual(self.report(result[1])["lessons"]["lines"], 1, "the rest of the agent's report is kept")
 
     def test_an_unparseable_receipt_stops_and_the_others_are_read(self):
         good = json.loads((FIX / "repair-receipts/one-of-each/repairs/rp-1071-t-reentrancy-cases--e1.json").read_text())

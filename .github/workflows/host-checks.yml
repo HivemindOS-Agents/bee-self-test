@@ -47,7 +47,9 @@
 #
 # The fixtures are the required part: this run fails when a script stops catching its own regression cases, and
 # tests/test_security_inputs.py runs every security reader on empty, comma-only, unparseable and absent inputs (HB-136,
-# HB-137, HB-138). The live reads are report-only: they say where the agents stand today, and never fail the run, with
+# HB-137, HB-138). Row 41r2: every security key a reader takes with field() has an empty-state fixture in that file's
+# EMPTY_STATE (security_input.py --keys). Row 41r4: scripts/security_input.py is the same bytes as bee-scouts' copy at
+# its main (security_input.py --same-as). The live reads are report-only: they say where the agents stand today, and never fail the run, with
 # three exceptions (HB-140). A Sourcify label that the code on Base does not back, on a contract HivemindOS names or a
 # coin its market calls verified, fails the run (a contract that is unlisted or could not be recomputed does not). The
 # rule map check fails the run on any mismatch or STOP. The repair receipt check fails the run on a STOP (an empty,
@@ -82,6 +84,10 @@ jobs:
         run: |
           set -eu
           python3 scripts/security_input.py --self-test
+          python3 scripts/security_input.py --keys scripts tests/test_security_inputs.py
+          git clone --quiet --depth 1 --filter=blob:none --sparse "https://github.com/${GITHUB_REPOSITORY_OWNER}/bee-scouts.git" "$RUNNER_TEMP/bee-scouts-copy"
+          git -C "$RUNNER_TEMP/bee-scouts-copy" sparse-checkout set scripts
+          python3 scripts/security_input.py --same-as "$RUNNER_TEMP/bee-scouts-copy/scripts/security_input.py"
           python3 -m unittest discover -s tests -p 'test_security_inputs.py'
           python3 scripts/opportunities_48h.py --self-test
           python3 -m unittest discover -s tests -p 'test_opportunities_48h.py'

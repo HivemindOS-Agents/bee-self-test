@@ -10,12 +10,23 @@
 A STOP is never a traceback: it names the reason and the file, and the reader keeps the rest of its report. A reader
 exits 2 when it stopped on anything, the exit this repository's checks already give "could not be read".
 
-The readers: rule_map_check.py, claim_watch.py, check_skill_files.py and repair_receipts.py. bee-scouts keeps a copy of
-these rules for its pause check (bee-scouts scripts/security_input.py): another repository, so another copy; change
-both together.
+The readers: in bee-self-test, rule_map_check.py, claim_watch.py, check_skill_files.py, repair_receipts.py and
+feed_freshness.py; in bee-scouts, check_outside.py (outside/pauses.jsonl and its history). Each of the two
+repositories holds this file, byte for byte the same: another repository, so another copy. Change both together:
+each repository's CI runs --same-as against the other's main and fails when the two differ (25 Nov 2026 update,
+row 41r4).
+
+Every key a reader takes with field() is a security key, and each needs an empty-state fixture: the reader's test
+file maps it in EMPTY_STATE = {"<key>": "<TestClass>.<test_method>"} to a test that runs the reader with that key
+missing or empty. --keys fails on a key read and not mapped, a key that is not a plain string, an entry naming a test
+that does not exist, and an entry for a key no reader reads any more (row 41r2).
 
     python3 scripts/security_input.py --self-test
+    python3 scripts/security_input.py --same-as OTHER_COPY            # exit 1 when the two copies differ
+    python3 scripts/security_input.py --keys SCRIPTS_DIR TEST_FILE    # exit 1 when a security key has no fixture
 """
+import ast
+import hashlib
 import json
 import os
 import re
@@ -142,6 +153,88 @@ def stop_line(stop, out=None):
     return stop
 
 
+# ------------------------------------------------------------------------------------- the copies, and the keys' fixtures
+def same_as(this, other):
+    """(problems, lines): this file against the other repository's copy, byte for byte."""
+    data = {}
+    for path in (this, other):
+        try:
+            with open(path, "rb") as handle:
+                data[path] = handle.read()
+        except OSError as error:
+            raise Stop(EMPTY, path, f"could not be read: {error.strerror or error}")
+        if not data[path].strip():
+            raise Stop(EMPTY, path, "supplied but empty")
+    a, b = (hashlib.sha256(data[p]).hexdigest() for p in (this, other))
+    if a == b:
+        return [], [f"same: {this} and {other} are the same bytes (sha256 {a[:12]})"]
+    return [f"differ: {this} sha256 {a[:12]} and {other} sha256 {b[:12]}: change both copies together"], []
+
+
+def field_keys(scripts_dir):
+    """{key: [file:line]} for every field() call on this module in scripts_dir/*.py, and the calls whose key is not a
+    plain string ([file:line])."""
+    keys, opaque = {}, []
+    for name in sorted(os.listdir(scripts_dir)):
+        if not name.endswith(".py") or name == "security_input.py":
+            continue
+        path = os.path.join(scripts_dir, name)
+        with open(path, encoding="utf-8") as handle:
+            tree = ast.parse(handle.read(), path)
+        for node in ast.walk(tree):
+            if not (isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.func.attr == "field"
+                    and isinstance(node.func.value, ast.Name) and node.func.value.id in ("si", "security_input")):
+                continue
+            key = node.args[2] if len(node.args) > 2 else next((k.value for k in node.keywords if k.arg == "key"), None)
+            where = f"{name}:{node.lineno}"
+            if isinstance(key, ast.Constant) and isinstance(key.value, str):
+                keys.setdefault(key.value, []).append(where)
+            else:
+                opaque.append(where)
+    return keys, opaque
+
+
+def empty_state_map(test_file):
+    """(EMPTY_STATE as a dict or None, {"Class.method"} the test file defines)."""
+    with open(test_file, encoding="utf-8") as handle:
+        tree = ast.parse(handle.read(), test_file)
+    mapping, tests = None, set()
+    for node in tree.body:
+        if isinstance(node, ast.Assign) and any(isinstance(t, ast.Name) and t.id == "EMPTY_STATE" for t in node.targets):
+            try:
+                mapping = ast.literal_eval(node.value)
+            except ValueError:
+                raise Stop(UNPARSEABLE, test_file, "EMPTY_STATE is not a literal dict")
+            if not isinstance(mapping, dict) or not all(isinstance(k, str) and isinstance(v, str) for k, v in mapping.items()):
+                raise Stop(UNPARSEABLE, test_file, "EMPTY_STATE is not a dict of key to \"Class.test_method\"")
+        if isinstance(node, ast.ClassDef):
+            tests |= {f"{node.name}.{f.name}" for f in node.body if isinstance(f, ast.FunctionDef) and f.name.startswith("test")}
+    return mapping, tests
+
+
+def keys_check(scripts_dir, test_file):
+    """(problems, lines): every security key read with field() has an empty-state fixture, and nothing else is mapped."""
+    if not os.path.isdir(scripts_dir):
+        raise Stop(EMPTY, scripts_dir, "absent: no scripts folder to read")
+    keys, opaque = field_keys(scripts_dir)
+    mapping, tests = empty_state_map(test_file)
+    problems = [f"opaque: the key at {w} is not a plain string, so its fixture cannot be checked" for w in opaque]
+    if keys and mapping is None:
+        problems.append(f"no EMPTY_STATE in {test_file}, and {len(keys)} security key(s) are read: {', '.join(sorted(keys))}")
+        mapping = {}
+    mapping = mapping or {}
+    for key, where in sorted(keys.items()):
+        if key not in mapping:
+            problems.append(f"missing: `{key}` (read at {', '.join(where)}) has no empty-state fixture in EMPTY_STATE")
+        elif mapping[key] not in tests:
+            problems.append(f"missing: `{key}` maps to {mapping[key]}, which {test_file} does not define")
+    for key in sorted(set(mapping) - set(keys)):
+        problems.append(f"stale: EMPTY_STATE maps `{key}`, which no reader in {scripts_dir} reads with field()")
+    lines = [f"keys: {key} -> {mapping[key]}" for key in sorted(keys) if key in mapping and mapping[key] in tests]
+    lines.append(f"keys: {len(keys)} security key(s) read with field(), {len(keys) - sum(1 for p in problems if p.startswith('missing'))} with an empty-state fixture")
+    return problems, lines
+
+
 # ---------------------------------------------------------------------------------------------------------------- fixtures
 def self_test():
     import tempfile
@@ -185,6 +278,27 @@ def self_test():
     if read_text(os.path.join(folder, "none"), "LESSONS.md", default="", why="not written yet", unread=unread) != "" or len(unread) != 1 \
             or entry != {"default_used": "LESSONS.md", "why": "not written yet"} or not log.getvalue().startswith("default_used: LESSONS.md"):
         bad.append("an absent input with a documented default takes it, says default_used and is listed as unread")
+    # --same-as and --keys on small folders (rows 41r4 and 41r2).
+    total += 6
+    if same_as(put("s1", "x = 1\n"), put("s2", "x = 1\n"))[0] or not same_as(put("s3", "x = 1\n"), put("s4", "x = 2\n"))[0]:
+        bad.append("--same-as: same bytes pass and different bytes fail")
+    scripts = os.path.join(folder, "scripts")
+    os.makedirs(scripts)
+    with open(os.path.join(scripts, "reader.py"), "w", encoding="utf-8") as handle:
+        handle.write("import security_input as si\nrows = si.field('x', {}, 'rows', list)\n")
+    test_ok = put("test_ok.py", "EMPTY_STATE = {'rows': 'Reader.test_no_rows'}\nclass Reader:\n    def test_no_rows(self):\n        pass\n")
+    if keys_check(scripts, test_ok)[0]:
+        bad.append("--keys: a mapped key with its test passes")
+    if not keys_check(scripts, put("test_none.py", "class Reader:\n    pass\n"))[0]:
+        bad.append("--keys: a key with no EMPTY_STATE fails")
+    if not keys_check(scripts, put("test_gone.py", "EMPTY_STATE = {'rows': 'Reader.test_gone'}\n"))[0]:
+        bad.append("--keys: an entry naming a test that does not exist fails")
+    if not keys_check(scripts, put("test_stale.py", "EMPTY_STATE = {'rows': 'Reader.test_no_rows', 'old': 'Reader.test_no_rows'}\nclass Reader:\n    def test_no_rows(self):\n        pass\n"))[0]:
+        bad.append("--keys: an entry for a key no reader reads fails")
+    with open(os.path.join(scripts, "other.py"), "w", encoding="utf-8") as handle:
+        handle.write("import security_input as si\nk = 'rows'\nrows = si.field('x', {}, k, list)\n")
+    if not any(p.startswith("opaque") for p in keys_check(scripts, test_ok)[0]):
+        bad.append("--keys: a key that is not a plain string fails")
     shutil.rmtree(folder, ignore_errors=True)
     for line in bad:
         print("FAIL", line)
@@ -195,5 +309,16 @@ def self_test():
 if __name__ == "__main__":
     if sys.argv[1:2] == ["--self-test"]:
         sys.exit(self_test())
+    for flag, count, fn in (("--same-as", 1, lambda other: same_as(os.path.abspath(__file__), other)), ("--keys", 2, keys_check)):
+        if sys.argv[1:2] == [flag] and len(sys.argv) == 2 + count:
+            try:
+                problems, lines = fn(*sys.argv[2:])
+            except Stop as stop:
+                stop_line(stop)
+                sys.exit(EXIT_STOP)
+            for line in lines + problems:
+                print(line)
+            print(f"security input {flag[2:]}:", "PASS" if not problems else f"FAIL ({len(problems)} problems)")
+            sys.exit(1 if problems else 0)
     print(__doc__)
     sys.exit(2)
