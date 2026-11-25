@@ -13,6 +13,12 @@ is never a score. This file holds the same checks and replays a day file from th
     python3 scripts/claim_watch.py --coverage DAYFILE      # HB-083 s0: fails when over a tenth of the record sample was
                                                            # not read with no host slowed and time left
     python3 scripts/claim_watch.py --newest INDEX.json     # the newest day in watch/index.json: "<day> <sha256>"
+    python3 scripts/claim_watch.py --packages [--since ISO] PATH...
+                                                           # row 101: the daily re-check of locked and installed
+                                                           # packages (package-lock.json, package.json,
+                                                           # requirements.txt, an MCP config, or any text such as a
+                                                           # SKILL.md or a workflow) against OSV MAL records; --since
+                                                           # names the records new or modified since then
 
 The skill family, one row a pinned skill:
   PIN_OK                    its bytes are the pinned sha256, and its source serves the same bytes now
@@ -27,9 +33,18 @@ The three outward families: record (ERC-8004 registrations on Base: RESOLVES, RE
 PROFILE_KEYS_IN_JSON, NOT_JSON, URI_UNREACHABLE, EMPTY_URI, NOT_REGISTERED, NOT_READ (over its host's cap for the day, or its host asked to slow down),
 REGISTRY_UNREAD (the chain did not answer)), listing (x402 listings against the
 402 they answer: MATCH, PRICE_QUOTED, PRICE_DIFF, PAYTO_DIFF, NETWORK_DIFF, NO_402, UNREACHABLE, UNPARSEABLE) and advisory
-(the packages a pinned skill installs against GitHub's malware advisories: NO_HIT, ADVISORY_HIT, NOT_READ). HivemindOS's
+(the packages a pinned skill installs against OSV's malware records and GitHub's malware advisories: NO_HIT,
+ADVISORY_HIT, NOT_READ). HivemindOS's
 own targets have a row each; other parties' are counted ("target": "sample", one row an outcome with "count"), with the
 seed that picked them, so the same registry ids can be picked again: sample(seed, n, max) below is the host's own.
+
+OSV `MAL-` records are the authority for the advisory family (25 Nov 2026 update, row 101, guard 262). A package with
+a live (not withdrawn) MAL record is ADVISORY_HIT whether or not npm or PyPI still serves it and whether or not GitHub
+has an advisory yet: OSV flagged @guangnao/claude-cli (MAL-2026-13209) on 5 Aug 2026, 111 days before GitHub's
+advisory and npm's takedown. GitHub's malware advisories still count as a second source. When OSV cannot be read the
+package is NOT_READ, never NO_HIT. The daily re-check (--packages) reads every MAL record that names a locked or
+installed package, and says which are new by their `modified` time as well as their `published` one, since
+MAL-2026-13209 was published on 5 Aug and modified on 24 Nov. Only advisory records are read; no package is fetched.
 
 A day file never holds a sensitive outcome (secret_exposed, auth_missing, exploitable, advisory_exposure): such a row
 is a finding, kept privately, and the file says only {"finding": N, "status": "reported, under review"}.
@@ -351,12 +366,18 @@ def package_refs(text):
 
 
 def advisory_row(target, refs, hits):
+    """hits: [{ecosystem, name, and osv (a MAL id) or ghsa (a GHSA id)}], or None when a lookup failed."""
     if hits is None:
         return {"family": "advisory", "target": target, "outcome": "NOT_READ", "refs": len(refs)}
     row = {"family": "advisory", "target": target, "outcome": "ADVISORY_HIT" if hits else "NO_HIT", "refs": len(refs)}
     if hits:
-        row["hits"] = sorted(({"package": h["name"], "ecosystem": h["ecosystem"], "ghsa": h["ghsa"]} for h in hits), key=lambda h: h["package"])
+        row["hits"] = sorted(({"package": h["name"], "ecosystem": h["ecosystem"], **({"osv": h["osv"]} if "osv" in h else {"ghsa": h["ghsa"]})} for h in hits),
+                             key=lambda h: (h["package"], h.get("osv") or h.get("ghsa")))
     return row
+
+
+def hit_of(pkg, advisory_id):
+    return {"ecosystem": pkg["ecosystem"], "name": pkg["name"], ("osv" if advisory_id.startswith("MAL-") else "ghsa"): advisory_id}
 
 
 def aggregate(family, rows, extra):
@@ -578,10 +599,40 @@ def probe(url, method):
         return None, None
 
 
-def advisories_of(pkg):
-    """The GHSA ids of published malware advisories that name this package, or None when the query failed."""
+OSV_QUERY = "https://api.osv.dev/v1/query"
+OSV_ECOSYSTEM = {"npm": "npm", "pip": "PyPI"}
+
+
+def osv_mal_of(pkg):
+    """The live (not withdrawn) OSV MAL records that name this package, at its version when it has one, or None when
+    OSV could not be read. Each record: {id, published, modified, aliases}."""
+    query = {"package": {"name": pkg["name"], "ecosystem": OSV_ECOSYSTEM.get(pkg["ecosystem"], pkg["ecosystem"])}}
+    if pkg.get("version"):
+        query["version"] = pkg["version"]
+    out, token = [], None
+    for _ in range(10):
+        body = dict(query, page_token=token) if token else query
+        try:
+            request = urllib.request.Request(OSV_QUERY, data=json.dumps(body).encode(), method="POST",
+                                             headers={"User-Agent": UA, "Content-Type": "application/json"})
+            with urllib.request.urlopen(request, timeout=20) as r:
+                answer = json.loads(r.read() or b"{}")
+        except (OSError, ValueError):
+            return None
+        if not isinstance(answer, dict):
+            return None
+        for v in answer.get("vulns") or []:
+            if str(v.get("id", "")).startswith("MAL-") and not v.get("withdrawn"):
+                out.append({"id": v["id"], "published": v.get("published"), "modified": v.get("modified"), "aliases": list(v.get("aliases") or [])})
+        token = answer.get("next_page_token")
+        if not token:
+            return out
+    return None
+
+
+def ghsa_malware_of(pkg):
+    """The GHSA ids of GitHub's published malware advisories that name this package, or None when the query failed."""
     url = f"https://api.github.com/advisories?type=malware&ecosystem={pkg['ecosystem']}&affects={urllib.parse.quote(pkg['name'])}&per_page=10"
-    import os
     headers = {"User-Agent": "bee-self-test", "Accept": "application/vnd.github+json", **({"Authorization": f"Bearer {os.environ['GH_TOKEN']}"} if os.environ.get("GH_TOKEN") else {})}
     try:
         with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=20) as r:
@@ -589,6 +640,109 @@ def advisories_of(pkg):
     except (OSError, ValueError):
         return None
     return [a["ghsa_id"] for a in items if any(str((v.get("package") or {}).get("name", "")).lower() == pkg["name"] for v in a.get("vulnerabilities") or [])]
+
+
+def advisories_of(pkg):
+    """The malware advisories that name this package: OSV MAL ids first (the authority), then GitHub's GHSA ids that
+    no MAL record already aliases. None when OSV could not be read, or when GitHub could not be read and OSV found
+    nothing: never a clean answer from a lookup that did not happen."""
+    mal = osv_mal_of(pkg)
+    if mal is None:
+        return None
+    ghsa = ghsa_malware_of(pkg)
+    if ghsa is None and not mal:
+        return None
+    aliased = {a for m in mal for a in m["aliases"]}
+    return [m["id"] for m in mal] + [g for g in ghsa or [] if g not in aliased]
+
+
+def mal_new_since(records, since):
+    """The records published or modified at or after `since` (ISO 8601): the day's new and changed malware records. A
+    filter on `published` alone misses MAL-2026-13209 (published 5 Aug, modified 24 Nov 2026)."""
+    def at(stamp):
+        return (stamp or "")[:19]
+    cut = at(since)
+    return [r for r in records if max(at(r.get("published")), at(r.get("modified"))) >= cut]
+
+
+def lock_refs(paths):
+    """The packages a set of lockfiles, manifests, MCP configs and texts install: [{ecosystem, name, version?}].
+    package-lock.json (v1 to v3), package.json, requirements*.txt and an MCP config ({"mcpServers": ...}) are read for
+    what they are; any other file is read as text for install commands (package_refs)."""
+    seen, out = set(), []
+    def add(eco, name, version=None):
+        name = (name or "").strip().lower()
+        if not name or name.startswith("-"):
+            return
+        key = (eco, name, version)
+        if key not in seen:
+            seen.add(key)
+            out.append(dict({"ecosystem": eco, "name": name}, **({"version": version} if version else {})))
+    for path in paths:
+        source = str(path)
+        text = si.read_text(source)
+        base = os.path.basename(source).lower()
+        if base.endswith(".json"):
+            doc = si.parse_json(source, text, want=dict)
+            if isinstance(doc.get("packages"), dict):
+                for where, meta in doc["packages"].items():
+                    if where and "node_modules/" in where and isinstance(meta, dict):
+                        add("npm", where.rsplit("node_modules/", 1)[1], meta.get("version"))
+            elif base == "package-lock.json" and isinstance(doc.get("dependencies"), dict):
+                for name, meta in doc["dependencies"].items():
+                    add("npm", name, meta.get("version") if isinstance(meta, dict) else None)
+            if base == "package.json":
+                for key in ("dependencies", "devDependencies", "optionalDependencies", "peerDependencies"):
+                    for name in (doc.get(key) or {}):
+                        add("npm", name)
+            servers = doc.get("mcpServers") or doc.get("servers")
+            if isinstance(servers, dict):
+                for server in servers.values():
+                    if isinstance(server, dict):
+                        line = " ".join([str(server.get("command", ""))] + [str(a) for a in server.get("args") or []])
+                        for ref in package_refs(line):
+                            add(ref["ecosystem"], ref["name"])
+            continue
+        if re.match(r"requirements.*\.txt$", base):
+            for line in text.splitlines():
+                m = re.match(r"\s*([A-Za-z0-9][\w.-]*)\s*(?:\[[^\]]*\])?\s*(==\s*([\w.!+-]+))?", line)
+                if m and not line.lstrip().startswith(("#", "-")):
+                    add("pip", m.group(1), m.group(3))
+            continue
+        for ref in package_refs(text):
+            add(ref["ecosystem"], ref["name"])
+    return out
+
+
+def recheck(paths, since=None):
+    """Row 101's daily re-check: (report, exit). Every package the paths lock or install, against OSV MAL records
+    (and GitHub's malware advisories). Exit 1 on any ADVISORY_HIT, 2 when a package could not be looked up (NOT_READ)
+    or no input was given, 0 when every package was read and none is named."""
+    if not paths:
+        raise si.Stop(si.EMPTY, "--packages", "no lockfile, manifest or text to read")
+    refs = lock_refs(paths)
+    hits, unread = [], []
+    for pkg in refs:
+        mal = osv_mal_of(pkg)
+        if mal is None:
+            unread.append(pkg)
+            continue
+        new = {r["id"] for r in mal_new_since(mal, since)} if since else set()
+        for r in mal:
+            hits.append(dict({"package": pkg["name"], "ecosystem": pkg["ecosystem"], "osv": r["id"], "published": r["published"],
+                              "modified": r["modified"], "new": r["id"] in new}, **({"version": pkg["version"]} if pkg.get("version") else {})))
+        aliased = {a for r in mal for a in r["aliases"]}
+        ghsa = ghsa_malware_of(pkg)
+        if ghsa is None and not mal:
+            unread.append(pkg)  # the same rule as advisories_of: no clean answer from a lookup that did not happen
+            continue
+        for g in ghsa or []:
+            if g not in aliased:
+                hits.append(dict({"package": pkg["name"], "ecosystem": pkg["ecosystem"], "ghsa": g}, **({"version": pkg["version"]} if pkg.get("version") else {})))
+    outcome = "ADVISORY_HIT" if hits else "NOT_READ" if unread else "NO_HIT"
+    report = {"family": "advisory", "files": len(paths), "packages": len(refs), "outcome": outcome, "since": since,
+              "hits": sorted(hits, key=lambda h: (h["package"], h.get("osv") or h.get("ghsa"))), "notRead": unread}
+    return report, 1 if hits else 2 if unread else 0
 
 
 def replay_outward(row, rows):
@@ -626,7 +780,9 @@ def replay_outward(row, rows):
             return (target, "UNABLE", "its pinned skill could not be read")
         refs = package_refs(data.decode("utf-8", "replace"))
         found = [(p, advisories_of(p)) for p in refs]
-        hits = None if any(a is None for _, a in found) else [{"ecosystem": p["ecosystem"], "name": p["name"], "ghsa": g} for p, a in found for g in a]
+        hits = [hit_of(p, g) for p, a in found for g in a or []]
+        if not hits and any(a is None for _, a in found):
+            hits = None
         now = advisory_row(target, refs, hits)
         return (target, "MATCH" if (now["outcome"], now["refs"]) == (row["outcome"], row.get("refs")) else "CHANGED", f"{row['outcome']} then, {now['outcome']} now")
     return (target, "UNABLE", "not a family this replay reads")
@@ -825,6 +981,23 @@ if __name__ == "__main__":
         sys.stdout.write(text)
         print(json.dumps({"day": day, "rows": len(rows), "sha256": digest, "protect": protect(day, rows)}), file=sys.stderr)
         sys.exit(0)
+    if args[:1] == ["--packages"]:
+        rest, since = args[1:], None
+        if rest[:1] == ["--since"]:
+            if len(rest) < 2:
+                stopped(si.Stop(si.EMPTY, "--since", "supplied but empty"))
+            since, rest = rest[1], rest[2:]
+        try:
+            report, code = recheck(rest, since)
+        except si.Stop as stop:
+            stopped(stop)
+        print(json.dumps(report, indent=2))
+        for hit in report["hits"]:
+            print(f"ADVISORY_HIT {hit['ecosystem']}:{hit['package']}{'@' + hit['version'] if hit.get('version') else ''} "
+                  f"{hit.get('osv') or hit.get('ghsa')}{' (new or modified since ' + since + ')' if hit.get('new') else ''}", file=sys.stderr)
+        for pkg in report["notRead"]:
+            print(f"NOT_READ {pkg['ecosystem']}:{pkg['name']}: OSV could not be read; never counted as clean", file=sys.stderr)
+        sys.exit(code)
     if args[:1] == ["--coverage"] and len(args) == 2:
         try:
             _, rows = read_day(args[1])

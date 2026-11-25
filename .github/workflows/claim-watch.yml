@@ -14,6 +14,12 @@
 # the file was written is CHANGED, and the Bazaar's sample is UNABLE every day by design; that is the world, not a
 # fault. Everything is read from public files with no token; nothing in any repository is run, and this job writes
 # nothing.
+#
+# Row 101 (25 Nov 2026 update, guard 262): OSV MAL records are the advisory family's authority, and every day the
+# locked and installed packages (lockfiles, package.json, requirements, MCP configs, SKILL.md files and these
+# workflows, in bee-scouts and the five agents' repositories) are read again against OSV MAL records, naming those new
+# or modified in the last day. Required: a package with a live MAL record (exit 1), or one that could not be looked up,
+# or nothing to read (exit 2), fails the run. Only advisory records are read; no package is downloaded.
 name: claim-watch
 on:
   workflow_dispatch:
@@ -21,7 +27,7 @@ on:
     - cron: "10 7 * * *"
   push:
     branches: [main]
-    paths: ["scripts/claim_watch.py", "scripts/security_input.py", "tests/test_security_inputs.py", "fixtures/claim-watch/**", ".github/workflows/claim-watch.yml"]
+    paths: ["scripts/claim_watch.py", "scripts/security_input.py", "tests/test_security_inputs.py", "tests/test_claim_watch_osv.py", "fixtures/claim-watch/**", ".github/workflows/claim-watch.yml"]
 permissions: {}
 jobs:
   replay:
@@ -39,6 +45,23 @@ jobs:
           python3 scripts/claim_watch.py --self-test
           python3 scripts/security_input.py --self-test
           python3 -m unittest discover -s tests -p 'test_security_inputs.py' -k ClaimWatch
+          python3 -m unittest discover -s tests -p 'test_claim_watch_osv.py'
+      - name: Locked and installed packages against OSV MAL records, new and modified in the last day included (required)
+        env:
+          # Only for GitHub's public malware advisories, the second source (its rate limit). It writes nothing.
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          mkdir -p "$RUNNER_TEMP/installed"
+          for repo in bee-scouts hivepunk-547 hivepunk-632 hivepunk-667 hivepunk-1071 hivepunk-86; do
+            git clone --quiet --depth 1 --filter=blob:none --sparse "https://github.com/${GITHUB_REPOSITORY_OWNER}/${repo}.git" "$RUNNER_TEMP/installed/${repo}"
+            git -C "$RUNNER_TEMP/installed/${repo}" sparse-checkout set --no-cone '**/SKILL.md' '**/package.json' '**/package-lock.json' '**/requirements*.txt' '**/*mcp*.json'
+          done
+          find "$RUNNER_TEMP/installed" -path '*/.git' -prune -o -type f \( -name SKILL.md -o -name package.json -o -name package-lock.json -o -name 'requirements*.txt' -o -name '*mcp*.json' \) -print > "$RUNNER_TEMP/installed.txt"
+          ls .github/workflows/*.yml >> "$RUNNER_TEMP/installed.txt"
+          echo "$(wc -l < "$RUNNER_TEMP/installed.txt") files to read"
+          since=$(date -u -d '1 day ago' +%Y-%m-%dT%H:%M:%SZ)
+          tr '\n' '\0' < "$RUNNER_TEMP/installed.txt" | xargs -0 python3 scripts/claim_watch.py --packages --since "$since"
       - name: Replay the newest day file (a STOP and the coverage check fail the run; other verdicts report-only)
         env:
           # Only for the advisory family's queries to GitHub's public advisories (its rate limit). It writes nothing.
