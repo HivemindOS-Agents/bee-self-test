@@ -3,30 +3,27 @@
   "tool": "uniswap-v4-core-release-watch",
   "result": "success",
   "file": "self_test.py",
-  "sha": "a0a2eccef2badc8716a6c2ceb7d22cf557d61c5a",
-  "tree": "8bc0299aa9d5ee25ee7ae50422e1a8b206b594a8",
-  "check_sha256": "d8fedb0d2ceb3826eaa3101998b65f6347f220d78593487e2ce70ac1836aa69a",
-  "at": "2026-11-25T17:56:08Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45669833180",
+  "sha": "baf352265c85d010c4074f23de5447762032f9b3",
+  "tree": "08d2a7128b3eb33f48eac71e8c873a82b08d4441",
+  "check_sha256": "9929de03cb174fb40cd5fc237d267088de2ce5f1019fdcf9654715ee56133fbc",
+  "at": "2026-11-25T21:22:08Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45703638390",
   "tail": "PASS committed card passes\nPASS broken cards rejected\nPASS manifest maps verbatim with matching hashes\nPASS manifest raises on a broken row\nPASS package ok, missing package reported\nPASS days_between computed or None\nself_test: 18 check(s), 0 failed\nEXIT=0",
   "verified_by": {
     "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45669833180",
-    "tested_sha": "a0a2eccef2badc8716a6c2ceb7d22cf557d61c5a",
-    "check_from": "same-change",
-    "base_sha": "63965a820cf9875c15b943dd5d31c059f8e46a7e",
-    "check_sha256": "d8fedb0d2ceb3826eaa3101998b65f6347f220d78593487e2ce70ac1836aa69a",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45703638390",
+    "tested_sha": "baf352265c85d010c4074f23de5447762032f9b3",
+    "check_from": "base",
+    "base_sha": "a0a2eccef2badc8716a6c2ceb7d22cf557d61c5a",
+    "check_sha256": "9929de03cb174fb40cd5fc237d267088de2ce5f1019fdcf9654715ee56133fbc",
     "check_edited": true,
-    "base_check": "failed",
-    "new_check_on_base": "failed",
-    "signal": "behavior-changed",
-    "would_block": true,
+    "base_check": "passed",
+    "new_check_on_base": "not-run",
+    "signal": null,
+    "would_block": false,
     "reasons": [
-      "the base check fails on the new code, and the edited check fails the base code"
+      "a check file changed, and the base check passes on the new code"
     ],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-25T18:10:58Z",
-  "verdict_by": "hivemindos"
+  }
 }
