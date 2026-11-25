@@ -3,16 +3,16 @@
   "tool": "uniswap-v4-upgrade-watch",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "99b28474264d51108d3f28f89df7881b7e15de96",
-  "tree": "5a9e02b807f4e857ba63ba5d74238dfcdd9dfcb5",
+  "sha": "9ac68519ee02a4b5e876c1bfc47001a2a2c2b5c3",
+  "tree": "2c7d819f729ff7b1c25f608c1bd3c0cdff849d8c",
   "check_sha256": "f11a58dee87530c32836e7957db9af56508062465f0d2c23404318eafc049077",
-  "at": "2026-11-25T20:59:31Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45700066822",
+  "at": "2026-11-25T21:32:15Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45705175756",
   "tail": "FAIL: verify_upload.py must not contain the word upload\nwatch.load_seed(data/seed_row.json): v4.0.0/2025-01-23T19:00:03Z release_id 196495150\nwatch: v4.0.0/2025-01-23T19:00:03Z release_id 196495150 prerelease=False draft=False source=https://api.github.com/repos/Uniswap/v4-core/releases/latest\nhf_manifest.build_manifest(): publish README.md, data/seed_row.json with matching sha256",
   "verified_by": {
     "kind": "none",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45700066822",
-    "tested_sha": "99b28474264d51108d3f28f89df7881b7e15de96",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45705175756",
+    "tested_sha": "9ac68519ee02a4b5e876c1bfc47001a2a2c2b5c3",
     "check_from": "none",
     "base_sha": "a18f49ee11e916d23e6740c90e71c376a7328418",
     "check_sha256": "f11a58dee87530c32836e7957db9af56508062465f0d2c23404318eafc049077",
@@ -25,8 +25,5 @@
       "the run did not pass"
     ],
     "mode": "observe"
-  },
-  "verdict": "failed",
-  "verdict_at": "2026-11-25T21:14:17Z",
-  "verdict_by": "hivemindos"
+  }
 }
