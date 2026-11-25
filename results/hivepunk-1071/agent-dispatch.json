@@ -3,19 +3,19 @@
   "tool": "agent-dispatch",
   "result": "success",
   "file": "self_test.py",
-  "sha": "0711ec1dcc6661f9406e3660bdb3da7274703288",
-  "tree": "e89ecba59cac947d8fdf2b4033bbc16b0291d739",
-  "check_sha256": "d40592fd43b0b70634e1fde0330b3988da5d79034e69ef907aefe5c1383bfd10",
-  "at": "2026-11-25T12:53:44Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45618100411",
-  "tail": "INPUT.json: {\"tags\": [\"...\"], \"rules\": [{\"tag\": \"...\", \"strength\": 1, \"label\": \"...\"}]}\nok: CLI requires input\nok: GOAL.md sha256 is 64 lowercase hex chars\nok: GOAL.md sha256 is deterministic across reads\nok: GOAL.md sha256 equals the runner-printed value\nGOAL.md sha256: ecb04afed903686d5d4d4c9f9c467f86f31b6e025d215895e46df64ba4d8aa12\n\nResults: 31/31 checks passed",
+  "sha": "efb055f4c95e52eef0db0222c47c5094e5fecb10",
+  "tree": "f96912e80fe323f2d5cdaa1c231123db69decc85",
+  "check_sha256": "5febc57f0183f84bcce7a983463b221b10138e24a660abe047b2df9c59f30811",
+  "at": "2026-11-25T22:21:39Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45712491184",
+  "tail": "INPUT.json: {\"tags\": [\"...\"], \"rules\": [{\"tag\": \"...\", \"strength\": 1, \"label\": \"...\"}]}\nok: CLI requires input\nok: GOAL.md sha256 is 64 lowercase hex chars\nok: GOAL.md sha256 is deterministic across reads\nok: GOAL.md sha256 equals the runner-printed value\nGOAL.md sha256: ecb04afed903686d5d4d4c9f9c467f86f31b6e025d215895e46df64ba4d8aa12\n\nResults: 40/40 checks passed",
   "verified_by": {
     "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45618100411",
-    "tested_sha": "0711ec1dcc6661f9406e3660bdb3da7274703288",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45712491184",
+    "tested_sha": "efb055f4c95e52eef0db0222c47c5094e5fecb10",
     "check_from": "base",
-    "base_sha": "c7602831cbb4d47f6ae60e13e86f3ee413836f06",
-    "check_sha256": "d40592fd43b0b70634e1fde0330b3988da5d79034e69ef907aefe5c1383bfd10",
+    "base_sha": "0711ec1dcc6661f9406e3660bdb3da7274703288",
+    "check_sha256": "5febc57f0183f84bcce7a983463b221b10138e24a660abe047b2df9c59f30811",
     "check_edited": true,
     "base_check": "passed",
     "new_check_on_base": "not-run",
@@ -25,8 +25,5 @@
       "a check file changed, and the base check passes on the new code"
     ],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-25T13:08:39Z",
-  "verdict_by": "hivemindos"
+  }
 }
