@@ -3,30 +3,25 @@
   "tool": "uniswap-v4-core-release-watch",
   "result": "success",
   "file": "self_test.py",
-  "sha": "247d438bec8dadd323162845c384bac7b5572b7b",
-  "tree": "b5680f326d9945fb283355e77693c6c9e401875a",
+  "sha": "63965a820cf9875c15b943dd5d31c059f8e46a7e",
+  "tree": "d80eca72b646641b6e6fe49521590259e8d6ab56",
   "check_sha256": "0a6b4d866ba1872e959e23de4da7b929268b98266926417fba132d6228d744eb",
-  "at": "2026-11-24T22:42:01Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45503300870",
+  "at": "2026-11-25T01:52:50Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45528918843",
   "tail": "PASS publish_check rejects UNKNOWN non-null value\nPASS publish_check rejects empty rows\nPASS publish_check accepts committed dataset_card.md\nPASS publish_check rejects card missing source repo\nPASS publish_check rejects card missing verify command\nPASS publish_check rejects empty card\nself_test: 125 check(s), 0 failed\nEXIT=0",
   "verified_by": {
     "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45503300870",
-    "tested_sha": "247d438bec8dadd323162845c384bac7b5572b7b",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45528918843",
+    "tested_sha": "63965a820cf9875c15b943dd5d31c059f8e46a7e",
     "check_from": "base",
-    "base_sha": "85c0b78bd4405e55d171fedc4427ebac4b97ca03",
+    "base_sha": "247d438bec8dadd323162845c384bac7b5572b7b",
     "check_sha256": "0a6b4d866ba1872e959e23de4da7b929268b98266926417fba132d6228d744eb",
-    "check_edited": true,
-    "base_check": "passed",
+    "check_edited": false,
+    "base_check": "unchanged",
     "new_check_on_base": "not-run",
     "signal": null,
     "would_block": false,
-    "reasons": [
-      "a check file changed, and the base check passes on the new code"
-    ],
+    "reasons": [],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-24T22:57:10Z",
-  "verdict_by": "hivemindos"
+  }
 }
