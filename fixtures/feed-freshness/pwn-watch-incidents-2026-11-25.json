@@ -1,0 +1,92 @@
+{
+ "site": "https://pwn.watch",
+ "generatedAt": "2026-11-25T13:20:55.814Z",
+ "updatedAt": "2026-11-10T01:13:32Z",
+ "_fixture": "pwn.watch/incidents.json as fetched 2026-11-26 01:2x UTC (generatedAt is its rebuild stamp): the top-level fields and the 6 newest of its 960 incidents, trimmed to the fields freshness reads",
+ "incidents": [
+  {
+   "slug": "sap-security-patch-day-nov-2026-netweaver-gateway-cvss-10",
+   "title": "SAP November 2026 Patch Day fixes four CVSS 10 bugs in NetWeaver, SAP Gateway and Web Dispatcher that need no login",
+   "url": "https://pwn.watch/i/sap-security-patch-day-nov-2026-netweaver-gateway-cvss-10",
+   "updatedAt": "2026-11-10T01:13:32Z",
+   "startedAt": "2026-11-10",
+   "cveIds": [
+    "CVE-2026-76964",
+    "CVE-2026-89103",
+    "CVE-2026-76965",
+    "CVE-2026-89119",
+    "CVE-2026-76966",
+    "CVE-2026-89114",
+    "CVE-2026-76970",
+    "CVE-2026-76973",
+    "CVE-2026-89115",
+    "CVE-2026-120017",
+    "CVE-2026-89126",
+    "CVE-2026-109803",
+    "CVE-2026-109795",
+    "CVE-2026-109798"
+   ],
+   "product": "SAP NetWeaver AS ABAP / ABAP Platform (kernel, ICM, RFC), SAP Gateway, SAP Web Dispatcher, NetWeaver AS Java EDM"
+  },
+  {
+   "slug": "vanderbilt-university-byod-ransomware-cyberattack-nov-2026",
+   "title": "Vanderbilt University tells campus to shut down devices during active cyberattack; BYOD ransomware group claims data theft",
+   "url": "https://pwn.watch/i/vanderbilt-university-byod-ransomware-cyberattack-nov-2026",
+   "updatedAt": "2026-11-10T00:38:49Z",
+   "startedAt": "2026-11-09",
+   "cveIds": [],
+   "product": "Vanderbilt University IT systems, devices and cloud services"
+  },
+  {
+   "slug": "ahold-delhaize-october-2026-cyberattack",
+   "title": "Ahold Delhaize October 2026 cyberattack disrupts Benelux/US online and supply chain; Q4 sales hit €200–250M",
+   "url": "https://pwn.watch/i/ahold-delhaize-october-2026-cyberattack",
+   "updatedAt": "2026-11-09T23:41:07Z",
+   "startedAt": "2026-10-12",
+   "cveIds": [],
+   "product": "Ahold Delhaize group IT / brand e-commerce and Benelux supply-chain systems (Albert Heijn, Delhaize, Food Lion, Hannaford and other brands); Bol not impacted"
+  },
+  {
+   "slug": "lnbits-extension-exploit-wallet-drain-shutdown-nov-2026",
+   "title": "LNbits tells all operators to shut down their Lightning wallet servers after an extension exploit drains funds",
+   "url": "https://pwn.watch/i/lnbits-extension-exploit-wallet-drain-shutdown-nov-2026",
+   "updatedAt": "2026-11-09T23:24:50Z",
+   "startedAt": "2026-11-08",
+   "cveIds": [],
+   "product": "LNbits (self-hosted Lightning wallet server and extensions)"
+  },
+  {
+   "slug": "craft-cms-sqli-priv-esc-nov-2026",
+   "title": "Craft CMS 4.18.9 / 5.11.2: unauthenticated SQLi and privilege-escalation fixes (CVE-2026-123488–123491)",
+   "url": "https://pwn.watch/i/craft-cms-sqli-priv-esc-nov-2026",
+   "updatedAt": "2026-11-09T23:18:36Z",
+   "startedAt": "2026-11-06",
+   "cveIds": [
+    "CVE-2026-123488",
+    "CVE-2026-115934",
+    "CVE-2026-123489",
+    "CVE-2026-123490",
+    "CVE-2026-123491",
+    "CVE-2026-124426",
+    "CVE-2026-124427",
+    "CVE-2026-124428",
+    "CVE-2026-124429",
+    "CVE-2026-124430",
+    "CVE-2026-124431"
+   ],
+   "product": "Craft CMS"
+  },
+  {
+   "slug": "aws-babelfish-tds-parser-cve-2026-119923-119924",
+   "title": "AWS Babelfish for Aurora PostgreSQL TDS parser issues (CVE-2026-119923, CVE-2026-119924)",
+   "url": "https://pwn.watch/i/aws-babelfish-tds-parser-cve-2026-119923-119924",
+   "updatedAt": "2026-11-09T23:17:31Z",
+   "startedAt": "2026-11-06",
+   "cveIds": [
+    "CVE-2026-119923",
+    "CVE-2026-119924"
+   ],
+   "product": "Babelfish for Aurora PostgreSQL / Babelfish for PostgreSQL extension"
+  }
+ ]
+}

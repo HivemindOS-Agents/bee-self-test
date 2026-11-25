@@ -37,6 +37,11 @@
 #                                  only tools/ folders that exist (shadow)
 #   scripts/link_registry.py       HB-067 C: every hivemindos.app link in the agents' repositories is a shape in
 #                                  link_registry.json, and one sample a shape answers (shadow)
+#   scripts/feed_freshness.py      25 Nov update row 102 (guard 263, replacing 24 Nov guard 26): a feed is current only
+#                                  while its newest content timestamp (updatedAt, or an item's updatedAt or startedAt) is
+#                                  at most 48 h old, never by generatedAt; a stale feed that catches up is diffed against
+#                                  the 30-day backfill (tests/test_feed_freshness.py; the live read is report-level, and
+#                                  its last state per feed is kept in the Actions cache between runs)
 #   scripts/check_strength.py      HB-067 E: how many of 20 small fixed-seed breaks of a tool's code its own self-test
 #                                  catches; run in a job of its own with no token, on three of 547's tools (report-only)
 #
@@ -59,7 +64,7 @@ on:
     - cron: "40 6 * * *"
   push:
     branches: [main]
-    paths: ["scripts/security_input.py", "scripts/claim_watch.py", "scripts/check_skill_files.py", "tests/test_security_inputs.py", "fixtures/rule-map/**", "fixtures/claim-watch/**", "fixtures/skill-files/**", "scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/opportunity_records.py", "tests/test_opportunity_takes.py", "tests/test_opportunities_48h.py", "fixtures/opportunities/**", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "scripts/repair_receipts.py", "scripts/rule_stops.py", "scripts/kept_rules.py", "scripts/labels.py", "scripts/git_history.py", "scripts/repeat_guard.py", "scripts/rule_lifecycle.py", "scripts/done_paths.py", "scripts/link_registry.py", "scripts/check_strength.py", "scripts/compile_sweep.py", "scripts/workflow_age.py", "shadow.json", "link_registry.json", "fixtures/repair-receipts/**", "fixtures/repeat-guard/**", "fixtures/done-paths/**", "fixtures/link-registry/**", "fixtures/check-strength/**", "fixtures/source-match/**", "scripts/lift_run.py", "tests/test_lift_run.py", "lift/**/held-out.json", "lift/**/tasks.json", ".github/workflows/host-checks.yml"]
+    paths: ["scripts/security_input.py", "scripts/claim_watch.py", "scripts/check_skill_files.py", "tests/test_security_inputs.py", "fixtures/rule-map/**", "fixtures/claim-watch/**", "fixtures/skill-files/**", "scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/opportunity_records.py", "tests/test_opportunity_takes.py", "tests/test_opportunities_48h.py", "fixtures/opportunities/**", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "scripts/repair_receipts.py", "scripts/rule_stops.py", "scripts/kept_rules.py", "scripts/labels.py", "scripts/git_history.py", "scripts/repeat_guard.py", "scripts/rule_lifecycle.py", "scripts/done_paths.py", "scripts/link_registry.py", "scripts/check_strength.py", "scripts/compile_sweep.py", "scripts/workflow_age.py", "scripts/feed_freshness.py", "tests/test_feed_freshness.py", "fixtures/feed-freshness/**", "shadow.json", "link_registry.json", "fixtures/repair-receipts/**", "fixtures/repeat-guard/**", "fixtures/done-paths/**", "fixtures/link-registry/**", "fixtures/check-strength/**", "fixtures/source-match/**", "scripts/lift_run.py", "tests/test_lift_run.py", "lift/**/held-out.json", "lift/**/tasks.json", ".github/workflows/host-checks.yml"]
 permissions: {}
 jobs:
   fixtures:
@@ -98,6 +103,7 @@ jobs:
           python3 scripts/check_strength.py --self-test
           python3 scripts/compile_sweep.py --self-test
           python3 scripts/workflow_age.py --self-test
+          python3 -m unittest discover -s tests -p 'test_feed_freshness.py'
           python3 -m unittest discover -s tests -p 'test_lift_run.py'
       - name: Live, the 48-hour check (report-only)
         run: |
@@ -183,6 +189,21 @@ jobs:
           python3 scripts/source_match.py || code=$?
           if [ "$code" = "2" ]; then echo "a Sourcify label is not backed by the code on Base"; exit 1; fi
           echo "exit $code (1 is report-only, something unlisted or not recomputable)"
+      - name: Restore each feed's last freshness state
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ runner.temp }}/feed-state.json
+          key: feed-state-${{ github.run_id }}
+          restore-keys: feed-state-
+      - name: Live, row 102 feed freshness by newest content time, and a caught-up feed's 30-day backfill diff (report-level)
+        run: |
+          python3 scripts/feed_freshness.py --state "$RUNNER_TEMP/feed-state.json" https://pwn.watch/incidents.json https://pwn.watch/t/ai.json || echo "report-level, exit $?"
+      - name: Keep each feed's freshness state for the next run
+        if: ${{ !cancelled() }}
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/feed-state.json
+          key: feed-state-${{ github.run_id }}
       - name: The security steps above that stopped or did not match fail the run (HB-140)
         if: ${{ !cancelled() }}
         run: |
