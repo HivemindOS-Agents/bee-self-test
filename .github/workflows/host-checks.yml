@@ -2,7 +2,11 @@
 #   scripts/opportunities_48h.py   HB-056's 48-hour check (20 Nov 2026 update, Part 2: an asked-for item that went on to
 #                                  Building or Shipped inside the window counts)
 #   scripts/opportunities_hb060.py HB-060 and HB-059: every in-lane ask sized or said why, one Hall owner, frozen pins,
-#                                  and the host's link commits since its linker began to keep out of frozen files
+#                                  and the host's link commits since its linker began to keep out of frozen files. 25 Nov
+#                                  update rows 61, 84 and 85 (guards 188, 241, 242): Picked, Building and Shipped takes
+#                                  count, a pickable item served by a take or matching a held or taken item on any agent
+#                                  fails, a Spotted record stands in for a quoted ask, and the junk rule reads labels
+#                                  (tests/test_opportunity_takes.py, with opp-547-430 / opp-1071-180 as fixtures)
 #   scripts/health_hb062.py        HB-062: a topic-filter refusal is a policy skip and does not hold health
 #   scripts/first_pass_replay.py   HB-058: a proof bundle's first-pass record worked out again from its listed steps
 #   scripts/rule_map_check.py      HB-063: the rule map is valid and matches AUTONOMY.md, rule for rule
@@ -55,7 +59,7 @@ on:
     - cron: "40 6 * * *"
   push:
     branches: [main]
-    paths: ["scripts/security_input.py", "scripts/claim_watch.py", "scripts/check_skill_files.py", "tests/test_security_inputs.py", "fixtures/rule-map/**", "fixtures/claim-watch/**", "fixtures/skill-files/**", "scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "scripts/repair_receipts.py", "scripts/rule_stops.py", "scripts/kept_rules.py", "scripts/labels.py", "scripts/git_history.py", "scripts/repeat_guard.py", "scripts/rule_lifecycle.py", "scripts/done_paths.py", "scripts/link_registry.py", "scripts/check_strength.py", "scripts/compile_sweep.py", "scripts/workflow_age.py", "shadow.json", "link_registry.json", "fixtures/repair-receipts/**", "fixtures/repeat-guard/**", "fixtures/done-paths/**", "fixtures/link-registry/**", "fixtures/check-strength/**", "fixtures/source-match/**", "scripts/lift_run.py", "tests/test_lift_run.py", "lift/**/held-out.json", "lift/**/tasks.json", ".github/workflows/host-checks.yml"]
+    paths: ["scripts/security_input.py", "scripts/claim_watch.py", "scripts/check_skill_files.py", "tests/test_security_inputs.py", "fixtures/rule-map/**", "fixtures/claim-watch/**", "fixtures/skill-files/**", "scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/opportunity_records.py", "tests/test_opportunity_takes.py", "tests/test_opportunities_48h.py", "fixtures/opportunities/**", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "scripts/repair_receipts.py", "scripts/rule_stops.py", "scripts/kept_rules.py", "scripts/labels.py", "scripts/git_history.py", "scripts/repeat_guard.py", "scripts/rule_lifecycle.py", "scripts/done_paths.py", "scripts/link_registry.py", "scripts/check_strength.py", "scripts/compile_sweep.py", "scripts/workflow_age.py", "shadow.json", "link_registry.json", "fixtures/repair-receipts/**", "fixtures/repeat-guard/**", "fixtures/done-paths/**", "fixtures/link-registry/**", "fixtures/check-strength/**", "fixtures/source-match/**", "scripts/lift_run.py", "tests/test_lift_run.py", "lift/**/held-out.json", "lift/**/tasks.json", ".github/workflows/host-checks.yml"]
 permissions: {}
 jobs:
   fixtures:
@@ -75,7 +79,9 @@ jobs:
           python3 scripts/security_input.py --self-test
           python3 -m unittest discover -s tests -p 'test_security_inputs.py'
           python3 scripts/opportunities_48h.py --self-test
+          python3 -m unittest discover -s tests -p 'test_opportunities_48h.py'
           python3 scripts/opportunities_hb060.py --self-test
+          python3 -m unittest discover -s tests -p 'test_opportunity_takes.py'
           python3 scripts/health_hb062.py --self-test
           python3 scripts/first_pass_replay.py --self-test
           python3 scripts/rule_map_check.py --self-test

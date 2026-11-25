@@ -7,6 +7,10 @@ counts too, so shipping its one exploratory item does not turn an agent red. On 
 1071 had shipped opp-1071-10, each for a quoted outside ask, and both read FAIL. A quoted ask is still required, and
 the pick floor of 2 askers is not lowered.
 
+Since the 25 Nov 2026 update (row 84, guard 241): an item with a valid `- Spotted:` record (an address and a commit
+SHA, read by opportunity_records.py) stands in for a quoted ask, so a pickable or exploratory item nobody asked for
+counts too. The host does not write Spotted lines yet; the quoted-ask path is unchanged.
+
 Reads the files from GitHub's raw host, keyless and read-only. Exit 0 only when every agent passes. The clock starts
 at the first scout after HB-056 landed, so a fail before then says only where the queue stands.
 
@@ -14,9 +18,13 @@ at the first scout after HB-056 landed, so a fail before then says only where th
     python3 scripts/opportunities_48h.py 547 632        # some of them
     python3 scripts/opportunities_48h.py --self-test    # the fixtures only, no network
 """
+import os
 import re
 import sys
 import urllib.request
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import opportunity_records as rec  # noqa: E402
 
 AGENTS = ["547", "632", "667", "1071", "86"]
 # The date the 48-hour clock started: the first scouts after HB-056 landed.
@@ -26,15 +34,17 @@ RAW = "https://raw.githubusercontent.com/HivemindOS-Agents/hivepunk-{n}/main/OPP
 
 
 def check_file(text, window_start=WINDOW_START):
-    """(passes, why). An item block starts at '## opp-'. It passes with an Asks line that quotes something and either a
-    Tier of exploratory or pickable, or a Status of Building or Shipped since a date inside the window."""
+    """(passes, why). An item block starts at '## opp-'. It passes with an Asks line that quotes something, or a valid
+    Spotted record, and either a Tier of exploratory or pickable, or a Status of Building or Shipped since a date inside
+    the window."""
     blocks = re.split(r"\n(?=## opp-)", text or "")
     moved_on = None
     for block in blocks:
         if not block.startswith("## opp-"):
             continue
         asks = re.search(r"^- Asks:\s*(.+)$", block, re.M)
-        if not asks or "none quoted yet" in asks.group(1).lower():
+        quoted = bool(asks) and "none quoted yet" not in asks.group(1).lower()
+        if not quoted and not rec.spotted(block):
             continue
         name = block.split("\n", 1)[0][3:].strip()
         if re.search(r"^- Tier:\s*(exploratory|pickable)\b", block, re.M | re.I):
@@ -46,7 +56,7 @@ def check_file(text, window_start=WINDOW_START):
         return True, moved_on
     if not re.search(r"^## opp-", text or "", re.M):
         return False, "no items"
-    return False, "no exploratory, pickable, building or shipped item with a quoted ask"
+    return False, "no exploratory, pickable, building or shipped item with a quoted ask or a spotted record"
 
 
 def fetch(n):

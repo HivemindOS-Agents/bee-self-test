@@ -8,8 +8,17 @@ HB-060, on the five active agents' public OPPORTUNITIES.md:
   junk     no Candidate in its lane whose title is a report, phone spam, a bare domain or good-first-issue trivia
   sized    an in-lane Candidate with an outside ask is never a bare "Effort: not estimated": a count, or why not
   taken    an ask "taken from the registry" (an agent with none of its own to try takes one from another agent's list)
-           quotes its ask, is sized at 3 work steps or fewer, is taken by one agent only, and is not also the
-           Exploratory item of the agent it was taken from
+           quotes its ask or carries a valid `- Spotted:` record (25 Nov 2026 update, row 84, guard 241), is sized at 3
+           work steps or fewer, is taken by one agent only, and is not also the Exploratory item of the agent it was
+           taken from. A take is read while the taking item is Candidate, Picked, Building or Shipped (row 61, guard
+           188: line 87 read Candidate takes only, so opp-1071-180's shipped take of opp-547-430 went unseen); an
+           Expired take was given back and is not counted
+  served   an item another agent took (Candidate, Picked, Building or Shipped) no longer reads pickable on its own
+           agent's list (row 61: opp-547-430 is served by opp-1071-180)
+  dupe     a pickable item (Candidate, Tier pickable or exploratory) whose ask URL or canonical key (its repository and
+           normalised title, opportunity_records.py) matches a Shipped, Building, Picked or taken item on any agent
+           (row 85, guard 242)
+  junk     also read on an item's `- Labels:` line, when it has one (row 84: the rule reads labels as well as titles)
 
 HB-059, on FROZEN.md (bee-scouts): every `Done when: <path> sha256 <hex>` pin still matches the agent's file at main, so
 the host's opportunity linker wrote into no pinned file.
@@ -32,6 +41,9 @@ import subprocess
 import sys
 import urllib.request
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import opportunity_records as rec  # noqa: E402
+
 AGENTS = ["547", "632", "667", "1071", "86"]
 RAW = "https://raw.githubusercontent.com/HivemindOS-Agents/hivepunk-{n}/main/{path}"
 FROZEN = "https://raw.githubusercontent.com/HivemindOS-Agents/bee-scouts/main/FROZEN.md"
@@ -45,6 +57,12 @@ JUNK = re.compile(r"^(upload|delete|create|update|rename|add files?)\b|^[^a-z0-9
                   r"service client|customer (service|care|support)|helpline|☎|^[a-z0-9-]+(\.[a-z0-9-]+)+$", re.I)
 TAKEN = re.compile(r"Fit: taken from the registry \((opp-[\w-]+):")
 HALL_NEED = re.compile(r"\b(hall|bount(y|ies)|paid[ -]calls?|payers?|x402)\b", re.I)
+LABELS = re.compile(r"^- Labels?:\s*(.+)$", re.M | re.I)
+# The statuses a take is read in (row 61): every one but a take given back (Expired) or never made.
+TAKE_HELD = ("Candidate", "Picked", "Building", "Shipped")
+# The statuses that hold an ask for row 85: a pickable item matching one of these anywhere is a duplicate.
+HELD = ("Picked", "Building", "Shipped")
+PICKABLE_TIERS = ("pickable", "exploratory")
 
 
 def blocks(text):
@@ -62,12 +80,18 @@ def asks_of(block):
     return m.group(1) if m else ""
 
 
+def labels_of(block):
+    m = LABELS.search(block)
+    return [l.strip() for l in m.group(1).split(",") if l.strip()] if m else []
+
+
 def check_agent(n, text):
-    """Problems on one agent's file, whether it quotes the Hall bounty as demand, the items it took that still wait
-    ([(its id, the id taken)]), and its Exploratory Candidates' ids."""
+    """Problems on one agent's file, whether it quotes the Hall bounty as demand, the items it took and holds
+    ([(its id, the id taken)], Candidate to Shipped), and its Exploratory Candidates' ids."""
     problems, hall, takes, exploratory = [], False, [], []
     for oid, title, block in blocks(text):
-        candidate = re.search(r"^- Status: Candidate\b", block, re.M) is not None
+        status = rec.status(block)
+        candidate = status == "Candidate"
         in_lane = "Fit: in its lane" in block
         asks = asks_of(block)
         if HALL in asks:
@@ -78,17 +102,58 @@ def check_agent(n, text):
                 problems.append(f"staple: {oid} carries the Hall bounty as its ask ({title[:60]})")
         if candidate and in_lane and JUNK.search(title):
             problems.append(f"junk: {oid} is listed in its lane ({title[:60]})")
+        elif candidate and in_lane and any(JUNK.search(label) for label in labels_of(block)):
+            problems.append(f"junk: {oid} is listed in its lane (label: {', '.join(l for l in labels_of(block) if JUNK.search(l))[:60]})")
         quoted = re.search(r"^- Asks: \d+ quoted", block, re.M) is not None
         if candidate and in_lane and quoted and re.search(r"Effort: not estimated(?! \(| yet:)", block):
             problems.append(f"sized: {oid} says only 'Effort: not estimated'")
         if candidate and re.search(r"^- Tier: exploratory\b", block, re.M):
             exploratory.append(oid)
         took = TAKEN.search(block)
-        if candidate and took:
+        if took and status in TAKE_HELD:
             takes.append((oid, took.group(1)))
-            if not quoted or not re.search(r"Effort: [123] work steps", block):
-                problems.append(f"taken: {oid} was taken from the registry without a quoted ask sized at 3 steps or fewer")
+            if not (quoted or rec.spotted(block)) or not re.search(r"Effort: [123] work steps", block):
+                problems.append(f"taken: {oid} was taken from the registry without a quoted ask or spotted record sized at 3 steps or fewer")
     return problems, hall, takes, exploratory
+
+
+def items_of(n, text):
+    """Every item on one agent's file, as the cross-agent checks read it."""
+    out = []
+    for oid, title, block in blocks(text):
+        took = TAKEN.search(block)
+        out.append({"agent": n, "id": oid, "title": title, "status": rec.status(block), "tier": rec.tier(block),
+                    "urls": set(rec.ask_urls(block)), "key": rec.canonical_key(title, block),
+                    "took": took.group(1) if took else None})
+    return out
+
+
+def check_served(files, taken_by):
+    """Rows 61 and 85 across every agent's file: (lines, failed). taken_by: {source id: [taking ids]}."""
+    lines, failed = [], 0
+    items = [it for n, text in files.items() for it in items_of(n, text)]
+    by_id = {it["id"]: it for it in items}
+    for p in items:
+        if p["status"] != "Candidate" or p["tier"] not in PICKABLE_TIERS:
+            continue
+        served = [t for t in taken_by.get(p["id"], []) if t != p["id"]]
+        for t in served:
+            failed += 1
+            lines.append(f"{p['agent']}: served: {p['id']} reads pickable but is served by {t} ({by_id[t]['status'] if t in by_id else 'taken'}, "
+                         f"agent {by_id[t]['agent'] if t in by_id else '?'}); mark it served by {t}")
+        for o in items:
+            if o["id"] == p["id"] or o["id"] in served or p["took"] == o["id"]:
+                continue
+            taken = o["id"] in taken_by or (o["took"] is not None and o["status"] in TAKE_HELD)
+            if o["status"] not in HELD and not taken:
+                continue
+            shared = sorted(p["urls"] & o["urls"])
+            why = f"ask {shared[0]}" if shared else (f"key {o['key'][0]} \"{o['key'][1][:50]}\"" if p["key"] and p["key"] == o["key"] else None)
+            if why:
+                failed += 1
+                lines.append(f"{p['agent']}: duplicate: {p['id']} reads pickable and matches {o['id']} "
+                             f"({o['status']}{', taken' if taken and o['status'] not in HELD else ''}, agent {o['agent']}) on {why}")
+    return lines, failed
 
 
 def check_opportunities(files):
@@ -116,7 +181,9 @@ def check_opportunities(files):
             failed += 1
             lines.append(f"taken: {source} is taken by {takers[0]} and is still its own agent's exploratory item")
     lines.append(f"taken: {sum(len(t) for t in taken_by.values())} from the registry" + (f" ({', '.join(f'{t[0]} from {s}' for s, t in sorted(taken_by.items()))})" if taken_by else ""))
-    return lines, failed
+    served, fs = check_served(files, taken_by)
+    lines += served or ["served: none (no pickable item is served by a take or matches a held or taken item on any agent)"]
+    return lines, failed + fs
 
 
 def frozen_pins(text):
@@ -267,6 +334,9 @@ def item(oid, title, status="Candidate", lane=True, asks=None, effort="3 work st
 def self_test():
     hall_ask = [("Open Hall bounty, 25000 credits", HALL)]
     real = [("Latest trading day is still 20261028", "https://huggingface.co/datasets/venvoo/x/discussions/9")]
+    # A second, different ask on another repository: the source's own try below is not the ask it lent out (row 85
+    # would read one ask URL on both as the same ask).
+    other = [("The licence tag is missing", "https://huggingface.co/datasets/someone/y/discussions/2")]
     head = "# HivePunk N's opportunities\n\n"
     held = "- Not counted: " + HALL + " (the Hall bounty is one need and one agent's: claimed by opp-547-42)\n"
     n = 0
@@ -299,7 +369,7 @@ def self_test():
     ok(check_opportunities({"547": head + item("opp-547-5", "data update", lane=False, asks=real, effort="not estimated")})[1] == 0, "outside its lane is not sized")
     # The registry fill: 86 has no ask of its own and takes 547's second ask, which 547 keeps out of its own try.
     took = "taken from the registry (opp-547-14: it had no ask of its own to try)"
-    source = head + item("opp-547-13", "licence tag", asks=real, effort="1 work steps", tier="exploratory") + \
+    source = head + item("opp-547-13", "licence tag", asks=other, effort="1 work steps", tier="exploratory") + \
         item("opp-547-14", "kinematics", asks=real, effort="1 work steps", extra="- Registry: taken by agent 86, which had no ask of its own to try\n")
     copy = lambda oid, **over: head + item(oid, "kinematics", **{"lane": False, "asks": real, "effort": "1 work steps", "tier": "exploratory", "fit": took, **over})
     ok(check_opportunities({"547": source, "86": copy("opp-86-36")})[1] == 0, "one take, the source keeps its own try")
