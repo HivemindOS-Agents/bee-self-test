@@ -1,0 +1,145 @@
+{
+ "openapi": "3.1.0",
+ "_fixture": "api.hivemindos.app/openapi.json as served 2026-11-26: 5 of its 125 paths, trimmed to the fields the check reads",
+ "servers": [
+  {
+   "url": "https://api.hivemindos.app/v1"
+  }
+ ],
+ "security": [
+  {
+   "bearerApiKey": []
+  }
+ ],
+ "paths": {
+  "/x402/{serviceId}/{operationId}": {
+   "post": {
+    "operationId": "x402.call",
+    "security": [],
+    "responses": {
+     "200": {},
+     "400": {},
+     "401": {},
+     "402": {},
+     "403": {},
+     "409": {},
+     "424": {},
+     "429": {},
+     "503": {}
+    }
+   }
+  },
+  "/x402/web-data/web.search": {
+   "post": {
+    "operationId": "x402.web-data.web.search",
+    "security": [],
+    "x-payment-info": {
+     "price": {
+      "mode": "dynamic",
+      "currency": "USD",
+      "min": "0.01",
+      "max": "0.01"
+     },
+     "protocols": [
+      {
+       "x402": {}
+      }
+     ]
+    },
+    "responses": {
+     "200": {},
+     "400": {},
+     "402": {},
+     "409": {},
+     "503": {}
+    }
+   }
+  },
+  "/x402/token-autopsy/reports.create": {
+   "post": {
+    "operationId": "x402.token-autopsy.reports.create",
+    "security": [],
+    "x-payment-info": {
+     "price": {
+      "mode": "dynamic",
+      "currency": "USD",
+      "min": "0.99",
+      "max": "4.99"
+     },
+     "protocols": [
+      {
+       "x402": {}
+      }
+     ]
+    },
+    "responses": {
+     "200": {},
+     "400": {},
+     "402": {},
+     "409": {},
+     "503": {}
+    }
+   }
+  },
+  "/api-keys": {
+   "get": {
+    "operationId": "apiKeys.list",
+    "security": [
+     {
+      "bearerApiKey": []
+     },
+     {
+      "creditToken": []
+     }
+    ],
+    "responses": {
+     "200": {},
+     "400": {},
+     "401": {},
+     "402": {},
+     "403": {},
+     "409": {},
+     "424": {},
+     "429": {}
+    }
+   },
+   "post": {
+    "operationId": "apiKeys.create",
+    "security": [
+     {
+      "bearerApiKey": []
+     },
+     {
+      "creditToken": []
+     }
+    ],
+    "responses": {
+     "200": {},
+     "400": {},
+     "401": {},
+     "402": {},
+     "403": {},
+     "409": {},
+     "424": {},
+     "429": {}
+    }
+   }
+  },
+  "/catalog": {
+   "get": {
+    "operationId": "catalog.list",
+    "security": [],
+    "responses": {
+     "200": {},
+     "400": {},
+     "401": {},
+     "402": {},
+     "403": {},
+     "409": {},
+     "424": {},
+     "429": {}
+    }
+   }
+  }
+ }
+}

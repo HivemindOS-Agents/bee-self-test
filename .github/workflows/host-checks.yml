@@ -42,6 +42,11 @@
 #                                  at most 48 h old, never by generatedAt; a stale feed that catches up is diffed against
 #                                  the 30-day backfill (tests/test_feed_freshness.py; the live read is report-level, and
 #                                  its last state per feed is kept in the Actions cache between runs)
+#   scripts/x402_encoded_paths.py  Guard 135 (24 Nov §45.7, 25 Nov row 41r3): unpaid requests with encoded path variants
+#                                  (%2F, %2f, %5C, %5c, %252F) on every keyless paid x402 operation in openapi.json never
+#                                  return 2xx (x402 #3850's class). tests/test_x402_encoded_paths.py is required; the live
+#                                  read sends at most 36 unpaid requests a run (6 operations, new routes first, the
+#                                  probed set kept in the Actions cache), and a 2xx or a STOP fails the run
 #   scripts/check_strength.py      HB-067 E: how many of 20 small fixed-seed breaks of a tool's code its own self-test
 #                                  catches; run in a job of its own with no token, on three of 547's tools (report-only)
 #
@@ -66,7 +71,7 @@ on:
     - cron: "40 6 * * *"
   push:
     branches: [main]
-    paths: ["scripts/security_input.py", "scripts/claim_watch.py", "scripts/check_skill_files.py", "tests/test_security_inputs.py", "fixtures/rule-map/**", "fixtures/claim-watch/**", "fixtures/skill-files/**", "scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/opportunity_records.py", "tests/test_opportunity_takes.py", "tests/test_opportunities_48h.py", "fixtures/opportunities/**", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "scripts/repair_receipts.py", "scripts/rule_stops.py", "scripts/kept_rules.py", "scripts/labels.py", "scripts/git_history.py", "scripts/repeat_guard.py", "scripts/rule_lifecycle.py", "scripts/done_paths.py", "scripts/link_registry.py", "scripts/check_strength.py", "scripts/compile_sweep.py", "scripts/workflow_age.py", "scripts/feed_freshness.py", "tests/test_feed_freshness.py", "fixtures/feed-freshness/**", "shadow.json", "link_registry.json", "fixtures/repair-receipts/**", "fixtures/repeat-guard/**", "fixtures/done-paths/**", "fixtures/link-registry/**", "fixtures/check-strength/**", "fixtures/source-match/**", "scripts/lift_run.py", "tests/test_lift_run.py", "lift/**/held-out.json", "lift/**/tasks.json", ".github/workflows/host-checks.yml"]
+    paths: ["scripts/security_input.py", "scripts/claim_watch.py", "scripts/check_skill_files.py", "tests/test_security_inputs.py", "fixtures/rule-map/**", "fixtures/claim-watch/**", "fixtures/skill-files/**", "scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/opportunity_records.py", "tests/test_opportunity_takes.py", "tests/test_opportunities_48h.py", "fixtures/opportunities/**", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "scripts/repair_receipts.py", "scripts/rule_stops.py", "scripts/kept_rules.py", "scripts/labels.py", "scripts/git_history.py", "scripts/repeat_guard.py", "scripts/rule_lifecycle.py", "scripts/done_paths.py", "scripts/link_registry.py", "scripts/check_strength.py", "scripts/compile_sweep.py", "scripts/workflow_age.py", "scripts/feed_freshness.py", "tests/test_feed_freshness.py", "fixtures/feed-freshness/**", "scripts/x402_encoded_paths.py", "tests/test_x402_encoded_paths.py", "fixtures/x402-encoded-paths/**", "shadow.json", "link_registry.json", "fixtures/repair-receipts/**", "fixtures/repeat-guard/**", "fixtures/done-paths/**", "fixtures/link-registry/**", "fixtures/check-strength/**", "fixtures/source-match/**", "scripts/lift_run.py", "tests/test_lift_run.py", "lift/**/held-out.json", "lift/**/tasks.json", ".github/workflows/host-checks.yml"]
 permissions: {}
 jobs:
   fixtures:
@@ -110,6 +115,7 @@ jobs:
           python3 scripts/compile_sweep.py --self-test
           python3 scripts/workflow_age.py --self-test
           python3 -m unittest discover -s tests -p 'test_feed_freshness.py'
+          python3 -m unittest discover -s tests -p 'test_x402_encoded_paths.py'
           python3 -m unittest discover -s tests -p 'test_lift_run.py'
       - name: Live, the 48-hour check (report-only)
         run: |
@@ -210,6 +216,24 @@ jobs:
         with:
           path: ${{ runner.temp }}/feed-state.json
           key: feed-state-${{ github.run_id }}
+      - name: Restore which paid x402 operations were probed before
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ runner.temp }}/x402-probed.json
+          key: x402-probed-${{ github.run_id }}
+          restore-keys: x402-probed-
+      - name: Live, guard 135 encoded paths on keyless paid x402 operations, unpaid (a 2xx or a STOP fails the run at its last step)
+        run: |
+          code=0
+          python3 scripts/x402_encoded_paths.py --state "$RUNNER_TEMP/x402-probed.json" || code=$?
+          if [ "$code" = "2" ]; then echo "guard 135: a paid x402 route answered 2xx unpaid, or openapi.json stopped the run (exit 2)" | tee -a "$RUNNER_TEMP/stops.txt"; fi
+          echo "exit $code (1 is report-only: a request could not be read)"
+      - name: Keep which paid x402 operations were probed
+        if: ${{ !cancelled() }}
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/x402-probed.json
+          key: x402-probed-${{ github.run_id }}
       - name: The security steps above that stopped or did not match fail the run (HB-140)
         if: ${{ !cancelled() }}
         run: |

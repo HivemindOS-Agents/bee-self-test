@@ -21,6 +21,7 @@ WANT = {"empty": EMPTY, "commas": EMPTY, "unparseable": UNPARSEABLE, "absent": E
 EMPTY_STATE = {
     "days": "ClaimWatch.test_newest_day_from_the_index",
     "findings": "RepairReceipts.test_latest_without_findings_stops",
+    "paths": "X402EncodedPaths.test_openapi_four_states_and_no_paths",
     "repairs": "RepairReceipts.test_health_without_repairs_stops",
     "rules": "RuleMap.test_map_with_no_rules_stops",
     "skills": "ClaimWatch.test_zero_pinned_skills_is_not_clean",
@@ -267,6 +268,19 @@ class RepairReceipts(Base):
                 shutil.rmtree(self.tmp, ignore_errors=True); self.tmp.mkdir()
                 repo = self.agent(lessons=STATES[state])
                 self.assertStops(run("scripts/repair_receipts.py", repo, "--health", self.tmp / "health"), EMPTY, "LESSONS.md")
+
+
+class X402EncodedPaths(Base):
+    """scripts/x402_encoded_paths.py --openapi FILE (guard 135): an openapi.json that is empty, unparseable, absent, has
+    no `paths`, or names no keyless paid x402 operation stops before any request is sent."""
+
+    def test_openapi_four_states_and_no_paths(self):
+        cases = dict(STATES, nopaths='{"openapi":"3.1.0"}\n', emptypaths='{"openapi":"3.1.0","paths":{}}\n',
+                     nopaid='{"openapi":"3.1.0","security":[{"k":[]}],"paths":{"/x402/a/b":{"post":{"responses":{"402":{}}}}}}\n')
+        for state, text in cases.items():
+            with self.subTest(state=state):
+                path = self.put(f"openapi-{state}.json", text)
+                self.assertStops(run("scripts/x402_encoded_paths.py", "--openapi", path), WANT.get(state, EMPTY), path.name)
 
 
 if __name__ == "__main__":
