@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "claim-rescore",
+  "repo": "hivepunk-1071",
+  "bundle": "prf-1071-agent-dispatch-c760283",
+  "result": "REPRODUCED",
+  "observed": "passed, 24/24",
+  "scorerCommit": "c7602831cbb4d47f6ae60e13e86f3ee413836f06",
+  "peer": "667",
+  "peer_owner": "0x18388030512c997a1F5dba692Dd682297c387c19",
+  "at": "2026-11-25T10:01:56Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45590984634"
+}
