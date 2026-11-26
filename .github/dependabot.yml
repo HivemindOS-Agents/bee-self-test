@@ -8,3 +8,8 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    # A new major (checkout 4 to 7, on 26 Nov 2026) can change an action's runtime or inputs: it is the dev's call,
+    # made by hand. Dependabot proposes the minor and patch SHAs of the majors pinned here.
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
