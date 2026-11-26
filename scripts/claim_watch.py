@@ -13,6 +13,14 @@ is never a score. This file holds the same checks and replays a day file from th
     python3 scripts/claim_watch.py --coverage DAYFILE      # HB-083 s0: fails when over a tenth of the record sample was
                                                            # not read with no host slowed and time left
     python3 scripts/claim_watch.py --newest INDEX.json     # the newest day in watch/index.json: "<day> <sha256>"
+    python3 scripts/claim_watch.py --lint DAYFILE INDEX.json [RENDER.md]
+                                                           # HB-090 (v6 guards 2, 3, 4 and 8, HB-078): no score field,
+                                                           # no banned word or @handle, no "keys intercepted" on another
+                                                           # class, at most 40 reads a host in a day; the newest day's
+                                                           # render exists and cites its sha256
+    python3 scripts/claim_watch.py --status DAYFILE INDEX.json [RENDER.md]
+                                                           # HB-090's one status: each part, landed or not, from what
+                                                           # the day file carries
     python3 scripts/claim_watch.py --packages [--since ISO] PATH...
                                                            # row 101: the daily re-check of locked and installed
                                                            # packages (package-lock.json, package.json,
@@ -788,6 +796,155 @@ def replay_outward(row, rows):
     return (target, "UNABLE", "not a family this replay reads")
 
 
+# ------------------------------------------------------------------------- HB-090: one Claim Watch, one status, one lint
+# The 23 Nov 2026 v6 update joins HB-078, HB-082, HB-083, HB-085, HB-088 and HB-089 into one product, HB-090, with one
+# CI list (its section 11). The guards a public day file and its render can be held to are here, required in
+# claim-watch.yml, each with a seeded bad case in the self-test:
+#   v6 guard 2   no score, rank, risk, severity, grade, rating or trust_score field in any row (also HB-082's guard)
+#   v6 guard 3   a banned word outside a quoted source verdict, or an @handle, in a row's text or a render's line
+#   v6 guard 4   "keys intercepted" on an incident whose class is not a key interception
+#   v6 guard 8   over 40 reads of one host in a day across every family (HB-083 r2), or over 40 in one family's sample
+#   HB-078       the newest day has its public render, watch/<day>.md, and the render cites the index's sha256
+# and --status says, for each part, whether the day file carries it, in one line a part (HB-090's one status).
+WATCH_SCORE_KEYS = {"score", "rank", "risk", "severity", "grade", "rating", "trust_score", "trustscore", "risk_score"}
+WATCH_BANNED = ("scam", "scammer", "fraud", "lying", "liar", "lie", "fake", "rug", "rugged", "malicious", "criminal", "steal",
+                "stolen", "inflated", "plagiarised", "hacked", "compromised", "breached", "unsafe", "insecure", "affected", "victim")
+WATCH_BANNED_RE = re.compile(r"(?<![\w/@.-])(" + "|".join(WATCH_BANNED) + r")(?![\w/@-])", re.I)
+WATCH_HANDLE = re.compile(r"(?<![\w/.@-])@[A-Za-z0-9_]{1,15}\b(?![/.@-])")
+WATCH_TEXT_KEYS = ("line", "text", "why", "note", "title", "summary", "status")
+WATCH_QUOTE = re.compile(r"\"[^\"]*\"|“[^”]*”|`[^`]*`")
+WATCH_KEYS_INTERCEPTED = re.compile(r"\bkeys?\s+(?:were\s+)?intercepted\b", re.I)
+WATCH_HOST_DAY = 40      # v6 section 4: a daily ceiling of 40 reads a host across all layers
+WATCH_FAMILIES = {
+    # part: (the family a day file carries for it, what it is)
+    "HB-082 agent watchdog: endpoint uptime": ("endpoint", "claimed tools and endpoints respond, with an uptime history"),
+    "HB-085 harm flags": ("harm", "a confirmed harm flag on a skill, MCP, endpoint, wallet or coin"),
+    "HB-088 security-work claims": ("security-work", "a claimed fix, advisory or audit against its public record"),
+    "HB-089 infrastructure": ("infra", "a primary-source incident on a service an agent runs on, and its exposure line"),
+    "P0 dependency documents": ("dependency", "each of Hive's agents' dated dependency document, read and hashed"),
+}
+
+
+def _texts(row):
+    """Every text field of a row, with where it is; quoted verdicts (a key named quote or verdictQuote) are left out."""
+    for key, value in row.items():
+        if key in ("quote", "verdictQuote", "sourceQuote"):
+            continue
+        if isinstance(value, str) and key in WATCH_TEXT_KEYS:
+            yield key, value
+        elif isinstance(value, dict):
+            yield from ((f"{key}.{k}", v) for k, v in _texts(value))
+        elif isinstance(value, list):
+            for item in value:
+                if isinstance(item, dict):
+                    yield from ((f"{key}[].{k}", v) for k, v in _texts(item))
+
+
+def _keys(value):
+    if isinstance(value, dict):
+        for k, v in value.items():
+            yield k
+            yield from _keys(v)
+    elif isinstance(value, list):
+        for item in value:
+            yield from _keys(item)
+
+
+def wording_problems(where, text):
+    bare = WATCH_QUOTE.sub(" ", text)
+    out = [f"{where}: the word {m.group(1)!r} outside a quoted source verdict" for m in WATCH_BANNED_RE.finditer(bare)]
+    out += [f"{where}: an @handle ({m.group(0)})" for m in WATCH_HANDLE.finditer(bare)]
+    return out
+
+
+def day_lint(rows):
+    """v6 guards 2, 3, 4 and 8 on a day file's rows."""
+    out, host_day = [], {}
+    for n, row in enumerate(rows, 1):
+        for key in _keys(row):
+            if str(key).lower() in WATCH_SCORE_KEYS:
+                out.append(f"row {n}: a {key!r} field (Claim Watch never scores or ranks)")
+        for where, text in _texts(row):
+            out += wording_problems(f"row {n} {where}", text)
+            if WATCH_KEYS_INTERCEPTED.search(text) and row.get("incidentClass") != "key_interception":
+                out.append(f"row {n} {where}: 'keys intercepted' on an incident of class {row.get('incidentClass')!r}")
+        for h in row.get("hosts") or [] if isinstance(row.get("hosts"), list) else []:
+            if isinstance(h, dict) and isinstance(h.get("read"), int) and h["read"] > HOST_READS:
+                out.append(f"row {n}: one host read {h['read']} times in the {row.get('family')} sample (at most {HOST_READS})")
+        reads = row.get("hostReads")
+        if isinstance(reads, dict):
+            for host, count in reads.items():
+                if isinstance(count, int) and not isinstance(count, bool):
+                    host_day[host] = host_day.get(host, 0) + count
+    out += [f"{host}: {count} reads in the day across every family (at most {WATCH_HOST_DAY}, HB-083 r2)"
+            for host, count in sorted(host_day.items()) if count > WATCH_HOST_DAY]
+    return out
+
+
+def render_problems(day, sha256, render):
+    """HB-078: the newest day's public render exists, cites its sha256, and keeps the wording rules."""
+    if render is None:
+        return [f"{day}: no public render (watch/{day}.md)"]
+    out = [] if sha256 in render else [f"{day}: its render does not cite the day file's sha256 {sha256}"]
+    for n, line in enumerate(render.splitlines(), 1):
+        if line.lstrip().startswith(">"):
+            continue  # a quoted source verdict
+        out += wording_problems(f"watch/{day}.md:{n}", line)
+    return out
+
+
+def hb090_status(day, rows, render_ok):
+    """One status line a part of HB-090, from what the day file carries."""
+    families = {r.get("family") for r in rows}
+    samples = [r for r in rows if r.get("target") == "sample" and r.get("family") == "record"]
+    out = [("HB-054 base families", "landed" if {"skill", "record", "listing", "advisory"} <= families else "partly",
+            f"families {', '.join(sorted(f for f in families if f))}"),
+           ("HB-078 publish results", "landed" if render_ok else "not landed",
+            f"watch/{day}.md {'cites' if render_ok else 'does not cite'} the day file's sha256; the Explorer tab and the right-of-reply path are host pages"),
+           ("HB-083 s0 read cap", "landed" if samples and all(r.get("hostCap") == HOST_READS for r in samples) else "not landed",
+            f"the record sample runs under hostCap {samples[0].get('hostCap') if samples else None}"),
+           ("HB-083 r2 daily ceiling", "landed" if any(isinstance(r.get("hostReads"), dict) for r in rows) else "not landed",
+            "rows carry hostReads {host: reads} for every family, so a day's reads of one host can be summed")]
+    for part, (family, what) in WATCH_FAMILIES.items():
+        out.append((part, "landed" if family in families else "not landed", f"family {family!r}: {what}"))
+    return out
+
+
+HB090_CASES = 12
+
+
+def hb090_problems():
+    bad = []
+    if not day_lint([{"family": "record", "target": "x", "outcome": "RESOLVES", "score": 7}]):
+        bad.append("a score field fails (v6 guard 2)")
+    if not day_lint([{"family": "harm", "target": "x", "outcome": "FLAG", "nested": {"trust_score": 1}}]):
+        bad.append("a nested trust_score fails")
+    if not day_lint([{"family": "harm", "target": "x", "outcome": "FLAG", "line": "This skill is malicious."}]):
+        bad.append("a banned word in a line fails (v6 guard 3)")
+    if day_lint([{"family": "harm", "target": "x", "outcome": "FLAG", "line": 'Snyk\'s verdict: "malicious"', "quote": "malicious"}]):
+        bad.append("a banned word inside a quoted source verdict passes")
+    if not day_lint([{"family": "infra", "target": "x", "outcome": "INCIDENT", "line": "see @someone's thread"}]):
+        bad.append("an @handle in a line fails")
+    if day_lint([{"family": "advisory", "target": "bankr/bankr-token-scam-analysis@91ec6366", "outcome": "NO_HIT"}]):
+        bad.append("a skill id holding a banned word, and an id@version, are not text")
+    if not day_lint([{"family": "infra", "target": "openrouter", "outcome": "INCIDENT", "incidentClass": "prompt_leak", "line": "Provider keys intercepted upstream"}]):
+        bad.append("'keys intercepted' on a prompt leak fails (v6 guard 4)")
+    if not day_lint([{"family": "skill", "target": "a", "outcome": "PIN_OK", "hostReads": {"raw.githubusercontent.com": 36}},
+                     {"family": "record", "target": "sample", "outcome": "RESOLVES", "hostReads": {"raw.githubusercontent.com": 5}}]):
+        bad.append("41 reads of one host across two families fails (HB-083 r2)")
+    if day_lint([{"family": "skill", "target": "a", "outcome": "PIN_OK", "hostReads": {"raw.githubusercontent.com": 36}},
+                 {"family": "record", "target": "sample", "outcome": "RESOLVES", "hostReads": {"raw.githubusercontent.com": 4}}]):
+        bad.append("40 across the day passes")
+    if not day_lint([{"family": "record", "target": "sample", "outcome": "RESOLVES", "hosts": [{"read": 41}]}]):
+        bad.append("41 reads of one host in a sample fails")
+    sha = "d" * 64
+    if not render_problems("2026-11-26", sha, None) or not render_problems("2026-11-26", sha, "# Claim Watch\nsha256 " + "e" * 64):
+        bad.append("no render, or a render citing another sha256, fails (HB-078)")
+    if render_problems("2026-11-26", sha, f"- Day file sha256: `{sha}`\n- advisories: bankr/bankr-token-scam-analysis@91ec6366: **claim checked**\n> \"malicious\", per the source\n"):
+        bad.append("a good render passes")
+    return bad
+
+
 READ_BUDGET_CASES = 7
 
 
@@ -952,6 +1109,8 @@ def self_test():
         print("FAIL", line)
     bad += read_budget_problems()
     total += READ_BUDGET_CASES
+    bad += hb090_problems()
+    total += HB090_CASES
     print(f"claim watch self-test: {total - len(bad)} of {total} passed")
     return 1 if bad else 0
 
@@ -998,6 +1157,21 @@ if __name__ == "__main__":
         for pkg in report["notRead"]:
             print(f"NOT_READ {pkg['ecosystem']}:{pkg['name']}: OSV could not be read; never counted as clean", file=sys.stderr)
         sys.exit(code)
+    if args[:1] in (["--lint"], ["--status"]) and len(args) in (3, 4):
+        # --lint DAYFILE INDEX [RENDER] / --status DAYFILE INDEX [RENDER]: HB-090's lint and its one status
+        try:
+            _, rows = read_day(args[1])
+            day, digest = newest(args[2])
+        except si.Stop as stop:
+            stopped(stop)
+        render = open(args[3], encoding="utf-8").read() if len(args) == 4 and os.path.exists(args[3]) else None
+        found = day_lint(rows) + render_problems(day, digest, render)
+        if args[0] == "--status":
+            for part, state, why in hb090_status(day, rows, render is not None and digest in render):
+                print(f"{part}: {state} ({why})")
+            sys.exit(0)
+        print("\n".join(found) or f"HB-090 lint: {day}'s {len(rows)} rows and its render keep the rules")
+        sys.exit(1 if found else 0)
     if args[:1] == ["--coverage"] and len(args) == 2:
         try:
             _, rows = read_day(args[1])

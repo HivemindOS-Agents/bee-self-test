@@ -15,6 +15,12 @@
 # fault. Everything is read from public files with no token; nothing in any repository is run, and this job writes
 # nothing.
 #
+# HB-090 (23 Nov v6 update, its section 11; 25 Nov rank 60): the newest day file and its render keep the one lint,
+# required: no score or rank field, no banned word outside a quoted verdict and no @handle, no "keys intercepted" on
+# another incident class, at most 40 reads of one host in the day, and the render exists and cites its sha256 (HB-078).
+# Each part's status (landed or not, from the families the day file carries) is printed in the same step.
+# HB-083r1: tests/test_claim_watch_read_cap.py, a 41st read of one host is refused and counted in coverage.
+#
 # Row 101 (25 Nov 2026 update, guard 262): OSV MAL records are the advisory family's authority, and every day the
 # locked and installed packages (lockfiles, package.json, requirements, MCP configs, SKILL.md files and these
 # workflows, in bee-scouts and the five agents' repositories) are read again against OSV MAL records, naming those new
@@ -27,7 +33,7 @@ on:
     - cron: "10 7 * * *"
   push:
     branches: [main]
-    paths: ["scripts/claim_watch.py", "scripts/security_input.py", "tests/test_security_inputs.py", "tests/test_claim_watch_osv.py", "fixtures/claim-watch/**", ".github/workflows/claim-watch.yml"]
+    paths: ["scripts/claim_watch.py", "scripts/security_input.py", "tests/test_security_inputs.py", "tests/test_claim_watch_osv.py", "tests/test_claim_watch_read_cap.py", "fixtures/claim-watch/**", ".github/workflows/claim-watch.yml"]
 permissions: {}
 jobs:
   replay:
@@ -36,7 +42,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
       - name: Fixtures (required)
@@ -46,6 +52,7 @@ jobs:
           python3 scripts/security_input.py --self-test
           python3 -m unittest discover -s tests -p 'test_security_inputs.py' -k ClaimWatch
           python3 -m unittest discover -s tests -p 'test_claim_watch_osv.py'
+          python3 -m unittest discover -s tests -p 'test_claim_watch_read_cap.py'
       - name: Locked and installed packages against OSV MAL records, new and modified in the last day included (required)
         env:
           # Only for GitHub's public malware advisories, the second source (its rate limit). It writes nothing.
@@ -80,3 +87,11 @@ jobs:
           if [ "$code" = "2" ]; then exit 2; fi
           echo "replay exit $code (1 is report-only: CHANGED, GONE or UNABLE is the world moving, not a fault)"
           python3 scripts/claim_watch.py --coverage "$RUNNER_TEMP/$1.jsonl" || exit $?
+      - name: HB-090, the newest day file and its render against the one lint (required), and each part's one status
+        run: |
+          set -eu
+          base="https://raw.githubusercontent.com/${GITHUB_REPOSITORY_OWNER}/bee-scouts/main/watch"
+          set -- $(python3 scripts/claim_watch.py --newest "$RUNNER_TEMP/index.json")
+          curl -fsS "$base/$1.md" -o "$RUNNER_TEMP/$1.md" || echo "watch/$1.md could not be read: the lint below names a day with no render"
+          python3 scripts/claim_watch.py --status "$RUNNER_TEMP/$1.jsonl" "$RUNNER_TEMP/index.json" "$RUNNER_TEMP/$1.md"
+          python3 scripts/claim_watch.py --lint "$RUNNER_TEMP/$1.jsonl" "$RUNNER_TEMP/index.json" "$RUNNER_TEMP/$1.md"
