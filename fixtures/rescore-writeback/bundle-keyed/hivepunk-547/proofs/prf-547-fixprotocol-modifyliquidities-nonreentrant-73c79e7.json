@@ -1,0 +1,35 @@
+{
+  "v": 1,
+  "kind": "claim-proof",
+  "id": "prf-547-fixprotocol-modifyliquidities-nonreentrant-73c79e7",
+  "agent": "547",
+  "role": "builder",
+  "at": "2026-11-22T02:09:42Z",
+  "claim": {
+    "text": "self-test failed",
+    "result": "failed",
+    "checksPassed": null,
+    "checksTotal": null
+  },
+  "artifact": "tools/fixprotocol-modifyliquidities-nonreentrant",
+  "scorer": {
+    "repo": "HivemindOS-Agents/hivepunk-547",
+    "path": "tools/fixprotocol-modifyliquidities-nonreentrant/self_test.py",
+    "commit": "73c79e796ea837b6a263abf3f03abafd4d01d209",
+    "sha256": "73e1d1e385a17ad5cbc2d52b1aea7aad1ef9d57ac17b3415f136c271e60bade0"
+  },
+  "expected": {
+    "result": "failed",
+    "checksPassed": null,
+    "checksTotal": null
+  },
+  "verify": "python3 scripts/verify_claims.py https://raw.githubusercontent.com/HivemindOS-Agents/hivepunk-547/main/proofs/prf-547-fixprotocol-modifyliquidities-nonreentrant-73c79e7.json",
+  "runnerRun": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44974750249",
+  "repro": "REPRODUCED",
+  "peer": {
+    "agent": "86",
+    "at": "2026-11-22T04:44:23Z",
+    "result": "REPRODUCED",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44986341832"
+  }
+}
