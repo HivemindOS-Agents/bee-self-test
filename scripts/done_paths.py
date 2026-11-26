@@ -13,7 +13,10 @@ A step's commits are the ones after the agent's previous work note and at most S
 Shadow mode, report-only: it changes nothing. Keyless and read-only; nothing in an agent repository is run.
 
     python3 scripts/done_paths.py --self-test                  # fixtures/done-paths/, replayed into a temp git repo
-    python3 scripts/done_paths.py [--since 2026-11-14] DIR...  # clones of hivepunk-<n> with history
+    python3 scripts/done_paths.py [--since 2026-11-14] [--judge-days N] DIR...
+                                                               # clones of hivepunk-<n> with history; every problem
+                                                               # since --since is reported, and with --judge-days only
+                                                               # those of the last N days count for the exit
 
 Exit 0 when every Done build note holds, 1 when one does not, 2 when a clone could not be read.
 """
@@ -137,7 +140,13 @@ def self_test():
             bad.append(f"{case['name']}: got {g}, want {w}")
     if notes != history["doneBuildNotes"]:
         bad.append(f"Done build notes: got {notes}, want {history['doneBuildNotes']}")
-    total = len(history["cases"]) + 1
+    # --judge-days: every problem is reported, and only those inside the window count for the exit. 632's 20 Nov notes
+    # (before the host's 22 Nov fix) judged on 29 Nov with a 7-day window are history; one of 28 Nov is not.
+    rows = [{"at": "2026-11-20T23:46:15Z", "note": "a"}, {"at": "2026-11-28T10:00:00Z", "note": "b"}]
+    inside, before = git_history.judged(rows, 7, now=git_history.ts("2026-11-29T06:40:00Z"))
+    if [r["note"] for r in inside] != ["b"] or [r["note"] for r in before] != ["a"] or git_history.judged(rows, None) != (rows, []):
+        bad.append(f"the judging window: got {inside}, {before}")
+    total = len(history["cases"]) + 2
     for line in bad:
         print("FAIL", line)
     print(f"done paths self-test: {total - len(bad)} of {total} passed")
@@ -147,10 +156,12 @@ def self_test():
 def main(argv):
     if argv[:1] == ["--self-test"]:
         return self_test()
-    since, repos, it = SINCE, [], iter(argv)
+    since, days, repos, it = SINCE, None, [], iter(argv)
     for a in it:
         if a == "--since":
             since = next(it)
+        elif a == "--judge-days":
+            days = int(next(it))
         else:
             repos.append(a)
     if not repos:
@@ -165,14 +176,17 @@ def main(argv):
             unread += 1
             print(f"could not read {repo}: {error}", file=sys.stderr)
             continue
-        reports.append({"agent": n, "doneBuildNotes": notes, **summary(problems), "problems": problems})
-    print(json.dumps({"since": since, "mode": "shadow", "agents": reports}, indent=2))
+        inside, before = git_history.judged(problems, days)
+        reports.append({"agent": n, "doneBuildNotes": notes, **summary(problems), "problems": problems, "judged": len(inside), "history": len(before)})
+    print(json.dumps({"since": since, "judgeDays": days, "mode": "shadow", "agents": reports}, indent=2))
     for r in reports:
         print(f"hivepunk-{r['agent']}: {r['doneBuildNotes']} Done build notes, {r['notes']} fail: {r['done-without-tool-commit']} done-without-tool-commit, "
               f"{r['done-without-folder']} done-without-folder", file=sys.stderr)
     total = sum(len(r["problems"]) for r in reports)
-    print(f"done paths: {sum(r['notes'] for r in reports)} of {sum(r['doneBuildNotes'] for r in reports)} Done build notes fail, {total} problems, in {len(reports)} agents", file=sys.stderr)
-    return 2 if unread else 1 if total else 0
+    judged = sum(r["judged"] for r in reports)
+    window = f"; {judged} in the last {days} days count, {total - judged} before them are history" if days is not None else ""
+    print(f"done paths: {sum(r['notes'] for r in reports)} of {sum(r['doneBuildNotes'] for r in reports)} Done build notes fail, {total} problems, in {len(reports)} agents{window}", file=sys.stderr)
+    return 2 if unread else 1 if judged else 0
 
 
 if __name__ == "__main__":

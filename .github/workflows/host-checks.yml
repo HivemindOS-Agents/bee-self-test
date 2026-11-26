@@ -35,6 +35,9 @@
 #                                  date at most 14 days out, and an agent's preflight logs have not gone quiet (shadow)
 #   scripts/done_paths.py          HB-067 G: a build step's note headed Done changed something under tools/ and names
 #                                  only tools/ folders that exist (shadow)
+#   --judge-days 7                 rule_stops, repeat_guard and done_paths report everything since their start date,
+#                                  and only the last 7 days decide their exit: their shadow.json metrics are per day,
+#                                  and a note or dispatch from before the host's fix can never be undone
 #   scripts/link_registry.py       HB-067 C: every hivemindos.app link in the agents' repositories is a shape in
 #                                  link_registry.json, and one sample a shape answers (shadow)
 #   scripts/feed_freshness.py      25 Nov update row 102 (guard 263, replacing 24 Nov guard 26): a feed is current only
@@ -162,7 +165,7 @@ jobs:
           python3 scripts/live_gate.py run "HB-059 linker skip" -- python3 scripts/opportunities_hb060.py --linker "$RUNNER_TEMP"/history/hivepunk-*
       - name: Live, HB-063 what followed each stop on a rule, from each agent repository's history (report-only until its decide-by date)
         run: |
-          python3 scripts/live_gate.py run "HB-063 rule_stops 24-hour rule" -- python3 scripts/rule_stops.py "$RUNNER_TEMP"/history/hivepunk-*
+          python3 scripts/live_gate.py run "HB-063 rule_stops 24-hour rule" -- python3 scripts/rule_stops.py --judge-days 7 "$RUNNER_TEMP"/history/hivepunk-*
       - name: Live, HB-061 the stamps on the kept runner records, and how many would block (observe until its decide-by date)
         run: |
           python3 scripts/live_gate.py run "HB-061 base_check stamps" -- python3 scripts/base_check.py stamps results
@@ -199,7 +202,7 @@ jobs:
           for d in "$RUNNER_TEMP"/history/hivepunk-*; do
             git -C "$d" fetch --quiet --unshallow --filter=blob:none origin || python3 scripts/live_gate.py unread "agent history" "all of $d's history"
           done
-          python3 scripts/live_gate.py run "HB-067 B repeat_guard" -- python3 scripts/repeat_guard.py --since 2026-11-14 "$RUNNER_TEMP"/history/hivepunk-*
+          python3 scripts/live_gate.py run "HB-067 B repeat_guard" -- python3 scripts/repeat_guard.py --since 2026-11-14 --judge-days 7 "$RUNNER_TEMP"/history/hivepunk-*
       - name: Live, B-08r1 the commit-time gates D1, D5 and D22 on the five agents' tools (folders changed in 24 h daily, every folder on Mondays; report-only until its decide-by date)
         run: |
           every=""; [ "$(date -u +%u)" = "1" ] && every="--all"
@@ -214,7 +217,7 @@ jobs:
           python3 scripts/live_gate.py run "L52 compile_sweep" -- python3 scripts/compile_sweep.py "$RUNNER_TEMP"/history/hivepunk-*
       - name: Live, HB-067 G Done build notes against what their step committed (shadow until its decide-by date)
         run: |
-          python3 scripts/live_gate.py run "HB-067 G done_paths" -- python3 scripts/done_paths.py --since 2026-11-14 "$RUNNER_TEMP"/history/hivepunk-*
+          python3 scripts/live_gate.py run "HB-067 G done_paths" -- python3 scripts/done_paths.py --since 2026-11-14 --judge-days 7 "$RUNNER_TEMP"/history/hivepunk-*
       - name: Live, HB-067 A every prose rule and shadow check has a decide-by date, and preflight logs go on (shadow until its decide-by date)
         run: |
           python3 scripts/live_gate.py run "HB-067 A rule_lifecycle" -- python3 scripts/rule_lifecycle.py "$RUNNER_TEMP"/history/hivepunk-*

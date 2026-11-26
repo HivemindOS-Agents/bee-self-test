@@ -20,7 +20,9 @@ counted, and each is said on its own line per agent.
 Read-only and keyless. Nothing in an agent repository is run.
 
     python3 scripts/rule_stops.py --self-test          # the fixtures only, no network
-    python3 scripts/rule_stops.py DIR...               # clones of hivepunk-<n> with history (work/ and tools/)
+    python3 scripts/rule_stops.py [--judge-days N] DIR...
+                                                       # clones of hivepunk-<n> with history (work/ and tools/);
+                                                       # with --judge-days only the last N days decide the exit
 
 Exit 0 when no stop was followed by any of the three, 1 when one was, 2 when a clone could not be read.
 """
@@ -32,6 +34,7 @@ import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import git_history  # noqa: E402
 import labels  # noqa: E402
 
 WINDOW_HOURS = 24
@@ -157,6 +160,12 @@ def read_repo(repo, since="2026-11-21T00:00:00Z"):
     return stops, notes, adds, bad
 
 
+def note_time(line):
+    """The time in a work note's name ("work/2026-11-21-0608-..."), for a problem line that starts with it, or None."""
+    m = re.match(r"^work/(\d{4}-\d\d-\d\d)-(\d\d)(\d\d)-", line or "")
+    return f"{m.group(1)}T{m.group(2)}:{m.group(3)}:00Z" if m else None
+
+
 def self_test():
     bad = []
     # 632's stop of 06:08 UTC 21 Nov 2026, as its note was written.
@@ -219,7 +228,12 @@ def self_test():
         bad.append(f"what counts after a stop, by play and Done: got {got}")
     if parse_stop(note).get("play") != BUILD_PLAY:
         bad.append(f"632's note's play: got {parse_stop(note).get('play')}")
-    total = 9
+    # --judge-days: a finding is reported always and counts for the exit only inside the window (HB-063's metric, "a 0
+    # for 7 days retires it"). A 23 Nov re-attempt judged on 1 Dec with 7 days is history; one of 26 Nov is not.
+    inside, before = git_history.judged([{"at": "2026-11-23T14:11:11Z"}, {"at": "2026-11-26T10:09:31Z"}], 7, now=ts("2026-12-01T06:40:00Z"))
+    if [r["at"] for r in inside] != ["2026-11-26T10:09:31Z"] or len(before) != 1:
+        bad.append(f"the judging window: got {inside}, {before}")
+    total = 10
     for line in bad:
         print("FAIL", line)
     print(f"rule stops self-test: {total - len(bad)} of {total} passed")
@@ -232,8 +246,12 @@ if __name__ == "__main__":
     if not sys.argv[1:]:
         print(__doc__)
         sys.exit(2)
-    report, unread, total = [], 0, 0
-    for repo in sys.argv[1:]:
+    args, days = sys.argv[1:], None
+    if "--judge-days" in args:
+        i = args.index("--judge-days")
+        days, args = int(args[i + 1]), args[:i] + args[i + 2:]
+    report, unread, total, judged = [], 0, 0, 0
+    for repo in args:
         n = re.sub(r"^hivepunk-", "", os.path.basename(os.path.normpath(repo)))
         try:
             stops, notes, adds, bad = read_repo(repo)
@@ -244,9 +262,11 @@ if __name__ == "__main__":
         view = stop_view(stops, notes, adds)
         found = view["findings"]
         total += len(found) + len(bad)
+        judged += len(git_history.judged(found, days)[0]) + len(git_history.judged(bad, days, at=lambda line: note_time(line))[0])
         report.append({"agent": n, "notes": len(notes), "stops": [{"at": s["at"].strftime("%Y-%m-%dT%H:%M:%SZ"), "rule": s["rule"], "folder": s["folder"], "note": s["path"]} for s in view["counted"]],
                        "afterStop": found, "noteProblems": bad, "paused": view["paused"], "blocked": view["blocked"]})
     print(json.dumps({"window_hours": WINDOW_HOURS, "agents": report}, indent=2))
     labels.print_lines(report)
-    print(f"rule stops: {sum(len(r['stops']) for r in report)} stops in {len(report)} agents, {total} findings", file=sys.stderr)
-    sys.exit(2 if unread else 1 if total else 0)
+    window = f"; {judged} in the last {days} days count, {total - judged} before them are history" if days is not None else ""
+    print(f"rule stops: {sum(len(r['stops']) for r in report)} stops in {len(report)} agents, {total} findings{window}", file=sys.stderr)
+    sys.exit(2 if unread else 1 if judged else 0)

@@ -34,12 +34,13 @@ host wrote buckets) one that reads "Skipped:", "Stopped on ..." or "That is a st
 went to one of those buckets.
 
     python3 scripts/repeat_guard.py --self-test       # the fixtures only (fixtures/repeat-guard/), no network
-    python3 scripts/repeat_guard.py [--since 2026-11-14] [--runner .] [--health-dir DIR] [--host-fix S=T] DIR...
+    python3 scripts/repeat_guard.py [--since 2026-11-14] [--judge-days N] [--runner .] [--health-dir DIR] [--host-fix S=T] DIR...
                                                       # clones of hivepunk-<n> with history; health/<n>.json is read
                                                       # live unless --health-dir names a bee-scouts health/ folder
 
 Shadow mode, report-only: it holds nothing. Exit 0 when nothing would be held, 1 when something would, 2 when a clone
-could not be read.
+could not be read. With --judge-days N every repeat since --since is still read and reported (a third try needs the
+two before it), and only what was held, misrouted or failed to land in the last N days decides the exit.
 """
 import datetime
 import json
@@ -183,7 +184,7 @@ def guard_view(failures, released=None, source=None):
     kept = [f for f in failures if id(f) not in held_rule and f.get("bucket") not in HELD_BUCKETS and not HELD_TEXT.search(f.get("cause") or "")]
     counted, funds, host = labels.split(kept, text=lambda f: f.get("row", f))
     keys = guard(counted, source, released)
-    would = [{"subject": k["subject"], "cause": k["cause"], "tries": k["tries"], "wouldHold": len(k["held"]), "heldFrom": stamp(k["held"][0]["at"]),
+    would = [{"subject": k["subject"], "cause": k["cause"], "tries": k["tries"], "wouldHold": len(k["held"]), "heldFrom": stamp(k["held"][0]["at"]), "heldAt": [stamp(h["at"]) for h in k["held"]],
               "first": stamp(k["first"]), "last": stamp(k["last"]), "releases": k["releases"], "routeTo": "host_cause" if k["hostCause"] else "agent"}
              for k in keys if k["held"]]
     return {"failures": len(counted), "keys": len(keys), "wouldHold": would, "misrouted": misrouted(counted) if source == "lessons" else [],
@@ -458,21 +459,57 @@ def self_test():
     view = guard_view(skips, source="lessons")
     if view["wouldHold"] or view["rulesThatHeld"] != 11:
         bad.append(f"a rule that held is not a repeat: got {view['wouldHold']}")
-    total = 5 + 3 + 2 + 2 + 1 + 1 + 1 + 3 + 2 + 1 + 1 + 1
+    # --judge-days: every repeat since --since is reported, and only the dispatches held in the last N days count for
+    # the exit. 547's 12 patch failures (21-22 Nov) judged on 29 Nov with 7 days are history; a hold on 28 Nov is not.
+    held = lambda *iso: [T(t) for t in iso]
+    report = {"agent": "1", "paidAfterPause": [], "sources": {
+        "lessons": {"wouldHold": [{"subject": "research", "routeTo": "agent", "heldAt": [stamp(t) for t in held("2026-11-20T01:00:00Z", "2026-11-28T01:00:00Z")]}],
+                    "misrouted": [{"at": "2026-11-21T04:06:00Z"}]},
+        "runner": {"wouldHold": [{"subject": "x", "routeTo": "agent", "heldAt": [stamp(T("2026-11-21T03:11:27Z"))]}], "misrouted": [],
+                   "writeNeverLanded": [{"tool": "x", "last": "2026-11-22T02:09:42Z"}]}}}
+    got = exit_counts([report], 7, now=T("2026-11-29T06:40:00Z"))
+    if got != {"keys": 1, "dispatches": 1, "agent": 1, "misrouted": 0, "landed": 0, "paid": 0}:
+        bad.append(f"the judging window: got {got}")
+    if exit_counts([report], None) != {"keys": 2, "dispatches": 3, "agent": 2, "misrouted": 1, "landed": 1, "paid": 0}:
+        bad.append(f"no window judges every row: got {exit_counts([report], None)}")
+    total = 5 + 3 + 2 + 2 + 1 + 1 + 1 + 3 + 2 + 1 + 1 + 1 + 2
     for line in bad:
         print("FAIL", line)
     print(f"repeat guard self-test: {total - len(bad)} of {total} passed")
     return 1 if bad else 0
 
 
+def exit_counts(reports, days, now=None):
+    """What the exit is decided on: the repeated keys with a dispatch held, the held dispatches, the agent's keys, the
+    misrouted lines, the writes that never landed and the paid plays after a pause, each counted only inside the last
+    `days` days (git_history.judged; days None counts every one). A paid play after a pause carries no time and is
+    always counted."""
+    keys = dispatches = agent = mis = landed = 0
+    for r in reports:
+        for name, v in r["sources"].items():
+            for w in v["wouldHold"]:
+                inside, _ = git_history.judged(w.get("heldAt") or [w.get("heldFrom")], days, now, at=lambda t: t)
+                if inside:
+                    keys += 1
+                    dispatches += len(inside)
+                    agent += w["routeTo"] == "agent"
+            mis += len(git_history.judged(v.get("misrouted") or [], days, now)[0])
+            landed += len(git_history.judged(v.get("writeNeverLanded") or [], days, now, at=lambda f: f.get("last"))[0])
+    paid = sum(len(r["paidAfterPause"]) for r in reports)
+    return {"keys": keys, "dispatches": dispatches, "agent": agent, "misrouted": mis, "landed": landed, "paid": paid}
+
+
 def main(argv):
     if argv[:1] == ["--self-test"]:
         return self_test()
     since, runner, health_dir, fixes, repos = SINCE, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."), None, [], []
+    days = None
     it = iter(argv)
     for a in it:
         if a == "--since":
             since = next(it)
+        elif a == "--judge-days":
+            days = int(next(it))
         elif a == "--runner":
             runner = next(it)
         elif a == "--health-dir":
@@ -492,7 +529,7 @@ def main(argv):
         except (OSError, ValueError) as error:
             unread += 1
             print(f"could not read {repo}: {error}", file=sys.stderr)
-    print(json.dumps({"since": since, "limit": LIMIT, "mode": "shadow", "agents": reports}, indent=2, default=str))
+    print(json.dumps({"since": since, "judgeDays": days, "limit": LIMIT, "mode": "shadow", "agents": reports}, indent=2, default=str))
     held = sum(len(v["wouldHold"]) for r in reports for v in r["sources"].values())
     dispatches = sum(w["wouldHold"] for r in reports for v in r["sources"].values() for w in v["wouldHold"])
     agent = sum(1 for r in reports for v in r["sources"].values() for w in v["wouldHold"] if w["routeTo"] == "agent")
@@ -506,7 +543,12 @@ def main(argv):
     labels.print_lines(reports)
     print(f"repeat guard: {held} repeated causes ({agent} the agent's), {dispatches} dispatches would be held, {mis} misrouted lines, {landed} writes that never landed, "
           f"{paid} paid plays after a funding pause, in {len(reports)} agents", file=sys.stderr)
-    return 2 if unread else 1 if held or mis or landed or paid else 0
+    judged = exit_counts(reports, days)
+    if days is not None:
+        print(f"repeat guard, the last {days} days (what the exit is decided on): {judged['keys']} repeated causes ({judged['agent']} the agent's), "
+              f"{judged['dispatches']} dispatches would be held, {judged['misrouted']} misrouted lines, {judged['landed']} writes that never landed, "
+              f"{judged['paid']} paid plays after a funding pause", file=sys.stderr)
+    return 2 if unread else 1 if judged["keys"] or judged["misrouted"] or judged["landed"] or judged["paid"] else 0
 
 
 if __name__ == "__main__":

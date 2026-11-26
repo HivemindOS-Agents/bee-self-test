@@ -13,6 +13,27 @@ def ts(text):
     return datetime.datetime.fromisoformat(text.replace("Z", "+00:00")).astimezone(datetime.timezone.utc)
 
 
+def judged(rows, days, now=None, at=lambda r: r["at"]):
+    """(judged, history): the rows whose time is at most `days` days before now, and the older ones. A check that
+    reads a pinned --since reports every row, and with --judge-days N only the rows of the last N days count for its
+    exit: the shadow.json metrics are per day, and a row from before the host's fix can never be undone (already-sent
+    notes are not rewritten, 20 Nov 2026 spec, Part 5 section 9). days None: every row is judged. A row with no
+    readable time is judged."""
+    rows = list(rows)
+    if days is None:
+        return rows, []
+    cutoff = (now or datetime.datetime.now(datetime.timezone.utc)) - datetime.timedelta(days=days)
+    inside, before = [], []
+    for r in rows:
+        t = at(r)
+        try:
+            t = ts(t) if isinstance(t, str) else t
+        except ValueError:
+            t = None
+        (before if t is not None and t < cutoff else inside).append(r)
+    return inside, before
+
+
 def git(repo, *args, stdin=None, env=None, check=True):
     out = subprocess.run(["git", "-C", repo, *args], input=stdin, capture_output=True, text=True, timeout=600,
                          env={**os.environ, "GIT_TERMINAL_PROMPT": "0", **(env or {})})
