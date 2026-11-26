@@ -9,7 +9,9 @@ headed Done. This reads each agent's public history and says, for every stop, wh
 within 24 hours:
 
   reattempt   another stop on the same rule and the same folder
-  claim       a later work note that is not a stop and whose title names the stopped folder
+  claim       a later work note headed Done whose title names the stopped folder and whose own commit adds nothing
+              under it (a research note that only names it is not the same goal, and is not counted)
+  reattempt   (also) a later note of the stop's own play at the folder that is not Done, a draft
   reroute     a file committed under the stopped folder after the stop (the folder exists after all)
 
 A stop for a funds pause or a host limit (labels.py) is the holder's or the host's, not the agent's: it is not
@@ -37,6 +39,10 @@ STOP_NOTE = re.compile(r"^work/\d{4}-\d\d-\d\d-\d{4}-stopped-on-")
 TITLE = re.compile(r"^# Stopped on (?P<rule>[A-Za-z0-9:_.-]+): (?P<why>.*)$")
 FOLDER = re.compile(r"Nothing was committed under (tools/[A-Za-z0-9._-]+)/")
 STATUS = "Stopped on a rule: nothing was built or published"
+PLAY = re.compile(r"\bspent \S+ on (?P<play>[^\n]+?)\s*$", re.M)
+DONE = re.compile(r"^\*\*Done\*\*\s*$", re.M)
+BUILD_PLAY = "Build a small tool in its own repository"
+RESEARCH_PLAY = "Research a token, protocol or project"
 
 
 def ts(text):
@@ -55,7 +61,13 @@ def parse_stop(text):
         problems.append("its status line does not say it was stopped on a rule")
     if re.search(r"^\*\*Done\b", text, re.M):
         problems.append("it says Done")
-    return {"rule": title["rule"], "why": title["why"][:160], "folder": folder.group(1) if folder else None, "problems": problems}
+    return {"rule": title["rule"], "why": title["why"][:160], "folder": folder.group(1) if folder else None, "problems": problems, "play": play_of(text)}
+
+
+def play_of(text):
+    """The play a work note's step spent on ("spent $0.01 on Build a small tool in its own repository"), or None."""
+    m = PLAY.search(text or "")
+    return m.group("play").strip() if m else None
 
 
 def names(title, folder):
@@ -77,13 +89,33 @@ def after_stops(stops, notes, adds):
         if not stop["folder"]:
             continue
         for note in notes:
-            if not note["stop"] and stop["at"] < note["at"] <= until and names(note["title"], stop["folder"]):
-                found.append({"kind": "claim", "stop": stop["path"], "at": note["at"].strftime("%Y-%m-%dT%H:%M:%SZ"), "what": note["path"]})
+            if note["stop"] or not stop["at"] < note["at"] <= until or not names(note["title"], stop["folder"]):
+                continue
+            kind = after_note(stop, note, adds)
+            if kind:
+                found.append({"kind": kind, "stop": stop["path"], "at": note["at"].strftime("%Y-%m-%dT%H:%M:%SZ"), "what": note["path"]})
         added = sorted((a for a in adds if a["path"].startswith(stop["folder"] + "/") and a["at"] > stop["at"]), key=lambda a: a["at"])
         if added:
             found.append({"kind": "reroute", "stop": stop["path"], "at": added[0]["at"].strftime("%Y-%m-%dT%H:%M:%SZ"), "what": f"{len(added)} file(s) added under {stop['folder']}/, first {added[0]['path']}",
                           "within24h": added[0]["at"] <= until})
     return found
+
+
+def after_note(stop, note, adds):
+    """What a later note that names the stopped folder is (20 Nov 2026 spec, Part 5 §1.4, §9 and §11): "claim" when it
+    is headed Done and its own commit adds nothing under the folder; "reattempt" when it is the stop's own play at the
+    folder again, not Done; None for a research note that only names the target (not the same goal) or a Done note
+    whose commit holds a file under it (that file is the reroute). A note with no play or Done marker read (an older
+    fixture) is taken as a Done build note, as the check read every note before."""
+    play, done = note.get("play"), note.get("done", True)
+    if play == RESEARCH_PLAY:
+        return None
+    if done:
+        same_commit = note.get("commit") is not None and any(a.get("commit") == note["commit"] and a["path"].startswith(stop["folder"] + "/") for a in adds)
+        return None if same_commit else "claim"
+    if play and play == stop.get("play"):
+        return "reattempt"
+    return None
 
 
 def stop_view(stops, notes, adds):
@@ -111,12 +143,12 @@ def read_repo(repo, since="2026-11-21T00:00:00Z"):
             commit, when = line[1:].split(" ", 1)
             when = ts(when)
         elif line.startswith("tools/"):
-            adds.append({"at": when, "path": line})
+            adds.append({"at": when, "path": line, "commit": commit})
         elif line.startswith("work/") and line.endswith(".md"):
             text = git(repo, "show", f"{commit}:{line}")
             stop = parse_stop(text)
             title = text.splitlines()[0].lstrip("# ").strip() if text else ""
-            notes.append({"at": when, "path": line, "title": title, "stop": stop is not None})
+            notes.append({"at": when, "path": line, "title": title, "stop": stop is not None, "play": play_of(text), "done": bool(DONE.search(text or "")), "commit": commit})
             if stop:
                 stops.append({"at": when, "path": line, **stop})
                 bad += [f"{line}: {p}" for p in stop["problems"]]
@@ -169,7 +201,25 @@ def self_test():
     bare = {"at": at("06:00"), "path": "work/a.md", "rule": "hb043:topic", "folder": None}
     if [f["kind"] for f in after_stops([bare, dict(bare, at=at("07:00"), path="work/b.md")], notes, adds)] != ["reattempt"]:
         bad.append("a stop with no folder")
-    total = 7
+    # 20 Nov spec, Part 5 §9 and §11: a research note that only names the target is not the same goal; a draft of the
+    # same play at it is a re-attempt, not a claim; a Done note of another play that names it (547 told other agents at
+    # 00:13 UTC 24 Nov it had finished a folder the guard stopped at 15:15 UTC 23 Nov) is a claim; a Done note whose own
+    # commit adds a file under it is no claim. Live: 1071's, 547's and 632's research notes after a stop read as claims.
+    stop547 = {"at": ts("2026-11-23T15:15:29Z"), "path": "work/2026-11-23-1515-stopped-on-guard-sibling-folder-a.md", "rule": "guard:sibling-folder",
+               "folder": "tools/uniswap-v4-latest-release-seed-row", "play": BUILD_PLAY}
+    later = lambda iso, title, play, done, commit="c": {"at": ts(iso), "path": f"work/{iso[:10]}-{iso[11:13]}{iso[14:16]}-x.md", "title": title, "stop": False, "play": play, "done": done, "commit": commit}
+    notes547 = [later("2026-11-24T00:13:22Z", "Told other agents on 1F916: Build tools/uniswap-v4-latest-release-seed-row/ as its own new folder", "Tell other agents what it finished", True),
+                later("2026-11-24T01:01:02Z", "Build tools/uniswap-v4-latest-release-seed-row/ as its own new folder only", BUILD_PLAY, False),
+                later("2026-11-24T02:00:00Z", "Published a research note on tools/uniswap-v4-latest-release-seed-row", RESEARCH_PLAY, True),
+                later("2026-11-24T03:00:00Z", "Built tools/uniswap-v4-latest-release-seed-row with its files", BUILD_PLAY, True, commit="d")]
+    adds547 = [{"at": ts("2026-11-24T03:00:00Z"), "path": "tools/uniswap-v4-latest-release-seed-row/README.md", "commit": "d"}]
+    got = [(f["kind"], f["what"].split(",")[0]) for f in after_stops([stop547], notes547, adds547)]
+    want = [("reattempt", "work/2026-11-24-0101-x.md"), ("claim", "work/2026-11-24-0013-x.md"), ("reroute", "1 file(s) added under tools/uniswap-v4-latest-release-seed-row/")]
+    if sorted(got) != sorted(want):
+        bad.append(f"what counts after a stop, by play and Done: got {got}")
+    if parse_stop(note).get("play") != BUILD_PLAY:
+        bad.append(f"632's note's play: got {parse_stop(note).get('play')}")
+    total = 9
     for line in bad:
         print("FAIL", line)
     print(f"rule stops self-test: {total - len(bad)} of {total} passed")
