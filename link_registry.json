@@ -144,6 +144,42 @@
       "kind": "auth",
       "sample": "https://api.hivemindos.app/mcp",
       "where": "the MCP endpoint; auth, allowed: it answers 401 with no token, by design"
+    },
+    {
+      "shape": "https://agents.hivemindos.app/agents/{n}/registration.json",
+      "kind": "page",
+      "sample": "https://agents.hivemindos.app/agents/547/registration.json",
+      "where": "an agent's ERC-8004 registration file, cited by the host's launch/LAUNCH-READINESS.json (added 27 Nov 2026; answered 200)"
+    },
+    {
+      "shape": "https://hivemindos.app/superagent-api",
+      "kind": "page",
+      "sample": "https://hivemindos.app/superagent-api/",
+      "where": "the Superagent API page, cited in scout notes (added 27 Nov 2026; answered 200)"
+    },
+    {
+      "shape": "https://hivemindos.app/llms.txt",
+      "kind": "page",
+      "sample": "https://hivemindos.app/llms.txt",
+      "where": "the site's llms.txt, cited in scout notes (added 27 Nov 2026; answered 200)"
+    },
+    {
+      "shape": "https://hivemindos.app/buybacks",
+      "kind": "page",
+      "sample": "https://hivemindos.app/buybacks/",
+      "where": "the buybacks ledger page, cited in scout notes (added 27 Nov 2026; answered 200)"
+    },
+    {
+      "shape": "https://hivemindos.app/hivepunkz/agent/SKILL.md",
+      "kind": "page",
+      "sample": "https://hivemindos.app/hivepunkz/agent/SKILL.md",
+      "where": "the hivepunk-agent skill, cited in scout notes (added 27 Nov 2026; answered 200)"
+    },
+    {
+      "shape": "https://hivemindos.app/hivepunkz/mint/SKILL.md",
+      "kind": "page",
+      "sample": "https://hivemindos.app/hivepunkz/mint/SKILL.md",
+      "where": "the HivePunkz mint skill, cited in scout notes (added 27 Nov 2026; answered 200)"
     }
   ]
 }

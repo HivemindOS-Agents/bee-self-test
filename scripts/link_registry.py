@@ -30,7 +30,10 @@ import git_history  # noqa: E402
 HERE = os.path.dirname(os.path.abspath(__file__))
 REGISTRY = os.path.join(HERE, "..", "link_registry.json")
 FIXTURES = os.path.join(HERE, "..", "fixtures", "link-registry")
-LINK = re.compile(r"https?://(?:[a-z0-9-]+\.)*hivemindos\.app(?:/[^\s\"'<>()\[\]{}`,|\\]*)?", re.I)
+LINK = re.compile(r"https?://(?:[a-z0-9-]+\.)*hivemindos\.app(?:/[^\s\"'<>()\[\]{}`,|\\]*)?(?P<hole><[A-Za-z][A-Za-z _-]{0,20}>|\{[A-Za-z_]{1,20}\})?", re.I)
+# A placeholder written straight after a link's last slash ("/bee/<number>", "/agents/hivepunkz/{n}") stands for one
+# path segment: an agent number when it names one, else a slug. The link is that shape, never its parent.
+NUMBER_HOLES = ("n", "number", "num", "id", "agent", "bee", "agent number", "agent id")
 KINDS = ("page", "redirect", "auth")
 TIMEOUT = 10
 PARTS = {"{n}": r"\d+", "{address}": r"0x[0-9a-fA-F]{40}", "{slug}": r"[A-Za-z0-9._-]+"}
@@ -131,13 +134,21 @@ def survey(links, registry, get=fetch):
 
 
 def links_in(text):
-    return [m.group(0) for m in LINK.finditer(text or "")]
+    out = []
+    for m in LINK.finditer(text or ""):
+        url, hole = m.group(0), m.group("hole")
+        if hole:
+            url = url[: -len(hole)]
+            if url.endswith("/"):
+                url += "0" if hole[1:-1].strip().lower() in NUMBER_HOLES else "x"
+        out.append(url)
+    return out
 
 
 def repo_links(repo):
     """(file, url) for every hivemindos.app link in the tree at HEAD (text files only)."""
     git_history.prefetch_head(repo)
-    out = subprocess.run(["git", "-C", repo, "grep", "-I", "-o", "-E", "-i", r"https?://([a-z0-9-]+\.)*hivemindos\.app[^][[:space:]\"'<>(){}`,|\\]*", "HEAD", "--", "."],
+    out = subprocess.run(["git", "-C", repo, "grep", "-I", "-o", "-E", "-i", r"https?://([a-z0-9-]+\.)*hivemindos\.app[^][[:space:]\"'<>(){}`,|\\]*(<[A-Za-z][A-Za-z _-]{0,20}>|\{[A-Za-z_]{1,20}\})?", "HEAD", "--", "."],
                          capture_output=True, text=True, timeout=600)
     if out.returncode not in (0, 1):
         raise OSError(out.stderr.strip()[:200])
@@ -188,7 +199,15 @@ def self_test():
         bad.append(f"21 Nov's footer: got {unregistered}, {dead}")
     if not answers("auth", 401, False) or answers("page", 401, False) or answers("redirect", 404, True):
         bad.append("what each kind answers")
-    total = 1 + 7 + 1 + 2 + 1 + 1
+    # A shape written out in prose with a placeholder (a scout's "the card at https://hivemindos.app/bee/<number>")
+    # is that shape, never its parent: 632, 547 and 1071's scout notes read as the 404 /agents/hivepunkz and /bee.
+    prose = "cards at https://hivemindos.app/agents/hivepunkz/<number> and https://hivemindos.app/bee/<n>, or {n}: https://hivemindos.app/bee/{n}."
+    got = [(match(u) or {}).get("shape") for u in links_in(prose)]
+    if got != ["https://hivemindos.app/agents/hivepunkz/{n}", "https://hivemindos.app/bee/{n}", "https://hivemindos.app/bee/{n}"]:
+        bad.append(f"a shape with a placeholder: got {got} from {links_in(prose)}")
+    if [shape_of(u) for u in links_in("see https://hivemindos.app/notes/<slug> here")] != ["https://hivemindos.app/notes/x"]:
+        bad.append(f"an unregistered shape with a placeholder: got {[shape_of(u) for u in links_in('see https://hivemindos.app/notes/<slug> here')]}")
+    total = 1 + 7 + 1 + 2 + 1 + 1 + 2
     for line in bad:
         print("FAIL", line)
     print(f"link registry self-test: {total - len(bad)} of {total} passed")
