@@ -12,6 +12,9 @@ on:
   schedule:
     - cron: "35 4 * * 1"
   workflow_dispatch:
+  # HB-074r1: the host's 06:00 UTC sweep dispatches it on Mondays too, so a late or skipped cron is not a missed week.
+  repository_dispatch:
+    types: [bazaar-weekly]
   push:
     branches: [main]
     paths: ["scripts/bazaar_weekly.py", "tests/test_bazaar_weekly.py", "fixtures/bazaar-intents/**", ".github/workflows/bazaar-weekly.yml"]
