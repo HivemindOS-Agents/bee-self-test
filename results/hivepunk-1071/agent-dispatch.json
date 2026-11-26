@@ -3,16 +3,16 @@
   "tool": "agent-dispatch",
   "result": "failure",
   "file": "self_test.py",
-  "sha": "5f9b29077e7d5fd04d6c8c2f200b026f190aa0b7",
-  "tree": "4f25b5474b7f9ed078e1e5dfb7b7af8477c8ef9a",
+  "sha": "560804fcb515c8cf379cd41e86369c8db210b359",
+  "tree": "5c5f77868c40ac5b5e69f71202e225cd8e2fa66c",
   "check_sha256": "06fa89fd1625e0d5adf903e1c2d4ba2176d73b3772a2da25b0c24ddc1a76e821",
-  "at": "2026-11-26T01:27:41Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45735857085",
-  "tail": "FAIL: no live dataset URL claimed while NOT UPLOADED\nusage: python3 dispatch.py INPUT.json [--out FILE]\nINPUT.json: {\"tags\": [\"...\"], \"rules\": [{\"tag\": \"...\", \"strength\": 1, \"label\": \"...\"}]}\nok: CLI requires input\nok: GOAL.md sha256 is 64 lowercase hex chars\nok: GOAL.md sha256 is deterministic across reads\nGOAL.md sha256: 33d900cb2239258fed53b4f2b346e2cae9c5c27b9a5a32e3739061527510512c\n\nResults: 39/40 checks passed",
+  "at": "2026-11-26T01:59:12Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45739321484",
+  "tail": "FAIL: GOAL.md names the verified data file\nusage: python3 dispatch.py INPUT.json [--out FILE]\nINPUT.json: {\"tags\": [\"...\"], \"rules\": [{\"tag\": \"...\", \"strength\": 1, \"label\": \"...\"}]}\nok: CLI requires input\nok: GOAL.md sha256 is 64 lowercase hex chars\nok: GOAL.md sha256 is deterministic across reads\nGOAL.md sha256: c9254d7fc58f481ad523022d71846f2645bfce9072877664a0e296cc3c4d2dce\n\nResults: 39/40 checks passed",
   "verified_by": {
     "kind": "none",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45735857085",
-    "tested_sha": "5f9b29077e7d5fd04d6c8c2f200b026f190aa0b7",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45739321484",
+    "tested_sha": "560804fcb515c8cf379cd41e86369c8db210b359",
     "check_from": "none",
     "base_sha": "efb055f4c95e52eef0db0222c47c5094e5fecb10",
     "check_sha256": "06fa89fd1625e0d5adf903e1c2d4ba2176d73b3772a2da25b0c24ddc1a76e821",
@@ -25,8 +25,5 @@
       "the run did not pass"
     ],
     "mode": "observe"
-  },
-  "verdict": "failed",
-  "verdict_at": "2026-11-26T01:42:31Z",
-  "verdict_by": "hivemindos"
+  }
 }
