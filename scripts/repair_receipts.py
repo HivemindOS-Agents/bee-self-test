@@ -19,7 +19,8 @@ A receipt must:
       counted
   R4  administrative: say why (closedBy), or be marked removedWithoutClosure with its reason
   R5  name who received its escalation, when it was escalated (a receipt marked `backfilled`, written after the fact
-      from the health file's public history, records an escalation as it was and may name nobody)
+      from the health file's public history, records an escalation as it was and may name nobody). An episode that
+      closed within 24 hours of its escalation, before H1 asks for a receiver, may name nobody either
   R6  name a known source (runner, host-step, frozen, watchdog, lesson)
   R7  carry no key, seed phrase or token
   R8  never be edited: one commit a file, when the clone has history
@@ -102,7 +103,7 @@ def receipt_problems(r):
         p.append("R4 an administrative close says no reason")
     if r["close"].get("removedWithoutClosure") and not r["close"].get("why"):
         p.append("R4 a removed row says no reason")
-    if r.get("escalation") and not (r["escalation"].get("receiver") or {}).get("who") and not r.get("backfilled"):
+    if r.get("escalation") and not (r["escalation"].get("receiver") or {}).get("who") and not r.get("backfilled") and not closed_before_receiver_due(r):
         p.append("R5 an escalated episode names no receiver")
     if (r["source"] or {}).get("type") not in SOURCES:
         p.append(f"R6 bad source type {(r['source'] or {}).get('type')!r}")
@@ -352,6 +353,16 @@ def check_agent(repo, now, health_dir=None):
 
 
 # ---------------------------------------------------------------------------------------------------------------- fixtures
+def closed_before_receiver_due(r):
+    """Whether an episode closed inside RECEIVER_HOURS of its escalation, before HB-065 asked for a receiver (H1's window).
+    An escalation or a close with no readable time is not."""
+    try:
+        escalated, closed = ts(r["escalation"]["at"]), ts(r["close"]["at"])
+    except (KeyError, TypeError, ValueError, AttributeError):
+        return False
+    return datetime.timedelta(0) <= closed - escalated < datetime.timedelta(hours=RECEIVER_HOURS)
+
+
 def self_test():
     T = "2026-11-21T08:45:00.000Z"
     run = "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/44885139037"
@@ -384,6 +395,13 @@ def self_test():
         ("a removed row with its reason", admin(removedWithoutClosure=True, why="reclassified: every failure it held was a policy skip (HB-062)"), []),
         ("a removed row with no reason", admin(removedWithoutClosure=True), ["R4 a removed row says no reason"]),
         ("an escalated episode with no receiver", receipt(escalation=escalation), ["R5 an escalated episode names no receiver"]),
+        # 547's fixprotocol e1 (23 Nov 2026): escalated 02:19:37, closed fixed-verified 06:30:27, before a receiver was
+        # due. HB-065 asks for a receiver within 24 hours of the escalation (H1's window), so this is no problem.
+        ("closed 4 h after its escalation, before a receiver was due", receipt(escalation={**escalation, "at": "2026-11-23T02:19:37.199Z"},
+                                                                               close={**receipt()["close"], "at": "2026-11-23T06:30:27.000Z"}), []),
+        ("closed 25 h after its escalation with no receiver", receipt(escalation={**escalation, "at": "2026-11-23T02:19:37.199Z"},
+                                                                        close={**receipt()["close"], "at": "2026-11-24T03:30:00.000Z"}), ["R5 an escalated episode names no receiver"]),
+        ("an escalation with no time is judged as before", receipt(escalation={**escalation, "at": None}), ["R5 an escalated episode names no receiver"]),
         ("an escalated episode with its receiver", receipt(escalation={**escalation, "receiver": {"who": "HivemindOS host: HB-041", "by": "rule", "at": T, "returned": "x", "returnedAt": T}}), []),
         ("a backfilled receipt records an escalation nobody received", {**admin(removedWithoutClosure=True, why="reclassified: every failure it held was a policy skip (HB-062)"), "escalation": escalation, "backfilled": True, "note": "from the public history"}, []),
         ("an unknown close kind and source", receipt(close={"kind": "fixed", "closedBy": "x", "at": T, "removedWithoutClosure": False, "why": None}, source={"type": "agent-note", "ref": None, "health": "x"}),
