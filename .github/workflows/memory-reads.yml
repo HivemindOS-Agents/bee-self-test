@@ -1,7 +1,7 @@
 # The answer-or-abstain fixtures (the 15 Nov proposal bundle, Part 2), run in both directions: a wrong CURRENT and a
 # needless ABSTAIN both fail. The same fixture bytes are in HivemindOS's shared core, pinned by sha256 in both places.
 # No network and no agent code: only the fixture file is read.
-name: memory-reads
+name: memory-reads (manual-only)
 on:
   push:
     branches: [main]
@@ -14,7 +14,7 @@ jobs:
     timeout-minutes: 3
     permissions: {}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
       - name: The eight fixtures, both ways

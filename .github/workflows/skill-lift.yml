@@ -13,7 +13,7 @@
 # (they must be the ones the block-hash rule gives after the skill's edit) and the run counts them beside the tune set.
 # Every run carries a calibration label; without lift/<skill>/calibration.json (the same tasks run once through the real
 # agent runtime) it is `proxy-uncalibrated`. A run dispatched with `promotion` fails unless it is a promote test.
-name: skill-lift
+name: skill-lift (manual-only)
 on:
   workflow_dispatch:
     inputs:
@@ -62,7 +62,7 @@ jobs:
     env:
       SKILL: ${{ inputs.skill }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
       - name: Unit tests on canned answers
@@ -101,7 +101,7 @@ jobs:
       ENDPOINT: ${{ vars.LIFT_ENDPOINT }}
       RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
       - name: Read the inputs and the pinned skill file
@@ -150,7 +150,7 @@ jobs:
           set -eu
           [ -f "$RUNNER_TEMP/out/run.json" ] || { echo "No run was written."; exit 1; }
           python3 scripts/lift_run.py --check-promotion "$RUNNER_TEMP/out/run.json"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
           name: lift-run
@@ -166,12 +166,12 @@ jobs:
     env:
       SKILL: ${{ inputs.skill }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: lift-run
           path: ${{ runner.temp }}/out
-        continue-on-error: true
+        continue-on-error: true  # lint-allowed: absent when the run made no file, and the next step says "Nothing to record."
       - name: Record the run under lift/<skill>/runs/
         run: |
           set -eu
