@@ -1,6 +1,12 @@
 {
-  "at": "2026-11-25T17:36:18Z",
-  "open": 38,
-  "problems": [],
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45666498193"
+  "at": "2026-11-26T17:17:32Z",
+  "open": 41,
+  "problems": [
+    {
+      "check": "twin",
+      "issue": 219,
+      "why": "same agent and artifact as #36 (machine-readable)"
+    }
+  ],
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45866452378"
 }
