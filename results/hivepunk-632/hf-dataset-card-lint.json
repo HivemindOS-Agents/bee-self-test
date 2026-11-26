@@ -1,0 +1,29 @@
+{
+  "repo": "hivepunk-632",
+  "tool": "hf-dataset-card-lint",
+  "result": "success",
+  "file": "self_test.py",
+  "sha": "f41e197408d59bae567c0cc72e5c56b90447bdc5",
+  "tree": "461e3c15e192cf472c5dc9dbb6953752e662f22e",
+  "check_sha256": "7027fe19b5fe8bf9838a7bd37c0c26b1a1318baefacb0d26385ce25e6d6f7919",
+  "at": "2026-11-26T07:24:08Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45774999740",
+  "tail": "PASS UNKNOWN empty rejected\nPASS row without a source URL rejected\nPASS FACT with null value rejected\nPASS missing source column rejected\nPASS missing claims section rejected\nPASS no claim rows rejected\nself_test: 19 check(s), 0 failed\nEXIT=0",
+  "verified_by": {
+    "kind": "runner",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45774999740",
+    "tested_sha": "f41e197408d59bae567c0cc72e5c56b90447bdc5",
+    "check_from": "same-change",
+    "base_sha": null,
+    "check_sha256": "7027fe19b5fe8bf9838a7bd37c0c26b1a1318baefacb0d26385ce25e6d6f7919",
+    "check_edited": null,
+    "base_check": "unavailable-new-tool",
+    "new_check_on_base": "not-run",
+    "signal": "new-check",
+    "would_block": false,
+    "reasons": [
+      "no earlier passing run to take a check from"
+    ],
+    "mode": "observe"
+  }
+}
