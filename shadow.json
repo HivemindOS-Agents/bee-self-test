@@ -346,6 +346,19 @@
         "metric": "missing headers, unprotected branches and internal hosts per run"
       },
       "decisions": []
+    },
+    {
+      "id": "B-08r1 commit_gates sweep",
+      "script": "scripts/commit_gates.py --sweep",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "report-only",
+        "since": "2026-11-26",
+        "decideBy": "2026-12-10",
+        "check": "D1, D5 and D22 on every tool folder changed in 24 h, every folder on Mondays; the runner pre-gate refuses on D1 already",
+        "metric": "D1, D5 and D22 findings per run, and D1 hits on tools whose latest run passed (false refusals)"
+      },
+      "decisions": []
     }
   ],
   "rules": [

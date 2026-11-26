@@ -56,6 +56,10 @@
 #                                  HB-076, each failing first on a seeded bad fixture
 #   scripts/security_hygiene.py    HB-071 B, C and D: the headers and security.txt on three hivemindos.app pages, main's
 #                                  ruleset on these repositories, and no internal host or home path in the agents' trees
+#   scripts/commit_gates.py        B-08r1 (the 15 Nov self-watchdog pack, S11): D1 a path the tool's files name is not in
+#                                  the commit, D5 an undefined name (pyflakes), D22 a file a note says it built and no
+#                                  commit ever held; replays of 632 f22b7fd, 547 a22aa8b and 1071 cfd9bc1. The same gates
+#                                  run in self-test.yml before any tool code (D1 refuses the run)
 #   scripts/live_gate.py           Row 41r1, HB-087r1, HB-074r1: every live read below runs through it and the last step
 #                                  gives one verdict from shadow.json; its lint fails a workflow that swallows a check's
 #                                  failure or uses an action by a tag (HB-071 E)
@@ -86,7 +90,7 @@ on:
     - cron: "40 6 * * *"
   push:
     branches: [main]
-    paths: ["scripts/security_input.py", "scripts/claim_watch.py", "scripts/check_skill_files.py", "tests/test_security_inputs.py", "fixtures/rule-map/**", "fixtures/claim-watch/**", "fixtures/skill-files/**", "scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/opportunity_records.py", "tests/test_opportunity_takes.py", "tests/test_opportunities_48h.py", "fixtures/opportunities/**", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "scripts/repair_receipts.py", "scripts/rule_stops.py", "scripts/kept_rules.py", "scripts/labels.py", "scripts/git_history.py", "scripts/repeat_guard.py", "scripts/rule_lifecycle.py", "scripts/done_paths.py", "scripts/link_registry.py", "scripts/check_strength.py", "scripts/compile_sweep.py", "scripts/workflow_age.py", "scripts/feed_freshness.py", "tests/test_feed_freshness.py", "fixtures/feed-freshness/**", "scripts/x402_encoded_paths.py", "tests/test_x402_encoded_paths.py", "fixtures/x402-encoded-paths/**", "shadow.json", "link_registry.json", "fixtures/repair-receipts/**", "fixtures/repeat-guard/**", "fixtures/done-paths/**", "fixtures/link-registry/**", "fixtures/check-strength/**", "fixtures/source-match/**", "scripts/lift_run.py", "tests/test_lift_run.py", "lift/**/held-out.json", "lift/**/tasks.json", "tests/test_claim_watch_read_cap.py", "scripts/rescore_writeback.py", "fixtures/rescore-writeback/**", "scripts/launch_fix_guards.py", "scripts/security_hygiene.py", "scripts/live_gate.py", ".github/workflows/**", ".github/dependabot.yml"]
+    paths: ["scripts/security_input.py", "scripts/claim_watch.py", "scripts/check_skill_files.py", "tests/test_security_inputs.py", "fixtures/rule-map/**", "fixtures/claim-watch/**", "fixtures/skill-files/**", "scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/opportunity_records.py", "tests/test_opportunity_takes.py", "tests/test_opportunities_48h.py", "fixtures/opportunities/**", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "scripts/repair_receipts.py", "scripts/rule_stops.py", "scripts/kept_rules.py", "scripts/labels.py", "scripts/git_history.py", "scripts/repeat_guard.py", "scripts/rule_lifecycle.py", "scripts/done_paths.py", "scripts/link_registry.py", "scripts/check_strength.py", "scripts/compile_sweep.py", "scripts/workflow_age.py", "scripts/feed_freshness.py", "tests/test_feed_freshness.py", "fixtures/feed-freshness/**", "scripts/x402_encoded_paths.py", "tests/test_x402_encoded_paths.py", "fixtures/x402-encoded-paths/**", "shadow.json", "link_registry.json", "fixtures/repair-receipts/**", "fixtures/repeat-guard/**", "fixtures/done-paths/**", "fixtures/link-registry/**", "fixtures/check-strength/**", "fixtures/source-match/**", "scripts/lift_run.py", "tests/test_lift_run.py", "lift/**/held-out.json", "lift/**/tasks.json", "tests/test_claim_watch_read_cap.py", "scripts/rescore_writeback.py", "fixtures/rescore-writeback/**", "scripts/launch_fix_guards.py", "scripts/security_hygiene.py", "scripts/live_gate.py", "scripts/commit_gates.py", "fixtures/commit-gates/**", ".github/workflows/**", ".github/dependabot.yml"]
 permissions: {}
 jobs:
   fixtures:
@@ -99,7 +103,7 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0
-      - run: python3 -m pip install --quiet pyyaml==6.0.2
+      - run: python3 -m pip install --quiet pyyaml==6.0.2 pyflakes==3.2.0
       - name: Fixtures (required)
         run: |
           set -eu
@@ -137,6 +141,7 @@ jobs:
           python3 scripts/launch_fix_guards.py --self-test
           python3 scripts/security_hygiene.py --self-test
           python3 scripts/live_gate.py --self-test
+          python3 scripts/commit_gates.py --self-test
           python3 scripts/live_gate.py lint .github/workflows/*.yml
       # Every live read runs through scripts/live_gate.py, which records its exit; the last step of this job gives one
       # verdict from shadow.json (row 41r1). "report-only until <date>" below is that check's lifecycle in shadow.json,
@@ -195,6 +200,10 @@ jobs:
             git -C "$d" fetch --quiet --unshallow --filter=blob:none origin || python3 scripts/live_gate.py unread "agent history" "all of $d's history"
           done
           python3 scripts/live_gate.py run "HB-067 B repeat_guard" -- python3 scripts/repeat_guard.py --since 2026-11-14 "$RUNNER_TEMP"/history/hivepunk-*
+      - name: Live, B-08r1 the commit-time gates D1, D5 and D22 on the five agents' tools (folders changed in 24 h daily, every folder on Mondays; report-only until its decide-by date)
+        run: |
+          every=""; [ "$(date -u +%u)" = "1" ] && every="--all"
+          python3 scripts/live_gate.py run "B-08r1 commit_gates sweep" -- python3 scripts/commit_gates.py --sweep $every "$RUNNER_TEMP"/history/hivepunk-*
       - name: Live, HB-074 every scheduled workflow ran within its period plus a grace, and row 39's manual-only labels (report-only until 2026-11-30, then blocking)
         env:
           GH_TOKEN: ${{ github.token }}

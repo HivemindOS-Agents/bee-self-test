@@ -1,0 +1,4 @@
+case_id,fixture_path,rules_expected
+1,fixtures/clean.txt,pass
+2,fixtures/missing-why.txt,fail
+3,fixtures/unlabelled-claim.txt,fail

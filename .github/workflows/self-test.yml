@@ -6,6 +6,13 @@
 #
 # The tool's code is untrusted: the job that runs it has no permissions and no token, and the result comes from the
 # runner's own job result, not from anything the tool prints. Only the record job can write, and it runs no tool code.
+#
+# B-08r1 (25 Nov 2026 checklist; the 15 Nov self-watchdog pack, S11): before any tool code, the commit-time gates read
+# the commit with git (scripts/commit_gates.py; pyflakes parses, nothing is run). D1, a path the tool's self_test.py or
+# a CSV in its folder names that is not in the commit, refuses the run: the record is a failure whose tail says
+# "missing in commit: <path>". D5 (an undefined name in any .py under the folder) and D22 (a file a work note or commit
+# message of the last 48 h says it built, never committed) are recorded in the result's `gates` field, never a refusal.
+# A gate that could not read the commit records {"v": 1, "error": ...} and never fails the tool.
 name: self-test
 on:
   repository_dispatch:
@@ -25,6 +32,7 @@ jobs:
       tree: ${{ steps.find.outputs.tree }}
       check: ${{ steps.find.outputs.check }}
       tail: ${{ steps.tail.outputs.tail }}
+      gates: ${{ steps.gates.outputs.gates }}
     steps:
       - id: find
         name: Fetch the tool
@@ -48,6 +56,35 @@ jobs:
             fi
           done
           echo "kind=none" >> "$GITHUB_OUTPUT"
+      - id: gates
+        name: Commit-time gates, before any tool code (B-08r1; D1 refuses, D5 and D22 are recorded)
+        if: steps.find.outputs.kind != 'none'
+        timeout-minutes: 3
+        env:
+          SHA: ${{ steps.find.outputs.sha }}
+        run: |
+          set -u
+          code=2
+          if git clone --quiet --filter=blob:none "https://github.com/${GITHUB_REPOSITORY}.git" runner \
+              && git -C runner checkout --quiet "$GITHUB_SHA" \
+              && python3 -m pip install --quiet pyflakes==3.2.0 \
+              && git clone --quiet --filter=blob:none --no-checkout "https://github.com/${GITHUB_REPOSITORY_OWNER}/${REPO}.git" history; then
+            code=0
+            python3 runner/scripts/commit_gates.py history --commit "$SHA" --tool "$TOOL" --pregate --json "$RUNNER_TEMP/gates.json" > "$RUNNER_TEMP/gates.txt" 2>&1 || code=$?
+            cat "$RUNNER_TEMP/gates.txt" | tee -a "$RUNNER_TEMP/out.txt"
+          fi
+          python3 - "$code" <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os, sys
+          code = int(sys.argv[1])
+          try:
+              g = json.load(open(os.path.join(os.environ["RUNNER_TEMP"], "gates.json")))
+              out = {"v": 1, "commit": g["commit"], "refused": code == 1, "d1": g["d1"][:20], "d5": g["d5"][:20], "d22": g["d22"][:20]}
+          except Exception as error:
+              out = {"v": 1, "error": f"the gates could not read the commit (exit {code}, {type(error).__name__})"}
+          print("gates=" + json.dumps(out, separators=(",", ":"))[:6000])
+          PY
+          # Only a D1 refusal fails the run; a gate that could not read the commit never counts against the tool.
+          if [ "$code" = "1" ]; then exit 1; fi
       - name: Compile its Python
         # Every .py in the folder is byte-compiled before the self-test runs (Based Elnen, 2026-11-12/13, living spec
         # L52): a SyntaxError fails the run at once, and its line is kept in the record, never a "finished" tool.
@@ -225,6 +262,7 @@ jobs:
           TREE: ${{ needs.test.outputs.tree }}
           CHECK: ${{ needs.test.outputs.check }}
           TAIL: ${{ needs.test.outputs.tail }}
+          GATES: ${{ needs.test.outputs.gates }}
           RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           # HB-061: what the three base jobs observed. A mixed run counts only when its tree was built.
           BASE: ${{ needs.basis.outputs.base }}
@@ -241,6 +279,13 @@ jobs:
           record = {"repo": os.environ["REPO"], "tool": os.environ["TOOL"], "result": result, "file": os.environ["KIND"] or None,
                     "sha": os.environ["SHA"] or None, "tree": os.environ.get("TREE") or None, "check_sha256": os.environ.get("CHECK") or None, "at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "run": os.environ["RUN"], "tail": os.environ["TAIL"][:2600]}
+          # B-08r1: the commit-time gates (D1, D5, D22), when they ran.
+          try:
+              gates = json.loads(os.environ.get("GATES") or "null")
+              if isinstance(gates, dict):
+                  record["gates"] = gates
+          except ValueError:
+              record["gates"] = {"v": 1, "error": "the gates' output did not parse"}
           # HB-061: how it was verified, and which check decided. Never a reason to lose the record itself.
           try:
               import sys

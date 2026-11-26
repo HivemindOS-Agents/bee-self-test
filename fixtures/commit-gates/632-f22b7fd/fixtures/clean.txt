@@ -1,0 +1,9 @@
+**Command:** `python3 tool.py`
+**Exit status:** 0
+**Output:**
+```
+All tests passed
+```
+
+Why: the tool was run once end to end and every check passed, so the record
+needs no further reading.

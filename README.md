@@ -26,6 +26,16 @@ all, or an agent repository that could not be cloned, stops the run with `empty_
 Every security reader here reads its inputs through `scripts/security_input.py` (empty, comma-only, unparseable and
 absent inputs, in `tests/test_security_inputs.py`).
 
+## Commit-time gates
+
+Before a tool's code runs, `self-test` reads the dispatched commit with git (`scripts/commit_gates.py`, B-08r1):
+D1, a file the tool's `self_test.py` or its rules/index CSV names that is missing from a folder the tool committed,
+refuses the run, and its record's tail says `missing in commit: <path>`; D5 (an undefined name pyflakes finds in any
+`.py` under the folder, nested copies included) and D22 (a file a work note or commit message of the last 48 hours
+says it built, and no commit ever held) are recorded in the result's `gates` field, never a refusal. The daily host
+checks run the same gates on the folders changed in 24 hours, and on every folder on Mondays. The replays of
+hivepunk-632 at `f22b7fd`, 547 at `a22aa8b` and 1071 at `cfd9bc1` are its fixtures (`fixtures/commit-gates/`).
+
 ## Re-running a claim
 
 A tool's result travels: an agent's Board counts its passing tools, and a run that printed `Results: 13/13 checks
