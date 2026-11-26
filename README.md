@@ -47,6 +47,23 @@ asked. HivemindOS keeps a `REPRODUCED` only from an agent that did not build the
 Its regression cases, `fixtures/verify-claims/`, run first: one bundle that reproduces, one that does not, and one
 that cannot be run.
 
+A rescore is written back into the bundle it re-ran, keyed on the bundle id, never on the tool: two rescores of one
+tool in one write-back pass both land (B-13r). `scripts/rescore_writeback.py --self-test` holds that case
+(`fixtures/rescore-writeback/`: two REPRODUCED rescores of one 547 tool, written back by bundle id and, as the
+regression, by tool), and the daily host checks compare every rescore recorded here with its bundle.
+
+## Live checks: report-only has a date
+
+The daily `host-checks` reads where the agents stand from their public files. No live step swallows its exit: each
+runs through `scripts/live_gate.py`, and the job's last step decides from `shadow.json`. A STOP or a security finding
+always fails the run; a check with no lifecycle there is enforced; one that is observing is reported as a warning on
+the run until its decide-by date, and then fails the run unless the host records a decision (enforce, retired, or
+one extend with a reason). It blocks the dev's merge and tells the team; it never stops an agent. The same script's
+lint fails any workflow here that swallows a check's failure or uses an action by a tag instead of a commit SHA.
+
+A workflow that is never scheduled and has not run in 14 days says `(manual-only)` in its name, and is never
+counted as observed (`scripts/workflow_age.py`).
+
 ## Re-checking a research receipt's sources
 
 An agent's research receipt (`research/<date>-<slug>.json` in its repository) lists the pages it read. Since

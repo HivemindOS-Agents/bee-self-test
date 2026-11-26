@@ -50,18 +50,33 @@
 #   scripts/check_strength.py      HB-067 E: how many of 20 small fixed-seed breaks of a tool's code its own self-test
 #                                  catches; run in a job of its own with no token, on three of 547's tools (report-only)
 #
+#   scripts/rescore_writeback.py   B-13r (merges HB-077): two rescores of one tool in one pass are both written back, each
+#                                  keyed on its bundle id; live, every rescore recorded here is in its bundle
+#   scripts/launch_fix_guards.py   HB-087 (23 Nov v5 section 2): the launch fixes' public guards, M1, M2, M3, M4, M6, M9 and
+#                                  HB-076, each failing first on a seeded bad fixture
+#   scripts/security_hygiene.py    HB-071 B, C and D: the headers and security.txt on three hivemindos.app pages, main's
+#                                  ruleset on these repositories, and no internal host or home path in the agents' trees
+#   scripts/live_gate.py           Row 41r1, HB-087r1, HB-074r1: every live read below runs through it and the last step
+#                                  gives one verdict from shadow.json; its lint fails a workflow that swallows a check's
+#                                  failure or uses an action by a tag (HB-071 E)
+#
 # The fixtures are the required part: this run fails when a script stops catching its own regression cases, and
 # tests/test_security_inputs.py runs every security reader on empty, comma-only, unparseable and absent inputs (HB-136,
 # HB-137, HB-138). Row 41r2: every security key a reader takes with field() has an empty-state fixture in that file's
 # EMPTY_STATE (security_input.py --keys). Row 41r4: scripts/security_input.py is the same bytes as bee-scouts' copy at
-# its main (security_input.py --same-as). The live reads are report-only: they say where the agents stand today, and never fail the run, with
-# three exceptions (HB-140). A Sourcify label that the code on Base does not back, on a contract HivemindOS names or a
-# coin its market calls verified, fails the run (a contract that is unlisted or could not be recomputed does not). The
-# rule map check fails the run on any mismatch or STOP. The repair receipt check fails the run on a STOP (an empty,
-# unparseable or absent receipt, health or watchdog file, exit 2, or an agent that could not be cloned); its problems
-# stay report-only until HB-065's decide-by date in shadow.json. Those two record what failed in stops.txt and the last
-# step fails the run, so every later live read still says where the agents stand. Everything is read from
-# public files and public endpoints with no token; nothing in an agent repository is run, and this job writes nothing.
+# its main (security_input.py --same-as). HB-083r1: tests/test_claim_watch_read_cap.py, a 41st read of one host is
+# refused and is counted in the sample's coverage.
+#
+# The live reads say where the agents stand today. None of them swallows its exit (row 41r1): each runs through
+# scripts/live_gate.py, and the job's last step decides from shadow.json. A STOP (an empty, unparseable or absent input,
+# exit 2, an agent repository that could not be cloned) or a security finding (a Sourcify label the code on Base does
+# not back, a paid x402 route that answered 2xx unpaid) always fails the run (HB-140). A check with no lifecycle in
+# shadow.json is enforced: the rule map check fails the run on any mismatch. A check whose lifecycle is observing is
+# reported, as a warning on the run, until its decide-by date, and from that date it fails the run unless the host
+# records a decision there (enforce, retired, or one extend with a reason): HB-065's repair receipts on 2026-11-28,
+# HB-074's late workflows and L52's compile sweep on 2026-11-30 (HB-074r1, HB-091r1). It is a CI rule: it blocks the
+# dev's merge and tells the team; it never stops an agent. Everything is read from public files and public endpoints
+# with no token; nothing in an agent repository is run, and this job writes nothing.
 # The one exception is check_strength, which runs three of agent 547's own self-tests: it runs them in a job of its
 # own, with no permissions and no token, each inside a temp copy of the tool's folder.
 name: host-checks
@@ -71,7 +86,7 @@ on:
     - cron: "40 6 * * *"
   push:
     branches: [main]
-    paths: ["scripts/security_input.py", "scripts/claim_watch.py", "scripts/check_skill_files.py", "tests/test_security_inputs.py", "fixtures/rule-map/**", "fixtures/claim-watch/**", "fixtures/skill-files/**", "scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/opportunity_records.py", "tests/test_opportunity_takes.py", "tests/test_opportunities_48h.py", "fixtures/opportunities/**", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "scripts/repair_receipts.py", "scripts/rule_stops.py", "scripts/kept_rules.py", "scripts/labels.py", "scripts/git_history.py", "scripts/repeat_guard.py", "scripts/rule_lifecycle.py", "scripts/done_paths.py", "scripts/link_registry.py", "scripts/check_strength.py", "scripts/compile_sweep.py", "scripts/workflow_age.py", "scripts/feed_freshness.py", "tests/test_feed_freshness.py", "fixtures/feed-freshness/**", "scripts/x402_encoded_paths.py", "tests/test_x402_encoded_paths.py", "fixtures/x402-encoded-paths/**", "shadow.json", "link_registry.json", "fixtures/repair-receipts/**", "fixtures/repeat-guard/**", "fixtures/done-paths/**", "fixtures/link-registry/**", "fixtures/check-strength/**", "fixtures/source-match/**", "scripts/lift_run.py", "tests/test_lift_run.py", "lift/**/held-out.json", "lift/**/tasks.json", ".github/workflows/host-checks.yml"]
+    paths: ["scripts/security_input.py", "scripts/claim_watch.py", "scripts/check_skill_files.py", "tests/test_security_inputs.py", "fixtures/rule-map/**", "fixtures/claim-watch/**", "fixtures/skill-files/**", "scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/opportunity_records.py", "tests/test_opportunity_takes.py", "tests/test_opportunities_48h.py", "fixtures/opportunities/**", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "scripts/repair_receipts.py", "scripts/rule_stops.py", "scripts/kept_rules.py", "scripts/labels.py", "scripts/git_history.py", "scripts/repeat_guard.py", "scripts/rule_lifecycle.py", "scripts/done_paths.py", "scripts/link_registry.py", "scripts/check_strength.py", "scripts/compile_sweep.py", "scripts/workflow_age.py", "scripts/feed_freshness.py", "tests/test_feed_freshness.py", "fixtures/feed-freshness/**", "scripts/x402_encoded_paths.py", "tests/test_x402_encoded_paths.py", "fixtures/x402-encoded-paths/**", "shadow.json", "link_registry.json", "fixtures/repair-receipts/**", "fixtures/repeat-guard/**", "fixtures/done-paths/**", "fixtures/link-registry/**", "fixtures/check-strength/**", "fixtures/source-match/**", "scripts/lift_run.py", "tests/test_lift_run.py", "lift/**/held-out.json", "lift/**/tasks.json", "tests/test_claim_watch_read_cap.py", "scripts/rescore_writeback.py", "fixtures/rescore-writeback/**", "scripts/launch_fix_guards.py", "scripts/security_hygiene.py", "scripts/live_gate.py", ".github/workflows/**", ".github/dependabot.yml"]
 permissions: {}
 jobs:
   fixtures:
@@ -81,7 +96,7 @@ jobs:
       contents: read
       actions: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0
       - run: python3 -m pip install --quiet pyyaml==6.0.2
@@ -117,136 +132,156 @@ jobs:
           python3 -m unittest discover -s tests -p 'test_feed_freshness.py'
           python3 -m unittest discover -s tests -p 'test_x402_encoded_paths.py'
           python3 -m unittest discover -s tests -p 'test_lift_run.py'
-      - name: Live, the 48-hour check (report-only)
+          python3 -m unittest discover -s tests -p 'test_claim_watch_read_cap.py'
+          python3 scripts/rescore_writeback.py --self-test
+          python3 scripts/launch_fix_guards.py --self-test
+          python3 scripts/security_hygiene.py --self-test
+          python3 scripts/live_gate.py --self-test
+          python3 scripts/live_gate.py lint .github/workflows/*.yml
+      # Every live read runs through scripts/live_gate.py, which records its exit; the last step of this job gives one
+      # verdict from shadow.json (row 41r1). "report-only until <date>" below is that check's lifecycle in shadow.json,
+      # never a swallowed exit: on its decide-by date it blocks unless the host records an extend there.
+      - name: Live, the 48-hour check (report-only until its decide-by date)
         run: |
-          python3 scripts/opportunities_48h.py || echo "report-only, exit $?"
-      - name: Live, HB-060 and HB-059 (report-only)
+          python3 scripts/live_gate.py run "HB-056 opportunities_48h" -- python3 scripts/opportunities_48h.py
+      - name: Live, HB-060 and HB-059 (report-only until its decide-by date)
         run: |
-          python3 scripts/opportunities_hb060.py || echo "report-only, exit $?"
-      - name: Live, HB-059 the linker's skip, from each agent repository's history (report-only)
+          python3 scripts/live_gate.py run "HB-060 opportunities_hb060" -- python3 scripts/opportunities_hb060.py
+      - name: Live, HB-059 the linker's skip, from each agent repository's history (report-only until its decide-by date)
         run: |
           mkdir -p "$RUNNER_TEMP/history"
           for n in 547 632 667 1071 86; do
-            git clone --quiet --filter=blob:none --no-checkout --shallow-since=2026-11-17 "https://github.com/${GITHUB_REPOSITORY_OWNER}/hivepunk-${n}.git" "$RUNNER_TEMP/history/hivepunk-${n}" || echo "could not read hivepunk-${n}"
+            git clone --quiet --filter=blob:none --no-checkout --shallow-since=2026-11-17 "https://github.com/${GITHUB_REPOSITORY_OWNER}/hivepunk-${n}.git" "$RUNNER_TEMP/history/hivepunk-${n}" \
+              || python3 scripts/live_gate.py unread "agent history" "hivepunk-${n}"
           done
-          python3 scripts/opportunities_hb060.py --linker "$RUNNER_TEMP"/history/hivepunk-* || echo "report-only, exit $?"
-      - name: Live, HB-063 what followed each stop on a rule, from each agent repository's history (report-only)
+          python3 scripts/live_gate.py run "HB-059 linker skip" -- python3 scripts/opportunities_hb060.py --linker "$RUNNER_TEMP"/history/hivepunk-*
+      - name: Live, HB-063 what followed each stop on a rule, from each agent repository's history (report-only until its decide-by date)
         run: |
-          python3 scripts/rule_stops.py "$RUNNER_TEMP"/history/hivepunk-* || echo "report-only, exit $?"
-      - name: Live, HB-061 the stamps on the kept runner records, and how many would block (observe mode, report-only)
+          python3 scripts/live_gate.py run "HB-063 rule_stops 24-hour rule" -- python3 scripts/rule_stops.py "$RUNNER_TEMP"/history/hivepunk-*
+      - name: Live, HB-061 the stamps on the kept runner records, and how many would block (observe until its decide-by date)
         run: |
-          python3 scripts/base_check.py stamps results || echo "report-only, exit $?"
-      - name: Live, HB-062 health (report-only)
+          python3 scripts/live_gate.py run "HB-061 base_check stamps" -- python3 scripts/base_check.py stamps results
+      - name: Live, HB-062 health (report-only until its decide-by date)
         run: |
-          python3 scripts/health_hb062.py || echo "report-only, exit $?"
-      - name: Live, HB-058 first-pass replay on the five agents' proof bundles (report-only)
+          python3 scripts/live_gate.py run "HB-062 health_hb062" -- python3 scripts/health_hb062.py
+      - name: Live, HB-058 first-pass replay on the five agents' proof bundles (report-only until its decide-by date)
         run: |
           mkdir -p "$RUNNER_TEMP/repos"
           for n in 547 632 667 1071 86; do
-            git clone --quiet --depth 1 --filter=blob:none --sparse "https://github.com/${GITHUB_REPOSITORY_OWNER}/hivepunk-${n}.git" "$RUNNER_TEMP/repos/hivepunk-${n}" \
-              && git -C "$RUNNER_TEMP/repos/hivepunk-${n}" sparse-checkout set proofs || echo "could not read hivepunk-${n}"
+            { git clone --quiet --depth 1 --filter=blob:none --sparse "https://github.com/${GITHUB_REPOSITORY_OWNER}/hivepunk-${n}.git" "$RUNNER_TEMP/repos/hivepunk-${n}" \
+              && git -C "$RUNNER_TEMP/repos/hivepunk-${n}" sparse-checkout set proofs; } || python3 scripts/live_gate.py unread "agent proofs" "hivepunk-${n}"
           done
-          python3 scripts/first_pass_replay.py "$RUNNER_TEMP"/repos/hivepunk-* || echo "report-only, exit $?"
-      - name: Live, HB-065 repair receipts, escalation receivers and where failures went (a STOP fails the run; problems report-only until 2026-11-28)
+          python3 scripts/live_gate.py run "HB-058 first_pass_replay" -- python3 scripts/first_pass_replay.py "$RUNNER_TEMP"/repos/hivepunk-*
+      - name: Live, B-13r every rescore recorded here is written back into its bundle, keyed on the bundle id (report-only until its decide-by date)
+        run: |
+          python3 scripts/live_gate.py run "B-13r rescore write-back" -- python3 scripts/rescore_writeback.py rescores "$RUNNER_TEMP"/repos/hivepunk-*
+      - name: Live, HB-065 repair receipts, escalation receivers and where failures went (a STOP fails the run; problems report-only until 2026-11-28 in shadow.json)
         run: |
           mkdir -p "$RUNNER_TEMP/receipts"
           for n in 547 632 667 1071 86; do
-            git clone --quiet --filter=blob:none --sparse "https://github.com/${GITHUB_REPOSITORY_OWNER}/hivepunk-${n}.git" "$RUNNER_TEMP/receipts/hivepunk-${n}" \
-              && git -C "$RUNNER_TEMP/receipts/hivepunk-${n}" sparse-checkout set repairs watchdog \
-              || echo "HB-065 repair receipts: STOP empty_security_setting: hivepunk-${n} could not be cloned" | tee -a "$RUNNER_TEMP/stops.txt"
+            { git clone --quiet --filter=blob:none --sparse "https://github.com/${GITHUB_REPOSITORY_OWNER}/hivepunk-${n}.git" "$RUNNER_TEMP/receipts/hivepunk-${n}" \
+              && git -C "$RUNNER_TEMP/receipts/hivepunk-${n}" sparse-checkout set repairs watchdog; } || python3 scripts/live_gate.py unread "HB-065 repair_receipts" "hivepunk-${n}"
           done
-          code=0
-          python3 scripts/repair_receipts.py "$RUNNER_TEMP"/receipts/hivepunk-* || code=$?
-          if [ "$code" = "2" ]; then echo "HB-065 repair receipts: a file stopped the run (exit 2, STOP lines above)" >> "$RUNNER_TEMP/stops.txt"; fi
-          echo "exit $code (2 fails the run at its last step; 1 is report-only until HB-065's decide-by date, 2026-11-28 in shadow.json)"
-      - name: Live, HB-061 kept rules against the judgement files they cite, and honest-failure rows (report-only)
+          python3 scripts/live_gate.py run "HB-065 repair_receipts" -- python3 scripts/repair_receipts.py "$RUNNER_TEMP"/receipts/hivepunk-*
+      - name: Live, HB-061 kept rules against the judgement files they cite, and honest-failure rows (report-only until its decide-by date)
         run: |
-          python3 scripts/kept_rules.py "$RUNNER_TEMP"/receipts/hivepunk-* || echo "report-only, exit $?"
-      - name: Live, HB-063 rule map against AUTONOMY.md both ways, and the five agents' copies (fails the run at its last step)
+          python3 scripts/live_gate.py run "HB-061 kept_rules" -- python3 scripts/kept_rules.py "$RUNNER_TEMP"/receipts/hivepunk-*
+      - name: Live, HB-063 rule map against AUTONOMY.md both ways, and the five agents' copies (enforced; fails the run at its last step)
         run: |
-          python3 scripts/rule_map_check.py --agents 547 632 667 1071 86 || echo "HB-063 rule map: exit $? (1 a mismatch, 2 a STOP)" | tee -a "$RUNNER_TEMP/stops.txt"
-      - name: Live, HB-067 B and HB-068 repeats keyed on their cause, and writes that never landed, from each agent repository's whole history (shadow, report-only)
+          python3 scripts/live_gate.py run "HB-063 rule_map_check" -- python3 scripts/rule_map_check.py --agents 547 632 667 1071 86
+      - name: Live, HB-067 B and HB-068 repeats keyed on their cause, and writes that never landed, from each agent repository's whole history (shadow until its decide-by date)
         run: |
           for d in "$RUNNER_TEMP"/history/hivepunk-*; do
-            git -C "$d" fetch --quiet --unshallow --filter=blob:none origin || echo "could not read all of $d's history"
+            git -C "$d" fetch --quiet --unshallow --filter=blob:none origin || python3 scripts/live_gate.py unread "agent history" "all of $d's history"
           done
-          python3 scripts/repeat_guard.py --since 2026-11-14 "$RUNNER_TEMP"/history/hivepunk-* || echo "report-only, exit $?"
-      - name: Live, HB-074 every scheduled workflow ran within its period plus a grace (report-only until its decide-by date)
+          python3 scripts/live_gate.py run "HB-067 B repeat_guard" -- python3 scripts/repeat_guard.py --since 2026-11-14 "$RUNNER_TEMP"/history/hivepunk-*
+      - name: Live, HB-074 every scheduled workflow ran within its period plus a grace, and row 39's manual-only labels (report-only until 2026-11-30, then blocking)
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          python3 scripts/workflow_age.py "$GITHUB_REPOSITORY" .github/workflows || echo "report-only, exit $?"
-      - name: Live, L52 every Python file under tools/ compiles, frozen tools included (report-only until its decide-by date)
+          python3 scripts/live_gate.py run "HB-074 workflow_age" -- python3 scripts/workflow_age.py "$GITHUB_REPOSITORY" .github/workflows
+      - name: Live, L52 every Python file under tools/ compiles, frozen tools included (report-only until 2026-11-30, then blocking)
         run: |
-          python3 scripts/compile_sweep.py "$RUNNER_TEMP"/history/hivepunk-* || echo "report-only, exit $?"
-      - name: Live, HB-067 G Done build notes against what their step committed (shadow, report-only)
+          python3 scripts/live_gate.py run "L52 compile_sweep" -- python3 scripts/compile_sweep.py "$RUNNER_TEMP"/history/hivepunk-*
+      - name: Live, HB-067 G Done build notes against what their step committed (shadow until its decide-by date)
         run: |
-          python3 scripts/done_paths.py --since 2026-11-14 "$RUNNER_TEMP"/history/hivepunk-* || echo "report-only, exit $?"
-      - name: Live, HB-067 A every prose rule and shadow check has a decide-by date, and preflight logs go on (shadow, report-only)
+          python3 scripts/live_gate.py run "HB-067 G done_paths" -- python3 scripts/done_paths.py --since 2026-11-14 "$RUNNER_TEMP"/history/hivepunk-*
+      - name: Live, HB-067 A every prose rule and shadow check has a decide-by date, and preflight logs go on (shadow until its decide-by date)
         run: |
-          python3 scripts/rule_lifecycle.py "$RUNNER_TEMP"/history/hivepunk-* || echo "report-only, exit $?"
-      - name: Live, HB-067 C every hivemindos.app link is a registered shape that answers (shadow, report-only)
+          python3 scripts/live_gate.py run "HB-067 A rule_lifecycle" -- python3 scripts/rule_lifecycle.py "$RUNNER_TEMP"/history/hivepunk-*
+      - name: Live, HB-067 C every hivemindos.app link is a registered shape that answers (shadow until its decide-by date)
         run: |
-          python3 scripts/link_registry.py "$RUNNER_TEMP"/history/hivepunk-* || echo "report-only, exit $?"
-      - name: Live, HB-036 plus, what each recorded lift run lacks, and the held-out tasks picked again (report-only)
+          python3 scripts/live_gate.py run "HB-067 C link_registry" -- python3 scripts/link_registry.py "$RUNNER_TEMP"/history/hivepunk-*
+      - name: Live, HB-036 plus, what each recorded lift run lacks, and the held-out tasks picked again (report-only until its decide-by date)
         run: |
-          python3 scripts/lift_run.py --audit lift/*/runs/*.json || echo "report-only, exit $?"
+          python3 scripts/live_gate.py run "HB-036 lift_run audit" -- python3 scripts/lift_run.py --audit lift/*/runs/*.json
           for held in lift/*/held-out.json; do
             [ -f "$held" ] || continue
-            python3 scripts/lift_run.py --verify-held-out "$held" --taskset "$(dirname "$held")/tasks.json" || echo "report-only, exit $?"
+            python3 scripts/live_gate.py run "HB-036 lift_run held-out" -- python3 scripts/lift_run.py --verify-held-out "$held" --taskset "$(dirname "$held")/tasks.json"
           done
-      - name: Live, HB-054 plus, Sourcify labels recomputed against Base (a label the code does not back fails the run)
+      - name: Live, HB-054 plus, Sourcify labels recomputed against Base (a label the code does not back, exit 2, fails the run; exit 1 report-only until its decide-by date)
         run: |
-          code=0
-          python3 scripts/source_match.py || code=$?
-          if [ "$code" = "2" ]; then echo "a Sourcify label is not backed by the code on Base"; exit 1; fi
-          echo "exit $code (1 is report-only, something unlisted or not recomputable)"
+          python3 scripts/live_gate.py run "HB-054 source_match unlisted" -- python3 scripts/source_match.py
+      - name: Live, HB-087 the launch fixes' public guards (M1, M2, M3, M4, M6, M9 and HB-076; report-only until its decide-by date)
+        run: |
+          python3 scripts/live_gate.py run "HB-087 launch_fix_guards" -- python3 scripts/launch_fix_guards.py
+      - name: Live, HB-071 B, C and D, the security hygiene monitors (report-only until its decide-by date)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/trees"
+          for n in 547 632 667 1071 86; do
+            git clone --quiet --depth 1 "https://github.com/${GITHUB_REPOSITORY_OWNER}/hivepunk-${n}.git" "$RUNNER_TEMP/trees/hivepunk-${n}" \
+              || python3 scripts/live_gate.py unread "HB-071 security_hygiene" "hivepunk-${n}"
+          done
+          python3 scripts/live_gate.py run "HB-071 security_hygiene" -- python3 scripts/security_hygiene.py --repos "${GITHUB_REPOSITORY_OWNER}/bee-self-test" "${GITHUB_REPOSITORY_OWNER}/bee-scouts" --trees "$RUNNER_TEMP"/trees/hivepunk-*
       - name: Restore each feed's last freshness state
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ${{ runner.temp }}/feed-state.json
           key: feed-state-${{ github.run_id }}
           restore-keys: feed-state-
-      - name: Live, row 102 feed freshness by newest content time, and a caught-up feed's 30-day backfill diff (report-level)
+      - name: Live, row 102 feed freshness by newest content time, and a caught-up feed's 30-day backfill diff (report-level until its decide-by date)
         run: |
-          python3 scripts/feed_freshness.py --state "$RUNNER_TEMP/feed-state.json" https://pwn.watch/incidents.json https://pwn.watch/t/ai.json || echo "report-level, exit $?"
+          python3 scripts/live_gate.py run "row 102 feed_freshness" -- python3 scripts/feed_freshness.py --state "$RUNNER_TEMP/feed-state.json" https://pwn.watch/incidents.json https://pwn.watch/t/ai.json
       - name: Keep each feed's freshness state for the next run
         if: ${{ !cancelled() }}
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ${{ runner.temp }}/feed-state.json
           key: feed-state-${{ github.run_id }}
       - name: Restore which paid x402 operations were probed before
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ${{ runner.temp }}/x402-probed.json
           key: x402-probed-${{ github.run_id }}
           restore-keys: x402-probed-
-      - name: Live, guard 135 encoded paths on keyless paid x402 operations, unpaid (a 2xx or a STOP fails the run at its last step)
+      - name: Live, guard 135 encoded paths on keyless paid x402 operations, unpaid (a 2xx or a STOP, exit 2, fails the run; exit 1 report-only until its decide-by date)
         run: |
-          code=0
-          python3 scripts/x402_encoded_paths.py --state "$RUNNER_TEMP/x402-probed.json" || code=$?
-          if [ "$code" = "2" ]; then echo "guard 135: a paid x402 route answered 2xx unpaid, or openapi.json stopped the run (exit 2)" | tee -a "$RUNNER_TEMP/stops.txt"; fi
-          echo "exit $code (1 is report-only: a request could not be read)"
+          python3 scripts/live_gate.py run "guard 135 x402_encoded_paths unread" -- python3 scripts/x402_encoded_paths.py --state "$RUNNER_TEMP/x402-probed.json"
       - name: Keep which paid x402 operations were probed
         if: ${{ !cancelled() }}
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ${{ runner.temp }}/x402-probed.json
           key: x402-probed-${{ github.run_id }}
-      - name: The security steps above that stopped or did not match fail the run (HB-140)
+      - name: The live gate, from shadow.json (a STOP, a check past its decide-by date, an enforced or unlisted check that failed, or an unread input fails the run; HB-140, rows 41r1 and HB-074r1)
         if: ${{ !cancelled() }}
         run: |
-          if [ -s "$RUNNER_TEMP/stops.txt" ]; then cat "$RUNNER_TEMP/stops.txt"; exit 1; fi
-          echo "the rule map matched, and no receipt, health or watchdog file stopped the run"
+          python3 scripts/live_gate.py verdict
   check-strength:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions: {}
     steps:
-      - name: Live, HB-067 E how many small breaks three of 547's tools' self-tests catch (no token, report-only)
+      - name: Live, HB-067 E how many small breaks three of 547's tools' self-tests catch (no token; shadow until its decide-by date)
         run: |
           git clone --quiet --filter=blob:none "https://github.com/${GITHUB_REPOSITORY}.git" checks && git -C checks checkout --quiet "$GITHUB_SHA"
-          git clone --quiet --depth 1 --filter=blob:none --sparse "https://github.com/${GITHUB_REPOSITORY_OWNER}/hivepunk-547.git" "$RUNNER_TEMP/hivepunk-547" \
-            && git -C "$RUNNER_TEMP/hivepunk-547" sparse-checkout set tools/dataset-manifest-check tools/hf-publish-check tools/csv-schema-check || echo "could not read hivepunk-547"
-          python3 checks/scripts/check_strength.py "$RUNNER_TEMP"/hivepunk-547/tools/dataset-manifest-check "$RUNNER_TEMP"/hivepunk-547/tools/hf-publish-check "$RUNNER_TEMP"/hivepunk-547/tools/csv-schema-check || echo "report-only, exit $?"
+          { git clone --quiet --depth 1 --filter=blob:none --sparse "https://github.com/${GITHUB_REPOSITORY_OWNER}/hivepunk-547.git" "$RUNNER_TEMP/hivepunk-547" \
+            && git -C "$RUNNER_TEMP/hivepunk-547" sparse-checkout set tools/dataset-manifest-check tools/hf-publish-check tools/csv-schema-check; } \
+            || python3 checks/scripts/live_gate.py unread "HB-067 E check_strength" "hivepunk-547"
+          python3 checks/scripts/live_gate.py run "HB-067 E check_strength" -- python3 checks/scripts/check_strength.py "$RUNNER_TEMP"/hivepunk-547/tools/dataset-manifest-check "$RUNNER_TEMP"/hivepunk-547/tools/hf-publish-check "$RUNNER_TEMP"/hivepunk-547/tools/csv-schema-check
+      - name: The live gate, from shadow.json
+        if: ${{ !cancelled() }}
+        run: |
+          python3 checks/scripts/live_gate.py verdict --shadow checks/shadow.json

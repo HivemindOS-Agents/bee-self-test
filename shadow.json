@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "about": "Every host check that only observes, reports or runs in shadow, and every rule the rule map marks prose or partly, with the date by which the host decides it: enforce, retired (moved to PLAYBOOK guidance) or extend (once, with a reason). decideBy is at most 14 days after since. The rule map lives in bee-scouts (templates/rule_map.json) and carries no lifecycle yet, so the lifecycles of its prose and partly rules are kept here under rules. Read by scripts/rule_lifecycle.py.",
+  "about": "Every host check that only observes, reports or runs in shadow, and every rule the rule map marks prose or partly, with the date by which the host decides it: enforce, retired (moved to PLAYBOOK guidance) or extend (once, with a reason). decideBy is at most 14 days after since. The rule map lives in bee-scouts (templates/rule_map.json) and carries no lifecycle yet, so the lifecycles of its prose and partly rules are kept here under rules. Read by scripts/rule_lifecycle.py. Every live step of host-checks.yml runs through scripts/live_gate.py, which reads this file: a check listed here reports its exit 1 until its decideBy (or an extend's), then blocks unless a decision is recorded; a check not listed here is enforced (25 Nov 2026 update, row 41r1).",
   "maxWindowDays": 14,
   "ruleMap": {
     "source": "https://raw.githubusercontent.com/HivemindOS-Agents/bee-scouts/main/templates/rule_map.json",
@@ -173,8 +173,177 @@
         "stage": "report-only",
         "since": "2026-11-23",
         "decideBy": "2026-11-30",
-        "check": "every workflow with a schedule ran within its period plus a 12-hour grace, by the Actions API; a workflow with no schedule is not checked",
+        "check": "every workflow with a schedule ran within its period plus a 12-hour grace, by the Actions API; a workflow with no schedule and no run in 14 days carries the manual-only label in its name and is never counted as observed (row 39, guard 129)",
         "metric": "late and late_never_ran schedules per run"
+      },
+      "decisions": []
+    },
+    {
+      "id": "HB-056 opportunities_48h",
+      "script": "scripts/opportunities_48h.py",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "report-only",
+        "since": "2026-11-19",
+        "decideBy": "2026-12-03",
+        "check": "an asked-for opportunity is answered within 48 hours, Building or Shipped included",
+        "metric": "items over 48 h per agent per run"
+      },
+      "decisions": []
+    },
+    {
+      "id": "HB-060 opportunities_hb060",
+      "script": "scripts/opportunities_hb060.py",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "report-only",
+        "since": "2026-11-19",
+        "decideBy": "2026-12-03",
+        "check": "every in-lane ask sized or said why, one Hall owner, frozen pins, takes and spotted records",
+        "metric": "problems per agent per run"
+      },
+      "decisions": []
+    },
+    {
+      "id": "HB-059 linker skip",
+      "script": "scripts/opportunities_hb060.py --linker",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "report-only",
+        "since": "2026-11-21",
+        "decideBy": "2026-12-05",
+        "check": "the host's link commits since its linker began keep out of frozen files",
+        "metric": "link commits into frozen files per run"
+      },
+      "decisions": []
+    },
+    {
+      "id": "HB-062 health_hb062",
+      "script": "scripts/health_hb062.py",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "report-only",
+        "since": "2026-11-21",
+        "decideBy": "2026-12-05",
+        "check": "a topic-filter refusal is a policy skip and does not hold health",
+        "metric": "health files held by a policy skip per run"
+      },
+      "decisions": []
+    },
+    {
+      "id": "HB-058 first_pass_replay",
+      "script": "scripts/first_pass_replay.py",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "report-only",
+        "since": "2026-11-21",
+        "decideBy": "2026-12-05",
+        "check": "a proof bundle's first-pass record worked out again from its listed steps",
+        "metric": "bundles whose first pass does not recompute"
+      },
+      "decisions": []
+    },
+    {
+      "id": "HB-036 lift_run audit",
+      "script": "scripts/lift_run.py --audit",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "report-only",
+        "since": "2026-11-21",
+        "decideBy": "2026-12-05",
+        "check": "what each recorded lift run lacks",
+        "metric": "recorded runs with something missing"
+      },
+      "decisions": []
+    },
+    {
+      "id": "HB-036 lift_run held-out",
+      "script": "scripts/lift_run.py --verify-held-out",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "report-only",
+        "since": "2026-11-21",
+        "decideBy": "2026-12-05",
+        "check": "the held-out tasks are picked again from their rule",
+        "metric": "held-out sets that do not pick again"
+      },
+      "decisions": []
+    },
+    {
+      "id": "HB-054 source_match unlisted",
+      "script": "scripts/source_match.py (exit 1 only; exit 2, a label the code does not back, always fails)",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "report-only",
+        "since": "2026-11-21",
+        "decideBy": "2026-12-05",
+        "check": "a contract that is unlisted or could not be recomputed",
+        "metric": "unlisted or unrecomputed contracts per run"
+      },
+      "decisions": []
+    },
+    {
+      "id": "row 102 feed_freshness",
+      "script": "scripts/feed_freshness.py",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "report-only",
+        "since": "2026-11-25",
+        "decideBy": "2026-12-09",
+        "check": "a feed is current only while its newest content timestamp is at most 48 h old; a caught-up feed is diffed against the backfill",
+        "metric": "stale feeds per run"
+      },
+      "decisions": []
+    },
+    {
+      "id": "guard 135 x402_encoded_paths unread",
+      "script": "scripts/x402_encoded_paths.py (exit 1 only; a 2xx unpaid or a STOP always fails)",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "report-only",
+        "since": "2026-11-25",
+        "decideBy": "2026-12-09",
+        "check": "an unpaid encoded-path request that could not be read",
+        "metric": "unread requests per run"
+      },
+      "decisions": []
+    },
+    {
+      "id": "B-13r rescore write-back",
+      "script": "scripts/rescore_writeback.py",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "report-only",
+        "since": "2026-11-26",
+        "decideBy": "2026-12-10",
+        "check": "every rescore recorded in rescores/ over 2 hours old is in its bundle's peer field, keyed on the bundle id",
+        "metric": "rescores not written back per run"
+      },
+      "decisions": []
+    },
+    {
+      "id": "HB-087 launch_fix_guards",
+      "script": "scripts/launch_fix_guards.py",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "report-only",
+        "since": "2026-11-26",
+        "decideBy": "2026-12-10",
+        "check": "M1, M2, M3, M4, M6, M9 and HB-076 on the live public files",
+        "metric": "launch-fix regressions per run"
+      },
+      "decisions": []
+    },
+    {
+      "id": "HB-071 security_hygiene",
+      "script": "scripts/security_hygiene.py",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "report-only",
+        "since": "2026-11-26",
+        "decideBy": "2026-12-10",
+        "check": "B headers and security.txt on three pages, C main's ruleset on bee-self-test and bee-scouts, D no internal host or home path in the agents' trees",
+        "metric": "missing headers, unprotected branches and internal hosts per run"
       },
       "decisions": []
     }
