@@ -1,32 +1,29 @@
 {
   "repo": "hivepunk-1071",
   "tool": "agent-dispatch",
-  "result": "success",
+  "result": "failure",
   "file": "self_test.py",
-  "sha": "efb055f4c95e52eef0db0222c47c5094e5fecb10",
-  "tree": "f96912e80fe323f2d5cdaa1c231123db69decc85",
-  "check_sha256": "5febc57f0183f84bcce7a983463b221b10138e24a660abe047b2df9c59f30811",
-  "at": "2026-11-25T22:21:39Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45712491184",
-  "tail": "INPUT.json: {\"tags\": [\"...\"], \"rules\": [{\"tag\": \"...\", \"strength\": 1, \"label\": \"...\"}]}\nok: CLI requires input\nok: GOAL.md sha256 is 64 lowercase hex chars\nok: GOAL.md sha256 is deterministic across reads\nok: GOAL.md sha256 equals the runner-printed value\nGOAL.md sha256: ecb04afed903686d5d4d4c9f9c467f86f31b6e025d215895e46df64ba4d8aa12\n\nResults: 40/40 checks passed",
+  "sha": "5f9b29077e7d5fd04d6c8c2f200b026f190aa0b7",
+  "tree": "4f25b5474b7f9ed078e1e5dfb7b7af8477c8ef9a",
+  "check_sha256": "06fa89fd1625e0d5adf903e1c2d4ba2176d73b3772a2da25b0c24ddc1a76e821",
+  "at": "2026-11-26T01:27:41Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45735857085",
+  "tail": "FAIL: no live dataset URL claimed while NOT UPLOADED\nusage: python3 dispatch.py INPUT.json [--out FILE]\nINPUT.json: {\"tags\": [\"...\"], \"rules\": [{\"tag\": \"...\", \"strength\": 1, \"label\": \"...\"}]}\nok: CLI requires input\nok: GOAL.md sha256 is 64 lowercase hex chars\nok: GOAL.md sha256 is deterministic across reads\nGOAL.md sha256: 33d900cb2239258fed53b4f2b346e2cae9c5c27b9a5a32e3739061527510512c\n\nResults: 39/40 checks passed",
   "verified_by": {
-    "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45712491184",
-    "tested_sha": "efb055f4c95e52eef0db0222c47c5094e5fecb10",
-    "check_from": "base",
-    "base_sha": "0711ec1dcc6661f9406e3660bdb3da7274703288",
-    "check_sha256": "5febc57f0183f84bcce7a983463b221b10138e24a660abe047b2df9c59f30811",
+    "kind": "none",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45735857085",
+    "tested_sha": "5f9b29077e7d5fd04d6c8c2f200b026f190aa0b7",
+    "check_from": "none",
+    "base_sha": "efb055f4c95e52eef0db0222c47c5094e5fecb10",
+    "check_sha256": "06fa89fd1625e0d5adf903e1c2d4ba2176d73b3772a2da25b0c24ddc1a76e821",
     "check_edited": true,
-    "base_check": "passed",
+    "base_check": "not-run",
     "new_check_on_base": "not-run",
     "signal": null,
     "would_block": false,
     "reasons": [
-      "a check file changed, and the base check passes on the new code"
+      "the run did not pass"
     ],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-25T22:36:30Z",
-  "verdict_by": "hivemindos"
+  }
 }
