@@ -3,18 +3,18 @@
   "tool": "agent-dispatch",
   "result": "success",
   "file": "self_test.py",
-  "sha": "4b728895a1512b441dfd95328198f1315e2a98df",
-  "tree": "b69ffaa9c6508daec638094e97b15b4e914591bf",
+  "sha": "9a5b286fcf4292ce26bc0502adfdcf73edab11de",
+  "tree": "18708f89c2f4d65fca7679073c71ac2a7ee4ec69",
   "check_sha256": "06fa89fd1625e0d5adf903e1c2d4ba2176d73b3772a2da25b0c24ddc1a76e821",
-  "at": "2026-11-26T05:41:11Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45763176344",
-  "tail": "usage: python3 dispatch.py INPUT.json [--out FILE]\nINPUT.json: {\"tags\": [\"...\"], \"rules\": [{\"tag\": \"...\", \"strength\": 1, \"label\": \"...\"}]}\nok: CLI requires input\nok: GOAL.md sha256 is 64 lowercase hex chars\nok: GOAL.md sha256 is deterministic across reads\nGOAL.md sha256: c71bad6ac996e5238f46aefe3bda2f41eb76fd0ed8624981250fbdd44497d7ad\n\nResults: 40/40 checks passed",
+  "at": "2026-11-26T08:49:57Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45786462570",
+  "tail": "usage: python3 dispatch.py INPUT.json [--out FILE]\nINPUT.json: {\"tags\": [\"...\"], \"rules\": [{\"tag\": \"...\", \"strength\": 1, \"label\": \"...\"}]}\nok: CLI requires input\nok: GOAL.md sha256 is 64 lowercase hex chars\nok: GOAL.md sha256 is deterministic across reads\nGOAL.md sha256: 16dad1f1a8cf9b79d1ec50fa5dc4f16d3aa1ae0f3538c7f14b05d44780cb81de\n\nResults: 40/40 checks passed",
   "verified_by": {
     "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45763176344",
-    "tested_sha": "4b728895a1512b441dfd95328198f1315e2a98df",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/45786462570",
+    "tested_sha": "9a5b286fcf4292ce26bc0502adfdcf73edab11de",
     "check_from": "base",
-    "base_sha": "dc6ab7a32044c9b1f4882078e53024b1ef132b90",
+    "base_sha": "4b728895a1512b441dfd95328198f1315e2a98df",
     "check_sha256": "06fa89fd1625e0d5adf903e1c2d4ba2176d73b3772a2da25b0c24ddc1a76e821",
     "check_edited": false,
     "base_check": "unchanged",
@@ -23,8 +23,5 @@
     "would_block": false,
     "reasons": [],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-26T05:56:27Z",
-  "verdict_by": "hivemindos"
+  }
 }
