@@ -24,6 +24,9 @@ import os
 import sys
 import urllib.request
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import labels  # noqa: E402
+
 AGENTS = ["547", "632", "667", "1071", "86"]
 RAW = "https://raw.githubusercontent.com/HivemindOS-Agents/bee-scouts/main/health/{n}.json"
 TOPIC = "it was about hivemindos's own issues or self-tests, not something people outside need"
@@ -47,8 +50,17 @@ def check(doc, now):
     reasons = list(doc.get("reasons") or [])
     skips = list(doc.get("policySkips") or [])
     status = doc.get("status")
+    # A label in reasons (labels.py: "no_funds" for a funds pause, "host_limit") is not a repair id and names no row
+    # (22 Nov 2026 update, section 3 item 5). A funds pause has its own shape: status needs_funding, a funding block.
+    funds = [r for r in reasons if labels.kind({"reason": r}) == "funds"]
+    if funds and (status != labels.FUNDS_STATUS or labels.funding_state(doc) != labels.FUNDS_STATUS):
+        problems.append(f"{funds[0]}: a funds pause needs status {labels.FUNDS_STATUS} and a funding block in that state")
+    if status == labels.FUNDS_STATUS and not funds:
+        problems.append(f"status {status} names no {labels.FUNDS_REASON} reason")
     for rid in reasons:
         row = rows.get(rid)
+        if row is None and labels.kind({"reason": rid}):
+            continue
         if row is None:
             problems.append(f"{rid}: named in reasons with no row in repairs")
         elif is_topic(row.get("cause")) and row.get("state") != "STUCK_AFTER_SKIPS":
@@ -78,8 +90,8 @@ def check(doc, now):
     if status in ("repairing", "degraded") and not reasons:
         problems.append(f"status {status} with no reason")
     stuck = [rid for rid, row in rows.items() if row.get("state") == "STUCK_AFTER_SKIPS"]
-    return problems, {"agent": str(doc.get("agent")), "status": status, "realBlocks": [r for r in reasons if r not in stuck],
-                      "stuckAfterSkips": stuck, "policySkips": len(skips), "notices": doc.get("notices") or []}
+    return problems, {"agent": str(doc.get("agent")), "status": status, "realBlocks": [r for r in reasons if r not in stuck and not labels.kind({"reason": r})],
+                      "stuckAfterSkips": stuck, "policySkips": len(skips), "notices": doc.get("notices") or [], "paused": labels.paused_line([], doc)}
 
 
 def load(src):
@@ -123,6 +135,7 @@ def self_test():
     recent = [skip("2026-11-19T18:03:59.108Z"), skip("2026-11-19T23:41:20.000Z")]
     old = [skip("2026-11-18T10:00:00.000Z"), skip("2026-11-18T15:00:00.000Z")]
     rows_failure = "it described a dataset instead of holding its rows"
+    funding = {"state": "needs_funding", "label": "paused: needs funding", "since": "2026-11-21T06:14:08.559Z", "heldPlays": ["publish-dataset", "propose", "research"]}
     cases = [
         # A topic refusal alone: health ok, the skips listed.
         ("topic alone reads ok", doc("ok", [], [row("SKIPPED_POLICY")], recent), 0),
@@ -144,11 +157,19 @@ def self_test():
         ("a skip row in reasons", doc("repairing", [rid], [row("SKIPPED_POLICY")], recent), 2),
         ("a skip with no filter", doc("ok", [], [row("SKIPPED_POLICY")], [{**recent[0], "filter": None}]), 1),
         ("repairing with no reason", doc("repairing", [], []), 1),
+        # 22 Nov update, section 3 item 5: a funds pause is status "needs_funding" with reasons[0] "no_funds" and a
+        # funding block. "no_funds" is a label, not a repair id (667 and 86 on 26 Nov read exactly this way).
+        ("a funds pause", doc("needs_funding", ["no_funds"], [row("RELEASED", rows_failure)], funding=funding), 0),
+        ("a funds pause beside a real block", doc("needs_funding", ["no_funds", rid], [row("PARKED", rows_failure)], funding=funding), 0),
+        ("no_funds with a status that is not needs_funding", doc("repairing", ["no_funds"], [], funding=funding), 1),
+        ("no_funds with no funding block", doc("needs_funding", ["no_funds"], []), 1),
+        ("needs_funding that does not name no_funds", doc("needs_funding", [], [], funding=funding), 1),
+        ("a host limit named in reasons", doc("repairing", ["host_limit"], []), 0),
     ]
     for name, d, want in cases:
         problems, _summary = check(d, now)
         assert len(problems) == want, (name, problems)
-    assert check(cases[0][1], now)[1] == {"agent": "1", "status": "ok", "realBlocks": [], "stuckAfterSkips": [], "policySkips": 2, "notices": []}
+    assert check(cases[0][1], now)[1] == {"agent": "1", "status": "ok", "realBlocks": [], "stuckAfterSkips": [], "policySkips": 2, "notices": [], "paused": None}
     assert check(cases[6][1], now)[1]["stuckAfterSkips"] == [rid]
     print(f"self-test: {len(cases) + 2}/{len(cases) + 2} PASS")
     return 0
