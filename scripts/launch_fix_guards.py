@@ -95,6 +95,9 @@ def m9_priced(prices):
     out = []
     for sid, body in sorted(prices.items()):
         pricing = body.get("pricing") if isinstance(body, dict) else None
+        if isinstance(body, dict) and "unread" in body:
+            out.append(f"M9: /v1/pricing?service={sid} could not be read twice (HTTP {body['unread']}), so its price is unknown")
+            continue
         if not (isinstance(body, dict) and body.get("ok") is True and isinstance(pricing, dict) and pricing):
             out.append(f"M9: {sid} is in /v1/catalog and /v1/pricing gives it no price")
     return out
@@ -169,7 +172,13 @@ def live():
         unread.append(f"{API}/v1/catalog (no service listed)")
     prices = {}
     for sid in services:
-        prices[sid] = get(f"{API}/v1/pricing?service={urllib.parse.quote(sid)}")[1]
+        url = f"{API}/v1/pricing?service={urllib.parse.quote(sid)}"
+        code, body = get(url)
+        if code != 200 and code not in (400, 404):
+            # A 429, a 5xx or no answer says nothing about the price (26 Nov 2026: media-studio once, in CI): ask again once.
+            time.sleep(3)
+            code, body = get(url)
+        prices[sid] = body if code in (200, 400, 404) else {"unread": code}
         time.sleep(0.3)
     problems += m9_priced(prices)
     print(json.dumps({"coins": agents, "services": len(services), "problems": problems, "unread": unread}, indent=2))
