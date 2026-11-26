@@ -1,0 +1,10 @@
+# HB-071 E (22 Nov 2026 update 22b, section 16; widened in the 23 Nov v4 update, section 6): every action in this
+# repository's workflows is pinned to a full commit SHA with its version in a comment, and Dependabot proposes the
+# new SHA when an action releases. bee-self-test's scripts/live_gate.py lint fails a workflow that uses a tag.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
