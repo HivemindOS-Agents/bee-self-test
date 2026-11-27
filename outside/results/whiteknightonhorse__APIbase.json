@@ -6,12 +6,12 @@
   "commit": "6ed44be7de99a3e180138f7a052f70e96b351d90",
   "dir": ".",
   "command": "npm test",
-  "lockfile_sha256": null,
-  "ran_at": "2026-11-27T17:51:44Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/46045055452",
+  "lockfile_sha256": "c9bab7fa32822cf85a126b57801d081e2c7ea1c117e49f2e6526e463f5b1ef48",
+  "ran_at": "2026-11-27T17:53:37Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/46045281654",
   "listing_source": "listed_by_hiveos",
   "network": "off while the tests ran",
   "keys": "none",
   "state": "couldn't run",
-  "reason": "couldn't run here"
+  "reason": "couldn't run here: the install did not complete (exit 1)"
 }
