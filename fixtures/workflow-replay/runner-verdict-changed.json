@@ -1,0 +1,57 @@
+{
+ "expect": "DIFFERENT",
+ "bundle": {
+  "v": 1,
+  "scorer": {
+   "kind": "workflow-replay"
+  },
+  "workflow": "hf-dataset-publish",
+  "workflowDigest": "0123456789abcdef",
+  "replay": {
+   "n": 3,
+   "agree": 1,
+   "inputs": [
+    {
+     "tool": "a",
+     "outcome": "answered"
+    },
+    {
+     "tool": "b",
+     "outcome": "handed_back"
+    },
+    {
+     "tool": "c",
+     "outcome": "handed_back"
+    }
+   ]
+  }
+ },
+ "inputs": [
+  {
+   "tool": "a",
+   "files": [
+    "README.md",
+    "data.csv"
+   ],
+   "card": "---\nlicense: mit\n---\n# Rows\n\n[data.csv](data.csv)\n",
+   "verdict": "failed"
+  },
+  {
+   "tool": "b",
+   "files": [
+    "README.md",
+    "data.csv"
+   ],
+   "card": "---\ntitle: x\n---\n[data.csv](data.csv)\n",
+   "verdict": "passed"
+  },
+  {
+   "tool": "c",
+   "files": [
+    "README.md"
+   ],
+   "card": "---\nlicense: mit\n---\n# Rows\n\n[data.csv](data.csv)\n",
+   "verdict": "passed"
+  }
+ ]
+}
