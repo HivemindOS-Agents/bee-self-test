@@ -1,0 +1,17 @@
+{
+  "v": 1,
+  "kind": "outside-seed",
+  "repo": "RipperMercs/tensorfeed-x402-base-mcp",
+  "name": "TensorFeed x402 Base MCP",
+  "commit": "f394a0f13d0016dd241fdbe2b801ddbbcef74a9d",
+  "dir": ".",
+  "command": "npm test",
+  "lockfile_sha256": null,
+  "ran_at": "2026-11-27T17:52:20Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/46045090705",
+  "listing_source": "listed_by_hiveos",
+  "network": "off while the tests ran",
+  "keys": "none",
+  "state": "couldn't run",
+  "reason": "couldn't run here"
+}
