@@ -1,0 +1,37 @@
+{
+  "repo": "hivepunk-1071",
+  "tool": "dispatch-evidence-status",
+  "result": "success",
+  "file": "self_test.py",
+  "sha": "3e17ca87787dc98c5fc9f8f2373b2da5a691d05d",
+  "tree": "103c8b07984c83ab4c8b2bc96cee3e8424ecc05e",
+  "check_sha256": "e27b26d3e973b171545e29f27240e6189d862b3f446f850abc4fbb3136d3569b",
+  "at": "2026-11-27T20:31:47Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/46064215889",
+  "tail": "usage: python3 evidence.py INPUT.json [--out FILE]\nINPUT.json: {goal_md_updated_first, observed{field: text|ACCESS_BLOCKED|null}}\nfields: goal_md_first, tested_revision, self_test_command, runner_output, artifacts_evidence, artifact_url_fetch_check\nok: CLI requires input\nerror: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)\nok: CLI rejects bad JSON\n\nResults: 22/22 checks passed",
+  "gates": {
+    "v": 1,
+    "commit": "3e17ca87787dc98c5fc9f8f2373b2da5a691d05d",
+    "refused": false,
+    "d1": [],
+    "d5": [],
+    "d22": []
+  },
+  "verified_by": {
+    "kind": "runner",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/46064215889",
+    "tested_sha": "3e17ca87787dc98c5fc9f8f2373b2da5a691d05d",
+    "check_from": "same-change",
+    "base_sha": null,
+    "check_sha256": "e27b26d3e973b171545e29f27240e6189d862b3f446f850abc4fbb3136d3569b",
+    "check_edited": null,
+    "base_check": "unavailable-new-tool",
+    "new_check_on_base": "not-run",
+    "signal": "new-check",
+    "would_block": false,
+    "reasons": [
+      "no earlier passing run to take a check from"
+    ],
+    "mode": "observe"
+  }
+}
