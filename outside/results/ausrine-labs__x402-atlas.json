@@ -1,0 +1,17 @@
+{
+  "v": 1,
+  "kind": "outside-seed",
+  "repo": "ausrine-labs/x402-atlas",
+  "name": "x402-atlas",
+  "commit": "23295ba4bcfec3caace46f9cfbf873a1e23f80c8",
+  "dir": ".",
+  "command": "python -m pytest -q",
+  "lockfile_sha256": null,
+  "ran_at": "2026-11-27T17:52:04Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/46045081946",
+  "listing_source": "listed_by_hiveos",
+  "network": "off while the tests ran",
+  "keys": "none",
+  "state": "couldn't run",
+  "reason": "couldn't run here"
+}
