@@ -99,8 +99,10 @@ jobs:
           git -c protocol.version=2 fetch -q --depth 1 origin "$SEED_COMMIT" && git checkout -q FETCH_HEAD
           test "$(git rev-parse HEAD)" = "$SEED_COMMIT"
       - name: Install, then the repository's own tests with the network off
+        shell: bash
         run: |
-          set -u
+          # Not -e: a failed install or test is a result to record, not a stop.
+          set +e -u
           cd "$RUNNER_TEMP/t"
           echo "state=" > "$RUNNER_TEMP/r.env"
           if find . -path ./.git -prune -o -type f \( -iname '*.exe' -o -iname '*.dll' -o -iname '*.so' -o -iname '*.dylib' \) -print | grep -q .; then
