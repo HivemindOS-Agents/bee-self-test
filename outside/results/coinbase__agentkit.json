@@ -1,0 +1,20 @@
+{
+  "v": 1,
+  "kind": "outside-seed",
+  "repo": "coinbase/agentkit",
+  "name": "Coinbase AgentKit",
+  "commit": "7fdeb737b1c584db84fe368005b7f6630d114e3c",
+  "dir": "typescript",
+  "command": "pnpm --filter @coinbase/agentkit test",
+  "lockfile_sha256": "5bf61c55ef95f2d704afa937b60667862016c60c3b0872d876bba72a2171951e",
+  "ran_at": "2026-11-27T17:52:11Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/46045029476",
+  "listing_source": "listed_by_hiveos",
+  "network": "off while the tests ran",
+  "keys": "none",
+  "state": "ran",
+  "passed": 923,
+  "failed": 0,
+  "total": 923,
+  "runner": "jest"
+}
