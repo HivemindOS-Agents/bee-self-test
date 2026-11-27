@@ -1,0 +1,20 @@
+{
+  "v": 1,
+  "kind": "outside-seed",
+  "repo": "coinbase/x402",
+  "name": "x402 reference SDK",
+  "commit": "0e6e8c55d86b4f14234fb6e49a4052074fb93e57",
+  "dir": "typescript",
+  "command": "pnpm --filter @x402/core test",
+  "lockfile_sha256": "227bb649f1a6ca5c2c9f50e6c9bffe9516894aaa18f6551df24d4bf03ebbe8d2",
+  "ran_at": "2026-11-27T17:52:14Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/46045038442",
+  "listing_source": "listed_by_hiveos",
+  "network": "off while the tests ran",
+  "keys": "none",
+  "state": "ran",
+  "passed": 750,
+  "failed": 0,
+  "total": 750,
+  "runner": "vitest"
+}
