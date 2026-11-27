@@ -123,6 +123,7 @@ jobs:
           python3 scripts/health_hb062.py --self-test
           python3 scripts/first_pass_replay.py --self-test
           python3 scripts/rule_map_check.py --self-test
+          python3 scripts/outside_bodies.py --self-test
           python3 scripts/base_check.py --self-test
           python3 scripts/source_match.py --self-test
           python3 scripts/repair_receipts.py --self-test
@@ -247,6 +248,11 @@ jobs:
               || python3 scripts/live_gate.py unread "HB-071 security_hygiene" "hivepunk-${n}"
           done
           python3 scripts/live_gate.py run "HB-071 security_hygiene" -- python3 scripts/security_hygiene.py --repos "${GITHUB_REPOSITORY_OWNER}/bee-self-test" "${GITHUB_REPOSITORY_OWNER}/bee-scouts" --trees "$RUNNER_TEMP"/trees/hivepunk-*
+      - name: Live, B-43r every outside LEDGER row's body carries its agent's disclosure and no promotion (enforced)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/live_gate.py run "B-43r outside_bodies" -- python3 scripts/outside_bodies.py
       - name: Restore each feed's last freshness state
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:

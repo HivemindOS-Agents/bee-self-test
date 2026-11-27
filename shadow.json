@@ -359,6 +359,25 @@
         "metric": "D1, D5 and D22 findings per run, and D1 hits on tools whose latest run passed (false refusals)"
       },
       "decisions": []
+    },
+    {
+      "id": "B-43r outside_bodies",
+      "script": "scripts/outside_bodies.py",
+      "owner": "bee-self-test host-checks",
+      "lifecycle": {
+        "stage": "report-only",
+        "since": "2026-11-27",
+        "decideBy": "2026-12-04",
+        "check": "every row of bee-scouts outside/LEDGER.jsonl: its PR or issue body carries its agent's disclosure and none of the host preflight's promotion words or links",
+        "metric": "rows failing the body check (0 rows on 27 Nov: outside work is paused)"
+      },
+      "decisions": [
+        {
+          "decision": "enforce",
+          "at": "2026-11-27",
+          "by": "agent, on Liam's 27 Nov 'YOU DECIDE'; the host's preflight already refuses both, so a failing row is a host bug"
+        }
+      ]
     }
   ],
   "rules": [
