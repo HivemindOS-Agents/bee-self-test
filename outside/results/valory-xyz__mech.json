@@ -7,11 +7,12 @@
   "dir": ".",
   "command": "uv run --frozen --offline pytest -q -m 'not integration and not e2e'",
   "lockfile_sha256": "c09c892e47210057f346b502341be1dfcdbd0a6bc1c1673260c5fb70953c7170",
-  "ran_at": "2026-11-27T18:04:49Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/46046662409",
+  "ran_at": "2026-11-27T18:16:23Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/46048150654",
   "listing_source": "listed_by_hiveos",
   "network": "off while the tests ran",
   "keys": "none",
-  "state": "couldn't run",
-  "reason": "couldn't run here: no test summary was found (exit 2)"
+  "state": "held",
+  "held_at": "2026-11-27T18:16:23Z",
+  "held_until": "2026-12-04T18:16:23Z"
 }
