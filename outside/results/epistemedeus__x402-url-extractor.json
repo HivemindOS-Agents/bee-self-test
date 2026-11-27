@@ -1,0 +1,17 @@
+{
+  "v": 1,
+  "kind": "outside-seed",
+  "repo": "epistemedeus/x402-url-extractor",
+  "name": "x402 data gateway",
+  "commit": "259004f677d868903736fa4a882bec98cf23d80d",
+  "dir": ".",
+  "command": "npm test",
+  "lockfile_sha256": null,
+  "ran_at": "2026-11-27T17:52:44Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/46045073820",
+  "listing_source": "listed_by_hiveos",
+  "network": "off while the tests ran",
+  "keys": "none",
+  "state": "couldn't run",
+  "reason": "couldn't run here"
+}
