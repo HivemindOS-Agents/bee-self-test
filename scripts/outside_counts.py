@@ -33,7 +33,8 @@ def counts(text: str, exit_code: int):
     if tests and passed:
         return {"passed": sum(map(int, passed)), "failed": sum(map(int, failed)), "total": sum(map(int, tests)), "runner": "node --test"}
     # pytest: "==== 2 failed, 41 passed, 3 skipped in 4.20s ===="
-    m = re.findall(r"^=+ (.*?) in [\d.]+s(?: \([^)]*\))? =+$", t, re.M)
+    # With or without -q's missing bars: "2 failed, 41 passed in 4.20s".
+    m = re.findall(r"^=*\s*((?:\d+ (?:passed|failed|errors?|skipped|xfailed|xpassed|warnings?|deselected)(?:, )?)+) in [\d.]+s(?: \([^)]*\))?\s*=*$", t, re.M)
     if m:
         line = m[-1]
         get = lambda w: sum(int(x) for x in re.findall(rf"(\d+) {w}", line))
@@ -65,6 +66,8 @@ def self_test() -> int:
         ("ok  \texample.com/a\t0.1s\nFAIL\texample.com/b\t0.2s\n", 1, {"passed": 1, "failed": 1, "total": 2, "runner": "go test (packages)"}),
         ("Tests:       3 passed, 3 total\n...\nTests:       40 passed, 40 total\n", 0, {"passed": 43, "failed": 0, "total": 43, "runner": "jest"}),
         ("      Tests  5 passed (5)\n      Tests  1 failed | 9 passed (10)\n", 1, {"passed": 14, "failed": 1, "total": 15, "runner": "vitest"}),
+        ("..F.\n2 failed, 41 passed, 1 warning in 0.52s\n", 1, {"passed": 41, "failed": 2, "total": 43, "runner": "pytest"}),
+        ("1 error in 0.30s\n", 2, {"passed": 0, "failed": 1, "total": 1, "runner": "pytest"}),
         ("npm ERR! missing script: test\n", 1, {"runner": None}),
     ]
     bad = 0
