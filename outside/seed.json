@@ -1,0 +1,87 @@
+{
+  "v": 1,
+  "about": "The HiveOS Evidence Lab's outside seed (dev update 2026-11-27 row 134): public repos we read ourselves, read-only, each run only through its own tests in a sandbox. x402scan (Merit-Systems/x402scan) was left out: it has no licence (criterion 3).",
+  "entries": [
+    {
+      "repo": "coinbase/agentkit",
+      "name": "Coinbase AgentKit",
+      "commit": "7fdeb737b1c584db84fe368005b7f6630d114e3c",
+      "dir": "typescript",
+      "install": "corepack enable && pnpm install --frozen-lockfile",
+      "test": "pnpm --filter @coinbase/agentkit test",
+      "source": "MCP Registry x402 + Base screen, 2026-11-27"
+    },
+    {
+      "repo": "coinbase/x402",
+      "name": "x402 reference SDK",
+      "commit": "0e6e8c55d86b4f14234fb6e49a4052074fb93e57",
+      "dir": "typescript",
+      "install": "corepack enable && pnpm install --frozen-lockfile",
+      "test": "pnpm --filter @x402/core test",
+      "source": "MCP Registry x402 + Base screen, 2026-11-27"
+    },
+    {
+      "repo": "valory-xyz/mech",
+      "name": "Olas Mech",
+      "commit": "5072cf18eaa84ed80aeb910c0084860a559b6adf",
+      "dir": ".",
+      "install": "pip install uv && uv sync --frozen",
+      "test": "uv run --frozen --offline pytest -q -m 'not integration and not e2e'",
+      "source": "MCP Registry x402 + Base screen, 2026-11-27"
+    },
+    {
+      "repo": "whiteknightonhorse/APIbase",
+      "name": "APIbase",
+      "commit": "6ed44be7de99a3e180138f7a052f70e96b351d90",
+      "dir": ".",
+      "install": "npm ci",
+      "test": "npm test",
+      "source": "MCP Registry x402 + Base screen, 2026-11-27"
+    },
+    {
+      "repo": "base-buzz/paystage",
+      "name": "PayStage / x402-guard",
+      "commit": "a5ba8786a0e238973493bc52a4dcc03fad10f616",
+      "dir": ".",
+      "install": "npm ci",
+      "test": "npm test",
+      "source": "MCP Registry x402 + Base screen, 2026-11-27"
+    },
+    {
+      "repo": "epistemedeus/x402-url-extractor",
+      "name": "x402 data gateway",
+      "commit": "259004f677d868903736fa4a882bec98cf23d80d",
+      "dir": ".",
+      "install": "npm ci",
+      "test": "npm test",
+      "source": "MCP Registry x402 + Base screen, 2026-11-27"
+    },
+    {
+      "repo": "ausrine-labs/x402-atlas",
+      "name": "x402-atlas",
+      "commit": "23295ba4bcfec3caace46f9cfbf873a1e23f80c8",
+      "dir": ".",
+      "install": "pip install pytest",
+      "test": "python -m pytest -q",
+      "source": "MCP Registry x402 + Base screen, 2026-11-27"
+    },
+    {
+      "repo": "RipperMercs/tensorfeed-x402-base-mcp",
+      "name": "TensorFeed x402 Base MCP",
+      "commit": "f394a0f13d0016dd241fdbe2b801ddbbcef74a9d",
+      "dir": ".",
+      "install": "npm ci",
+      "test": "npm test",
+      "source": "MCP Registry x402 + Base screen, 2026-11-27"
+    },
+    {
+      "repo": "easynodexyz/mcp-x402",
+      "name": "EasyNode mcp-x402",
+      "commit": "32238094776d23c6aff049a55da5dd0d3e710769",
+      "dir": ".",
+      "install": "corepack enable && (test -f pnpm-lock.yaml && pnpm install --frozen-lockfile || npm ci)",
+      "test": "npm test",
+      "source": "MCP Registry x402 + Base screen, 2026-11-27"
+    }
+  ]
+}

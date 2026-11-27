@@ -1,0 +1,207 @@
+# The HiveOS Evidence Lab's outside seed (dev update 2026-11-27 row 134, guard 298). Each entry of outside/seed.json is
+# a public repository we read ourselves, read-only: cloned at its pinned commit and run only through its own tests, in
+# this throwaway runner, with no key, no wallet and no token, and with the network off while the tests run (it is on
+# for the install alone). Nothing calls, pays, probes or scans the project's live service.
+#
+# One entry per run (workflow_dispatch with its repo name; the Monday schedule dispatches every entry). As in
+# rescore.yml, the job that runs outside code has no permissions, and its output never reaches the public log: the test
+# output goes to a file, and only counts leave the job. The record job runs no outside code. A non-pass is written as
+# "held" with no counts until a run at least 7 days later on the same commit (the 7-day hold); a run that could not
+# finish says why in a few words. No line of anyone's output is published, and nothing here is a score.
+name: outside-seed
+on:
+  workflow_dispatch:
+    inputs:
+      repo:
+        description: "owner/name of an entry in outside/seed.json"
+        required: true
+  schedule:
+    - cron: "0 9 * * 1"
+  push:
+    branches: [main]
+    paths: ["scripts/outside_counts.py", ".github/workflows/outside-seed.yml"]
+permissions: {}
+jobs:
+  selftest:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions: {}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - run: python3 scripts/outside_counts.py --self-test
+  plan:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: One run per entry
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 -c "import json; [print(e['repo']) for e in json.load(open('outside/seed.json'))['entries']]" | while read -r repo; do
+            gh workflow run outside-seed.yml --repo "$GITHUB_REPOSITORY" -f repo="$repo"
+            sleep 2
+          done
+  run:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions: {}
+    outputs:
+      state: ${{ steps.result.outputs.state }}
+      passed: ${{ steps.result.outputs.passed }}
+      failed: ${{ steps.result.outputs.failed }}
+      total: ${{ steps.result.outputs.total }}
+      runner: ${{ steps.result.outputs.runner }}
+      reason: ${{ steps.result.outputs.reason }}
+      lock: ${{ steps.result.outputs.lock }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@7f4fc3e22c37d6ff65e88745f38bd3157c663f7c # v4
+        with:
+          python-version: "3.12"
+      - name: The entry, from outside/seed.json only
+        env:
+          WANT: ${{ github.event.inputs.repo }}
+        run: |
+          python3 - <<'PY'
+          import json, os, re
+          want = os.environ["WANT"]
+          entry = next((e for e in json.load(open("outside/seed.json"))["entries"] if e["repo"] == want), None)
+          if not entry or not re.fullmatch(r"[A-Za-z0-9-]{1,39}/[A-Za-z0-9._-]{1,100}", entry["repo"]) or not re.fullmatch(r"[0-9a-f]{40}", entry["commit"]):
+              raise SystemExit("not an entry of outside/seed.json")
+          if not re.fullmatch(r"[A-Za-z0-9._/-]{1,100}", entry["dir"]) or ".." in entry["dir"]:
+              raise SystemExit("bad dir")
+          with open(os.environ["GITHUB_ENV"], "a") as env:
+              for k in ("repo", "commit", "dir"):
+                  env.write(f"SEED_{k.upper()}={entry[k]}\n")
+          open(os.path.join(os.environ["RUNNER_TEMP"], "install.sh"), "w").write(entry["install"] + "\n")
+          open(os.path.join(os.environ["RUNNER_TEMP"], "test.sh"), "w").write(entry["test"] + "\n")
+          PY
+      - name: Clone at the pinned commit
+        run: |
+          set -eu
+          mkdir "$RUNNER_TEMP/t" && cd "$RUNNER_TEMP/t"
+          git init -q && git remote add origin "https://github.com/${SEED_REPO}.git"
+          git -c protocol.version=2 fetch -q --depth 1 origin "$SEED_COMMIT" && git checkout -q FETCH_HEAD
+          test "$(git rev-parse HEAD)" = "$SEED_COMMIT"
+      - name: Install, then the repository's own tests with the network off
+        run: |
+          set -u
+          cd "$RUNNER_TEMP/t"
+          echo "state=" > "$RUNNER_TEMP/r.env"
+          if find . -path ./.git -prune -o -type f \( -iname '*.exe' -o -iname '*.dll' -o -iname '*.so' -o -iname '*.dylib' \) -print | grep -q .; then
+            echo "reason=refused: the repository ships native binaries (rule 24)" >> "$RUNNER_TEMP/r.env"; exit 0
+          fi
+          cd "$SEED_DIR"
+          lock=$(for f in pnpm-lock.yaml package-lock.json yarn.lock uv.lock poetry.lock; do [ -f "$f" ] && { sha256sum "$f" | cut -c1-64; break; }; done)
+          echo "lock=${lock:-}" >> "$RUNNER_TEMP/r.env"
+          # The install has the network (pinned by the repository's own lockfile); its output stays in a file.
+          env -i PATH="$PATH" HOME="$HOME" CI=1 timeout 480 bash "$RUNNER_TEMP/install.sh" > "$RUNNER_TEMP/install.log" 2>&1
+          code=$?
+          if [ "$code" = 124 ]; then echo "reason=couldn't run here: the install did not finish in 8 minutes" >> "$RUNNER_TEMP/r.env"; exit 0; fi
+          if [ "$code" != 0 ]; then echo "reason=couldn't run here: the install did not complete (exit $code)" >> "$RUNNER_TEMP/r.env"; exit 0; fi
+          # The tests: a new network namespace with only loopback up, back as the runner user, a clean environment.
+          me=$(id -u); grp=$(id -g)
+          sudo unshare -n bash -c "ip link set lo up && exec setpriv --reuid=$me --regid=$grp --init-groups env -i PATH='$PATH' HOME='$HOME' CI=1 timeout 600 bash '$RUNNER_TEMP/test.sh'" > "$RUNNER_TEMP/test.log" 2>&1
+          code=$?
+          echo "code=$code" >> "$RUNNER_TEMP/r.env"
+          if [ "$code" = 124 ]; then echo "reason=couldn't run here: the tests did not finish in 10 minutes" >> "$RUNNER_TEMP/r.env"; fi
+          python3 "$GITHUB_WORKSPACE/scripts/outside_counts.py" "$RUNNER_TEMP/test.log" "$code" > "$RUNNER_TEMP/counts.json"
+      - id: result
+        name: Counts only
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os, re
+          r = dict(l.rstrip("\n").split("=", 1) for l in open(os.path.join(os.environ["RUNNER_TEMP"], "r.env")) if "=" in l)
+          try:
+              c = json.load(open(os.path.join(os.environ["RUNNER_TEMP"], "counts.json")))
+          except Exception:
+              c = {"runner": None}
+          reason = re.sub(r"[^A-Za-z0-9 ,.:()'-]", "", r.get("reason", ""))[:120]
+          lock = r.get("lock", "") if re.fullmatch(r"[0-9a-f]{64}", r.get("lock", "")) else ""
+          if reason:
+              state = "couldn't run"
+          elif c.get("runner") and isinstance(c.get("total"), int) and c["total"] > 0:
+              state = "ran"
+          else:
+              state, reason = "couldn't run", f"couldn't run here: no test summary was found (exit {re.sub(r'[^0-9]', '', r.get('code', '')) or 'unknown'})"
+          print(f"state={state}\nreason={reason}\nlock={lock}")
+          if state == "ran":
+              print(f"passed={int(c['passed'])}\nfailed={int(c['failed'])}\ntotal={int(c['total'])}\nrunner={c['runner']}")
+          PY
+  record:
+    needs: run
+    if: always() && github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - name: Record the run, holding a non-pass for 7 days
+        env:
+          WANT: ${{ github.event.inputs.repo }}
+          STATE: ${{ needs.run.outputs.state }}
+          PASSED: ${{ needs.run.outputs.passed }}
+          FAILED: ${{ needs.run.outputs.failed }}
+          TOTAL: ${{ needs.run.outputs.total }}
+          RUNNER: ${{ needs.run.outputs.runner }}
+          REASON: ${{ needs.run.outputs.reason }}
+          LOCK: ${{ needs.run.outputs.lock }}
+          RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -eu
+          python3 - <<'PY'
+          import json, os, re, datetime
+          entry = next((e for e in json.load(open("outside/seed.json"))["entries"] if e["repo"] == os.environ["WANT"]), None)
+          if not entry:
+              raise SystemExit(0)
+          now = datetime.datetime.now(datetime.timezone.utc)
+          stamp = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+          path = f"outside/results/{entry['repo'].replace('/', '__')}.json"
+          os.makedirs("outside/results", exist_ok=True)
+          try:
+              before = json.load(open(path))
+          except Exception:
+              before = {}
+          rec = {"v": 1, "kind": "outside-seed", "repo": entry["repo"], "name": entry["name"], "commit": entry["commit"], "dir": entry["dir"],
+                 "command": entry["test"], "lockfile_sha256": os.environ["LOCK"] or None, "ran_at": stamp, "run": os.environ["RUN"],
+                 "listing_source": "listed_by_hiveos", "network": "off while the tests ran", "keys": "none"}
+          state = os.environ["STATE"] if os.environ["STATE"] in ("ran", "couldn't run") else "couldn't run"
+          if state == "ran":
+              p, f, t = int(os.environ["PASSED"] or 0), int(os.environ["FAILED"] or 0), int(os.environ["TOTAL"] or 0)
+              counts = {"passed": p, "failed": f, "total": t, "runner": re.sub(r"[^A-Za-z -]", "", os.environ["RUNNER"])[:24]}
+              if f == 0:
+                  rec.update(state="ran", **counts)
+              else:
+                  held_at = before.get("held_at") if before.get("state") == "held" and before.get("commit") == entry["commit"] else stamp
+                  if (now - datetime.datetime.fromisoformat(held_at.replace("Z", "+00:00"))).days >= 7:
+                      rec.update(state="ran", held_from=held_at, **counts)
+                  else:
+                      until = (datetime.datetime.fromisoformat(held_at.replace("Z", "+00:00")) + datetime.timedelta(days=7)).strftime("%Y-%m-%dT%H:%M:%SZ")
+                      rec.update(state="held", held_at=held_at, held_until=until)
+          else:
+              rec.update(state="couldn't run", reason=os.environ["REASON"] or "couldn't run here")
+          json.dump(rec, open(path, "w"), indent=2)
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add outside/results
+          git diff --cached --quiet && exit 0
+          git commit -q -m "outside-seed: ${WANT} at its pinned commit"
+          for i in 1 2 3 4 5; do git push -q && exit 0; git pull -q --rebase; done
+          exit 1
