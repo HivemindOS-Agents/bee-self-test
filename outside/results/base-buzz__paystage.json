@@ -7,14 +7,12 @@
   "dir": ".",
   "command": "npm test",
   "lockfile_sha256": "a206d610505e38ea0c71382d2f62d2e4d700e6f1c6e637282443473d4c5bb3a9",
-  "ran_at": "2026-11-27T17:54:11Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/46045289889",
+  "ran_at": "2026-11-27T18:05:18Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/46046682951",
   "listing_source": "listed_by_hiveos",
   "network": "off while the tests ran",
   "keys": "none",
-  "state": "ran",
-  "passed": 3,
-  "failed": 0,
-  "total": 3,
-  "runner": "vitest"
+  "state": "held",
+  "held_at": "2026-11-27T18:05:18Z",
+  "held_until": "2026-12-04T18:05:18Z"
 }
