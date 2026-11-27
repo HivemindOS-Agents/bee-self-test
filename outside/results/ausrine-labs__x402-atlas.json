@@ -7,11 +7,12 @@
   "dir": ".",
   "command": "python -m pytest -q",
   "lockfile_sha256": null,
-  "ran_at": "2026-11-27T18:05:19Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/46046706576",
+  "ran_at": "2026-11-27T18:16:31Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/46048139911",
   "listing_source": "listed_by_hiveos",
   "network": "off while the tests ran",
   "keys": "none",
-  "state": "couldn't run",
-  "reason": "couldn't run here: no test summary was found (exit 1)"
+  "state": "held",
+  "held_at": "2026-11-27T18:16:31Z",
+  "held_until": "2026-12-04T18:16:31Z"
 }
