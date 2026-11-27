@@ -1,0 +1,17 @@
+{
+  "v": 1,
+  "kind": "outside-seed",
+  "repo": "whiteknightonhorse/APIbase",
+  "name": "APIbase",
+  "commit": "6ed44be7de99a3e180138f7a052f70e96b351d90",
+  "dir": ".",
+  "command": "npm test",
+  "lockfile_sha256": null,
+  "ran_at": "2026-11-27T17:51:44Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/46045055452",
+  "listing_source": "listed_by_hiveos",
+  "network": "off while the tests ran",
+  "keys": "none",
+  "state": "couldn't run",
+  "reason": "couldn't run here"
+}
