@@ -16,17 +16,18 @@ ANSI = re.compile(r"\x1b\[[0-9;]*[A-Za-z]")
 def counts(text: str, exit_code: int):
     t = ANSI.sub("", text)
     # jest: "Tests:       2 failed, 41 passed, 43 total"
+    # A workspace run prints one summary per package: every one is added up.
     m = re.findall(r"^Tests:\s+(.*?(\d+) total)\s*$", t, re.M)
     if m:
-        line = m[-1][0]
-        f = re.search(r"(\d+) failed", line); p = re.search(r"(\d+) passed", line)
-        return {"passed": int(p.group(1)) if p else 0, "failed": int(f.group(1)) if f else 0, "total": int(m[-1][1]), "runner": "jest"}
+        f = sum(int(x.group(1)) for line, _ in m for x in [re.search(r"(\d+) failed", line)] if x)
+        p = sum(int(x.group(1)) for line, _ in m for x in [re.search(r"(\d+) passed", line)] if x)
+        return {"passed": p, "failed": f, "total": sum(int(total) for _, total in m), "runner": "jest"}
     # vitest: "      Tests  2 failed | 41 passed (43)"
     m = re.findall(r"^\s*Tests\s+(.*?)\((\d+)\)\s*$", t, re.M)
     if m:
-        line, total = m[-1]
-        f = re.search(r"(\d+) failed", line); p = re.search(r"(\d+) passed", line)
-        return {"passed": int(p.group(1)) if p else 0, "failed": int(f.group(1)) if f else 0, "total": int(total), "runner": "vitest"}
+        f = sum(int(x.group(1)) for line, _ in m for x in [re.search(r"(\d+) failed", line)] if x)
+        p = sum(int(x.group(1)) for line, _ in m for x in [re.search(r"(\d+) passed", line)] if x)
+        return {"passed": p, "failed": f, "total": sum(int(total) for _, total in m), "runner": "vitest"}
     # node --test: "ℹ tests 43" / "ℹ pass 41" / "ℹ fail 2" (or "# tests 43" in TAP)
     tests = re.findall(r"^[ℹ#] tests (\d+)$", t, re.M); passed = re.findall(r"^[ℹ#] pass (\d+)$", t, re.M); failed = re.findall(r"^[ℹ#] fail (\d+)$", t, re.M)
     if tests and passed:
@@ -62,6 +63,8 @@ def self_test() -> int:
         ("===== 2 failed, 41 passed, 3 skipped in 4.20s =====\n", 1, {"passed": 41, "failed": 2, "total": 43, "runner": "pytest"}),
         ("Ran 5 tests in 0.010s\n\nFAILED (failures=1, errors=1)\n", 1, {"passed": 3, "failed": 2, "total": 5, "runner": "unittest"}),
         ("ok  \texample.com/a\t0.1s\nFAIL\texample.com/b\t0.2s\n", 1, {"passed": 1, "failed": 1, "total": 2, "runner": "go test (packages)"}),
+        ("Tests:       3 passed, 3 total\n...\nTests:       40 passed, 40 total\n", 0, {"passed": 43, "failed": 0, "total": 43, "runner": "jest"}),
+        ("      Tests  5 passed (5)\n      Tests  1 failed | 9 passed (10)\n", 1, {"passed": 14, "failed": 1, "total": 15, "runner": "vitest"}),
         ("npm ERR! missing script: test\n", 1, {"runner": None}),
     ]
     bad = 0
