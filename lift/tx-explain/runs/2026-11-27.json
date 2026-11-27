@@ -1,0 +1,492 @@
+{
+ "lift": {
+  "skillSha256": "eafd1ae43bdf5fcacc8c5c02bcb6f7848eb533c34bfeb3e7f2b06dbf9bf4df94",
+  "tasksetSha256": "659ec43f83afc7c116f99fdc46adfdfdfba87d8649c99fcf0cd9ca67de25d607",
+  "model": "deepseek/deepseek-v4.1-flash",
+  "with": {
+   "passed": 2,
+   "failed": 3,
+   "incomplete": 0,
+   "of": 5
+  },
+  "without": {
+   "passed": 3,
+   "failed": 2,
+   "incomplete": 0,
+   "of": 5
+  },
+  "lift": null,
+  "state": "unreviewed",
+  "runAt": "2026-11-27T13:04:01Z",
+  "report": "local run on the M2 Max, 27 Nov 2026, on Liam's yes (no Actions run: the runner holds no key)",
+  "reviewedBy": null,
+  "tune": {
+   "with": {
+    "passed": 2,
+    "failed": 3,
+    "incomplete": 0,
+    "of": 5
+   },
+   "without": {
+    "passed": 3,
+    "failed": 2,
+    "incomplete": 0,
+    "of": 5
+   }
+  },
+  "heldOut": {
+   "rule": "block-hash-v2",
+   "editAt": "2026-10-22T19:06:22Z",
+   "afterBlock": 52953318,
+   "heldOutSha256": "33ddc156b06e53fa86bdd58a6f3415d7b4003cf181608762a2a24044aa21d9e1",
+   "picks": [
+    {
+     "id": "held-transfer",
+     "type": "transfer",
+     "txHash": "0x355bac3b1fe1e3862157e30c7b528f01429dec7bb93e1a79cf47f4ed2a9640ef",
+     "blockNumber": 52953319,
+     "blockTime": "2026-10-22T19:06:25Z"
+    },
+    {
+     "id": "held-native-transfer",
+     "type": "native-transfer",
+     "txHash": "0x47a571d2f272372e7eb1dbecc5b6ba59693c8dfd1f43751ee05de031a483cba7",
+     "blockNumber": 52953339,
+     "blockTime": "2026-10-22T19:07:05Z"
+    },
+    {
+     "id": "held-reverted",
+     "type": "reverted",
+     "txHash": "0x630b761046bd941d8b08853daaacb49aaf5dc6e6c72b1744e9c40ba3fd4579bd",
+     "blockNumber": 52953360,
+     "blockTime": "2026-10-22T19:07:47Z"
+    },
+    {
+     "id": "held-approve",
+     "type": "approve",
+     "txHash": "0x6b9d96a90feabf4eee4674263c17886818d4812d60cec8cbad4248c11d6a513a",
+     "blockNumber": 52953374,
+     "blockTime": "2026-10-22T19:08:15Z"
+    },
+    {
+     "id": "held-swap",
+     "type": "swap",
+     "txHash": "0x1d5b5a30ff3cc67568b5d3b01e59121381a4629c7cf9b5a88c99144a55861fa1",
+     "blockNumber": 52953390,
+     "blockTime": "2026-10-22T19:08:47Z"
+    }
+   ],
+   "notFound": [],
+   "with": {
+    "passed": 2,
+    "failed": 1,
+    "incomplete": 2,
+    "of": 5
+   },
+   "without": {
+    "passed": 3,
+    "failed": 0,
+    "incomplete": 2,
+    "of": 5
+   },
+   "previous": null,
+   "state": "partial",
+   "reviewedBy": null
+  },
+  "gap": {
+   "tuneMissed": 3,
+   "heldOutMissed": 3
+  },
+  "previousSkillSha256": null,
+  "calibration": {
+   "label": "proxy-uncalibrated",
+   "why": "the tasks have not been run through the agent runtime",
+   "proxySha256": "96b8d8f6b9ff4b170e1ed64864e096b3ccb7c8abd41dbf4abf606a7657d3cbb4"
+  }
+ },
+ "harness": {
+  "name": "bee-self-test scripts/lift_run.py",
+  "commit": null
+ },
+ "config": {
+  "model": "deepseek/deepseek-v4.1-flash",
+  "attempts": 1,
+  "max_turns": 6,
+  "max_tokens": 1500,
+  "rpc": "https://mainnet.base.org",
+  "maxCostUsd": 1.0,
+  "maxJudgeCalls": 0,
+  "notifications": "stubbed"
+ },
+ "spentUsd": 0.492765,
+ "judgeCalls": 0,
+ "results": {
+  "usdc-transfer": {
+   "with": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "transfer",
+     "method": "transfer",
+     "from": "0x740da33f3b179a5771df62f14f55cf8f4f0d25cc",
+     "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+     "nativeValueWei": "0",
+     "movements": [
+      {
+       "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+       "from": "0x740da33f3b179a5771df62f14f55cf8f4f0d25cc",
+       "to": "0x07249decebaa94c4038df109811296d5d7f10282",
+       "amountRaw": "36930000"
+      }
+     ],
+     "unlimitedApproval": null,
+     "summary": "A successful ERC-20 transfer on Base (block 0x378a00e, tx index 12). The sender 0x740da33f3b179a5771df62f14f55cf8f4f0d25cc called transfer (selector 0xa9059cbb) on the token contract 0x833589fcd6edb6e08f4c7c32d4f71b54bda02913, which reports symbol USDC and 6 decimals, sending 36930000 raw units (36.93 USDC) to 0x07249decebaa94c4038df109811296d5d7f10282. No native ETH moved (value 0x0). The receipt contains exactly one Transfer log matching that amount, from the sender to the recipient, and no Approval logs, so no allowance was created or changed. The recipient address has no contract code (plain account). Gas used was 62171 at an effective gas price of 10024743 wei. No unlimited or otherwise suspicious approval is present."
+    },
+    "turns": 3,
+    "notifications": 0
+   },
+   "without": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "transfer",
+     "method": "transfer",
+     "from": "0x740da33f3b179a5771df62f14f55cf8f4f0d25cc",
+     "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+     "nativeValueWei": "0",
+     "movements": [
+      {
+       "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+       "from": "0x740da33f3b179a5771df62f14f55cf8f4f0d25cc",
+       "to": "0x07249decebaa94c4038df109811296d5d7f10282",
+       "amountRaw": "36930000"
+      }
+     ],
+     "unlimitedApproval": null,
+     "summary": "This Base transaction (block 0x378a00e, index 12) succeeded and is a plain ERC-20 transfer. The sender 0x740da33f3b179a5771df62f14f55cf8f4f0d25cc called the contract at 0x833589fcd6edb6e08f4c7c32d4f71b54bda02913 with calldata selector 0xa9059cbb, i.e. transfer(address,uint256), sending 36930000 raw units to 0x07249decebaa94c4038df109811296d5d7f10282. That contract is a proxy (FiatTokenProxy-style implementation slot code) whose symbol() returns \"USDC\" and decimals() returns 6, so the amount is 36.93 USDC. The receipt contains exactly one log: the token's Transfer event (topic 0xddf252ad...) with from = the sender, to = 0x07249decebaa94c4038df109811296d5d7f10282, and data 0x...023381d0 = 36930000, matching the calldata. No native value was sent (value 0x0), no approval was granted, and no other token movements occurred. Gas used was 0xf2db at an effective gas price of 0x98f827, plus an L1 fee of 0x6f03c0bd."
+    },
+    "turns": 3,
+    "notifications": 0
+   }
+  },
+  "native-transfer": {
+   "without": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "native-transfer",
+     "method": null,
+     "from": "0x42d0ef7c7deeabfabd5f33e528d7cf2e7fd7e9ae",
+     "to": "0x63df213cb017eb4a80cf4af595cdb8925489b63d",
+     "nativeValueWei": "720415337186",
+     "movements": [],
+     "unlimitedApproval": null,
+     "summary": "A plain ETH transfer on Base (chain id 0x2105). The sender 0x42d0ef7c7deeabfabd5f33e528d7cf2e7fd7e9ae sent 720415337186 wei (about 0.00000072 ETH) to 0x63df213cb017eb4a80cf4af595cdb8925489b63d. The call data is empty (0x) and the recipient address holds no contract code, so this is a simple native-value payment, not a contract interaction. The transaction succeeded (receipt status 0x1), used exactly 21000 gas at an effective gas price of 6000000 wei (0x5b8d80), and emitted no logs, so no tokens were moved and no approvals were granted. Note the gas fee (~0.000126 ETH) was far larger than the amount transferred."
+    },
+    "turns": 3,
+    "notifications": 0
+   },
+   "with": {
+    "outcome": "fail",
+    "why": "1 of 6 checks failed",
+    "answer": {
+     "status": "success",
+     "action": "native-transfer",
+     "method": null,
+     "from": "0x42d0ef7c7deeabfabd5f33e528d7cf2e7fd7e9ae",
+     "to": "0x63df213cb017eb4a80cf4af595cdb8925489b63d",
+     "nativeValueWei": "720000000000",
+     "movements": [],
+     "unlimitedApproval": null,
+     "summary": "Simple native ETH transfer on Base (chain id 0x2105). 0x42d0ef7c7deeabfabd5f33e528d7cf2e7fd7e9ae sent 720000000000 wei (0.00000072 ETH) to 0x63df213cb017eb4a80cf4af595cdb8925489b63d. Calldata is empty (0x), the recipient has no contract code (EOA), the receipt has no logs, and gas used is exactly 21000 (the base cost of a plain transfer), so no token movements or approvals occurred. Status: success, block 0x378a003 (58,105,859), gas price 0x5b8d80 (6,000,000 wei). No suspicious approvals."
+    },
+    "turns": 3,
+    "notifications": 0
+   }
+  },
+  "reverted-call": {
+   "with": {
+    "outcome": "fail",
+    "why": "no answer within the turn limit",
+    "turns": 6,
+    "notifications": 0
+   },
+   "without": {
+    "outcome": "fail",
+    "why": "no answer within the turn limit",
+    "turns": 6,
+    "notifications": 0
+   }
+  },
+  "unlimited-approve": {
+   "without": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "approve",
+     "method": "approve",
+     "from": "0xb1829f859c37292acb92bd1be255e8955fc6784e",
+     "to": "0xb200000000000000000000039c6467c6faec91a2",
+     "nativeValueWei": "0",
+     "movements": [],
+     "unlimitedApproval": {
+      "token": "0xb200000000000000000000039c6467c6faec91a2",
+      "spender": "0x215199f691cd1cc86ce7bbf803a8b9d9e79eb2e7"
+     },
+     "summary": "This transaction is an ERC-20 approval, not a transfer or swap. The sender 0xb1829f859c37292acb92bd1be255e8955fc6784e called approve(address,uint256) (selector 0x095ea7b3) on the token contract at 0xb200000000000000000000039c6467c6faec91a2, naming 0x215199f691cd1cc86ce7bbf803a8b9d9e79eb2e7 as spender and setting the allowance to 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff (2^256-1, i.e. an unlimited approval). The token identifies itself as name 'RevvyStocks', symbol 'RESTOCK', 18 decimals, with a total supply of 0x033b2e3c9fd0803ce8000000 (1e27 raw units), so the approved amount is far larger than the entire supply. The receipt status is 0x1 (success) and the single emitted log is an Approval event from the token contract with topic0 0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925, owner 0xb1829f859c37292acb92bd1be255e8955fc6784e and spender 0x215199f691cd1cc86ce7bbf803a8b9d9e79eb2e7, with data equal to the same max-uint256 value. No native value was sent (value 0x0) and no token balances moved in this transaction; the spender 0x215199f691cd1cc86ce7bbf803a8b9d9e79eb2e7 is a deployed contract (its code contains the 0x3593564c execute selector, consistent with a router-style contract), so the approval grants it the ability to move the owner's RESTOCK tokens later. The call cost 0xb35e gas at an effective gas price of 0x4c4b40 wei, plus an L1 fee of 0x6ef455c8 wei."
+    },
+    "turns": 5,
+    "notifications": 0
+   },
+   "with": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "approve",
+     "method": "approve",
+     "from": "0xb1829f859c37292acb92bd1be255e8955fc6784e",
+     "to": "0xb200000000000000000000039c6467c6faec91a2",
+     "nativeValueWei": "0",
+     "movements": [],
+     "unlimitedApproval": {
+      "token": "0xb200000000000000000000039c6467c6faec91a2",
+      "spender": "0x215199f691cd1cc86ce7bbf803a8b9d9e79eb2e7"
+     },
+     "summary": "Transaction 0x05fd756fe7c9e45cec3619d1d58d00d1e0ed41386d4351b0dec9be75725e1cf4 succeeded on Base (block 0x378a043, status 0x1, gas used 0xb35e). It is a direct call to token contract 0xb200000000000000000000039c6467c6faec91a2 (symbol RESTOCK, name RevvyStocks, 18 decimals) with selector 0x095ea7b3 = approve(address,uint256). The calldata grants spender 0x215199f691cd1cc86ce7bbf803a8b9d9e79eb2e7 an allowance of 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff (2^256-1), i.e. an unlimited approval. The receipt contains exactly one log, an Approval event (topic0 0x8c5be1e5...) from token 0xb200...91a2 with owner 0xb1829f859c37292acb92bd1be255e8955fc6784e and spender 0x215199f691cd1cc86ce7bbf803a8b9d9e79eb2e7, data 0xffff...ffff \u2014 matching the calldata. No native value was sent (value 0x0) and no Transfer events occurred, so no token balances moved; only the allowance was set. Flag: unlimited approval granted to spender 0x215199f691cd1cc86ce7bbf803a8b9d9e79eb2e7. Note: the spender address 0x215199f691cd1cc86ce7bbf803a8b9d9e79eb2e7 returned no contract code via eth_getCode (empty), so it is an EOA, not a contract \u2014 an unlimited allowance to an EOA is unusual and worth reviewing. Source: rpc=ok (eth_getTransactionByHash, eth_getTransactionReceipt, eth_getCode, eth_call); etherscan not used."
+    },
+    "turns": 3,
+    "notifications": 0
+   }
+  },
+  "router-swap": {
+   "with": {
+    "outcome": "fail",
+    "why": "1 of 6 checks failed",
+    "answer": {
+     "status": "success",
+     "action": "swap",
+     "method": "execute",
+     "from": "0xb09a7cc562236f93c3f3a105729f2e2f9fe678a0",
+     "to": "0xd6145b2d3f379919e8cdeda7b97e37c4b2ca9c40",
+     "nativeValueWei": "0",
+     "movements": [
+      {
+       "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+       "from": "0xb09a7cc562236f93c3f3a105729f2e2f9fe678a0",
+       "to": "0xe8f16fbf4eafec04bcf0c06d768e7ba325f9d6de",
+       "amountRaw": "81905000"
+      },
+      {
+       "token": "0xdcf5130274753c8050ab061b1a1dcbf583f5bfd0",
+       "from": "0xe8f16fbf4eafec04bcf0c06d768e7ba325f9d6de",
+       "to": "0xb09a7cc562236f93c3f3a105729f2e2f9fe678a0",
+       "amountRaw": "4500000000000000000"
+      }
+     ],
+     "unlimitedApproval": null,
+     "summary": "Successful Uniswap Universal Router swap (method execute, command V3_SWAP_EXACT_IN) on Base, block 0x378a003. The sender 0xb09a7cc562236f93c3f3a105729f2e2f9fe678a0 swapped 81.905 USDC (0x833589fcd6edb6e08f4c7c32d4f71b54bda02913, 6 decimals) into 4.5 VCNT (0xdcf5130274753c8050ab061b1a1dcbf583f5bfd0, 18 decimals) through the Uniswap V3 pool 0xe8f16fbf4eafec04bcf0c06d768e7ba325f9d6de (USDC/VCNT, 0.3% fee tier). No native ETH moved (value 0). No Approval events were emitted, so no token approval was granted and there is no unlimited approval. Gas used 0x44e74."
+    },
+    "turns": 5,
+    "notifications": 0
+   },
+   "without": {
+    "outcome": "fail",
+    "why": "1 of 6 checks failed",
+    "answer": {
+     "status": "success",
+     "action": "swap",
+     "method": "execute",
+     "from": "0xb09a7cc562236f93c3f3a105729f2e2f9fe678a0",
+     "to": "0xd6145b2d3f379919e8cdeda7b97e37c4b2ca9c40",
+     "nativeValueWei": "0",
+     "movements": [
+      {
+       "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+       "from": "0xb09a7cc562236f93c3f3a105729f2e2f9fe678a0",
+       "to": "0xe8f16fbf4eafec04bcf0c06d768e7ba325f9d6de",
+       "amountRaw": "81875240"
+      },
+      {
+       "token": "0xdcf5130274753c8050ab061b1a1dcbf583f5bfd0",
+       "from": "0xe8f16fbf4eafec04bcf0c06d768e7ba325f9d6de",
+       "to": "0xb09a7cc562236f93c3f3a105729f2e2f9fe678a0",
+       "amountRaw": "4500000000000000000"
+      }
+     ],
+     "unlimitedApproval": null,
+     "summary": "The sender 0xb09a7cc562236f93c3f3a105729f2e2f9fe678a0 called the Universal Router (0xd6145b2d3f379919e8cdeda7b97e37c4b2ca9c40) with selector 0x3593564c (execute), sending no ETH. The router routed a swap through the Uniswap V3 pool 0xe8f16fbf4eafec04bcf0c06d768e7ba325f9d6de: 81,875,240 raw units of USDC (0x833589fcd6edb6e08f4c7c32d4f71b54bda02913, 6 decimals, i.e. ~81.88 USDC) went from the sender into the pool, and 4,500,000,000,000,000,000 raw units of token 0xdcf5130274753c8050ab061b1a1dcbf583f5bfd0 (18 decimals, i.e. 4.5 tokens) came back from the pool to the sender. The transaction succeeded (status 0x1) with no approval events and no unlimited approval."
+    },
+    "turns": 3,
+    "notifications": 0
+   }
+  },
+  "held-transfer": {
+   "without": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "transfer",
+     "method": "transfer",
+     "from": "0x7352b4c395e0b4ffaed52ade251b48b680898b70",
+     "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+     "nativeValueWei": "0",
+     "movements": [
+      {
+       "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+       "from": "0x7352b4c395e0b4ffaed52ade251b48b680898b70",
+       "to": "0x30b55ad2c462d4a10aa06a816901b043d5ef6aa4",
+       "amountRaw": "32220000"
+      }
+     ],
+     "unlimitedApproval": null,
+     "summary": "On Base mainnet (chain id 0x2105), transaction 0x355bac3b1fe1e3862157e30c7b528f01429dec7bb93e1a79cf47f4ed2a9640ef was mined in block 0x32800e7 (index 0x96) and succeeded (receipt status 0x1, gas used 0x9d4f). It is a plain ERC-20 transfer: the sender 0x7352b4c395e0b4ffaed52ade251b48b680898b70 called the contract at 0x833589fcd6edb6e08f4c7c32d4f71b54bda02913 with selector 0xa9059cbb (transfer) and arguments recipient 0x30b55ad2c462d4a10aa06a816901b043d5ef6aa4 and amount 0x1eba360 (32,220,000 raw units). The token contract reports symbol \"USDC\" and 6 decimals, so 32,220,000 raw units equals 32.22 USDC. The single Transfer event log (topic 0xddf252ad...) confirms 32,220,000 units moved from the sender to the recipient. No native ETH was sent (value 0x0), no approval was granted, and no other token movements occurred."
+    },
+    "turns": 3,
+    "notifications": 0
+   },
+   "with": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "transfer",
+     "method": "transfer",
+     "from": "0x7352b4c395e0b4ffaed52ade251b48b680898b70",
+     "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+     "nativeValueWei": "0",
+     "movements": [
+      {
+       "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+       "from": "0x7352b4c395e0b4ffaed52ade251b48b680898b70",
+       "to": "0x30b55ad2c462d4a10aa06a816901b043d5ef6aa4",
+       "amountRaw": "32220000"
+      }
+     ],
+     "unlimitedApproval": null,
+     "summary": "ERC-20 transfer on Base, status success, block 52953319 (timestamp 1792695985). The sender 0x7352b4c395e0b4ffaed52ade251b48b680898b70 called the token contract 0x833589fcd6edb6e08f4c7c32d4f71b54bda02913 (symbol \"USDC\", 6 decimals, verified via eth_call) with selector 0xa9059cbb = transfer(address,uint256), sending 32220000 raw units = 32.22 USDC to 0x30b55ad2c462d4a10aa06a816901b043d5ef6aa4. No native ETH moved (value 0x0). The receipt contains exactly one log: a Transfer event (topic0 0xddf252ad...) from 0x7352...8b70 to 0x30b5...6aa4 for 32220000, matching the calldata. No Approval events, so no allowance was granted and no unlimited approval exists. Gas used 40271 at effective gas price 6000000 wei, plus L1 fee 1982792187 wei, total cost about 0.002224 ETH. No suspicious flags."
+    },
+    "turns": 4,
+    "notifications": 0
+   }
+  },
+  "held-native-transfer": {
+   "with": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "native-transfer",
+     "method": null,
+     "from": "0xbb2f33f73ccc2c74e3fb9bb8eb75241ac15337e0",
+     "to": "0xafcba5be543a2e77bf8f0ffd3e52beb54be20ff9",
+     "nativeValueWei": "395041428217",
+     "movements": [],
+     "unlimitedApproval": null,
+     "summary": "Plain native ETH transfer on Base. 0xbb2f33f73ccc2c74e3fb9bb8eb75241ac15337e0 sent 395041428217 wei (about 0.000000395 ETH) to 0xafcba5be543a2e77bf8f0ffd3e52beb54be20ff9. Calldata is empty (0x) and the recipient has no contract code, so this is a simple EOA-to-EOA value transfer, not a contract call. The transaction succeeded (status 0x1) in block 0x32800fb (53,084,411) using 21000 gas at an effective gas price of 0x632ea0 wei, plus an L1 fee of 0x7c2a3bae wei. The receipt contains no logs, so no tokens were moved and no approvals were created. No suspicious approvals or drains."
+    },
+    "turns": 3,
+    "notifications": 0
+   },
+   "without": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "native-transfer",
+     "method": null,
+     "from": "0xbb2f33f73ccc2c74e3fb9bb8eb75241ac15337e0",
+     "to": "0xafcba5be543a2e77bf8f0ffd3e52beb54be20ff9",
+     "nativeValueWei": "395041428217",
+     "movements": [],
+     "unlimitedApproval": null,
+     "summary": "A plain ETH transfer on Base (type-2 transaction, chainId 0x2105). The sender 0xbb2f33f73ccc2c74e3fb9bb8eb75241ac15337e0 sent 395041428217 wei (about 0.000000395 ETH) to 0xafcba5be543a2e77bf8f0ffd3e52beb54be20ff9. The call data is empty (0x) and the recipient address holds no contract code, so no function was invoked. The transaction succeeded (receipt status 0x1) using exactly 21000 gas \u2014 the standard cost of a bare value transfer \u2014 with an effective gas price of 0x632ea0 wei, and it emitted no event logs. No ERC-20 or other token movements and no approvals occurred."
+    },
+    "turns": 3,
+    "notifications": 0
+   }
+  },
+  "held-reverted": {
+   "without": {
+    "outcome": "incomplete",
+    "why": "gateway: ConnectionResetError",
+    "turns": 3,
+    "notifications": 0
+   },
+   "with": {
+    "outcome": "fail",
+    "why": "1 of 7 checks failed",
+    "answer": {
+     "status": "reverted",
+     "action": "swap",
+     "method": "execute",
+     "from": "0x2e83c26b03bcb78422efc295d77f094c0e0fc5c4",
+     "to": "0x88ca55716aa4c1f8ecb9ba78c46da09c984faae9",
+     "nativeValueWei": "0",
+     "movements": [],
+     "unlimitedApproval": null,
+     "summary": "Reverted batch call on Base (block 0x3280110, status 0x0, no logs, no state change). The sender 0x2e83c26b03bcb78422efc295d77f094c0e0fc5c4 called the batch-executor contract 0x88ca55716aa4c1f8ecb9ba78c46da09c984faae9 via execute(address[],bytes[]) (selector 0x63fb0b96) with two intended sub-calls: (1) approve(spender=0x4752ba5dbc23f44d87826276bf6fd6b1c372ad24, amount=0x134ecd56d8aef7743651) on token 0xd34258b7e34641f3429647bcf63d2a91b924fb85 (symbol BLL, 18 decimals, i.e. 91,000 BLL), and (2) swapExactTokensForTokens(amountIn=0x134ecd56d8aef7743651, amountOutMin=0x755c5abf554f4e, path=[BLL 0xd34258b7e34641f3429647bcf63d2a91b924fb85, WETH 0x4200000000000000000000000000000000000006], to=0x88ca55716aa4c1f8ecb9ba78c46da09c984faae9, deadline=0x6ada6158) on the Uniswap V2 Router 0x4752ba5dbc23f44d87826276bf6fd6b1c372ad24. No native value was sent (value 0). Because the transaction reverted, the approval and the swap did not execute and no tokens moved; the intended BLL->WETH swap is only an intent, not an effect. Gas used 0x2a405 (172,037)."
+    },
+    "turns": 5,
+    "notifications": 0
+   }
+  },
+  "held-approve": {
+   "with": {
+    "outcome": "incomplete",
+    "why": "the answer was cut off at its limit",
+    "turns": 2,
+    "notifications": 0
+   },
+   "without": {
+    "outcome": "incomplete",
+    "why": "the answer was cut off at its limit",
+    "turns": 4,
+    "notifications": 0
+   }
+  },
+  "held-swap": {
+   "without": {
+    "outcome": "pass",
+    "why": null,
+    "answer": {
+     "status": "success",
+     "action": "swap",
+     "method": "execute",
+     "from": "0x7b42a330a13a8032a48fd4e6392f46d132104f5e",
+     "to": "0x7b42a330a13a8032a48fd4e6392f46d132104f5e",
+     "nativeValueWei": "0",
+     "movements": [
+      {
+       "token": "0x3f5bf3edac59d650d8fdf9657a71f2f904a3a4ee",
+       "from": "0x7b42a330a13a8032a48fd4e6392f46d132104f5e",
+       "to": "0x422df9aa896e883c9cdcbad309c0785b7364a1cf",
+       "amountRaw": "9000000000000000000"
+      },
+      {
+       "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+       "from": "0x422df9aa896e883c9cdcbad309c0785b7364a1cf",
+       "to": "0x7b42a330a13a8032a48fd4e6392f46d132104f5e",
+       "amountRaw": "7162432"
+      }
+     ],
+     "unlimitedApproval": null,
+     "summary": "The sender 0x7b42a330a13a8032a48fd4e6392f46d132104f5e called its own smart-account contract (0x7b42a330a13a8032a48fd4e6392f46d132104f5e) with selector 0xe9ae5c53 (execute), batching two calls: (1) an ERC-20 approve on token 0x3f5bf3edac59d650d8fdf9657a71f2f904a3a4ee (\"Aero\", 18 decimals) granting spender 0x0fef9e88a7b76bcdbf451780c6774fe32965ee98 an allowance of 9000000000000000000 (9 AERO, not unlimited), and (2) a call to that same spender contract (0x0fef9e88a7b76bcdbf451780c6774fe32965ee98) with selector 0x3593564c (Uniswap-style swap router) that pulled the 9 AERO from the sender and swapped it through the Aerodrome pool 0x422df9aa896e883c9cdcbad309c0785b7364a1cf, sending 7162432 raw units of 0x833589fcd6edb6e08f4c7c32d4f71b54bda02913 (\"USD Coin\", 6 decimals, i.e. ~7.162432 USDC) back to the sender. No native ETH was moved (value 0). The transaction succeeded (status 0x1) in block 0x328012e."
+    },
+    "turns": 3,
+    "notifications": 0
+   },
+   "with": {
+    "outcome": "incomplete",
+    "why": "the answer was cut off at its limit",
+    "turns": 4,
+    "notifications": 0
+   }
+  }
+ }
+}
