@@ -133,7 +133,9 @@ jobs:
               if os.path.exists(log):
                   lines = [l for l in open(log) if l.strip()]
                   last = json.loads(lines[-1]) if lines else None
-              if last and last["twigpine"]["certId"] == rec["twigpine"]["certId"]:
+              # The node keeps one certificate per branch and rewrites it in place on each push (same id, new
+              # SHA), so a receipt is new when its certificate id OR its SHA differs from the last one kept.
+              if last and (last["twigpine"]["certId"], last["twigpine"]["newSha"]) == (rec["twigpine"]["certId"], rec["twigpine"]["newSha"]):
                   continue
               with open(log, "a") as f:
                   f.write(json.dumps(rec, sort_keys=True) + "\n")

@@ -346,6 +346,11 @@ class Workflow(unittest.TestCase):
         self.assertIn("check --expect-live", verify_job)
         self.assertIn("needs: [mirror, record]", verify_job)
 
+    def test_a_receipt_is_kept_when_the_same_certificate_moves_to_a_new_sha(self):
+        # node.twigpine.com keeps one certificate per branch and rewrites it (same id) on each push (28 Nov, 1071).
+        text = open(WORKFLOW).read()
+        self.assertIn('(last["twigpine"]["certId"], last["twigpine"]["newSha"])', text)
+
 
 if __name__ == "__main__":
     unittest.main()
