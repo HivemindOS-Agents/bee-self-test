@@ -62,6 +62,28 @@ tool in one write-back pass both land (B-13r). `scripts/rescore_writeback.py --s
 (`fixtures/rescore-writeback/`: two REPRODUCED rescores of one 547 tool, written back by bundle id and, as the
 regression, by tool), and the daily host checks compare every rescore recorded here with its bundle.
 
+## One chain config
+
+Every chain id, CAIP-2 id, RPC, explorer and contract address the readers here use is in `scripts/chains.py`, and only
+there (24 Nov 2026 dev update, row 13, section 32.1). Its words are the host's: `base` 8453, `ethereum` 1, `robinhood`
+4663. Base is the only enabled chain; Robinhood Chain is read and checked, never written to, while its flag is off, and
+nothing here writes to any chain. Hive's own payments stay USDC on Base, and the Bazaar search stays on Base.
+
+- `scripts/chain_literals.py` (guard 53) fails CI on a configured chain id, decimal, inside an `eip155:` string or as
+  hex, or an RPC or explorer host, in any code file outside the config. Code and tests import them from it.
+- `source_match.py` reads each named contract and each market coin on its own chain, with that chain's Sourcify path
+  and second RPC. A coin on a chain the config does not know is `UNABLE`, never skipped; a named contract with no
+  address yet (Robinhood Chain's spend cap and agent account) is reported `EMPTY` (guard 54).
+- Claim Watch matches an agent's ERC-8004 `agentRegistry` against every chain with a filled registry. A registration
+  on Robinhood Chain reads `NOT_CHECKABLE` until its registry is filled and verified, never `NOT_REGISTERED` (guard 55).
+- `lift_run.py --chain base|robinhood` (default `base`) takes that chain's RPC and refuses any read unless the task
+  set's chain and the RPC's `eth_chainId` are the requested chain (guard 56). A model run stays Base-only.
+- The Lab's reader of outside x402 listings (`claim_watch.py lab_listing`) takes `eip155:4663` or v1 `robinhood` with
+  USDG. USDC on Robinhood Chain, a test network or a network the config does not know is `NOT_CHECKABLE` (guard 78).
+
+`tests/test_chains.py` holds guards 54, 55, 56 and 78 on the fixtures in `fixtures/chain-config/`, and the config's
+words against the host's (`host-words.json`). `chain-config` runs the lint and those tests on every push of code.
+
 ## Live checks: report-only has a date
 
 The daily `host-checks` reads where the agents stand from their public files. No live step swallows its exit: each

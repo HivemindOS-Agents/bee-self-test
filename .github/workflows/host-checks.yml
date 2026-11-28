@@ -11,7 +11,11 @@
 #   scripts/first_pass_replay.py   HB-058: a proof bundle's first-pass record worked out again from its listed steps
 #   scripts/rule_map_check.py      HB-063: the rule map is valid and matches AUTONOMY.md, rule for rule
 #   scripts/base_check.py          HB-061: which files are checks, the two mixed trees, and the verified_by stamp
-#   scripts/source_match.py        HB-054 "+": a Sourcify "verified" label recomputed against the code on Base
+#   scripts/source_match.py        HB-054 "+": a Sourcify "verified" label recomputed against the code on its own chain
+#                                  (Base, and Robinhood Chain read-only; 24 Nov update section 32.1 B1, guard 54)
+#   scripts/chains.py              24 Nov update row 13 (section 32.1): the one chain config; scripts/chain_literals.py
+#                                  (guard 53) fails on a chain id, RPC or explorer host in code outside it, and
+#                                  tests/test_chains.py holds guards 54, 55, 56 and 78 (also chain-config.yml, on push)
 #   scripts/lift_run.py            HB-036 "+": held-out tasks picked after a skill's edit, a calibrated proxy, and what a
 #                                  promotion needs (tests/test_lift_run.py)
 #   scripts/kept_rules.py          HB-061: a kept rule cites two runs and another agent's same answer, each a trace
@@ -93,7 +97,7 @@ on:
     - cron: "40 6 * * *"
   push:
     branches: [main]
-    paths: ["scripts/security_input.py", "scripts/claim_watch.py", "scripts/check_skill_files.py", "tests/test_security_inputs.py", "fixtures/rule-map/**", "fixtures/claim-watch/**", "fixtures/skill-files/**", "scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/opportunity_records.py", "tests/test_opportunity_takes.py", "tests/test_opportunities_48h.py", "fixtures/opportunities/**", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "scripts/repair_receipts.py", "scripts/rule_stops.py", "scripts/kept_rules.py", "scripts/labels.py", "scripts/git_history.py", "scripts/repeat_guard.py", "scripts/rule_lifecycle.py", "scripts/done_paths.py", "scripts/link_registry.py", "scripts/check_strength.py", "scripts/compile_sweep.py", "scripts/workflow_age.py", "scripts/feed_freshness.py", "tests/test_feed_freshness.py", "fixtures/feed-freshness/**", "scripts/x402_encoded_paths.py", "tests/test_x402_encoded_paths.py", "fixtures/x402-encoded-paths/**", "shadow.json", "link_registry.json", "fixtures/repair-receipts/**", "fixtures/repeat-guard/**", "fixtures/done-paths/**", "fixtures/link-registry/**", "fixtures/check-strength/**", "fixtures/source-match/**", "scripts/lift_run.py", "tests/test_lift_run.py", "lift/**/held-out.json", "lift/**/tasks.json", "tests/test_claim_watch_read_cap.py", "scripts/rescore_writeback.py", "fixtures/rescore-writeback/**", "scripts/launch_fix_guards.py", "scripts/security_hygiene.py", "scripts/live_gate.py", "scripts/commit_gates.py", "fixtures/commit-gates/**", ".github/workflows/**", ".github/dependabot.yml"]
+    paths: ["scripts/security_input.py", "scripts/claim_watch.py", "scripts/check_skill_files.py", "tests/test_security_inputs.py", "fixtures/rule-map/**", "fixtures/claim-watch/**", "fixtures/skill-files/**", "scripts/opportunities_48h.py", "scripts/opportunities_hb060.py", "scripts/opportunity_records.py", "tests/test_opportunity_takes.py", "tests/test_opportunities_48h.py", "fixtures/opportunities/**", "scripts/health_hb062.py", "scripts/first_pass_replay.py", "scripts/rule_map_check.py", "scripts/base_check.py", "scripts/source_match.py", "scripts/repair_receipts.py", "scripts/rule_stops.py", "scripts/kept_rules.py", "scripts/labels.py", "scripts/git_history.py", "scripts/repeat_guard.py", "scripts/rule_lifecycle.py", "scripts/done_paths.py", "scripts/link_registry.py", "scripts/chains.py", "scripts/chain_literals.py", "tests/test_chains.py", "fixtures/chain-literals/**", "fixtures/chain-config/**", "scripts/check_strength.py", "scripts/compile_sweep.py", "scripts/workflow_age.py", "scripts/feed_freshness.py", "tests/test_feed_freshness.py", "fixtures/feed-freshness/**", "scripts/x402_encoded_paths.py", "tests/test_x402_encoded_paths.py", "fixtures/x402-encoded-paths/**", "shadow.json", "link_registry.json", "fixtures/repair-receipts/**", "fixtures/repeat-guard/**", "fixtures/done-paths/**", "fixtures/link-registry/**", "fixtures/check-strength/**", "fixtures/source-match/**", "scripts/lift_run.py", "tests/test_lift_run.py", "lift/**/held-out.json", "lift/**/tasks.json", "tests/test_claim_watch_read_cap.py", "scripts/rescore_writeback.py", "fixtures/rescore-writeback/**", "scripts/launch_fix_guards.py", "scripts/security_hygiene.py", "scripts/live_gate.py", "scripts/commit_gates.py", "fixtures/commit-gates/**", ".github/workflows/**", ".github/dependabot.yml"]
 permissions: {}
 jobs:
   fixtures:
@@ -134,6 +138,9 @@ jobs:
           python3 scripts/rule_lifecycle.py --self-test
           python3 scripts/done_paths.py --self-test
           python3 scripts/link_registry.py --self-test
+          python3 scripts/chain_literals.py --self-test
+          python3 scripts/chain_literals.py
+          python3 -m unittest discover -s tests -p 'test_chains.py'
           python3 scripts/check_strength.py --self-test
           python3 scripts/compile_sweep.py --self-test
           python3 scripts/workflow_age.py --self-test
@@ -232,7 +239,7 @@ jobs:
             [ -f "$held" ] || continue
             python3 scripts/live_gate.py run "HB-036 lift_run held-out" -- python3 scripts/lift_run.py --verify-held-out "$held" --taskset "$(dirname "$held")/tasks.json"
           done
-      - name: Live, HB-054 plus, Sourcify labels recomputed against Base (a label the code does not back, exit 2, fails the run; exit 1 report-only until its decide-by date)
+      - name: Live, HB-054 plus, Sourcify labels recomputed against each contract's own chain (a label the code does not back, exit 2, fails the run; exit 1 report-only until its decide-by date)
         run: |
           python3 scripts/live_gate.py run "HB-054 source_match unlisted" -- python3 scripts/source_match.py
       - name: Live, HB-087 the launch fixes' public guards (M1, M2, M3, M4, M6, M9 and HB-076; report-only until its decide-by date)
