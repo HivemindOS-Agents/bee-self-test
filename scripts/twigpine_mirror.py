@@ -10,12 +10,16 @@ checkable copy of `main` that keeps running during a GitHub pause.
                                                      each certificate's signature checked against the pinned node DID
   twigpine_mirror.py push --repo NAME [--out DIR]    push GitHub `main` to Twigpine and write its receipt
   twigpine_mirror.py bootstrap --repo NAME [--yes]   once per repository: register, create, protect `main`
+  twigpine_mirror.py bootstrap --repo NAME --yes --attended
+                                                     the same, in a person's own terminal: gl's output and any iCaptcha
+                                                     challenge go to them, and steps the node already has are skipped
   twigpine_mirror.py keys [--fixture F]              make the missing per-repository did:key seeds in PassBook
 
 What Twigpine is (read 28 Nov 2026): a git network whose identities are Ed25519 `did:key` keypairs. A push is an
 RFC 9421 HTTP-signed `git-receive-pack`; the node then signs a ref certificate (repo_id, ref, old, new, pusher, node,
 ts) with its own key. There are no accounts or plans; registering an identity and creating a repository pass an
-iCaptcha challenge that `gl` solves.
+iCaptcha challenge (a reverse CAPTCHA). The owner answers it: scripts/twigpine-bootstrap.sh runs `bootstrap --attended`
+in his own terminal.
 
 The owner-only gate. Node v0.8.0 (18 Nov 2026) made TWIGPINE_ENFORCE_OWNER_PUSH default to true, but an operator can
 turn it off and no public endpoint says which way it is set. A protected branch, though, is refused to every pusher
@@ -618,9 +622,55 @@ def bootstrap_plan(fx, r):
     ]
 
 
-def bootstrap(fx, name, yes, seed_env=None):
+def agent_registered(fx, did, get=http_get):
+    """Whether the node knows this identity: True, False, or None when it could not be read."""
+    status, _ = get_json(get, f"{fx['node'].rstrip('/')}/api/v1/agents/{did}")
+    return True if status == 200 else False if status == 404 else None
+
+
+def bootstrap_needed(fx, r, get=http_get):
+    """The plan's steps the node does not have yet, read from its public endpoints (register, create, protect)."""
+    registered, state = agent_registered(fx, r["did"], get), gate_repo(fx, r, get)["state"]
+    if registered is None or state in (NOT_READ, "wrong-owner"):
+        raise Stop(f"{r['github']}: the node could not be read for what is already done (agent {registered}, repo {state})")
+    plan = bootstrap_plan(fx, r)
+    keep = [not registered, state == "not-bootstrapped", state in ("not-bootstrapped", "unprotected")]
+    return [cmd for cmd, k in zip(plan, keep) if k]
+
+
+def bootstrap_attended(fx, name, seed_env=None, get=http_get, run=subprocess.run, tty=None):
+    """The bootstrap run by a person at a terminal (B-59, 28 Nov: iCaptcha guards register and repo create, and a
+    CAPTCHA is the owner's to answer, not an agent's). gl's own output and prompts go to the terminal; nothing is
+    captured. Steps already on the node are skipped, so it can be run again after a stop."""
+    r = find_repo(fx, name)
+    if not (tty if tty is not None else (sys.stdin.isatty() and sys.stdout.isatty())):
+        raise Stop("--attended runs only in a person's own terminal (stdin and stdout a TTY)")
+    needed = bootstrap_needed(fx, r, get)
+    done = []
+    if needed:
+        seed = load_seed(r, seed_env)
+        with Identity(seed) as ident:
+            env = child_env({"TWIGPINE_KEY": ident.pem, "TWIGPINE_NODE": fx["node"], "HOME": ident.dir})
+            code, out = run_quiet(["gl", "identity", "show", "--dir", ident.dir], env)
+            if code or r["did"] not in out:
+                raise Stop(f"{name}: gl does not read the identity as {r['did']}: {out}")
+            for cmd in needed:
+                cmd = [ident.dir if part == "{dir}" else part for part in cmd]
+                print(f"\n== {name}: {' '.join(cmd[:3])}", flush=True)
+                if run(cmd, env=env, timeout=1800).returncode:
+                    raise Stop(f"{name}: `{' '.join(cmd[:3])}` did not finish; run the same command again to go on")
+                done.append(" ".join(cmd[:3]))
+    left = bootstrap_needed(fx, r, get)
+    return {"repo": name, "did": r["did"], "ran": True, "steps": done,
+            "registered": agent_registered(fx, r["did"], get), "state": gate_repo(fx, r, get)["state"],
+            "left": [" ".join(c[:3]) for c in left]}
+
+
+def bootstrap(fx, name, yes, seed_env=None, attended=False):
     r = find_repo(fx, name)
     plan = bootstrap_plan(fx, r)
+    if yes and attended and switched_on():
+        return bootstrap_attended(fx, name, seed_env)
     if not yes or not switched_on():
         return {"repo": name, "did": r.get("did"), "ran": False, "plan": [" ".join(c) for c in plan],
                 "why": f"dry run: pass --yes with {SWITCH}=on to run it"}
@@ -725,6 +775,7 @@ def main(argv=None):
     s = sub.add_parser("bootstrap")
     s.add_argument("--repo", required=True)
     s.add_argument("--yes", action="store_true")
+    s.add_argument("--attended", action="store_true", help="run in your own terminal; you answer any iCaptcha challenge")
     s.add_argument("--seed-env")
     sub.add_parser("keys")
     a = p.parse_args(argv)
@@ -764,7 +815,7 @@ def main(argv=None):
             print(json.dumps(rec, indent=2))
             return EXIT_OK if rec["verified"] else EXIT_FAIL
         if a.cmd == "bootstrap":
-            print(json.dumps(bootstrap(fx, a.repo, a.yes, a.seed_env), indent=2))
+            print(json.dumps(bootstrap(fx, a.repo, a.yes, a.seed_env, a.attended), indent=2))
             return EXIT_OK
         if a.cmd == "keys":
             made = make_keys(fx, a.fixture)

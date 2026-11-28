@@ -269,6 +269,44 @@ class PushRefusals(unittest.TestCase):
         self.assertTrue(any("protect set main" in step for step in out["plan"]))
 
 
+    def test_attended_refuses_without_a_terminal(self):
+        with self.assertRaises(t.Stop):
+            t.bootstrap_attended(fixture(), "hivepunk-1", tty=False)
+
+    def test_attended_runs_only_the_steps_the_node_lacks_and_reads_back(self):
+        os.environ["TWIGPINE_SEED_HIVEPUNK_1"] = base64.urlsafe_b64encode(REPO_SEED).decode().rstrip("=")
+        fx = fixture()
+        r = fx["repos"][0]
+        state = {"agent": 200, "repo": 404, "protected": []}
+
+        def get(url):
+            if "/api/v1/agents/" in url:
+                return state["agent"], b"{}"
+            if url.endswith("/branches/protected"):
+                return 200, json.dumps({"protected_branches": state["protected"]}).encode()
+            if state["repo"] == 404:
+                return 404, b"{}"
+            return 200, json.dumps({"owner_did": r["did"]}).encode()
+
+        ran = []
+
+        def run(cmd, env=None, timeout=None):
+            ran.append(" ".join(cmd[:3]))
+            if cmd[1] == "repo":
+                state["repo"] = 200
+            if cmd[1] == "protect":
+                state["protected"] = [fx["branch"]]
+            return subprocess.CompletedProcess(cmd, 0)
+
+        real = t.run_quiet
+        t.run_quiet = lambda cmd, env, cwd=None, timeout=300: (0, r["did"])
+        try:
+            out = t.bootstrap_attended(fx, "hivepunk-1", get=get, run=run, tty=True)
+        finally:
+            t.run_quiet = real
+        self.assertEqual(ran, ["gl repo create", "gl protect set"])
+        self.assertEqual((out["state"], out["registered"], out["left"]), ("protected", True, []))
+
 class Identity(unittest.TestCase):
     def test_pem_is_0600_in_a_0700_folder_and_gone_after(self):
         with t.Identity(REPO_SEED) as ident:
