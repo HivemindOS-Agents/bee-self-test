@@ -14,7 +14,8 @@
 #   record   writes results/<repo>/twigpine-mirror.json (the latest receipt) and appends results/<repo>/twigpine-
 #            mirror.jsonl. Nothing is written to an agent repository.
 #   verify   after the pushes, while TWIGPINE_MIRROR = on: the same check with --expect-live, so a mirror that is
-#            still missing, behind or wrong goes red.
+#            missing, wrong, or behind what its own leg pushed goes red. A repository whose GitHub `main` moved again
+#            after its verified push this run passes (--pushed): the next hour pushes that.
 #
 # Never a required check: an alpha network's outage must not block anyone's `main`.
 name: twigpine-mirror
@@ -164,5 +165,10 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
-      - name: Every mirror in sync after the pushes, read-only
-        run: python3 scripts/twigpine_mirror.py check --expect-live
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: twigpine-receipt-*
+          path: receipts/
+          merge-multiple: true
+      - name: Every mirror holds what this run pushed (or is in sync), read-only
+        run: python3 scripts/twigpine_mirror.py check --expect-live --pushed receipts

@@ -5,7 +5,7 @@ checkable copy of `main` that keeps running during a GitHub pause.
   twigpine_mirror.py --self-test                     Ed25519, did:key and certificate checks on fixtures, no network
   twigpine_mirror.py --check-fixture [F]             the mirror list's shape: one did:key per repository, none shared
   twigpine_mirror.py gate [--out FILE]               read-only owner-only push gate, per repository
-  twigpine_mirror.py check [--out DIR] [--expect-live]
+  twigpine_mirror.py check [--out DIR] [--expect-live [--pushed RECEIPTS]]
                                                      read-only: GitHub `main` against the latest Twigpine certificate,
                                                      each certificate's signature checked against the pinned node DID
   twigpine_mirror.py push --repo NAME [--out DIR]    push GitHub `main` to Twigpine and write its receipt
@@ -44,7 +44,7 @@ Inert until switched on: `push` and `bootstrap` refuse to run unless TWIGPINE_MI
 Exit 0: all hold. 1: one does not. 2: something could not be read, or a refusal (never a pass). Python 3 standard
 library only.
 """
-import argparse, base64, datetime, hashlib, json, os, re, shutil, subprocess, sys, tempfile, time, urllib.error, \
+import argparse, base64, datetime, glob, hashlib, json, os, re, shutil, subprocess, sys, tempfile, time, urllib.error, \
     urllib.parse, urllib.request
 
 FIXTURE = "fixtures/twigpine-mirror/mirrors.json"
@@ -456,7 +456,26 @@ def check(fx, get=http_get, ls_remote=None):
     return {"schema": CHECK_SCHEMA, "at": now(), "gate": g, "repos": rows}
 
 
-def check_exit(report, expect_live):
+def pushed_this_run(path):
+    """{repo: SHA} for each verified receipt this run wrote (the mirror legs' artifacts, receipts/<repo>/...)."""
+    out = {}
+    for f in glob.glob(os.path.join(path, "*", "twigpine-mirror.json")):
+        try:
+            rec = json.load(open(f))
+        except (OSError, ValueError):
+            continue
+        if rec.get("verified") and SHA1.match(str(rec.get("twigpine", {}).get("newSha", ""))):
+            out[rec["repo"]] = rec["twigpine"]["newSha"]
+    return out
+
+
+def settled(row, pushed):
+    """In sync, or holding exactly what this run's own leg pushed and verified: a busy repository's GitHub `main` can
+    move again between its push and this check (547 on 28 Nov, run 46137304114), and the next hour pushes that."""
+    return row["state"] == "in-sync" or (row["state"] == "behind" and pushed.get(row["repo"]) == row.get("twigpineSha"))
+
+
+def check_exit(report, expect_live, pushed=None):
     states = [r["state"] for r in report["repos"]]
     if not report["gate"]["nodeState"].get("read") or NOT_READ in states:
         return EXIT_STOP
@@ -464,7 +483,7 @@ def check_exit(report, expect_live):
         return EXIT_FAIL
     if any(s in ("bad-certificate", "foreign-pusher", "wrong-owner") for s in states):
         return EXIT_FAIL
-    if expect_live and any(s != "in-sync" for s in states):
+    if expect_live and not all(settled(r, pushed or {}) for r in report["repos"]):
         return EXIT_FAIL
     return EXIT_OK
 
@@ -768,6 +787,7 @@ def main(argv=None):
     s = sub.add_parser("check")
     s.add_argument("--out")
     s.add_argument("--expect-live", action="store_true")
+    s.add_argument("--pushed", help="this run's receipts folder: a repository holding what its own leg pushed passes")
     s = sub.add_parser("push")
     s.add_argument("--repo", required=True)
     s.add_argument("--out")
@@ -803,7 +823,7 @@ def main(argv=None):
             if a.out:
                 write_json(os.path.join(a.out, "twigpine-mirror-check.json"), report)
             print(json.dumps(report, indent=2))
-            return check_exit(report, a.expect_live)
+            return check_exit(report, a.expect_live, pushed_this_run(a.pushed) if a.pushed else None)
         if a.cmd == "push":
             run_url = None
             if os.environ.get("GITHUB_RUN_ID"):

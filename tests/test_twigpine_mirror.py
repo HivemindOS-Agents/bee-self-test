@@ -1,5 +1,5 @@
 """B-59 / HB-021: the Twigpine mirror's checks, on canned node answers. No network, no key of any real repository."""
-import base64, copy, hashlib, json, os, shutil, stat, subprocess, sys, unittest
+import base64, copy, hashlib, json, os, shutil, stat, subprocess, sys, tempfile, unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, ".."))
@@ -329,6 +329,32 @@ class Receipt(unittest.TestCase):
         self.assertFalse(t.receipt(fixture(), fixture()["repos"][0], OLD, cert(), None)["verified"])
 
 
+class AfterThePush(unittest.TestCase):
+    def report(self, **rows):
+        node = {"read": True, "didMatchesPin": True}
+        return {"gate": {"nodeState": node}, "repos": [{"repo": k, **v} for k, v in rows.items()]}
+
+    def test_a_repo_that_moved_again_after_its_own_push_passes(self):
+        rep = self.report(a={"state": "behind", "twigpineSha": SHA}, b={"state": "in-sync"})
+        self.assertEqual(t.check_exit(rep, True, {"a": SHA}), t.EXIT_OK)
+
+    def test_behind_what_it_pushed_or_with_no_push_fails(self):
+        rep = self.report(a={"state": "behind", "twigpineSha": OLD})
+        self.assertEqual(t.check_exit(rep, True, {"a": SHA}), t.EXIT_FAIL)
+        self.assertEqual(t.check_exit(rep, True, {}), t.EXIT_FAIL)
+        self.assertEqual(t.check_exit(rep, True), t.EXIT_FAIL)
+
+    def test_only_verified_receipts_count(self):
+        d = tempfile.mkdtemp()
+        try:
+            for repo, ok in (("a", True), ("b", False)):
+                os.makedirs(os.path.join(d, repo))
+                with open(os.path.join(d, repo, "twigpine-mirror.json"), "w") as f:
+                    json.dump({"repo": repo, "verified": ok, "twigpine": {"newSha": SHA}}, f)
+            self.assertEqual(t.pushed_this_run(d), {"a": SHA})
+        finally:
+            shutil.rmtree(d)
+
 class Workflow(unittest.TestCase):
     def test_each_leg_gets_only_its_own_secret_and_the_mirror_is_switched(self):
         text = open(WORKFLOW).read()
@@ -343,7 +369,7 @@ class Workflow(unittest.TestCase):
         check_job = text[text.index("  check:"):text.index("  mirror:")]
         verify_job = text[text.index("  verify:"):]
         self.assertNotIn("--expect-live", check_job)
-        self.assertIn("check --expect-live", verify_job)
+        self.assertIn("check --expect-live --pushed receipts", verify_job)
         self.assertIn("needs: [mirror, record]", verify_job)
 
     def test_a_receipt_is_kept_when_the_same_certificate_moves_to_a_new_sha(self):
