@@ -2,11 +2,11 @@
 # blockers in this repository's readers. Required on every push that changes code here:
 #   scripts/chain_literals.py   guard 53: no configured chain id (decimal, inside eip155:, or 0x hex) and no RPC or
 #                               explorer host in any code file outside scripts/chains.py; its fixtures are today's lines
-#   tests/test_chains.py        guards 54 (source_match.py reads a 4663 coin on its chain; an unknown chain is UNABLE),
-#                               55 (Claim Watch's ERC-8004 match is per chain; a 4663 agent with no registry in the
+#   tests/test_chains.py        guards 54 (source_match.py reads a Robinhood Chain coin on its chain; an unknown chain is UNABLE),
+#                               55 (Claim Watch's ERC-8004 match is per chain; a Robinhood Chain agent with no registry in the
 #                               config is NOT_CHECKABLE, never NOT_REGISTERED), 56 (lift_run.py refuses unless the task
 #                               set and eth_chainId are the requested chain) and 78 (the Lab's x402 reader takes USDG on
-#                               eip155:4663 or v1 robinhood; USDC there, or an unknown network, is NOT_CHECKABLE), and
+#                               Robinhood Chain's CAIP-2 id or v1 robinhood; USDC there, or an unknown network, is NOT_CHECKABLE), and
 #                               the config's chain words against the host's (fixtures/chain-config/host-words.json)
 # No network, no token and nothing written. host-checks runs the same lint and tests every day.
 name: chain-config (manual-only)

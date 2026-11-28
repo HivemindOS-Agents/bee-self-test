@@ -2,7 +2,7 @@
 """Guard 53 (24 Nov 2026 dev update, section 32.1): no bare chain literal outside the one chain config.
 
 A code file here (Python, a workflow, a shell or JS file under scripts/, tests/ or .github/) may not hold a configured
-chain id (8453-style, inside an eip155: string or as 0x hex) or any configured RPC or explorer host. They live in
+chain id (as a number, inside an eip155: string or as 0x hex) or any configured RPC or explorer host. They live in
 scripts/chains.py, and the code imports them. The list of what is looked for is built from that same config, so a chain
 added there is linted at once. Reports, results, records of runs, fixtures and docs are data, not code, and are not
 read (the spec exempts reports, docs and Builder Index rows; recorded chain answers and reviewed task sets are records).
@@ -40,9 +40,10 @@ def literals_in(text, patterns=None):
 
 
 def code_files(root):
-    """The repository's code files, as paths relative to root: tracked ones when root is a git checkout."""
+    """The repository's code files, as paths relative to root: tracked and new (not ignored) ones in a git checkout, so
+    a file not yet committed is read too."""
     try:
-        out = subprocess.run(["git", "-C", root, "ls-files"], capture_output=True, text=True, timeout=60, check=True).stdout.splitlines()
+        out = subprocess.run(["git", "-C", root, "ls-files", "--cached", "--others", "--exclude-standard"], capture_output=True, text=True, timeout=60, check=True).stdout.splitlines()
     except (OSError, subprocess.SubprocessError):
         out = [os.path.relpath(os.path.join(d, f), root) for d, _, fs in os.walk(root) for f in fs]
     return sorted(p for p in out if p.startswith(CODE_DIRS) and p.endswith(CODE_EXT) and p != CONFIG and "__pycache__" not in p)

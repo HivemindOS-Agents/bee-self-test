@@ -49,7 +49,7 @@ class Guard53NoBareLiteral(unittest.TestCase):
     def test_todays_source_match_line_is_caught_with_what_it_holds(self):
         found = chain_literals.literals_in((ROOT / "fixtures/chain-literals/bad-source_match-7bc74dc.txt").read_text())
         self.assertIn(str(BASE["chainId"]), [what for _, what in found])
-        self.assertIn("base-rpc.publicnode.com", [what for _, what in found])
+        self.assertIn(BASE["rpcIndependent"].split("//", 1)[1], [what for _, what in found])
 
     def test_an_eip155_string_and_a_hex_id_are_caught(self):
         for text in (f'net = "{HOOD["caip2"]}"', f'if cid == "{HOOD["hex"].upper().replace("0X", "0x")}":'):
@@ -223,7 +223,7 @@ class Guard78LabX402Reader(unittest.TestCase):
 
     def test_a_usdg_listing_on_4663_is_read_in_v2_and_v1(self):
         v2, v1 = self.listing("v2"), self.listing("v1")
-        self.assertEqual(v1[0]["network"], HOOD["caip2"], "v1's robinhood is eip155:4663")
+        self.assertEqual(v1[0]["network"], HOOD["caip2"], "v1's robinhood is its CAIP-2 id")
         self.assertEqual(cw.lab_listing("priors", v2, 402, v2)["outcome"], "MATCH")
         self.assertEqual(cw.lab_listing("priors", v1, 402, v2)["outcome"], "MATCH")
         self.assertEqual(cw.lab_listing("priors", v2, 402, [dict(v2[0], amount="1")])["outcome"], "PRICE_DIFF")
