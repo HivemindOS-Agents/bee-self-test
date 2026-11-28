@@ -1,0 +1,3 @@
+    def test_the_rpc_tool_is_read_only(self):
+        with self.assertRaises(ValueError):
+            lr.rpc_call(chains.rpc(chains.BASE), "eth_sendRawTransaction", ["0x"])

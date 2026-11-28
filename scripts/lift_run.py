@@ -18,6 +18,13 @@ Sandbox: the model gets two tools, `base_rpc` (keyless, read-only JSON-RPC to on
 methods) and `notify` (stubbed in both arms: it records the call and sends nothing). No Hive secret is given to the
 model or its tools; the gateway key is read from an environment variable and sent only to the gateway endpoint.
 
+Chains (24 Nov 2026 dev update, section 32.1 B3, guard 56): `--chain base|robinhood` (default base) picks the chain;
+its RPC comes from scripts/chains.py unless --rpc names another. Before any read, the RPC's eth_chainId must be that
+chain's id and the task set's own chain must be that chain, or the run is refused (exit 2): a Base transaction is never
+explained from Robinhood Chain's RPC, nor the reverse. The method allow-list is unchanged. A model run (the only path
+that spends) stays Base-only: its prompt and tools are hashed into the calibration's proxySha256, and no Robinhood
+Chain task set exists yet.
+
 HB-036 "+" (20 Nov 2026): held-out tasks and a calibrated proxy, before any skill is tuned against lift.
   - Held-out. Besides the fixed task set (the "tune" set), a run is judged on tasks the skill's editor could not have
     seen: Base transactions from blocks mined after the edit, picked by a fixed rule on each block's hash (HELD_OUT_RULE).
@@ -36,6 +43,7 @@ HB-036 "+" (20 Nov 2026): held-out tasks and a calibrated proxy, before any skil
   python3 scripts/lift_run.py --check-promotion LIFT.json                         # a promotion's lift block
   python3 scripts/lift_run.py --audit lift/*/runs/*.json                          # report-only: what each record lacks
   python3 scripts/lift_run.py --verify-tasks lift/tx-explain/tasks.json          # re-derive each check from the chain
+  python3 scripts/lift_run.py --verify-tasks TASKS.json --chain robinhood         # the same on Robinhood Chain's RPC
   python3 scripts/lift_run.py --taskset lift/tx-explain/tasks.json --skill-file SKILL.md --model <id> \\
       --endpoint <OpenAI-compatible chat completions URL> --max-cost-usd 1 --price-file prices.json \\
       --max-judge-calls 0 --out lift/tx-explain/runs/<date>.json \\
@@ -45,7 +53,10 @@ Python 3.9+ standard library only."""
 import argparse, hashlib, json, os, re, sys, time, urllib.error, urllib.request
 import uuid
 
-RPC_DEFAULT = "https://mainnet.base.org"
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import chains  # noqa: E402
+
+RPC_DEFAULT = chains.rpc(chains.BASE)
 RPC_METHODS = ("eth_getTransactionByHash", "eth_getTransactionReceipt", "eth_getBlockByNumber", "eth_getCode", "eth_call", "eth_chainId")
 TRANSFER = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
 APPROVAL = "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925"
@@ -865,7 +876,40 @@ def run(ts, skill_text, cfg, chat, rpc, budget, judge=None, now=None, report=Non
     return block(stopped), results, budget
 
 
-def main(argv=None):
+def chain_problem(rpc, slug):
+    """Why this RPC is not the requested chain, or None (guard 56). `rpc(method, params)` is the run's own caller."""
+    chain = chains.get(slug)
+    try:
+        answered = rpc("eth_chainId", [])
+    except Exception as error:  # an RPC that did not answer is never taken as the right chain
+        return f"the RPC did not answer eth_chainId ({type(error).__name__})"
+    got = chains.by_id(answered) if isinstance(answered, str) and answered.lower().startswith("0x") else None
+    if got is not None and got["chainId"] == chain["chainId"]:
+        return None
+    return f"the RPC answered eth_chainId {str(answered)[:20]} ({got['name'] if got else 'no chain the config knows'}), not {chain['name']}'s {chain['hex']}"
+
+
+def taskset_chain_problem(ts, slug):
+    """Why a task set is not on the requested chain, or None. A task set names its chain ({"chain": {"chainId"}})."""
+    named = chains.by_id(((ts or {}).get("chain") or {}).get("chainId"))
+    if named is None:
+        return "the task set names no chain the config knows"
+    if named["slug"] != slug:
+        return f"the task set's transactions are on {named['name']}, not {chains.get(slug)['name']}"
+    return None
+
+
+def rpc_for(a):
+    """The RPC a run reads: --rpc when given, else the chain's own from the config."""
+    return a.rpc or chains.rpc(a.chain)
+
+
+def refused(why):
+    print(json.dumps({"refused": why}, indent=1))
+    return 2
+
+
+def parser():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--check-taskset", metavar="TASKS_JSON")
     p.add_argument("--verify-tasks", metavar="TASKS_JSON")
@@ -883,7 +927,8 @@ def main(argv=None):
     p.add_argument("--judge-model", help="the explicit model id for judge checks (none in tx-explain)")
     p.add_argument("--endpoint", help="an OpenAI-compatible chat completions URL (https)")
     p.add_argument("--key-env", default="HIVEMINDOS_GATEWAY_KEY", help="the environment variable holding the gateway key")
-    p.add_argument("--rpc", default=RPC_DEFAULT)
+    p.add_argument("--chain", choices=chains.launchpad_slugs(), default=chains.BASE, help="the chain the transactions are on (default base)")
+    p.add_argument("--rpc", help="an RPC for --chain instead of the config's; it must answer that chain's eth_chainId")
     p.add_argument("--attempts", type=int, default=1)
     p.add_argument("--max-turns", type=int, default=6)
     p.add_argument("--max-tokens", type=int, default=1500)
@@ -894,7 +939,18 @@ def main(argv=None):
     p.add_argument("--allow-unreviewed", action="store_true", help="run on a task set not yet reviewed (its lift stays null)")
     p.add_argument("--out")
     p.add_argument("--report", help="the run's link, written into the lift block")
+    return p
+
+
+def main(argv=None):
+    p = parser()
     a = p.parse_args(argv)
+    a.rpc = rpc_for(a)
+    chain_rpc = lambda method, params: rpc_call(a.rpc, method, params)
+
+    def chain_refusal(ts):
+        """Guard 56: the task set and the RPC are both the requested chain, before any transaction is read."""
+        return taskset_chain_problem(ts, a.chain) or chain_problem(chain_rpc, a.chain)
 
     if a.check_taskset:
         ts = load_json(a.check_taskset)
@@ -905,6 +961,9 @@ def main(argv=None):
         return 1 if problems else 0
     if a.verify_tasks:
         ts = load_json(a.verify_tasks)
+        why = chain_refusal(ts)
+        if why:
+            return refused(why)
         problems = verify_tasks(ts, lambda method, params: rpc_call(a.rpc, method, params))
         print(json.dumps({"verified": not problems, "tasks": len(ts.get("tasks") or []), "problems": problems}, indent=1))
         return 1 if problems else 0
@@ -919,6 +978,9 @@ def main(argv=None):
         if not a.out:
             p.error("--pick-held-out needs --out")
         ts = load_json(a.pick_held_out)
+        why = chain_refusal(ts)
+        if why:
+            return refused(why)
         held = pick_held_out(ts, lambda method, params: rpc_call(a.rpc, method, params))
         with open(a.out, "w", encoding="utf-8") as f:
             json.dump(held, f, indent=1)
@@ -931,6 +993,9 @@ def main(argv=None):
         if not a.taskset:
             p.error("--verify-held-out needs --taskset")
         held, ts = load_json(a.verify_held_out), load_json(a.taskset)
+        why = chain_refusal(ts)
+        if why:
+            return refused(why)
         rpc = lambda method, params: rpc_call(a.rpc, method, params)
         problems = verify_held_out(held, ts, rpc) + verify_tasks(held, rpc)
         print(json.dumps({"verified": not problems, "tasks": len(held.get("tasks") or []), "review": review_problem(held) or "counts", "problems": problems}, indent=1))
@@ -961,6 +1026,11 @@ def main(argv=None):
         p.error("the task set is not sound: " + "; ".join(problems))
     if review_problem(ts) and not a.allow_unreviewed:
         p.error(f"the task set's review does not count ({review_problem(ts)}); pass --allow-unreviewed to run anyway, and its lift stays null")
+    if a.chain != chains.BASE:
+        return refused("a model run is Base-only: its prompt and tools are Base's and hashed into the calibration; no Robinhood Chain task set exists yet")
+    why = chain_refusal(ts)
+    if why:
+        return refused(why)
     key = os.environ.get(a.key_env, "")
     if not key:
         p.error(f"no gateway key in {a.key_env}")

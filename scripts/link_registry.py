@@ -3,7 +3,8 @@
 
 On 21 Nov 2026 every Hugging Face card footer linked https://hivemindos.app/agents/<n>, a route that had moved: 62
 cards pointed at a 404 until a redirect went in on 22 Nov. link_registry.json lists the shapes the host may write
-({n} an agent number, {address} a 0x address; a trailing slash, a query and a #fragment do not change a shape) and
+({n} an agent number, {address} a 0x address, {chain} a chain word from scripts/chains.py, base or robinhood today; a
+trailing slash, a query and a #fragment do not change a shape) and
 what each answers: page (200 after any redirect), redirect (3xx, then 200: "redirect, allowed") or auth (401 or 403
 with no token: "auth, allowed", as api.hivemindos.app/mcp is by design).
 
@@ -26,6 +27,7 @@ import urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import git_history  # noqa: E402
+import chains  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REGISTRY = os.path.join(HERE, "..", "link_registry.json")
@@ -36,7 +38,9 @@ LINK = re.compile(r"https?://(?:[a-z0-9-]+\.)*hivemindos\.app(?:/[^\s\"'<>()\[\]
 NUMBER_HOLES = ("n", "number", "num", "id", "agent", "bee", "agent number", "agent id")
 KINDS = ("page", "redirect", "auth")
 TIMEOUT = 10
-PARTS = {"{n}": r"\d+", "{address}": r"0x[0-9a-fA-F]{40}", "{slug}": r"[A-Za-z0-9._-]+"}
+# {chain}: a coin page's chain word (24 Nov 2026 dev update, section 32.1: the site documents /agents/robinhood/... beside
+# /agents/base/...), the launchpad chains of the one chain config.
+PARTS = {"{n}": r"\d+", "{address}": r"0x[0-9a-fA-F]{40}", "{slug}": r"[A-Za-z0-9._-]+", "{chain}": "(?:" + "|".join(chains.launchpad_slugs()) + ")"}
 
 
 def clean(url):
@@ -170,7 +174,9 @@ def self_test():
         ("the canonical page, with and without its slash", "https://hivemindos.app/agents/hivepunkz/1071/", "https://hivemindos.app/agents/hivepunkz/{n}"),
         ("the card footer's redirect", "https://hivemindos.app/agents/667.", "https://hivemindos.app/agents/{n}"),
         ("a fragment and a query", "https://api.hivemindos.app/v1/hall?week=2025-01-06#bounty", "https://api.hivemindos.app/v1/hall"),
-        ("a coin page", "https://hivemindos.app/agents/base/0x1649cd37f4748807b4882fc48765ba0b2affa94a/4200", "https://hivemindos.app/agents/base/{address}/{n}"),
+        ("a coin page", "https://hivemindos.app/agents/base/0x1649cd37f4748807b4882fc48765ba0b2affa94a/4200", "https://hivemindos.app/agents/{chain}/{address}/{n}"),
+        ("a coin page on Robinhood Chain", "https://hivemindos.app/agents/robinhood/0x1649cd37f4748807b4882fc48765ba0b2affa94a/17", "https://hivemindos.app/agents/{chain}/{address}/{n}"),
+        ("a chain the config does not know", "https://hivemindos.app/agents/solana/0x1649cd37f4748807b4882fc48765ba0b2affa94a/17", None),
         ("the agents index is not an agent's page", "https://hivemindos.app/agents/hivepunkz/", None),
         ("a note page nobody registered", "https://hivemindos.app/notes/agent-memory-lint-fixtures/", None),
     ]:
@@ -207,7 +213,7 @@ def self_test():
         bad.append(f"a shape with a placeholder: got {got} from {links_in(prose)}")
     if [shape_of(u) for u in links_in("see https://hivemindos.app/notes/<slug> here")] != ["https://hivemindos.app/notes/x"]:
         bad.append(f"an unregistered shape with a placeholder: got {[shape_of(u) for u in links_in('see https://hivemindos.app/notes/<slug> here')]}")
-    total = 1 + 7 + 1 + 2 + 1 + 1 + 2
+    total = 1 + 9 + 1 + 2 + 1 + 1 + 2
     for line in bad:
         print("FAIL", line)
     print(f"link registry self-test: {total - len(bad)} of {total} passed")

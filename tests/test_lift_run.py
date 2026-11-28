@@ -8,6 +8,7 @@ import copy, json, pathlib, sys, unittest
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 import lift_run as lr  # noqa: E402
+import chains  # noqa: E402
 
 TASKS = lr.load_json(ROOT / "lift/tx-explain/tasks.json")
 CHAIN = lr.load_json(ROOT / "fixtures/lift/tx-explain-chain.json")["chain"]
@@ -138,7 +139,7 @@ class Checks(unittest.TestCase):
 
     def test_the_rpc_tool_is_read_only(self):
         with self.assertRaises(ValueError):
-            lr.rpc_call("https://mainnet.base.org", "eth_sendRawTransaction", ["0x"])
+            lr.rpc_call(chains.rpc(chains.BASE), "eth_sendRawTransaction", ["0x"])
 
 
 class Runs(unittest.TestCase):

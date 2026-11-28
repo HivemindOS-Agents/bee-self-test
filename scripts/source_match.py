@@ -12,9 +12,13 @@ is UNABLE, and UNABLE is never "verified".
 
 What MATCH does not prove: that the published source compiles to that code. The compile is Sourcify's, taken on trust.
 
-Keyless and read-only: one Sourcify GET and one eth_getCode per address.
+Keyless and read-only: one Sourcify GET and one eth_getCode per address, on the address's own chain. The chains, their
+Sourcify paths, RPCs and the contracts HivemindOS names on each are scripts/chains.py's (guard 54): a coin on Robinhood
+Chain is read there, a coin on a chain the config does not know is UNABLE, and a named contract with no address yet
+is reported EMPTY.
 
-    python3 scripts/source_match.py                 # the contracts HivemindOS's pages name, and every coin its market lists
+    python3 scripts/source_match.py                 # the contracts HivemindOS's pages name on each chain, and every
+                                                    # coin its market lists, each on its own chain
     python3 scripts/source_match.py 0xADDRESS ...   # these Base contracts instead
     python3 scripts/source_match.py --self-test     # the fixtures only
 
@@ -35,28 +39,31 @@ import sys
 import urllib.error
 import urllib.request
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import chains  # noqa: E402
+
 FIXTURES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "fixtures", "source-match", "fixtures.json")
 FIXTURES_SHA256 = "46f5f40fa28a15ea4dad203bd144184989d9b3090cae4020d79e672252ab7144"
-CHAIN = 8453
-SOURCIFY = "https://sourcify.dev/server/v2/contract/{chain}/{address}?fields=runtimeBytecode,proxyResolution"
-RPC = "https://base-rpc.publicnode.com"
+# The chain, its Sourcify path, its second RPC and the contracts HivemindOS names on it all come from scripts/chains.py
+# (24 Nov 2026 dev update, section 32.1 B1, guard 54). Before it, this file read Base alone and skipped any coin on
+# another chain without a row.
+SOURCIFY = chains.SOURCIFY_CONTRACT
 MARKETS = "https://agents.hivemindos.app/coins/markets"
 MARKET = "https://agents.hivemindos.app/coins/{token}/market"
+ADDRESS = re.compile(r"^0x[0-9a-fA-F]{40}$")
 
-# The Base contracts HivemindOS's own pages and docs name. A contract Sourcify does not list reads UNLISTED: nothing
-# is claimed for it, and it is shown so the list is whole.
-NAMED = [
-    ("HivePunkzAgentsV2 (agents and their spend cap)", "0x28600B0e17cB51EcCDd77BE45723Db3Ca550212f"),
-    ("HivePunkzAgentAccountV2 (an agent's wallet)", "0x4eB66Da8C2909F9c936D9E4602eAC1151B7dAf5d"),
-    ("AgentPad launch factory, version 3", "0xa4b03e8dD636902d588C7875d5743421159DF34D"),
-    ("AgentPad launch factory, version 2", "0x0791F5D582B89435Bf7f81Ae4cf79Bd6838D4073"),
-    ("AgentPad pool hook, version 3", "0x13E916f95892b08c65bF50Bf5b4d72E294F7A080"),
-    ("AgentPad pool hook, version 2", "0xF2DadEc4f7b4AaC2a3B0669DE19EB555dc83A080"),
-    ("AgentPad liquidity locker", "0xb4E0E8427b92b24814F268E80F4b5735fe915324"),
-    ("AgentPad liquidity locker (earlier)", "0x4f9e401b1eff02464686b4462E65DFf95f61CCd7"),
-    ("HiveBeeReceipts (daily work receipts)", "0x3f36DEae5da90068b3AE7c028b2EFFeC907aB6c0"),
-    ("Agent ID keeper", "0x8e87E1221C21b31433BDE68A56C0f1F8Db80F62B"),
-]
+
+def named_targets():
+    """(chain, what, address or None): the contracts HivemindOS's own pages and docs name, chain by chain. A contract
+    Sourcify does not list reads UNLISTED: nothing is claimed for it, and it is shown so the list is whole."""
+    return chains.named()
+
+
+def empty_rows():
+    """A named contract with no address in the config yet (Robinhood Chain's spend cap and agent account today): one
+    EMPTY row each, so the gap is reported and never read as nothing to check."""
+    return [{"family": "source", "chain": chain["chainId"], "name": what, "outcome": "EMPTY",
+             "detail": f"no address on {chain['name']} in scripts/chains.py yet"} for chain, what, address in named_targets() if not address]
 
 
 def hex_of(value):
@@ -188,11 +195,14 @@ def get_json(url, body=None):
         return json.load(response)
 
 
-def read(address):
-    """One address, live: its row, with outcome MATCH, DIFFERENT, UNABLE or UNLISTED (Sourcify does not know it)."""
-    row = {"family": "source", "chain": CHAIN, "address": address}
+def read(address, chain=None, fetch=None):
+    """One address on one chain (Base when none is named), live: its row, with outcome MATCH, DIFFERENT, UNABLE or
+    UNLISTED (Sourcify does not know it). Sourcify's path and the second RPC are that chain's."""
+    chain = chain or chains.get(chains.BASE)
+    fetch = fetch or get_json
+    row = {"family": "source", "chain": chain["chainId"], "address": address}
     try:
-        answer = get_json(SOURCIFY.format(chain=CHAIN, address=address))
+        answer = fetch(SOURCIFY.format(chain=chain["chainId"], address=address))
     except urllib.error.HTTPError as error:
         if error.code == 404:
             return dict(row, outcome="UNLISTED", label=None, detail="Sourcify does not list this contract")
@@ -200,13 +210,32 @@ def read(address):
     except Exception as error:  # a network fault: never guess
         return dict(row, outcome="UNABLE", label=None, detail=f"Sourcify could not be read: {type(error).__name__}")
     try:
-        live = get_json(RPC, {"jsonrpc": "2.0", "id": 1, "method": "eth_getCode", "params": [address, "latest"]}).get("result")
+        live = fetch(chain["rpcIndependent"], {"jsonrpc": "2.0", "id": 1, "method": "eth_getCode", "params": [address, "latest"]}).get("result")
     except Exception as error:
         live = None
         row["rpc"] = type(error).__name__
+    answer = answer if isinstance(answer, dict) else {}
     result = source_match(answer, live, address)
     proxy = answer.get("proxyResolution") if isinstance(answer.get("proxyResolution"), dict) else {}
     return dict(row, **result, isProxy=proxy.get("isProxy"))
+
+
+def coin_rows(coins, read_fn=read):
+    """Every coin the market lists, each read on its own chain. A coin on a chain the config does not know, or naming
+    none, is UNABLE: never skipped, never verified. An entry with no token address is not a coin."""
+    rows = []
+    for coin in coins:
+        token = coin.get("token") if isinstance(coin, dict) else None
+        if not isinstance(token, str) or not ADDRESS.match(token):
+            continue
+        name = f"coin {coin.get('symbol')}"
+        chain = chains.by_id(coin.get("chainId"))
+        if chain is None or chain not in chains.mainnets():
+            rows.append({"family": "source", "chain": coin.get("chainId"), "address": token, "name": name, "outcome": "UNABLE", "label": None,
+                         "detail": f"the coin's chain {str(coin.get('chainId'))[:20]} is not in the chain config"})
+            continue
+        rows.append(dict(read_fn(token, chain), name=name))
+    return rows
 
 
 def self_test():
@@ -232,38 +261,44 @@ def self_test():
 def main(argv):
     if "--self-test" in argv:
         return self_test()
-    given = [a for a in argv if re.fullmatch(r"0x[0-9a-fA-F]{40}", a)]
+    given = [a for a in argv if ADDRESS.match(a)]
     look, mismatch = 0, 0
-    named = [("given", a) for a in given] if given else NAMED
-    for name, address in named:
-        row = dict(read(address), name=name)
+    base = chains.get(chains.BASE)
+    # Given addresses are read on Base, as before; the named list on every chain that has one.
+    named = [(base, "given", a) for a in given] if given else [(c, what, a) for c, what, a in named_targets() if a]
+    for chain, name, address in named:
+        row = dict(read(address, chain), name=name)
         print(json.dumps(row))
         mismatch += row["outcome"] == "DIFFERENT"
         look += row["outcome"] in ("UNABLE", "UNLISTED")
     if not given:
-        # Every coin the market lists on Base: what its page says, and what the recompute says.
+        # A gap in the config is reported, and counts as nothing read rather than as something to look at: it is a
+        # known gap until the chain's contracts are filled (section 32.4).
+        empty = empty_rows()
+        for row in empty:
+            print(json.dumps(row))
+        # Every coin the market lists, on its own chain: what its page says, and what the recompute says.
         try:
             coins = get_json(MARKETS).get("coins") or []
         except Exception as error:
             coins = []
             look += 1
             print(json.dumps({"family": "source", "outcome": "UNABLE", "detail": f"the coin market could not be read: {type(error).__name__}"}))
-        for coin in coins:
-            token = coin.get("token") if isinstance(coin, dict) else None
-            if not isinstance(token, str) or not re.fullmatch(r"0x[0-9a-fA-F]{40}", token) or coin.get("chainId") != CHAIN:
-                continue
-            row = dict(read(token), name=f"coin {coin.get('symbol')}")
-            try:
-                market = get_json(MARKET.format(token=token))
-                safety = (market.get("market") or market).get("safety") or {}
-                row["pageSaysVerified"] = safety.get("sourceVerified")
-            except Exception as error:
-                row["pageSaysVerified"] = f"unread: {type(error).__name__}"
-            # The page may say "verified" only on a MATCH.
-            row["pageBacked"] = row["pageSaysVerified"] is not True or row["outcome"] == "MATCH"
+        for row in coin_rows(coins):
+            if "isProxy" in row:
+                try:
+                    market = get_json(MARKET.format(token=row["address"]))
+                    safety = (market.get("market") or market).get("safety") or {}
+                    row["pageSaysVerified"] = safety.get("sourceVerified")
+                except Exception as error:
+                    row["pageSaysVerified"] = f"unread: {type(error).__name__}"
+                # The page may say "verified" only on a MATCH.
+                row["pageBacked"] = row["pageSaysVerified"] is not True or row["outcome"] == "MATCH"
             print(json.dumps(row))
-            mismatch += row["outcome"] == "DIFFERENT" or not row["pageBacked"]
+            mismatch += row["outcome"] == "DIFFERENT" or not row.get("pageBacked", True)
             look += row["outcome"] == "UNABLE"
+        print(f"source: {mismatch} not backed, {look} to look at, {len(empty)} empty in the chain config")
+        return 2 if mismatch else 1 if look else 0
     print(f"source: {mismatch} not backed, {look} to look at")
     return 2 if mismatch else 1 if look else 0
 

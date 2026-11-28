@@ -1,0 +1,7 @@
+# Numbers that hold the digits but are not a chain id, and words that are not a host.
+BLOCK = 384530
+ADDRESS = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+AMOUNT = "18453"
+VERSION = "1.8453"
+TEXT = "Base and Robinhood Chain, base or robinhood"
+SELECTOR = "0x21050000"

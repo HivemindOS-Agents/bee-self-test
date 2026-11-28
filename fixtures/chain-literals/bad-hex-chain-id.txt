@@ -1,0 +1,2 @@
+    if answer.get("chainId") != "0x1237":
+        return "not Robinhood Chain"

@@ -1,0 +1,10 @@
+{
+  "about": "Guard 54's fixture: the agents service's /coins/markets shape with a coin on each kind of chain. Before the chain config, source_match.py read only the first (chainId 8453) and skipped the rest without a row. Now the Base and Robinhood Chain coins are read on their own chain, and the coin on a chain the config does not know, and the one that names no chain, are each UNABLE. The tokens are stand-ins.",
+  "coins": [
+    {"symbol": "BASEONE", "token": "0x1111111111111111111111111111111111111111", "chainId": 8453},
+    {"symbol": "HOODONE", "token": "0x2222222222222222222222222222222222222222", "chainId": 4663},
+    {"symbol": "ELSEWHERE", "token": "0x3333333333333333333333333333333333333333", "chainId": 56},
+    {"symbol": "NOCHAIN", "token": "0x4444444444444444444444444444444444444444"},
+    {"symbol": "NOTATOKEN", "token": "not an address", "chainId": 8453}
+  ]
+}

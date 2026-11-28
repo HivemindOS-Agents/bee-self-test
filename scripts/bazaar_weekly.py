@@ -8,7 +8,8 @@ already covers (HB-022 and the unpaid HB-033 sweep; block S5 of the Launch-readi
 A run, all reads, nothing paid and no payment header ever sent:
   1. The listed-URL set: Bazaar's merchant listing for HivemindOS's payTo, kept to the two HivemindOS hosts, and one
      urlSubstring search per host to catch a HivemindOS URL listed under another payTo.
-  2. The 20 fixed searches (GET .../discovery/search?query=&network=eip155:8453&limit=20; the parameter is `query`).
+  2. The 20 fixed searches (GET .../discovery/search?query=&network=<Base's CAIP-2 id>&limit=20; the parameter is
+     `query`). Hive's own payments are USDC on Base, so this search stays on Base (scripts/chains.py HIVE_PAYMENTS).
      Each records HivemindOS's best rank or `absent`, that resource, its 30-day payers and calls when Bazaar returns
      them (`not-read` when it does not), the #1 result's host and payers, `searchMethod` and the fetch time.
   3. Agents Trust Inspect for every listed URL and the fixture's unlisted control, with no payment header: 402 means
@@ -28,6 +29,10 @@ The fixture has a second copy in the HivemindOS monorepo, hivemind-cloud-service
 bazaar-intents.json, whose test pins the same FIXTURE_SHA256; change both together. Python 3 standard library only."""
 import argparse, base64, collections, datetime, glob, hashlib, json, os, pathlib, re, sys, time, urllib.error, urllib.parse, urllib.request
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import chains  # noqa: E402
+
+HIVE_NETWORK = chains.caip2(chains.HIVE_PAYMENTS)
 FIXTURE_SHA256 = "55e8df2ba83d75d47d8a4cf953dcf7e7f2315d07f6925acef215803461d8ccd6"
 FIXTURE = "fixtures/bazaar-intents/bazaar-intents.json"
 INTENTS = 20
@@ -69,6 +74,8 @@ def check_fixture(fx, raw=None):
     bad = []
     if raw is not None and hashlib.sha256(raw).hexdigest() != FIXTURE_SHA256:
         bad.append(f"the fixture is not the pinned file (sha256 {hashlib.sha256(raw).hexdigest()})")
+    if (fx.get("search") or {}).get("network") != HIVE_NETWORK:
+        bad.append("the search is not on Hive's payment chain (scripts/chains.py HIVE_PAYMENTS)")
     hosts = fx.get("hiveHosts")
     if not isinstance(hosts, list) or not hosts:
         bad.append("hiveHosts is missing")
@@ -261,8 +268,8 @@ def parse_inspect(status, headers, body):
             except (ValueError, TypeError):
                 offer = None
         accepts = (offer or {}).get("accepts") or []
-        base = next((a for a in accepts if isinstance(a, dict) and a.get("network") == "eip155:8453"), None)
-        quote = {"network": "eip155:8453", "amount": base.get("amount"), "asset": base.get("asset"),
+        base = next((a for a in accepts if isinstance(a, dict) and a.get("network") == HIVE_NETWORK), None)
+        quote = {"network": HIVE_NETWORK, "amount": base.get("amount"), "asset": base.get("asset"),
                  "payTo": base.get("payTo")} if base else NOT_READ
         return {"status": "indexed", "httpStatus": 402, "quote": quote}
     if status == 404 and isinstance(data, dict) and (data.get("error") or {}).get("code") == "ENDPOINT_NOT_INDEXED":

@@ -37,10 +37,14 @@ The skill family, one row a pinned skill:
 and the named signals in its text (pipe_to_shell, remote_instructions, instruction_override, imperative_html_comment,
 invisible_chars). A signal on a line that is itself a warning is counted as <signal>_quoted_example, never as a signal.
 
-The three outward families: record (ERC-8004 registrations on Base: RESOLVES, RESOLVES_NO_SERVICES,
+The three outward families: record (ERC-8004 registrations on every chain with a filled registry in scripts/chains.py,
+Base today: RESOLVES, RESOLVES_NO_SERVICES,
 PROFILE_KEYS_IN_JSON, NOT_JSON, URI_UNREACHABLE, EMPTY_URI, NOT_REGISTERED, NOT_READ (over its host's cap for the day, or its host asked to slow down),
-REGISTRY_UNREAD (the chain did not answer)), listing (x402 listings against the
-402 they answer: MATCH, PRICE_QUOTED, PRICE_DIFF, PAYTO_DIFF, NETWORK_DIFF, NO_402, UNREACHABLE, UNPARSEABLE) and advisory
+REGISTRY_UNREAD (the chain did not answer), NOT_CHECKABLE (a registration on a chain whose registry is not filled in the
+config, Robinhood Chain today, or on a chain the config does not know: never NOT_REGISTERED)), listing (x402 listings
+against the 402 they answer: MATCH, PRICE_QUOTED, PRICE_DIFF, PAYTO_DIFF, NETWORK_DIFF, NO_402, UNREACHABLE, UNPARSEABLE,
+and for the HiveOS Evidence Lab's reader of outside listings NOT_CHECKABLE: a network or asset the config does not take
+for x402, such as USDC on Robinhood Chain, whose x402 asset is USDG) and advisory
 (the packages a pinned skill installs against OSV's malware records and GitHub's malware advisories: NO_HIT,
 ADVISORY_HIT, NOT_READ). HivemindOS's
 own targets have a row each; other parties' are counted ("target": "sample", one row an outcome with "count"), with the
@@ -96,6 +100,7 @@ PINNED_RAW = re.compile(r"^(https://raw\.githubusercontent\.com/[^/]+/[^/]+/)[0-
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import security_input as si  # noqa: E402
+import chains  # noqa: E402
 
 
 def skill_signals(text):
@@ -227,11 +232,16 @@ def newest(path):
 # ---------------------------------------------------------------------------------------------- the outward families
 PROFILE_KEY = re.compile(r"^(context|endpoint\[.*\]|address\[.*\]|account\[.*\])$")
 PKG = re.compile(r"\b(npx(?:\s+-y)?|npm\s+(?:i|install)(?:\s+-g)?|pnpm\s+(?:add|dlx)|yarn\s+(?:add|dlx)|bunx|uvx|pipx\s+(?:run|install)|pip3?\s+install)\s+((?:@[\w.-]+/)?[\w.-]+)", re.I)
-V1_NETWORK = {"base": "eip155:8453", "base-sepolia": "eip155:84532"}
-REGISTRY = "0x8004A169FB4a3325136EB29fA0ceB6D2e539a432"
-RPC = "https://mainnet.base.org"
+# Every network, registry, RPC and asset below is scripts/chains.py's (24 Nov 2026 dev update, section 32.1 B2 and B6,
+# guards 55 and 78). Hive's own payments stay USDC on Base; the Lab's reader takes each chain's x402 network and asset.
+V1_NETWORK = chains.v1_networks()
+BASE = chains.get(chains.BASE)
+REGISTRY = BASE["erc8004"]
+RPC = BASE["rpc"]
 OWN_AGENTS = ("86", "104", "547", "632", "667", "1071")
-USDC_BASE = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+HIVE_NETWORK = chains.caip2(chains.HIVE_PAYMENTS)
+USDC_BASE = chains.x402_asset(chains.HIVE_PAYMENTS, chains.HIVE_PAYMENT_ASSET)
+NOT_CHECKABLE = "NOT_CHECKABLE"
 
 
 def sample(seed, count, maximum):
@@ -360,6 +370,18 @@ def check_listing(target, listed, status, live, dynamic=False):
     return row
 
 
+def lab_listing(target, listed, status, live, table=None):
+    """The HiveOS Evidence Lab's reader of an outside agent's x402 listing (B6, guard 78): check_listing, on the listed
+    entries whose network and asset the chain config takes for x402 (USDC on Base, USDG on Robinhood Chain, eip155 ids
+    or v1 names). A listing with none is NOT_CHECKABLE with the reason, never skipped and never matched; USDC on
+    Robinhood Chain is one. Hive's own listings are read by check_listing, unchanged."""
+    checkable = [l for l in listed if chains.x402_not_checkable(l["network"], l["asset"], table) is None]
+    if not checkable:
+        why = chains.x402_not_checkable(listed[0]["network"], listed[0]["asset"], table) if listed else "the listing names no network"
+        return {"family": "listing", "target": target, "outcome": NOT_CHECKABLE, "why": why}
+    return check_listing(target, checkable, status, live)
+
+
 def package_refs(text):
     seen, out = set(), []
     for m in PKG.finditer(text):
@@ -456,11 +478,12 @@ def rows_of(text):
     return [json.loads(l) for l in text.splitlines() if l.strip() and "finding" not in json.loads(l)]
 
 
-def rpc_call(data):
-    """One eth_call to the registry: (ok, result) or (False, reverted)."""
-    body = json.dumps({"jsonrpc": "2.0", "id": 1, "method": "eth_call", "params": [{"to": REGISTRY, "data": data}, "latest"]}).encode()
+def rpc_call(data, chain=None):
+    """One eth_call to a chain's ERC-8004 registry (Base's when none is named): (ok, result) or (False, reverted)."""
+    chain = chain or BASE
+    body = json.dumps({"jsonrpc": "2.0", "id": 1, "method": "eth_call", "params": [{"to": chain["erc8004"], "data": data}, "latest"]}).encode()
     try:
-        with urllib.request.urlopen(urllib.request.Request(RPC, data=body, headers={"content-type": "application/json", "User-Agent": UA}), timeout=20) as r:
+        with urllib.request.urlopen(urllib.request.Request(chain["rpc"], data=body, headers={"content-type": "application/json", "User-Agent": UA}), timeout=20) as r:
             answer = json.loads(r.read())
     except (OSError, ValueError):
         return False, False
@@ -469,13 +492,13 @@ def rpc_call(data):
     return False, "revert" in str((answer.get("error") or {}).get("message", "")).lower()
 
 
-def registration(agent_id):
-    """(registered, uri), or None when the chain did not answer."""
+def registration(agent_id, chain=None):
+    """(registered, uri) on a chain's registry (Base's when none is named), or None when the chain did not answer."""
     arg = hex(agent_id)[2:].rjust(64, "0")
-    ok, owner = rpc_call("0x6352211e" + arg)
+    ok, owner = rpc_call("0x6352211e" + arg, chain)
     if not ok:
         return (False, "") if owner else None
-    ok, res = rpc_call("0xc87b56dd" + arg)
+    ok, res = rpc_call("0xc87b56dd" + arg, chain)
     if not ok:
         return (True, "") if res else None
     raw = bytes.fromhex(res[2:])
@@ -490,12 +513,37 @@ def read_body(url):
     return (data.decode("utf-8", "replace"), hashlib.sha256(data).hexdigest()) if data else None
 
 
+def registrations_reading(regs, table=None):
+    """An agent's own `registrations` list read against the chain config (guard 55): REGISTERED_SINCE with the agentId
+    (and its agentRegistry when it is not Base's) on the first chain whose filled registry it names, Base first;
+    NOT_CHECKABLE with the reason when it names only chains whose registry is unfilled (Robinhood Chain today) or that
+    the config does not know; NOT_REGISTERED only when it names no registration at all, or only other contracts."""
+    found, unchecked = [], []
+    for reg in regs if isinstance(regs, list) else []:
+        if not isinstance(reg, dict) or not reg.get("agentId"):
+            continue
+        chain, state = chains.registry_reading(reg.get("agentRegistry"), table)
+        if state == "checkable":
+            found.append((chain["slug"] != chains.BASE, reg, chain))
+        elif state in ("unfilled", "unknown"):
+            unchecked.append(f"{chain['name']} has no ERC-8004 registry in the chain config yet" if state == "unfilled" and chain
+                             else f"{str(reg.get('agentRegistry'))[:80]} is on a chain the config does not take")
+    if found:
+        _, reg, chain = sorted(found, key=lambda f: f[0])[0]
+        out = {"outcome": "REGISTERED_SINCE", "agentId": reg["agentId"]}
+        return out if chain["slug"] == chains.BASE else dict(out, agentRegistry=reg["agentRegistry"])
+    if unchecked:
+        return {"outcome": NOT_CHECKABLE, "why": unchecked[0]}
+    return {"outcome": "NOT_REGISTERED"}
+
+
 def record_again(row):
     agent = row["target"].split(":", 1)[1]
     own_file = f"https://agents.hivemindos.app/agents/{agent}/registration.json"
     agent_id = row.get("agentId")
     if not agent_id:
-        # Its own file named no Agent ID: read it again; still none is the same NOT_REGISTERED.
+        # Its own file named no Agent ID: read it again; still none is the same NOT_REGISTERED, and a registration only
+        # on a chain the config cannot check yet is NOT_CHECKABLE, never NOT_REGISTERED.
         body = read_body(own_file)
         if body is None:
             return None
@@ -503,9 +551,12 @@ def record_again(row):
             regs = json.loads(body[0]).get("registrations") or []
         except (ValueError, AttributeError):
             return None
-        named = [r for r in regs if isinstance(r, dict) and str(r.get("agentRegistry", "")).lower() == f"eip155:8453:{REGISTRY.lower()}" and r.get("agentId")]
-        return {"family": "record", "target": row["target"], "outcome": "NOT_REGISTERED"} if not named else {"family": "record", "target": row["target"], "outcome": "REGISTERED_SINCE", "agentId": named[0]["agentId"]}
-    onchain = registration(int(agent_id))
+        return dict({"family": "record", "target": row["target"]}, **registrations_reading(regs))
+    # A row's agentRegistry names the chain its Agent ID is on; a row without one is Base's, as every row before it was.
+    chain, state = chains.registry_reading(row["agentRegistry"]) if row.get("agentRegistry") else (BASE, "checkable")
+    if state != "checkable":
+        return {"family": "record", "target": row["target"], "outcome": NOT_CHECKABLE, "agentId": agent_id}
+    onchain = registration(int(agent_id)) if chain is BASE else registration(int(agent_id), chain)
     if onchain is None:
         return None
     inline = data_uri(onchain[1])
@@ -574,12 +625,22 @@ def coverage_problems(rows):
     return [f"record sample: {not_read} of {first['sampled']} not read ({share}%), with no host slowed and time left"]
 
 
+def sample_chain(seed, table=None):
+    """The chain a registry sample was drawn on, from its seed (erc8004:<chain>:<day>); a seed that names no chain is
+    Base's, as every seed before the chain config was."""
+    parts = str(seed or "").split(":")
+    return chains.get(parts[1], table) if len(parts) >= 3 and parts[0] == "erc8004" else BASE
+
+
 def sample_again(seed, count, maximum, host_cap=None):
-    """The Worker's read budget (ReadBudget), under the cap the day was run with."""
+    """The Worker's read budget (ReadBudget), under the cap the day was run with, on the sample's own chain."""
     budget = ReadBudget(host_cap)
+    chain = sample_chain(seed)
+    # Base's sample reads registration(i) exactly as before the chain config; another chain's names its chain.
+    read_registration = registration if chain is BASE else (lambda i: registration(i, chain))
     out = []
     for i in sample(seed, count, maximum):
-        onchain = registration(i)
+        onchain = read_registration(i)
         if onchain is None:
             out.append({"outcome": "REGISTRY_UNREAD"})
             continue
@@ -757,6 +818,9 @@ def replay_outward(row, rows):
     """A record, listing or advisory row read again: (target, verdict, why)."""
     family, target = row.get("family"), row.get("target")
     if family == "record" and target == "sample":
+        chain = sample_chain(row.get("seed"))
+        if chain is None or not chain["erc8004"] or chain not in chains.mainnets():
+            return (f"sample:{row['outcome']}", "UNABLE", f"not checkable: {(chain or {}).get('name') or 'its chain'} has no ERC-8004 registry in the chain config")
         key = (row["seed"], row["sampled"], row["maxId"], row.get("hostCap"))
         cache = replay_outward.__dict__.setdefault("samples", {})
         if key not in cache:
@@ -773,8 +837,8 @@ def replay_outward(row, rows):
         return (f"sample:{row['outcome']}", "UNABLE", "the Bazaar's pages move; the sample is not picked again")
     if family == "listing" and target.startswith("hivemindos:"):
         status, live = probe("https://agents.hivemindos.app" + target.split(":", 1)[1], "POST")
-        usdc = next((a for a in live or [] if a["network"] == "eip155:8453" and a["asset"] == USDC_BASE), None)
-        claimed = [{"network": "eip155:8453", "asset": USDC_BASE, "payTo": usdc["payTo"] if usdc else "", "amount": usdc["amount"] if usdc and row["outcome"] == "MATCH" else ""}]
+        usdc = next((a for a in live or [] if a["network"] == HIVE_NETWORK and a["asset"] == USDC_BASE), None)
+        claimed = [{"network": HIVE_NETWORK, "asset": USDC_BASE, "payTo": usdc["payTo"] if usdc else "", "amount": usdc["amount"] if usdc and row["outcome"] == "MATCH" else ""}]
         now = check_listing(target, claimed, status, live) if row["outcome"] == "MATCH" else {"outcome": "UNABLE"}
         if row["outcome"] != "MATCH":
             return (target, "UNABLE", f"{row['outcome']}: the listed price is in its openapi.json, not in the row")
@@ -1067,15 +1131,18 @@ def self_test():
         ("ipfs through a gateway", record_url("ipfs://bafy123/agent.json"), "https://ipfs.io/ipfs/bafy123/agent.json"),
         ("http is not read", record_url("http://x.example/a.json"), None),
         ("a data uri", data_uri("data:application/json;base64,eyJuYW1lIjoiYSJ9"), '{"name":"a"}'),
-        ("a v1 402 reads the same", accept({"network": "base", "payTo": "0xAB", "asset": "0xCD", "maxAmountRequired": "5"}), {"network": "eip155:8453", "payTo": "0xab", "asset": "0xcd", "amount": "5"}),
-        ("match", check_listing("x", [accept({"network": "eip155:8453", "payTo": "p", "asset": "u", "amount": "5"})], 402, [accept({"network": "eip155:8453", "payTo": "p", "asset": "u", "amount": "5"})])["outcome"], "MATCH"),
-        ("price differs", check_listing("x", [accept({"network": "eip155:8453", "payTo": "p", "asset": "u", "amount": "5"})], 402, [accept({"network": "eip155:8453", "payTo": "p", "asset": "u", "amount": "6"})])["outcome"], "PRICE_DIFF"),
-        ("price quoted", check_listing("x", [accept({"network": "eip155:8453", "payTo": "p", "asset": "u", "amount": "5"})], 402, [accept({"network": "eip155:8453", "payTo": "p", "asset": "u", "amount": "6"})], True)["outcome"], "PRICE_QUOTED"),
-        ("payee differs", check_listing("x", [accept({"network": "eip155:8453", "payTo": "p", "asset": "u"})], 402, [accept({"network": "eip155:8453", "payTo": "q", "asset": "u"})])["outcome"], "PAYTO_DIFF"),
-        ("network differs", check_listing("x", [accept({"network": "eip155:8453", "payTo": "p", "asset": "u"})], 402, [accept({"network": "eip155:1", "payTo": "p", "asset": "u"})])["outcome"], "NETWORK_DIFF"),
+        ("a v1 402 reads the same", accept({"network": BASE["x402"]["v1"], "payTo": "0xAB", "asset": "0xCD", "maxAmountRequired": "5"}), {"network": HIVE_NETWORK, "payTo": "0xab", "asset": "0xcd", "amount": "5"}),
+        ("match", check_listing("x", [accept({"network": HIVE_NETWORK, "payTo": "p", "asset": "u", "amount": "5"})], 402, [accept({"network": HIVE_NETWORK, "payTo": "p", "asset": "u", "amount": "5"})])["outcome"], "MATCH"),
+        ("price differs", check_listing("x", [accept({"network": HIVE_NETWORK, "payTo": "p", "asset": "u", "amount": "5"})], 402, [accept({"network": HIVE_NETWORK, "payTo": "p", "asset": "u", "amount": "6"})])["outcome"], "PRICE_DIFF"),
+        ("price quoted", check_listing("x", [accept({"network": HIVE_NETWORK, "payTo": "p", "asset": "u", "amount": "5"})], 402, [accept({"network": HIVE_NETWORK, "payTo": "p", "asset": "u", "amount": "6"})], True)["outcome"], "PRICE_QUOTED"),
+        ("payee differs", check_listing("x", [accept({"network": HIVE_NETWORK, "payTo": "p", "asset": "u"})], 402, [accept({"network": HIVE_NETWORK, "payTo": "q", "asset": "u"})])["outcome"], "PAYTO_DIFF"),
+        ("network differs", check_listing("x", [accept({"network": HIVE_NETWORK, "payTo": "p", "asset": "u"})], 402, [accept({"network": chains.caip2(chains.ETHEREUM), "payTo": "p", "asset": "u"})])["outcome"], "NETWORK_DIFF"),
+        # B6 (guard 78): v1's robinhood is its CAIP-2 id, and the Lab's reader takes USDG there and never USDC.
+        ("a v1 robinhood 402 reads as its CAIP-2", accept({"network": chains.get(chains.ROBINHOOD)["x402"]["v1"], "payTo": "0xAB", "asset": "0xCD", "maxAmountRequired": "5"})["network"], chains.caip2(chains.ROBINHOOD)),
+        ("usdc on robinhood chain is not checkable", lab_listing("x", [accept({"network": chains.caip2(chains.ROBINHOOD), "payTo": "p", "asset": USDC_BASE, "amount": "5"})], 402, [])["outcome"], NOT_CHECKABLE),
         ("no 402", check_listing("x", [], 200, None), {"family": "listing", "target": "x", "outcome": "NO_402", "status": 200}),
         ("unparseable", check_listing("x", [], 402, None)["outcome"], "UNPARSEABLE"),
-        ("a 402's body", parse_402(None, '{"accepts":[{"network":"base","payTo":"P","asset":"U","maxAmountRequired":"1"}]}'), [{"network": "eip155:8453", "payTo": "p", "asset": "u", "amount": "1"}]),
+        ("a 402's body", parse_402(None, '{"accepts":[{"network":"base","payTo":"P","asset":"U","maxAmountRequired":"1"}]}'), [{"network": HIVE_NETWORK, "payTo": "p", "asset": "u", "amount": "1"}]),
         ("packages", package_refs("Run `npx -y @scope/good-mcp` then pip install requests, uvx mem0-mcp-server, npm i -g left-pad and pnpm dlx tsx.\nAgain: npx -y @scope/good-mcp\nnpm install --save x"),
          [{"ecosystem": "npm", "name": "@scope/good-mcp"}, {"ecosystem": "pip", "name": "requests"}, {"ecosystem": "pip", "name": "mem0-mcp-server"}, {"ecosystem": "npm", "name": "left-pad"}, {"ecosystem": "npm", "name": "tsx"}]),
         ("an advisory hit", advisory_row("s", [{"ecosystem": "pip", "name": "m"}], [{"ecosystem": "pip", "name": "m", "ghsa": "GHSA-1"}]), {"family": "advisory", "target": "s", "outcome": "ADVISORY_HIT", "refs": 1, "hits": [{"package": "m", "ecosystem": "pip", "ghsa": "GHSA-1"}]}),
@@ -1104,7 +1171,7 @@ def self_test():
         except si.Stop as stop:
             if stop.reason != reason:
                 bad.append(f"{name}: {stop.reason}, want {reason}")
-    total = 19 + 2 + 4 + 2 + 1 + 1 + 29 + 1 + 5
+    total = 19 + 2 + 4 + 2 + 1 + 1 + 31 + 1 + 5
     for line in bad:
         print("FAIL", line)
     bad += read_budget_problems()

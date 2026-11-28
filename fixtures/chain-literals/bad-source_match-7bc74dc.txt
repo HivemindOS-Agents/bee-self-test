@@ -1,0 +1,3 @@
+CHAIN = 8453
+SOURCIFY = "https://sourcify.dev/server/v2/contract/{chain}/{address}?fields=runtimeBytecode,proxyResolution"
+RPC = "https://base-rpc.publicnode.com"

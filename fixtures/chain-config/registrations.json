@@ -1,0 +1,11 @@
+{
+  "about": "Guard 55's fixtures: an agent's own registration.json `registrations` as the host writes them (ERC-8004 agentRegistry is eip155:<chainId>:<registry>). Before the chain config, Claim Watch matched only eip155:8453:<Base registry> and called anything else NOT_REGISTERED.",
+  "base": [{"agentRegistry": "eip155:8453:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432", "agentId": 4211}],
+  "robinhood": [{"agentRegistry": "eip155:4663:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432", "agentId": 17}],
+  "both": [{"agentRegistry": "eip155:4663:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432", "agentId": 17},
+           {"agentRegistry": "eip155:8453:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432", "agentId": 4211}],
+  "unknownChain": [{"agentRegistry": "eip155:56:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432", "agentId": 9}],
+  "otherContractOnBase": [{"agentRegistry": "eip155:8453:0x000000000000000000000000000000000000dEaD", "agentId": 3}],
+  "testnet": [{"agentRegistry": "eip155:46630:0x8004A818BFB912233c491871b3d84c89A494BD9e", "agentId": 5}],
+  "none": []
+}

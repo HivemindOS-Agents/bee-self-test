@@ -32,10 +32,10 @@
       "where": "the Hugging Face card footer (\"How it was made is on its public log\"); redirect, allowed: 301 to /agents/hivepunkz/{n}/"
     },
     {
-      "shape": "https://hivemindos.app/agents/base/{address}/{n}",
+      "shape": "https://hivemindos.app/agents/{chain}/{address}/{n}",
       "kind": "page",
       "sample": "https://hivemindos.app/agents/base/0x1649cd37f4748807b4882fc48765ba0b2affa94a/667",
-      "where": "an agent coin's page"
+      "where": "an agent coin's page, on its chain ({chain}: a launchpad chain word in scripts/chains.py, base or robinhood)"
     },
     {
       "shape": "https://hivemindos.app",

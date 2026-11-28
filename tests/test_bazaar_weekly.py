@@ -7,6 +7,7 @@ import base64, json, os, pathlib, sys, tempfile, unittest, urllib.parse
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 import bazaar_weekly as bw  # noqa: E402
+import chains  # noqa: E402
 
 HOSTS = ["api.hivemindos.app", "hivemindos-paid-agent-gateway.hivemindos.workers.dev"]
 WEB = "https://api.hivemindos.app/v1/x402/web-data/web.search"
@@ -72,12 +73,12 @@ class RankParsing(unittest.TestCase):
 class InspectParsing(unittest.TestCase):
     OFFER = {"x402Version": 2, "accepts": [
         {"network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp", "amount": "1000", "asset": "EPj", "payTo": "4sy"},
-        {"network": "eip155:8453", "amount": "1000", "asset": "0x8335", "payTo": "0x9636"}]}
+        {"network": chains.caip2(chains.BASE), "amount": "1000", "asset": "0x8335", "payTo": "0x9636"}]}
 
     def test_402_is_indexed_with_the_base_quote(self):
         row = bw.parse_inspect(402, {}, json.dumps(self.OFFER).encode())
         self.assertEqual(row["status"], "indexed")
-        self.assertEqual(row["quote"], {"network": "eip155:8453", "amount": "1000", "asset": "0x8335", "payTo": "0x9636"})
+        self.assertEqual(row["quote"], {"network": chains.caip2(chains.BASE), "amount": "1000", "asset": "0x8335", "payTo": "0x9636"})
 
     def test_402_quote_from_the_header_when_the_body_has_none(self):
         header = base64.b64encode(json.dumps(self.OFFER).encode()).decode()

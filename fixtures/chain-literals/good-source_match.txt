@@ -1,0 +1,3 @@
+import chains
+SOURCIFY = chains.SOURCIFY_CONTRACT
+row = {"family": "source", "chain": chain["chainId"], "address": address}

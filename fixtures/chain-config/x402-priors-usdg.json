@@ -1,0 +1,8 @@
+{
+  "about": "Guard 78's fixture: a Priors-style x402 listing on Robinhood Chain, paid in USDG (Robinhood Chain's x402 asset; there is no Circle USDC on 4663). Constructed in the shape outside agents on 4663 use with third-party facilitators; the payTo is a stand-in. v2 names the network eip155:4663, v1 names it robinhood. A USDC lookalike on 4663 and a network the config does not know must be not checkable, never matched and never skipped.",
+  "v2": {"x402Version": 2, "accepts": [{"scheme": "exact", "network": "eip155:4663", "asset": "0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168", "payTo": "0x00000000000000000000000000000000000BEEF1", "amount": "250000"}]},
+  "v1": {"x402Version": 1, "accepts": [{"scheme": "exact", "network": "robinhood", "asset": "0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168", "payTo": "0x00000000000000000000000000000000000BEEF1", "maxAmountRequired": "250000"}]},
+  "usdcLookalike": {"x402Version": 2, "accepts": [{"scheme": "exact", "network": "eip155:4663", "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", "payTo": "0x00000000000000000000000000000000000BEEF1", "amount": "250000"}]},
+  "unknownNetwork": {"x402Version": 2, "accepts": [{"scheme": "exact", "network": "eip155:56", "asset": "0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168", "payTo": "0x00000000000000000000000000000000000BEEF1", "amount": "250000"}]},
+  "hiveBaseUsdc": {"x402Version": 2, "accepts": [{"scheme": "exact", "network": "eip155:8453", "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", "payTo": "0xbD62F8DCB52E21CA5BDf20ba173488Da101eBCf0", "amount": "10000"}]}
+}

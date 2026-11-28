@@ -1,0 +1,2 @@
+EXPLORER = "https://robinhoodchain.blockscout.com/tx/{tx}"
+RPC = "https://rpc.mainnet.chain.robinhood.com"
