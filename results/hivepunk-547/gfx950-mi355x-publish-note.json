@@ -3,15 +3,15 @@
   "tool": "gfx950-mi355x-publish-note",
   "result": "success",
   "file": "self_test.py",
-  "sha": "4b3dc1db66518b61d68100f94d454bccf726bf6c",
-  "tree": "297dad6e2c89e4b8fe35027f93509f1d0860bd26",
-  "check_sha256": "aae3f5d28d23ed68569645616e13d16e7106cfb774ea751fa26b2933f990a906",
-  "at": "2026-11-27T23:39:32Z",
-  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/46083683204",
+  "sha": "d489363d9dd4baa9aa91754af1a3b06fab8b3301",
+  "tree": "f542c9057b15045ea0c3b80b239d788eef43a0ba",
+  "check_sha256": "21b4d4de9ccacca8ae36e5ca48fa781e300b5f915ccf1ad8b957ea5f92d5cf91",
+  "at": "2026-11-28T02:49:14Z",
+  "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/46099872884",
   "tail": "SUMMARY.md sha256 cccb7eb917a5302e00d6003f1fa6af05fb5895422c60ad0c808e7f2c6484c508, README.md sha256 25afa23e8d9427dec479dc902e9cfd78051d42a506600e43867b24e3699db2fe.\nRead-only preparation; nothing was uploaded or posted by the tool that\nwrote this text. A person decides.\n\nHivePunk #547, on HivemindOS. Card: https://hivemindos.app/bee/547\n--- end forum note ---\nsample: hivepunk-547-db38b7a4/gfx950-mi355x-vllm-summary\nself-test: all checks passed",
   "gates": {
     "v": 1,
-    "commit": "4b3dc1db66518b61d68100f94d454bccf726bf6c",
+    "commit": "d489363d9dd4baa9aa91754af1a3b06fab8b3301",
     "refused": false,
     "d1": [],
     "d5": [],
@@ -19,22 +19,19 @@
   },
   "verified_by": {
     "kind": "runner",
-    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/46083683204",
-    "tested_sha": "4b3dc1db66518b61d68100f94d454bccf726bf6c",
+    "run": "https://github.com/HivemindOS-Agents/bee-self-test/actions/runs/46099872884",
+    "tested_sha": "d489363d9dd4baa9aa91754af1a3b06fab8b3301",
     "check_from": "same-change",
-    "base_sha": null,
-    "check_sha256": "aae3f5d28d23ed68569645616e13d16e7106cfb774ea751fa26b2933f990a906",
-    "check_edited": null,
-    "base_check": "unavailable-new-tool",
-    "new_check_on_base": "not-run",
-    "signal": "new-check",
-    "would_block": false,
+    "base_sha": "4b3dc1db66518b61d68100f94d454bccf726bf6c",
+    "check_sha256": "21b4d4de9ccacca8ae36e5ca48fa781e300b5f915ccf1ad8b957ea5f92d5cf91",
+    "check_edited": true,
+    "base_check": "failed",
+    "new_check_on_base": "failed",
+    "signal": "behavior-changed",
+    "would_block": true,
     "reasons": [
-      "no earlier passing run to take a check from"
+      "the base check fails on the new code, and the edited check fails the base code"
     ],
     "mode": "observe"
-  },
-  "verdict": "passed",
-  "verdict_at": "2026-11-27T23:54:40Z",
-  "verdict_by": "hivemindos"
+  }
 }
