@@ -1,0 +1,28 @@
+{
+  "schema": "hive.twigpine-mirror-receipt.v1",
+  "at": "2026-11-28T10:39:45Z",
+  "repo": "hivepunk-632",
+  "github": {
+    "repo": "HivemindOS-Agents/hivepunk-632",
+    "ref": "refs/heads/main",
+    "sha": "32e3588ca162cabcb241afb312ddf5e4d655f366"
+  },
+  "twigpine": {
+    "node": "https://node.twigpine.com",
+    "owner": "did:key:z6Mkhc51Jh8D3GX3XvFS6V23DUSKCBzqBFstdzpJHugAB5xf",
+    "repo": "hivepunk-632",
+    "certId": "0621ae34569592bbadea8013381c0ebe75373cd8886eb2e6d258162004bfe20c",
+    "oldSha": "0000000000000000000000000000000000000000",
+    "newSha": "32e3588ca162cabcb241afb312ddf5e4d655f366",
+    "pusherDid": "did:key:z6Mkhc51Jh8D3GX3XvFS6V23DUSKCBzqBFstdzpJHugAB5xf",
+    "nodeDid": "did:key:z6Mkicjkc95VcFx38Xg2SvFV2ENsu3dLDoWborjPGVodHXoH",
+    "issuedAt": "2026-11-28T10:39:44.714550612+00:00",
+    "signature": "HenEM3Bwzg9uwSOgr6JTTrdOF9qjA3elWPAM4DddhaKxYtCnRtz1BtPD5awAFqGZ4BmMkMXSw4but-zv5gN3AQ",
+    "version": 1,
+    "certUrl": "https://node.twigpine.com/api/v1/repos/did:key:z6Mkhc51Jh8D3GX3XvFS6V23DUSKCBzqBFstdzpJHugAB5xf/hivepunk-632/certs/0621ae34569592bbadea8013381c0ebe75373cd8886eb2e6d258162004bfe20c",
+    "explorerUrl": "https://explorer.twigpine.com/repos/z6Mkhc51Jh8D3GX3XvFS6V23DUSKCBzqBFstdzpJHugAB5xf/hivepunk-632"
+  },
+  "verified": true,
+  "why": null,
+  "run": "not-read"
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "hive.twigpine-mirror-receipt.v1",
+  "at": "2026-11-28T10:39:50Z",
+  "repo": "hivepunk-1071",
+  "github": {
+    "repo": "HivemindOS-Agents/hivepunk-1071",
+    "ref": "refs/heads/main",
+    "sha": "8bc50c24d25746e0471aaa7baed8573baea6d23c"
+  },
+  "twigpine": {
+    "node": "https://node.twigpine.com",
+    "owner": "did:key:z6Mkoj5QqsSJzPB9JfhuZQ2aZwJ5m84LKPGgE2XccbCrVAop",
+    "repo": "hivepunk-1071",
+    "certId": "caf71143abacfc3c1d353ab2f658b44686145a7488eb1522ce6a35c8b4787802",
+    "oldSha": "0000000000000000000000000000000000000000",
+    "newSha": "8bc50c24d25746e0471aaa7baed8573baea6d23c",
+    "pusherDid": "did:key:z6Mkoj5QqsSJzPB9JfhuZQ2aZwJ5m84LKPGgE2XccbCrVAop",
+    "nodeDid": "did:key:z6Mkicjkc95VcFx38Xg2SvFV2ENsu3dLDoWborjPGVodHXoH",
+    "issuedAt": "2026-11-28T10:39:49.742332317+00:00",
+    "signature": "j2EmjYJF0Yw5NhznIiRX_WgGO7iofT8SkEXWwF7Ldx4MflxGQwKNJITZ7vFuVrUuAXv-7ZziAvYhdcL8KbM4BQ",
+    "version": 1,
+    "certUrl": "https://node.twigpine.com/api/v1/repos/did:key:z6Mkoj5QqsSJzPB9JfhuZQ2aZwJ5m84LKPGgE2XccbCrVAop/hivepunk-1071/certs/caf71143abacfc3c1d353ab2f658b44686145a7488eb1522ce6a35c8b4787802",
+    "explorerUrl": "https://explorer.twigpine.com/repos/z6Mkoj5QqsSJzPB9JfhuZQ2aZwJ5m84LKPGgE2XccbCrVAop/hivepunk-1071"
+  },
+  "verified": true,
+  "why": null,
+  "run": "not-read"
+}
