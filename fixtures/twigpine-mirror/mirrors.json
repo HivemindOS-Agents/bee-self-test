@@ -1,0 +1,47 @@
+{
+  "note": "B-59 / HB-021. One did:key per repository, none shared; the seeds are in PassBook and the twigpine-mirror environment, never here. nodeDid is the pinned certificate issuer of node.twigpine.com (its root document, read 2026-11-28).",
+  "node": "https://node.twigpine.com",
+  "nodeDid": "did:key:z6Mkicjkc95VcFx38Xg2SvFV2ENsu3dLDoWborjPGVodHXoH",
+  "explorer": "https://explorer.twigpine.com",
+  "gl": "0.8.1",
+  "githubOrg": "HivemindOS-Agents",
+  "branch": "main",
+  "repos": [
+    {
+      "github": "hivepunk-547",
+      "twigpine": "hivepunk-547",
+      "seedName": "TWIGPINE_SEED_HIVEPUNK_547",
+      "did": "did:key:z6MksWbbA6mKtUDEmLxUwHgrcFAg5gLfwPZZjDivPjVXL3eD"
+    },
+    {
+      "github": "hivepunk-632",
+      "twigpine": "hivepunk-632",
+      "seedName": "TWIGPINE_SEED_HIVEPUNK_632",
+      "did": "did:key:z6Mkhc51Jh8D3GX3XvFS6V23DUSKCBzqBFstdzpJHugAB5xf"
+    },
+    {
+      "github": "hivepunk-1071",
+      "twigpine": "hivepunk-1071",
+      "seedName": "TWIGPINE_SEED_HIVEPUNK_1071",
+      "did": "did:key:z6Mkoj5QqsSJzPB9JfhuZQ2aZwJ5m84LKPGgE2XccbCrVAop"
+    },
+    {
+      "github": "hivepunk-86",
+      "twigpine": "hivepunk-86",
+      "seedName": "TWIGPINE_SEED_HIVEPUNK_86",
+      "did": "did:key:z6MkruZJ65ASSdEe2FefaEX5TnDFFxbb9r5nx1Xf2X2MvSti"
+    },
+    {
+      "github": "hivepunk-667",
+      "twigpine": "hivepunk-667",
+      "seedName": "TWIGPINE_SEED_HIVEPUNK_667",
+      "did": "did:key:z6MktoahJyUbkwDjH55xK9P4cenntGKnqsTTVpMNNKXacytx"
+    },
+    {
+      "github": "datacard-lint",
+      "twigpine": "datacard-lint",
+      "seedName": "TWIGPINE_SEED_DATACARD_LINT",
+      "did": "did:key:z6MkwN7prrcYA2VfqcuE8EozSwA6vvSGoPaht61VoSW6ZYhy"
+    }
+  ]
+}

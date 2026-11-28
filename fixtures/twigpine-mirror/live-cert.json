@@ -1,0 +1,17 @@
+{
+  "note": "A public ref certificate read from node.twigpine.com on 2026-11-28 (an unrelated public mirror, read only). It pins that this reader rebuilds the node's signed bytes exactly.",
+  "source": "https://node.twigpine.com/api/v1/repos/did:key:z6Mkogs4MbcB3pBnpQygxpgWtt6LTJSCbmpiBhRBHgHvnMRt/stoa/certs/ae75744c572d42aa80f3e920666fe26abfe60fba4fd81413237697cf6cd1c113",
+  "nodeDid": "did:key:z6Mkicjkc95VcFx38Xg2SvFV2ENsu3dLDoWborjPGVodHXoH",
+  "cert": {
+    "id": "ae75744c572d42aa80f3e920666fe26abfe60fba4fd81413237697cf6cd1c113",
+    "issued_at": "2026-11-27T16:58:45.941196204+00:00",
+    "new_sha": "11d0828903fd4c120b99d9baed90d0505b79d252",
+    "node_did": "did:key:z6Mkicjkc95VcFx38Xg2SvFV2ENsu3dLDoWborjPGVodHXoH",
+    "old_sha": "da8e2f1aa8d524155f371d8050bcedc8945c1c99",
+    "pusher_did": "did:key:z6Mkogs4MbcB3pBnpQygxpgWtt6LTJSCbmpiBhRBHgHvnMRt",
+    "ref_name": "refs/heads/main",
+    "repo_id": "b1317af7-c5ff-4116-bdea-5b052bcc6fed",
+    "signature": "QYA4g87L5m6RVlOWMiVuq2zTw5vkTRwquEgFN4QOyd3l1uHRIvETB9Oxt_TnhLmjv1XeWPdPSdXt3MHIrpodCA",
+    "version": 1
+  }
+}

@@ -133,3 +133,23 @@ read-only Base RPC and a stubbed `notify`; no secret reaches them. Model spend i
 `lift/tx-explain/tasks.json` is the first task set: five public Base transactions (a USDC transfer, a plain ETH
 transfer, a reverted call, an unlimited approval and a router swap). Its different-owner review is pending, and no run
 has been made yet.
+
+## Twigpine mirror
+
+`twigpine-mirror` (B-59, HB-021) keeps a signed copy of `main` for hivepunk-547, 632, 1071, 86, 667 and datacard-lint
+on Twigpine (formerly Gitlawb), a git network whose identities are Ed25519 `did:key` keypairs. GitHub stays canonical;
+the copy is a second place a stranger can check, and it keeps running during a GitHub pause. Each repository pushes as
+its own `did:key` (`fixtures/twigpine-mirror/mirrors.json`), and no key is shared: a workflow leg gets only its own
+seed, and a seed whose `did:key` is not its repository's is refused before anything runs.
+
+The owner-only gate does not trust the node's operator. Node v0.8.0 made owner-only push the default, but an operator
+can turn it off and no endpoint says how it is set. A protected branch is refused to every non-owner whatever that
+setting, and the protected list is public, so a repository passes the gate only when its `main` is protected, and the
+push refuses to run when it is not. Hourly, the check reads that gate and compares GitHub `main` with the latest
+Twigpine certificate, whose node signature it verifies against the pinned node DID.
+
+Each push writes a `hive.twigpine-mirror-receipt.v1` to `results/<repository>/twigpine-mirror.json` and appends it to
+`twigpine-mirror.jsonl`: the GitHub SHA, the certificate, and links to it and the explorer page. Nothing is written to
+an agent repository's `main`. The mirror is inert until the repository variable `TWIGPINE_MIRROR` is `on`; the
+one-time owner steps (register each `did:key`, create its repository, protect `main`) are `twigpine_mirror.py
+bootstrap`. It is never a required check.

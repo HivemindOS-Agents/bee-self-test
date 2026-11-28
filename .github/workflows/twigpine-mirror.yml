@@ -1,0 +1,152 @@
+# B-59 / HB-021 (HB-035 Track C): a signed Twigpine copy of each agent repository's `main`; GitHub stays canonical.
+# Mirrored: fixtures/twigpine-mirror/mirrors.json (hivepunk-547, 632, 1071, 86, 667 and datacard-lint), each under
+# its own did:key, none shared. scripts/twigpine_mirror.py says how the owner-only gate and the receipts work.
+#
+# Every hour, on the host's dispatch and on demand:
+#   check    read-only: the owner-only gate (each mirror's `main` protected, so the node refuses every non-owner push
+#            whatever its operator setting) and GitHub `main` against the latest Twigpine certificate, whose signature
+#            is checked against the pinned node DID. While the mirror is switched off this reports and stays green;
+#            once on (repository variable TWIGPINE_MIRROR = on) a mirror that is missing, behind or wrong goes red.
+#   mirror   only when TWIGPINE_MIRROR = on: one leg per repository, in the twigpine-mirror environment. A leg gets
+#            only its own repository's seed (secrets[matrix.seedName]), never another's and never the set. It pushes
+#            GitHub `main` as a fast-forward (no force), waits for the node's certificate and writes the receipt.
+#   record   writes results/<repo>/twigpine-mirror.json (the latest receipt) and appends results/<repo>/twigpine-
+#            mirror.jsonl. Nothing is written to an agent repository.
+#
+# Never a required check: an alpha network's outage must not block anyone's `main`.
+name: twigpine-mirror
+on:
+  schedule:
+    - cron: "23 * * * *"
+  workflow_dispatch:
+  repository_dispatch:
+    types: [twigpine-mirror]
+  push:
+    branches: [main]
+    paths: ["scripts/twigpine_mirror.py", "tests/test_twigpine_mirror.py", "fixtures/twigpine-mirror/**", ".github/workflows/twigpine-mirror.yml"]
+permissions: {}
+concurrency:
+  group: twigpine-mirror
+  cancel-in-progress: false
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    outputs:
+      matrix: ${{ steps.list.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Ed25519, did:key and the certificate bytes, on fixtures
+        run: python3 scripts/twigpine_mirror.py --self-test
+      - name: One did:key per repository, none shared
+        run: python3 scripts/twigpine_mirror.py --check-fixture
+      - name: The gate, the drift check and the push refusals, on canned answers
+        run: python3 -m unittest discover -s tests -p 'test_twigpine_mirror.py' -v
+      - name: The live gate and drift check, read-only
+        env:
+          LIVE: ${{ vars.TWIGPINE_MIRROR == 'on' && '--expect-live' || '' }}
+        run: python3 scripts/twigpine_mirror.py check --out check $LIVE
+      - name: The repositories, one leg each
+        id: list
+        run: |
+          python3 - >>"$GITHUB_OUTPUT" <<'PY'
+          import json
+          fx = json.load(open("fixtures/twigpine-mirror/mirrors.json"))
+          legs = [{"repo": r["github"], "seedName": r["seedName"]} for r in fx["repos"] if r.get("did")]
+          print("matrix=" + json.dumps({"include": legs}))
+          PY
+      - name: Keep the check
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: twigpine-mirror-check
+          path: check/
+          if-no-files-found: ignore
+          retention-days: 14
+  mirror:
+    needs: check
+    if: vars.TWIGPINE_MIRROR == 'on' && github.event_name != 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: twigpine-mirror
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix: ${{ fromJSON(needs.check.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Install the Twigpine CLI and git helper, pinned, without install scripts
+        run: |
+          set -eu
+          npm install --silent --no-save --ignore-scripts --prefix "$RUNNER_TEMP/twigpine" @gitlawb/gl-linux-x64@0.8.1
+          bin="$RUNNER_TEMP/twigpine/node_modules/@gitlawb/gl-linux-x64"
+          chmod 0755 "$bin/gl" "$bin/git-remote-gitlawb"
+          "$bin/gl" --version | grep -q '0\.8\.1'
+          echo "$bin" >> "$GITHUB_PATH"
+      - name: Push GitHub main to Twigpine and write the receipt
+        env:
+          TWIGPINE_MIRROR: "on"
+          TWIGPINE_SEED: ${{ secrets[matrix.seedName] }}
+        run: python3 scripts/twigpine_mirror.py push --repo "${{ matrix.repo }}" --seed-env TWIGPINE_SEED --out receipts
+      - name: Keep the receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: twigpine-receipt-${{ matrix.repo }}
+          path: receipts/
+          if-no-files-found: ignore
+          retention-days: 30
+  record:
+    needs: mirror
+    if: always() && needs.mirror.result != 'skipped' && needs.mirror.result != 'cancelled'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: twigpine-receipt-*
+          path: receipts/
+          merge-multiple: true
+      - name: Record the receipts
+        run: |
+          set -eu
+          python3 - <<'PY'
+          import glob, json, os
+          for path in sorted(glob.glob("receipts/*/twigpine-mirror.json")):
+              rec = json.load(open(path))
+              repo = rec["repo"]
+              os.makedirs(f"results/{repo}", exist_ok=True)
+              log = f"results/{repo}/twigpine-mirror.jsonl"
+              last = None
+              if os.path.exists(log):
+                  lines = [l for l in open(log) if l.strip()]
+                  last = json.loads(lines[-1]) if lines else None
+              if last and last["twigpine"]["certId"] == rec["twigpine"]["certId"]:
+                  continue
+              with open(log, "a") as f:
+                  f.write(json.dumps(rec, sort_keys=True) + "\n")
+              with open(f"results/{repo}/twigpine-mirror.json", "w") as f:
+                  json.dump(rec, f, indent=2)
+                  f.write("\n")
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- 'results/*/twigpine-mirror.json' 'results/*/twigpine-mirror.jsonl' 2>/dev/null || true
+          git commit --quiet -m "twigpine mirror: receipts" || exit 0
+          for try in 1 2 3 4 5 6; do
+            git push --quiet && exit 0
+            sleep $((try * 2))
+            git pull --quiet --rebase
+          done
+          exit 1
