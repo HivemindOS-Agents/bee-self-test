@@ -5,13 +5,16 @@
 # Every hour, on the host's dispatch and on demand:
 #   check    read-only: the owner-only gate (each mirror's `main` protected, so the node refuses every non-owner push
 #            whatever its operator setting) and GitHub `main` against the latest Twigpine certificate, whose signature
-#            is checked against the pinned node DID. While the mirror is switched off this reports and stays green;
-#            once on (repository variable TWIGPINE_MIRROR = on) a mirror that is missing, behind or wrong goes red.
+#            is checked against the pinned node DID. It goes red only on what must stop a push (the node's DID, a bad
+#            certificate, a foreign pusher, the wrong owner); a mirror that is merely behind is what `mirror` is for.
+#            (The first live run, 28 Nov, held every push back because 1071 was behind: fixed the same day.)
 #   mirror   only when TWIGPINE_MIRROR = on: one leg per repository, in the twigpine-mirror environment. A leg gets
 #            only its own repository's seed (secrets[matrix.seedName]), never another's and never the set. It pushes
 #            GitHub `main` as a fast-forward (no force), waits for the node's certificate and writes the receipt.
 #   record   writes results/<repo>/twigpine-mirror.json (the latest receipt) and appends results/<repo>/twigpine-
 #            mirror.jsonl. Nothing is written to an agent repository.
+#   verify   after the pushes, while TWIGPINE_MIRROR = on: the same check with --expect-live, so a mirror that is
+#            still missing, behind or wrong goes red.
 #
 # Never a required check: an alpha network's outage must not block anyone's `main`.
 name: twigpine-mirror
@@ -46,10 +49,8 @@ jobs:
         run: python3 scripts/twigpine_mirror.py --check-fixture
       - name: The gate, the drift check and the push refusals, on canned answers
         run: python3 -m unittest discover -s tests -p 'test_twigpine_mirror.py' -v
-      - name: The live gate and drift check, read-only
-        env:
-          LIVE: ${{ vars.TWIGPINE_MIRROR == 'on' && '--expect-live' || '' }}
-        run: python3 scripts/twigpine_mirror.py check --out check $LIVE
+      - name: The live gate and drift check, read-only (red only on what must stop a push)
+        run: python3 scripts/twigpine_mirror.py check --out check
       - name: The repositories, one leg each
         id: list
         run: |
@@ -150,3 +151,16 @@ jobs:
             git pull --quiet --rebase
           done
           exit 1
+  verify:
+    needs: [mirror, record]
+    if: always() && vars.TWIGPINE_MIRROR == 'on' && github.event_name != 'push' && needs.mirror.result != 'skipped'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Every mirror in sync after the pushes, read-only
+        run: python3 scripts/twigpine_mirror.py check --expect-live

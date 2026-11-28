@@ -338,6 +338,14 @@ class Workflow(unittest.TestCase):
         self.assertIn("environment: twigpine-mirror", text)
         self.assertNotIn("--force", text)
 
+    def test_behind_never_holds_the_pushes_back_and_is_red_after_them(self):
+        text = open(WORKFLOW).read()
+        check_job = text[text.index("  check:"):text.index("  mirror:")]
+        verify_job = text[text.index("  verify:"):]
+        self.assertNotIn("--expect-live", check_job)
+        self.assertIn("check --expect-live", verify_job)
+        self.assertIn("needs: [mirror, record]", verify_job)
+
 
 if __name__ == "__main__":
     unittest.main()
